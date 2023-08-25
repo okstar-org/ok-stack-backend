@@ -1,6 +1,6 @@
 /*
  * * Copyright (c) 2022 船山科技 chuanshantech.com
- * OkEDU-Classroom is licensed under Mulan PubL v2.
+ * OkStack is licensed under Mulan PubL v2.
  * You can use this software according to the terms and conditions of the Mulan
  * PubL v2. You may obtain a copy of Mulan PubL v2 at:
  *          http://license.coscl.org.cn/MulanPubL-2.0
@@ -15,7 +15,6 @@ package org.okstar.platform.common.core.web.controller;
 
 import io.vertx.core.http.HttpServerRequest;
 import io.vertx.core.http.HttpServerResponse;
-import org.okstar.platform.common.core.constant.HttpStatus;
 import org.okstar.platform.common.core.web.domain.AjaxResult;
 import org.okstar.platform.common.core.web.page.PageResult;
 import org.okstar.platform.common.core.web.page.TableDataInfo;
