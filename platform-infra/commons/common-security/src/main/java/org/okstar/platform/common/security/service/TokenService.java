@@ -75,7 +75,7 @@ public class TokenService {
         Assert.assertNotNull(loginUser.getUserid());
         Assert.assertNotNull(loginUser.getUsername());
 
-        String token = IdUtils.fastUUID();
+        String token = IdUtils.makeUuid();
         loginUser.setToken(token);
         loginUser.setIpaddr(OkWebUtil.getIpAddr(request));
         refreshToken(loginUser);

@@ -20,6 +20,7 @@ import org.okstar.platform.common.core.web.page.PageResult;
 import org.okstar.platform.common.core.web.page.TableDataInfo;
 
 import javax.ws.rs.core.Context;
+import javax.ws.rs.core.Response;
 import java.util.List;
 
 /**
@@ -39,7 +40,7 @@ public class OkBaseController {
     @SuppressWarnings({"rawtypes", "unchecked"})
     protected TableDataInfo getDataTable(List<?> list) {
         TableDataInfo rspData = new TableDataInfo();
-        rspData.setCode(HttpStatus.SUCCESS);
+        rspData.setCode(Response.Status.OK.getStatusCode());
         rspData.setRows(list);
         rspData.setTotal(list.size());
         rspData.setMsg("查询成功");
@@ -48,7 +49,7 @@ public class OkBaseController {
 
     protected TableDataInfo getDataTable(PageResult<?> pageResult) {
         TableDataInfo rspData = new TableDataInfo();
-        rspData.setCode(HttpStatus.SUCCESS);
+        rspData.setCode(Response.Status.OK.getStatusCode());
         rspData.setRows(pageResult.getList());
         rspData.setTotal(pageResult.getTotal());
         rspData.setMsg("查询成功");

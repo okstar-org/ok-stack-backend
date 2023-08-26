@@ -13,7 +13,8 @@
 
 package org.okstar.platform.common.core.utils;
 
-import org.okstar.platform.common.core.text.UUID;
+
+import java.util.UUID;
 
 /**
  * ID生成器工具类
@@ -22,43 +23,17 @@ import org.okstar.platform.common.core.text.UUID;
  */
 public class IdUtils
 {
+
+
     /**
      * 获取随机UUID
      * 
      * @return 随机UUID
      */
-    public static String randomUUID()
+    public static String makeUuid()
     {
         return UUID.randomUUID().toString();
     }
 
-    /**
-     * 简化的UUID，去掉了横线
-     * 
-     * @return 简化的UUID，去掉了横线
-     */
-    public static String simpleUUID()
-    {
-        return UUID.randomUUID().toString(true);
-    }
 
-    /**
-     * 获取随机UUID，使用性能更好的ThreadLocalRandom生成UUID
-     * 
-     * @return 随机UUID
-     */
-    public static String fastUUID()
-    {
-        return UUID.fastUUID().toString();
-    }
-
-    /**
-     * 简化的UUID，去掉了横线，使用性能更好的ThreadLocalRandom生成UUID
-     * 
-     * @return 简化的UUID，去掉了横线
-     */
-    public static String fastSimpleUUID()
-    {
-        return UUID.fastUUID().toString(true);
-    }
 }
