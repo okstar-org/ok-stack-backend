@@ -112,7 +112,7 @@
 > 欢迎加入参与社区建设
 - Joy1024
 - 赵慧
-- [更多](https://gitee.com/okstar-org/ok-stack-platform/contributors?ref=master)
+- [更多](https://gitee.com/okstar-org/ok-stack-backend/contributors?ref=master)
 
 # 💰 赞助商
 
