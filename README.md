@@ -67,20 +67,6 @@
   - SP：Service Pack 服务包序列，修复系统中的漏洞和问题、稳定性和优化等。
   - PVD：Provider 供应商，即合作伙伴代号；
 
-# 🙏 感谢支持
-- 感谢配合测试的同学，有赵慧、戴斌、沈雪琪等
-- [感谢 JetBrains 对本项目的支持（Drive by JetBrains）](https://jb.gg/OpenSourceSupport) <img width="64" src="https://resources.jetbrains.com/storage/products/company/brand/logos/jb_beam.svg?_ga=2.83044246.1221182059.1672752920-1856866598.1665301971&_gl=1*3fzoi7*_ga*MTg1Njg2NjU5OC4xNjY1MzAxOTcx*_ga_9J976DJZ68*MTY3Mjc1MjkyMC40LjEuMTY3Mjc1NDM0Ni4wLjAuMA">
-
-# ❤️ 捐赠方式
-
-> 您的捐款是OkEDU开源项目持续前进的动力，希望该项目可以让任何人从中受益。
-> 捐赠列表 https://kdocs.cn/l/cr7rVyXnbxuK
-
-<div>
-<img src="./docs/donate/wx.jpg" width="240"  alt=""/> <img src="./docs/donate/zfb.jpg" width="240"  alt=""/>
-</div>
-
-> 欢迎大家 Clone 本项目，捐赠收入将用于对贡献者的奖励。
 
 # ⏰ 任务规划
 - 2023年 
@@ -126,13 +112,30 @@
 # ☎️ 联系我们
 
 > 技术交流群，添加微信：**okstar-org**（备注：**OkStar** 姓名）
-
-![OkStar公众号](./docs/assets/assistant-OkEDU.jpg "OkStar")
+<div>
+  <img src="https://gitee.com/okstar-org/ok-edu-desktop/raw/develop/docs/assets/assistant-OkEDU.jpg" width="240"  alt=""/> 
+</div>
 
 > 微信公众号，关注账号：**OkEDU**
+<div>
+  <img src="https://gitee.com/okstar-org/ok-edu-desktop/raw/develop/docs/assets/gzh-OkEDU.jpg" width="240"  alt=""/> 
+</div>
 
-![OkStar公众号](./docs/assets/gzh-OkEDU.jpg "OkStar")
+# 🙏 感谢支持
+- 感谢配合测试的同学，有赵慧、戴斌、沈雪琪等
+- [感谢 JetBrains 对本项目的支持（Drive by JetBrains）](https://jb.gg/OpenSourceSupport) <img width="64" src="https://resources.jetbrains.com/storage/products/company/brand/logos/jb_beam.svg?_ga=2.83044246.1221182059.1672752920-1856866598.1665301971&_gl=1*3fzoi7*_ga*MTg1Njg2NjU5OC4xNjY1MzAxOTcx*_ga_9J976DJZ68*MTY3Mjc1MjkyMC40LjEuMTY3Mjc1NDM0Ni4wLjAuMA">
 
+# ❤️ 捐赠方式
+
+> 您的捐款是OkEDU开源项目持续前进的动力，希望该项目可以让任何人从中受益。
+> 捐赠列表 https://kdocs.cn/l/cr7rVyXnbxuK
+
+<div>
+<img src="https://gitee.com/okstar-org/ok-edu-desktop/raw/develop/docs/donate/wx.jpg" width="240"  alt=""/> 
+<img src="https://gitee.com/okstar-org/ok-edu-desktop/raw/develop/docs/donate/zfb.jpg" width="240"  alt=""/>
+</div>
+
+> 欢迎大家 Clone 本项目，捐赠收入将用于对贡献者的奖励。
 
 # ©️ 版权信息
 
