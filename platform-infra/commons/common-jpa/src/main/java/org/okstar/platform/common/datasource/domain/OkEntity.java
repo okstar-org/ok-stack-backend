@@ -24,13 +24,8 @@ import java.util.Date;
 @MappedSuperclass
 public class OkEntity extends PanacheEntity {
 
-    public Long getId() {
-        return super.id;
-    }
 
-    public void setId(Long id) {
-        super.id = id;
-    }
+
 
     /**
      * 创建者
@@ -54,4 +49,10 @@ public class OkEntity extends PanacheEntity {
      */
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date updateAt;
+
+    private Boolean disabled;
+
+    public Boolean getDisabled() {
+        return disabled == null || disabled;
+    }
 }

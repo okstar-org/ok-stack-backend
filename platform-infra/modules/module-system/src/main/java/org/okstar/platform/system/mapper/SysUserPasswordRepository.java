@@ -11,19 +11,21 @@
  * /
  */
 
-package org.okstar.platform.common.datasource;
+package org.okstar.platform.system.mapper;
 
-import java.util.List;
+import org.okstar.platform.common.datasource.OkRepository;
+import org.okstar.platform.system.domain.SysUserPassword;
 
-public interface OkService <T, ID> {
+import javax.enterprise.context.ApplicationScoped;
 
-    T save(T t);
 
-    List<T> findAll();
+/**
+ * 用户密码
+ * 
+ * 
+ */
+@ApplicationScoped
+public class SysUserPasswordRepository implements OkRepository<SysUserPassword>
+{
 
-    T get(ID id);
-
-    void deleteById(ID id);
-
-    void delete(T t);
 }

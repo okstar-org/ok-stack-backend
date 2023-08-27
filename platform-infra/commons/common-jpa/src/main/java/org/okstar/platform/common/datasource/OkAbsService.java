@@ -13,17 +13,19 @@
 
 package org.okstar.platform.common.datasource;
 
-import java.util.List;
+import org.eclipse.microprofile.context.ManagedExecutor;
+import org.eclipse.microprofile.context.ThreadContext;
 
-public interface OkService <T, ID> {
+import javax.inject.Inject;
+import javax.transaction.Transactional;
 
-    T save(T t);
+@Transactional
+public abstract class OkAbsService {
 
-    List<T> findAll();
+    @Inject
+    protected ThreadContext threadContext;
 
-    T get(ID id);
-
-    void deleteById(ID id);
-
-    void delete(T t);
+    protected ManagedExecutor managedExecutor = ManagedExecutor.builder()
+            .propagated(ThreadContext.CDI)
+            .build();
 }

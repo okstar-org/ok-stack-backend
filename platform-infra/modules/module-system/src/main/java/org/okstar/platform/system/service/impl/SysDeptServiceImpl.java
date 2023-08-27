@@ -67,7 +67,7 @@ public class SysDeptServiceImpl implements ISysDeptService
         List<Long> tempList = new ArrayList<Long>();
         for (SysDept dept : depts)
         {
-            tempList.add(dept.getId());
+            tempList.add(dept.id);
         }
         for (Iterator<SysDept> iterator = depts.iterator(); iterator.hasNext();)
         {
@@ -159,9 +159,9 @@ public class SysDeptServiceImpl implements ISysDeptService
     @Override
     public String checkDeptNameUnique(SysDept dept)
     {
-        Long deptId = OkStringUtil.isNull(dept.getId()) ? -1L : dept.getId();
+        Long deptId = OkStringUtil.isNull(dept.id) ? -1L : dept.id;
         SysDept info = deptMapper.checkDeptNameUnique(dept.getDeptName(), dept.getParentId());
-        if (OkStringUtil.isNotNull(info) && info.getId().longValue() != deptId.longValue())
+        if (OkStringUtil.isNotNull(info) && info.id.longValue() != deptId.longValue())
         {
             return UserConstants.NOT_UNIQUE;
         }
@@ -197,13 +197,13 @@ public class SysDeptServiceImpl implements ISysDeptService
     public int updateDept(SysDept dept)
     {
         SysDept newParentDept = deptMapper.selectDeptById(dept.getParentId());
-        SysDept oldDept = deptMapper.selectDeptById(dept.getId());
+        SysDept oldDept = deptMapper.selectDeptById(dept.id);
         if (OkStringUtil.isNotNull(newParentDept) && OkStringUtil.isNotNull(oldDept))
         {
             String newAncestors = newParentDept.getAncestors() + "," ;
             String oldAncestors = oldDept.getAncestors();
             dept.setAncestors(newAncestors);
-            updateDeptChildren(dept.getId(), newAncestors, oldAncestors);
+            updateDeptChildren(dept.id, newAncestors, oldAncestors);
         }
         int result = deptMapper.updateDept(dept);
         if (UserConstants.DEPT_NORMAL.equals(dept.getStatus()) && OkStringUtil.isNotEmpty(dept.getAncestors())
@@ -286,7 +286,7 @@ public class SysDeptServiceImpl implements ISysDeptService
         while (it.hasNext())
         {
             SysDept n = it.next();
-            if (OkStringUtil.isNotNull(n.getParentId()) && n.getParentId().longValue() == t.getId().longValue())
+            if (OkStringUtil.isNotNull(n.getParentId()) && n.getParentId().longValue() == t.id.longValue())
             {
                 tlist.add(n);
             }

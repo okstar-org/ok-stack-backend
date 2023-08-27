@@ -11,19 +11,25 @@
  * /
  */
 
-package org.okstar.platform.common.datasource;
+package org.okstar.platform.system.domain;
 
-import java.util.List;
+import lombok.Data;
 
-public interface OkService <T, ID> {
+import javax.persistence.Entity;
+import javax.persistence.ManyToOne;
 
-    T save(T t);
+/**
+ * 用户密码(修改历史)
+ */
+@Data
+@Entity
+public class SysUserPassword extends BaseEntity {
 
-    List<T> findAll();
+    @ManyToOne
+    SysUser user;
 
-    T get(ID id);
-
-    void deleteById(ID id);
-
-    void delete(T t);
+    /**
+     * 密码
+     */
+    String password;
 }

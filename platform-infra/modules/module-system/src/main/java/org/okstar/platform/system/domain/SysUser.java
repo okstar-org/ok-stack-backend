@@ -14,45 +14,50 @@
 package org.okstar.platform.system.domain;
 
 import lombok.Data;
+import org.okstar.platform.common.datasource.domain.OkEntity;
 
 import javax.persistence.Entity;
+import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 
 /**
  * 用户对象 sys_user
- * 
- *
  */
 @Data
 @Entity
-public class SysUser extends BaseEntity
-{
+@Table(uniqueConstraints = {@UniqueConstraint(columnNames = {"username"})})
+public class SysUser extends OkEntity {
 
-    /** 部门ID */
-    private Long deptId;
-
-    /** 用户账号 */
+    /**
+     * 用户账号
+     */
     private String username;
 
-    /** 用户昵称 */
+    /**
+     * 用户昵称
+     */
     private String nickName;
 
 
-
-    /** 用户性别 */
+    /**
+     * 用户性别
+     */
     private String sex;
 
-    /** 用户头像 */
+    /**
+     * 用户头像
+     */
     private String avatar;
 
-    /** 密码 */
-    private String password;
-
-    /** 帐号状态（0正常 1停用） */
+    /**
+     * 帐号状态（0正常 1停用）
+     */
     private String status;
 
-    /** 删除标志（0代表存在 2代表删除） */
+    /**
+     * 删除标志（0代表存在 2代表删除）
+     */
     private String delFlag;
-
 
 
     /** 部门对象 */
@@ -65,13 +70,19 @@ public class SysUser extends BaseEntity
     /** 角色对象 */
 //    private List<SysRole> roles;
 
-    /** 角色组 */
+    /**
+     * 角色组
+     */
     private Long[] roleIds;
 
-    /** 岗位组 */
+    /**
+     * 岗位组
+     */
     private Long[] postIds;
 
-    /** 角色ID */
+    /**
+     * 角色ID
+     */
     private Long roleId;
 
 

@@ -27,7 +27,7 @@ import java.util.List;
  * 
  * 
  */
-public interface ISysUserService extends OkService<SysUser, Long>
+public interface SysUserService extends OkService<SysUser, Long>
 {
     /**
      * 根据条件分页查询用户列表
@@ -116,21 +116,6 @@ public interface ISysUserService extends OkService<SysUser, Long>
      */
     void checkUserAllowed(SysUser user);
 
-    /**
-     * 新增用户信息
-     * 
-     * @param user 用户信息
-     * @return 结果
-     */
-    int insertUser(SysUser user);
-
-    /**
-     * 注册用户信息
-     * 
-     * @param user 用户信息
-     * @return 结果
-     */
-    boolean registerUser(SysUser user);
 
     /**
      * 修改用户信息
@@ -215,13 +200,6 @@ public interface ISysUserService extends OkService<SysUser, Long>
      * @return 结果
      */
     String importUser(List<SysUser> userList, Boolean isUpdateSupport, String operName);
-
-    /**
-     * 校验用户是否有数据权限
-     *
-     * @param userId 用户id
-     */
-    void checkUserDataScope(Long userId);
 
     /**
      * 某角色下的用户列表

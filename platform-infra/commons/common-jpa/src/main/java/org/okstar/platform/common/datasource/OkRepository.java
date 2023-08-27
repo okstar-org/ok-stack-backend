@@ -13,17 +13,7 @@
 
 package org.okstar.platform.common.datasource;
 
-import java.util.List;
+import io.quarkus.hibernate.orm.panache.PanacheRepository;
 
-public interface OkService <T, ID> {
-
-    T save(T t);
-
-    List<T> findAll();
-
-    T get(ID id);
-
-    void deleteById(ID id);
-
-    void delete(T t);
+public interface OkRepository<T> extends PanacheRepository<T> {
 }

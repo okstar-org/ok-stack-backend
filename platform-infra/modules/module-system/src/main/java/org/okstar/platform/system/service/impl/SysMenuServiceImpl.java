@@ -23,7 +23,7 @@ import org.okstar.platform.system.mapper.SysMenuMapper;
 import org.okstar.platform.system.mapper.SysRoleMapper;
 import org.okstar.platform.system.mapper.SysRoleMenuMapper;
 import org.okstar.platform.system.service.ISysMenuService;
-import org.okstar.platform.system.service.ISysUserService;
+import org.okstar.platform.system.service.SysUserService;
 import org.okstar.platform.system.vo.MetaVo;
 import org.okstar.platform.system.vo.RouterVo;
 
@@ -51,7 +51,7 @@ public class SysMenuServiceImpl implements ISysMenuService
     private SysRoleMenuMapper roleMenuMapper;
 
     @Inject
-    private ISysUserService sysUserService;
+    private SysUserService sysUserService;
 
     /**
      * 根据用户查询系统菜单列表

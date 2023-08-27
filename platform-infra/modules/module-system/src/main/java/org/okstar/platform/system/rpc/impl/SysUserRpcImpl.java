@@ -19,7 +19,7 @@ import org.okstar.platform.system.dto.SignUpForm;
 import org.okstar.platform.system.dto.SignUpResultDto;
 import org.okstar.platform.system.dto.SysUserDto;
 import org.okstar.platform.system.rpc.SysUserRpc;
-import org.okstar.platform.system.service.ISysUserService;
+import org.okstar.platform.system.service.SysUserService;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
@@ -28,7 +28,7 @@ import javax.inject.Inject;
 public class SysUserRpcImpl implements SysUserRpc {
 
     @Inject
-    ISysUserService userService;
+    SysUserService userService;
 
     @Override
     public SignUpResultDto signUp(SignUpForm signUpDto) {

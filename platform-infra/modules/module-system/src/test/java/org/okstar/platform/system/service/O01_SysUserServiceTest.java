@@ -11,26 +11,40 @@
  * /
  */
 
-package org.okstar.platform.system.service.impl;
+package org.okstar.platform.system.service;
 
 import io.quarkus.logging.Log;
 import io.quarkus.test.junit.QuarkusTest;
 import io.smallrye.common.constraint.Assert;
+import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
+import org.okstar.platform.system.domain.SysUser;
 import org.okstar.platform.system.dto.SignUpForm;
 import org.okstar.platform.system.dto.SignUpResultDto;
-import org.okstar.platform.system.service.ISysUserService;
 
 import javax.inject.Inject;
+import java.util.List;
 
 @QuarkusTest
-class SysUserServiceImplTest {
-
+class O01_SysUserServiceTest {
 
     @Inject
-    ISysUserService sysUserService;
+    SysUserService sysUserService;
+
+
 
     @Test
+    @Order(2)
+    void findAll() {
+        List<SysUser> all = sysUserService.findAll();
+        Assert.assertNotNull(all);
+        all.forEach(sysUser -> {
+            Log.infof("user:%s", sysUser);
+        });
+    }
+
+    @Test
+    @Order(1)
     void signUp() {
         SignUpForm form = new SignUpForm();
         form.setTs(1L);
@@ -42,4 +56,6 @@ class SysUserServiceImplTest {
         Assert.assertNotNull(resultDto);
         Assert.assertNotNull(resultDto.getUsername());
     }
+
+
 }

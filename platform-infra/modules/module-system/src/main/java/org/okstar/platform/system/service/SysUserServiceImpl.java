@@ -11,7 +11,7 @@
  * /
  */
 
-package org.okstar.platform.system.service.impl;
+package org.okstar.platform.system.service;
 
 import com.google.i18n.phonenumbers.NumberParseException;
 import com.google.i18n.phonenumbers.PhoneNumberUtil;
@@ -26,14 +26,12 @@ import org.okstar.platform.common.core.enums.UserBindDefined;
 import org.okstar.platform.common.core.exception.OkRuntimeException;
 import org.okstar.platform.common.core.utils.OkStringUtil;
 import org.okstar.platform.common.core.web.page.Pageable;
+import org.okstar.platform.common.datasource.OkAbsService;
 import org.okstar.platform.system.domain.*;
 import org.okstar.platform.system.dto.SignUpForm;
 import org.okstar.platform.system.dto.SignUpResultDto;
 import org.okstar.platform.system.mapper.*;
-import org.okstar.platform.system.service.ISysConfigService;
-import org.okstar.platform.system.service.ISysUserService;
 import org.okstar.platform.system.utils.RepositoryUtil;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -52,7 +50,7 @@ import static com.google.i18n.phonenumbers.PhoneNumberUtil.PhoneNumberFormat.INT
 @Slf4j
 @Singleton
 @Transactional
-public class SysUserServiceImpl implements ISysUserService {
+public class SysUserServiceImpl extends OkAbsService  implements SysUserService {
 
     @Inject
     SysUserRepository sysUserRepository;
@@ -239,37 +237,6 @@ public class SysUserServiceImpl implements ISysUserService {
     }
 
     /**
-     * 新增保存用户信息
-     *
-     * @param user 用户信息
-     * @return 结果
-     */
-    @Override
-    @Transactional
-    public int insertUser(SysUser user) {
-//        // 新增用户信息
-//        int rows = userMapper.insertUser(user);
-//        // 新增用户岗位关联
-//        insertUserPost(user);
-//        // 新增用户与角色管理
-//        insertUserRole(user);
-//        return rows;
-        return 0;
-    }
-
-    /**
-     * 注册用户信息
-     *
-     * @param user 用户信息
-     * @return 结果
-     */
-    public boolean registerUser(SysUser user) {
-//        return userMapper.insertUser(user) > 0;
-
-        return false;
-    }
-
-    /**
      * 修改保存用户信息
      *
      * @param user 用户信息
@@ -381,7 +348,7 @@ public class SysUserServiceImpl implements ISysUserService {
             List<SysUserRole> list = new ArrayList<SysUserRole>();
             for (Long roleId : roles) {
                 SysUserRole ur = new SysUserRole();
-                ur.setUserId(user.getId());
+                ur.setUserId(user.id);
                 ur.setRoleId(roleId);
                 list.add(ur);
             }
@@ -403,7 +370,7 @@ public class SysUserServiceImpl implements ISysUserService {
             List<SysUserPost> list = new ArrayList<SysUserPost>();
             for (Long postId : posts) {
                 SysUserPost up = new SysUserPost();
-                up.setUserId(user.getId());
+                up.setUserId(user.id);
                 up.setPostId(postId);
                 list.add(up);
             }
@@ -529,23 +496,6 @@ public class SysUserServiceImpl implements ISysUserService {
     }
 
     /**
-     * 校验用户是否有数据权限
-     *
-     * @param userId 用户id
-     */
-    @Override
-    public void checkUserDataScope(Long userId) {
-//        if (!SysUser.isAdmin(SecurityUtils.getUserId())) {
-//            SysUser user = new SysUser();
-//            user.setUserId(userId);
-//            List<SysUser> users = SpringUtils.getAopProxy(this).selectUserList(user);
-//            if (StringUtils.isEmpty(users)) {
-//                throw new ServiceException("没有权限访问用户数据！");
-//            }
-//        }
-    }
-
-    /**
      * 某角色下的用户列表
      *
      * @param roleKey
@@ -564,7 +514,7 @@ public class SysUserServiceImpl implements ISysUserService {
         String random = RandomStringUtils.randomAlphanumeric(12);
         SysUser sysUser = new SysUser();
         sysUser.setUsername(random);
-        sysUser.setPassword(new BCryptPasswordEncoder().encode(signUpForm.getPassword()));
+//        sysUser.setPassword(new BCryptPasswordEncoder().encode(signUpForm.getPassword()));
         sysUserRepository.persist(sysUser);
 
         //添加手机号绑定
@@ -578,8 +528,8 @@ public class SysUserServiceImpl implements ISysUserService {
 
         SysUserBind bind = new SysUserBind();
         bind.setBindType(UserBindDefined.BindType.phone);
-        bind.setValue(util.format(number, INTERNATIONAL));
-        bind.setValid(true);
+        bind.setBindValue(util.format(number, INTERNATIONAL));
+        bind.setIsValid(true);
         bind.setUser(sysUser);
         sysUserBindRepository.persist(bind);
 
@@ -591,6 +541,21 @@ public class SysUserServiceImpl implements ISysUserService {
     @Override
     public List<SysUser> findAll() {
         return sysUserRepository.findAll().list();
+    }
+
+    @Override
+    public SysUser get(Long id) {
+        return sysUserRepository.findById(id);
+    }
+
+    @Override
+    public void deleteById(Long id) {
+        sysUserRepository.deleteById(id);
+    }
+
+    @Override
+    public void delete(SysUser sysUser) {
+        sysUserRepository.delete(sysUser);
     }
 
     @Override

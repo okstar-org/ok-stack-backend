@@ -11,19 +11,26 @@
  * /
  */
 
-package org.okstar.platform.common.datasource;
+package org.okstar.platform.system.service;
 
-import java.util.List;
 
-public interface OkService <T, ID> {
+import org.okstar.platform.common.datasource.OkService;
+import org.okstar.platform.system.domain.SysUserPassword;
 
-    T save(T t);
+import java.util.Optional;
 
-    List<T> findAll();
+/**
+ * 用户密码服务
+ * 
+ * 
+ */
+public interface SysUserPasswordService extends OkService<SysUserPassword, Long>
+{
+    /**
+     * 设置新密码
+     * @param userId
+     */
+    void setNewPassword(Long userId, String newPassword);
 
-    T get(ID id);
-
-    void deleteById(ID id);
-
-    void delete(T t);
+    Optional<SysUserPassword> lastValidPassword(Long userId);
 }

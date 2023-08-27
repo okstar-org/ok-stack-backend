@@ -11,19 +11,22 @@
  * /
  */
 
-package org.okstar.platform.common.datasource;
+package org.okstar.platform.system.service;
 
-import java.util.List;
+import io.vertx.core.http.HttpServerRequest;
 
-public interface OkService <T, ID> {
+import javax.enterprise.context.RequestScoped;
+import javax.ws.rs.core.Context;
 
-    T save(T t);
+@RequestScoped
+public class MyRequestScopedBean {
 
-    List<T> findAll();
+    @Context
+    HttpServerRequest request;
 
-    T get(ID id);
-
-    void deleteById(ID id);
-
-    void delete(T t);
+    public String getState() {
+        return "上下文=" +
+                request.uri()
+                ;
+    }
 }

@@ -16,7 +16,7 @@ package org.okstar.platform.system.resource;
 import org.okstar.platform.common.core.web.bean.Res;
 import org.okstar.platform.common.core.web.controller.OkBaseController;
 import org.okstar.platform.system.domain.SysUser;
-import org.okstar.platform.system.service.ISysUserService;
+import org.okstar.platform.system.service.SysUserService;
 
 import javax.inject.Inject;
 import javax.ws.rs.GET;
@@ -32,7 +32,7 @@ import java.util.List;
 public class SysUserResource extends OkBaseController {
 
     @Inject
-    ISysUserService sysUserService;
+    SysUserService sysUserService;
 
     @GET
     @Path("findAll")

@@ -38,10 +38,10 @@ public class SysUserBind extends BaseEntity {
     /**
      * 绑定值
      */
-    String value;
+    String bindValue;
 
     /**
      * 是否合法
      */
-    Boolean valid;
+    Boolean isValid;
 }
