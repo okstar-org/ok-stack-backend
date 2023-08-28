@@ -1,0 +1,17 @@
+services:
+  keycloak:
+    build:
+      context: .
+    environment:
+      - KC_DB=postgres
+      - KC_DB_URL=jdbc:postgresql://192.168.122.1/keycloak
+      - KC_DB_USERNAME=postgres
+      - KC_DB_PASSWORD=okstar
+      - KC_HOSTNAME=localhost
+      - KEYCLOAK_ADMIN=admin
+      - KEYCLOAK_ADMIN_PASSWORD=okstar
+    ports:
+      - 8080:8080
+      - 8443:8443
+      - 10990:10990
+

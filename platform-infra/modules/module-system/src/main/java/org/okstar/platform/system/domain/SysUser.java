@@ -14,7 +14,6 @@
 package org.okstar.platform.system.domain;
 
 import lombok.Data;
-import org.okstar.platform.common.datasource.domain.OkEntity;
 
 import javax.persistence.Entity;
 import javax.persistence.Table;
@@ -26,7 +25,7 @@ import javax.persistence.UniqueConstraint;
 @Data
 @Entity
 @Table(uniqueConstraints = {@UniqueConstraint(columnNames = {"username"})})
-public class SysUser extends OkEntity {
+public class SysUser extends BaseEntity {
 
     /**
      * 用户账号

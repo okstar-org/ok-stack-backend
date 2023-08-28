@@ -50,10 +50,5 @@ class O02_SysUserPasswordServiceTest {
             boolean matches = new BCryptPasswordEncoder().matches(newPassword, validPassword.get().getPassword());
             Assert.assertTrue(matches);
         });
-
-//        sysUserService.findAll().forEach(user->{
-//            Log.infof("[%s]新密码=>%s",user.getUsername(), user.getPassword());
-//
-//        });
     }
 }

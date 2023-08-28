@@ -13,34 +13,29 @@
 
 package org.okstar.platform.system.resource;
 
-import io.quarkus.security.Authenticated;
+import io.quarkus.logging.Log;
+import io.quarkus.test.junit.QuarkusTest;
+import org.junit.jupiter.api.Test;
 import org.okstar.platform.common.core.web.bean.Res;
-import org.okstar.platform.common.core.web.controller.OkBaseController;
 import org.okstar.platform.system.domain.SysUser;
-import org.okstar.platform.system.service.SysUserService;
 
 import javax.inject.Inject;
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
 import java.util.List;
 
-
 /**
- * 用户信息
+ * Controller单元测试
  */
-
-@Path("/user")
-@Authenticated
-public class SysUserResource extends OkBaseController {
+@QuarkusTest
+public class SysUserResourceTest {
 
     @Inject
-    SysUserService sysUserService;
+    SysUserResource sysUserResource;
 
-    @GET
-    @Path("findAll")
-    public Res<List<SysUser>> findAll(){
-        List<SysUser> all = sysUserService.findAll();
-        return Res.ok(all);
+    @Test
+    void testFindAll() {
+        Res<List<SysUser>> all = sysUserResource.findAll();
+        all.getData().forEach(user -> {
+            Log.infof("user:%s", user.getUsername());
+        });
     }
-
 }

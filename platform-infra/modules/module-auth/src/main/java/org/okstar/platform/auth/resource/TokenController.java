@@ -12,7 +12,6 @@
  */
 package org.okstar.platform.auth.resource;
 
-import io.vertx.core.http.HttpServerRequest;
 import org.okstar.platform.auth.form.LoginBody;
 import org.okstar.platform.auth.service.SysLoginService;
 import org.okstar.platform.common.core.utils.OkStringUtil;
@@ -53,7 +52,7 @@ public class TokenController extends OkBaseController {
 
     @GET
     @Path("logout")
-    public Res<?> logout(HttpServerRequest request) {
+    public Res<?> logout() {
         LoginUser loginUser = tokenService.getLoginUser(request);
         if (OkStringUtil.isNotNull(loginUser)) {
             String username = loginUser.getUsername();

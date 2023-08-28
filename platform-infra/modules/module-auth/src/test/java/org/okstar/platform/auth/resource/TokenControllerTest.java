@@ -11,20 +11,27 @@
  * /
  */
 
-package org.okstar.platform.system.resource;
+package org.okstar.platform.auth.resource;
 
 import io.quarkus.test.junit.QuarkusTest;
 import org.junit.jupiter.api.Test;
 
-/**
- * Controller单元测试
- */
 @QuarkusTest
-public class SysUserControllerTest {
-
+class TokenControllerTest {
 
     @Test
-    void testFindAll() {
+    void login() {
+//        LoginBody form = new LoginBody();
+//        form.setLoginKey("admin");
+//        form.setPassword("admin");
+//
+//        RestAssured.given()
+//                .contentType(ContentType.JSON)
+//                .body(form).then()
+//                .statusCode(200);
+    }
 
+    @Test
+    void logout() {
     }
 }
