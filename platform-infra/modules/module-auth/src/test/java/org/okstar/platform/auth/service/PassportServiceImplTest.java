@@ -11,19 +11,19 @@
  * /
  */
 
-package org.okstar.platform.system.dto;
+package org.okstar.platform.auth.service;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import org.okstar.platform.common.core.web.bean.DTO;
+import io.quarkus.logging.Log;
+import io.quarkus.test.junit.QuarkusTest;
+import org.junit.jupiter.api.Test;
 
-@Data
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
-public class SignUpResultDto extends DTO {
-    private Long userId;
-    private String username;
+import javax.inject.Inject;
+
+@QuarkusTest
+class PassportServiceImplTest {
+
+    @Inject
+    PassportService passportService;
+
+
 }

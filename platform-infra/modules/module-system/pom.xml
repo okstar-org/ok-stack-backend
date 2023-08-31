@@ -26,7 +26,7 @@
     <artifactId>module-system</artifactId>
 
     <description>
-        platform-modules-system系统模块
+        module-system 系统模块
     </description>
 
     <dependencies>
@@ -42,12 +42,12 @@
 
         <dependency>
             <groupId>io.quarkus</groupId>
-            <artifactId>quarkus-resteasy-reactive</artifactId>
+            <artifactId>quarkus-resteasy</artifactId>
         </dependency>
 
         <dependency>
             <groupId>io.quarkus</groupId>
-            <artifactId>quarkus-resteasy-reactive-jackson</artifactId>
+            <artifactId>quarkus-resteasy-jackson</artifactId>
         </dependency>
         <dependency>
             <groupId>io.quarkus</groupId>
@@ -55,19 +55,19 @@
         </dependency>
         <dependency>
             <groupId>io.quarkus</groupId>
-            <artifactId>quarkus-oidc-client-reactive-filter</artifactId>
+            <artifactId>quarkus-oidc-client-filter</artifactId>
         </dependency>
         <dependency>
             <groupId>io.quarkus</groupId>
-            <artifactId>quarkus-oidc-token-propagation-reactive</artifactId>
+            <artifactId>quarkus-oidc-token-propagation</artifactId>
         </dependency>
+
 
         <dependency>
             <groupId>org.okstar.platform</groupId>
             <artifactId>module-system-api</artifactId>
             <version>${revision}</version>
         </dependency>
-
 
         <dependency>
             <groupId>org.okstar.platform</groupId>

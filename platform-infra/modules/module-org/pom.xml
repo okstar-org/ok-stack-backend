@@ -18,18 +18,17 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>org.okstar.platform</groupId>
-        <artifactId>okstack-platform</artifactId>
+        <artifactId>modules</artifactId>
         <version>${revision}</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
 
-    <packaging>pom</packaging>
-    <artifactId>platform-infra</artifactId>
+    <artifactId>module-org</artifactId>
 
-    <modules>
-        <module>commons</module>
-        <module>modules</module>
-        <module>modules/module-org</module>
-    </modules>
+    <properties>
+        <maven.compiler.source>17</maven.compiler.source>
+        <maven.compiler.target>17</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
 
 </project>

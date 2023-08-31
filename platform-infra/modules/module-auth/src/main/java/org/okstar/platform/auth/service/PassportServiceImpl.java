@@ -11,37 +11,44 @@
  * /
  */
 
-package org.okstar.platform.auth.resource;
+package org.okstar.platform.auth.service;
 
 import lombok.extern.slf4j.Slf4j;
-import org.okstar.platform.auth.service.PassportService;
-import org.okstar.platform.common.core.web.bean.Res;
-import org.okstar.platform.common.core.web.controller.OkBaseController;
+import org.eclipse.microprofile.rest.client.inject.RestClient;
+import org.keycloak.admin.client.Keycloak;
 import org.okstar.platform.system.dto.SignUpForm;
 import org.okstar.platform.system.dto.SignUpResultDto;
+import org.okstar.platform.system.rpc.SysUserRpc;
 
+import javax.annotation.PreDestroy;
+import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
 
-/**
- * 通行
- */
 @Slf4j
-@Path("passport")
-public class PassportResource extends OkBaseController {
+@ApplicationScoped
+public class PassportServiceImpl implements PassportService {
+
 
     @Inject
-    PassportService passportService;
+    @RestClient
+    SysUserRpc sysUserRpc;
 
-    @POST
-    @Path("signUp")
-//    @Produces(MediaType.APPLICATION_JSON)
-    public Res<SignUpResultDto> signUp(SignUpForm signUpForm) {
-        log.info("signUp:{}", signUpForm);
-        var resultDto = passportService.signUp(signUpForm);
-        log.info("resultDto=>{}", resultDto);
-        return Res.ok(resultDto);
+    @Inject
+    Keycloak keycloak;
 
+    @PreDestroy
+    public void closeKeycloak() {
+        keycloak.close();
     }
+
+    @Override
+    public SignUpResultDto signUp(SignUpForm signUpForm) {
+        log.info("signUp:{}", signUpForm);
+        SignUpResultDto resultDto = sysUserRpc.signUp(signUpForm);
+        log.info("resultDto=>{}", resultDto);
+        return resultDto;
+    }
+
+
+
 }

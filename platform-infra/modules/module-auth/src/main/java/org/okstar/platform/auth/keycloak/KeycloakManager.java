@@ -11,19 +11,8 @@
  * /
  */
 
-package org.okstar.platform.system.dto;
+package org.okstar.platform.auth.keycloak;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import org.okstar.platform.common.core.web.bean.DTO;
-
-@Data
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
-public class SignUpResultDto extends DTO {
-    private Long userId;
-    private String username;
+public interface KeycloakManager {
+    String realmName = "okstar";
 }

@@ -11,19 +11,13 @@
  * /
  */
 
-package org.okstar.platform.system.dto;
+package org.okstar.platform.auth.keycloak;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import org.okstar.platform.common.core.web.bean.DTO;
+import org.keycloak.admin.client.Keycloak;
 
-@Data
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
-public class SignUpResultDto extends DTO {
-    private Long userId;
-    private String username;
+import javax.inject.Inject;
+
+public class KeycloakManagerImpl implements KeycloakManager {
+    @Inject
+    protected Keycloak keycloak;
 }
