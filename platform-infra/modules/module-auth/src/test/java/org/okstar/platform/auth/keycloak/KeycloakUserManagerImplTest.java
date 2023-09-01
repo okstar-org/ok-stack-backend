@@ -21,11 +21,14 @@ import javax.inject.Inject;
 
 @QuarkusTest
 class KeycloakUserManagerImplTest {
+
     @Inject
-    KeycloakUserManager userClientManager;
+    KeycloakUserManager keycloakUserManager;
+
+
     @Test
     void users() {
-        var users = userClientManager.users();
+        var users = keycloakUserManager.users();
         Log.infof("用户列表：");
         users.forEach(userRepresentation -> {
             Log.infof("Username:%s, FirstName:%s, LastName:%s, Email:%s",
