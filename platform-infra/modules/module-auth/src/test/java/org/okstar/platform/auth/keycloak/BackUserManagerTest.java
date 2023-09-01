@@ -16,25 +16,27 @@ package org.okstar.platform.auth.keycloak;
 import io.quarkus.logging.Log;
 import io.quarkus.test.junit.QuarkusTest;
 import org.junit.jupiter.api.Test;
+import org.okstar.platform.auth.backend.BackUserManager;
 
 import javax.inject.Inject;
 
 @QuarkusTest
-class KeycloakUserManagerImplTest {
+class BackUserManagerTest {
 
     @Inject
-    KeycloakUserManager keycloakUserManager;
+    BackUserManager backUserManager;
 
 
     @Test
     void users() {
-        var users = keycloakUserManager.users();
+        var users = backUserManager.users();
         Log.infof("用户列表：");
         users.forEach(userRepresentation -> {
             Log.infof("Username:%s, FirstName:%s, LastName:%s, Email:%s",
                     userRepresentation.getUsername(),
                     userRepresentation.getFirstName(),
-                    userRepresentation.getLastName(), userRepresentation.getEmail());
+                    userRepresentation.getLastName(),
+                    userRepresentation.getEmail());
         });
     }
 

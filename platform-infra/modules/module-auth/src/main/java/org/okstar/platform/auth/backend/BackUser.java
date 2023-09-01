@@ -11,13 +11,23 @@
  * /
  */
 
-package org.okstar.platform.auth.keycloak;
+package org.okstar.platform.auth.backend;
 
-import org.keycloak.representations.idm.UserRepresentation;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
-import java.util.List;
-
-public interface KeycloakUserManager extends KeycloakManager{
-    List<UserRepresentation> users();
-
+/**
+ * 后端认证用户
+ */
+@Builder
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+public class BackUser {
+   String username;
+   String firstName;
+   String lastName;
+   String email;
 }
