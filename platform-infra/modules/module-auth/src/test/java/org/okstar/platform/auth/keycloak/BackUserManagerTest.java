@@ -30,7 +30,7 @@ class BackUserManagerTest {
     @Test
     void users() {
         var users = backUserManager.users();
-        Log.infof("用户列表：");
+        Log.infof("users：");
         users.forEach(userRepresentation -> {
             Log.infof("Username:%s, FirstName:%s, LastName:%s, Email:%s",
                     userRepresentation.getUsername(),
