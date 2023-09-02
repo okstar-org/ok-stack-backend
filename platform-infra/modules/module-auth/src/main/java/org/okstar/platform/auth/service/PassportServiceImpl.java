@@ -15,12 +15,13 @@ package org.okstar.platform.auth.service;
 
 import lombok.extern.slf4j.Slf4j;
 import org.eclipse.microprofile.rest.client.inject.RestClient;
-import org.keycloak.admin.client.Keycloak;
+import org.okstar.platform.auth.backend.BackUser;
+import org.okstar.platform.auth.backend.BackUserManager;
+import org.okstar.platform.common.core.utils.IdUtils;
 import org.okstar.platform.system.dto.SignUpForm;
 import org.okstar.platform.system.dto.SignUpResultDto;
 import org.okstar.platform.system.rpc.SysUserRpc;
 
-import javax.annotation.PreDestroy;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 
@@ -34,21 +35,31 @@ public class PassportServiceImpl implements PassportService {
     SysUserRpc sysUserRpc;
 
     @Inject
-    Keycloak keycloak;
+    BackUserManager backUserManager;
 
-    @PreDestroy
-    public void closeKeycloak() {
-        keycloak.close();
-    }
 
     @Override
     public SignUpResultDto signUp(SignUpForm signUpForm) {
         log.info("signUp:{}", signUpForm);
         SignUpResultDto resultDto = sysUserRpc.signUp(signUpForm);
         log.info("resultDto=>{}", resultDto);
+
+        BackUser user = BackUser.builder()
+                .username(resultDto.getUsername())
+                .id(("%s_%s").formatted(resultDto.getUserId(), IdUtils.makeUuid()))
+                .firstName(signUpForm.getFirstName())
+                .lastName(signUpForm.getLastName())
+                .password(signUpForm.getPassword())
+                .build();
+
+        if (signUpForm.getAccountType() == SignUpForm.AccountType.email) {
+            user.setEmail(signUpForm.getAccount());
+        }
+
+        backUserManager.addUser(user);
+
         return resultDto;
     }
-
 
 
 }

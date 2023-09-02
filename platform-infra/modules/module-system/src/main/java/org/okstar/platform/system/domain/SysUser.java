@@ -33,10 +33,14 @@ public class SysUser extends BaseEntity {
     private String username;
 
     /**
-     * 用户昵称
+     * 性
      */
-    private String nickName;
+    private String firstName;
 
+    /**
+     * 名
+     */
+    private String lastName;
 
     /**
      * 用户性别
@@ -84,5 +88,9 @@ public class SysUser extends BaseEntity {
      */
     private Long roleId;
 
-
+    /**
+     * 用户国家代号
+     * @link https://www.iso.org/obp/ui/#search
+     */
+    private String iso;
 }

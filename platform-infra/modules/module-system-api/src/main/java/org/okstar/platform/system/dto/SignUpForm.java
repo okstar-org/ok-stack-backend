@@ -13,12 +13,37 @@
 
 package org.okstar.platform.system.dto;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.okstar.platform.common.core.web.bean.Form;
 
+/**
+ * 注册实体
+ */
 @Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class SignUpForm extends Form {
-    private String iso;//CN
-    private String phone;
-    private String password;
+
+   public enum AccountType {
+        phone,
+        email,
+    }
+
+    AccountType accountType;
+
+    String iso; //国家代号
+
+    //手机号或者邮箱
+    String account;
+
+    String password;
+
+    String firstName;
+
+    String lastName;
+
 }

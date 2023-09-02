@@ -22,4 +22,5 @@ import java.util.List;
 public interface BackUserManager {
     List<BackUser> users();
 
+    String addUser(BackUser user);
 }

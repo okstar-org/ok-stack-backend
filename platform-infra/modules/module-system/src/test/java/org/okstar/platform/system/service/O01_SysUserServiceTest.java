@@ -48,8 +48,7 @@ class O01_SysUserServiceTest {
     void signUp() {
         SignUpForm form = new SignUpForm();
         form.setTs(1L);
-        form.setPhone("18910221510");
-        form.setIso("CN");
+        form.setAccount("+86-18910221510");
         form.setPassword("18910221510");
         SignUpResultDto resultDto = sysUserService.signUp(form);
         Log.infof("result=>%s", resultDto);

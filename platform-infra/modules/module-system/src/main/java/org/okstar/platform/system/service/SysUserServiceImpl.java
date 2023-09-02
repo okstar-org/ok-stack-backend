@@ -32,6 +32,7 @@ import org.okstar.platform.system.dto.SignUpForm;
 import org.okstar.platform.system.dto.SignUpResultDto;
 import org.okstar.platform.system.mapper.*;
 import org.okstar.platform.system.utils.RepositoryUtil;
+import org.springframework.util.Assert;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -50,7 +51,7 @@ import static com.google.i18n.phonenumbers.PhoneNumberUtil.PhoneNumberFormat.INT
 @Slf4j
 @Singleton
 @Transactional
-public class SysUserServiceImpl extends OkAbsService  implements SysUserService {
+public class SysUserServiceImpl extends OkAbsService implements SysUserService {
 
     @Inject
     SysUserRepository sysUserRepository;
@@ -71,6 +72,8 @@ public class SysUserServiceImpl extends OkAbsService  implements SysUserService 
 
     //    @Inject
     private ISysConfigService configService;
+    @Inject
+    SysUserPasswordService sysUserPasswordService;
 
     /**
      * 根据条件分页查询用户列表
@@ -511,30 +514,52 @@ public class SysUserServiceImpl extends OkAbsService  implements SysUserService 
     public SignUpResultDto signUp(SignUpForm signUpForm) {
         Log.infof("signUp:%s", signUpForm);
 
-        String random = RandomStringUtils.randomAlphanumeric(12);
-        SysUser sysUser = new SysUser();
-        sysUser.setUsername(random);
-//        sysUser.setPassword(new BCryptPasswordEncoder().encode(signUpForm.getPassword()));
-        sysUserRepository.persist(sysUser);
+        Assert.hasText(signUpForm.getIso());
+        Assert.hasText(signUpForm.getPassword());
+        Assert.notNull(signUpForm.getAccountType());
+        Assert.notNull(signUpForm.getAccount());
 
-        //添加手机号绑定
-        PhoneNumberUtil util = PhoneNumberUtil.getInstance();
-        Phonenumber.PhoneNumber number;
-        try {
-            number = util.parse(signUpForm.getPhone(),signUpForm.getIso());
-        } catch (NumberParseException e) {
-            throw new OkRuntimeException("号码无法被解析", e);
-        }
+        SysUser sysUser = new SysUser();
+        sysUser.setIso(signUpForm.getIso());
+        sysUser.setFirstName(signUpForm.getFirstName());
+        sysUser.setLastName(signUpForm.getLastName());
+        sysUser.setUsername(RandomStringUtils.randomAlphanumeric(12));
+        sysUserRepository.persist(sysUser);
+        Log.infof("User have been saved successfully.=>%s",
+                sysUser.getUsername(), sysUser);
+
+        //修改密码
+        sysUserPasswordService.setNewPassword(sysUser.id, signUpForm.getPassword());
+        Log.infof("设置用户%s密码=>%s成功", sysUser.getUsername(), signUpForm.getPassword());
+
 
         SysUserBind bind = new SysUserBind();
-        bind.setBindType(UserBindDefined.BindType.phone);
-        bind.setBindValue(util.format(number, INTERNATIONAL));
-        bind.setIsValid(true);
+        switch (signUpForm.getAccountType()) {
+            case email -> {
+                bind.setBindType(UserBindDefined.BindType.email);
+                bind.setBindValue(signUpForm.getAccount());
+            }
+            case phone -> {
+                bind.setBindType(UserBindDefined.BindType.phone);
+                //添加手机号绑定
+                try {
+                    PhoneNumberUtil util = PhoneNumberUtil.getInstance();
+                    Phonenumber.PhoneNumber number;
+                    number = util.parse(signUpForm.getAccount(), signUpForm.getIso());
+                    bind.setBindValue(util.format(number, INTERNATIONAL));
+                } catch (NumberParseException e) {
+                    throw new OkRuntimeException("号码无法被解析", e);
+                }
+            }
+        }
+
+
         bind.setUser(sysUser);
         sysUserBindRepository.persist(bind);
 
         return SignUpResultDto.builder()
                 .username(sysUser.getUsername())
+                .userId(sysUser.id)
                 .build();
     }
 

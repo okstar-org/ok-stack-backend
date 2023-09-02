@@ -26,8 +26,10 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class BackUser {
+   String id;
    String username;
    String firstName;
    String lastName;
    String email;
+   String password;
 }

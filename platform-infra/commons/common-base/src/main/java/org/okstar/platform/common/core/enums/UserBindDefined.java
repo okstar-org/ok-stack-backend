@@ -29,7 +29,7 @@ public interface UserBindDefined {
          *  * 飞书
          */
         phone,
-        mail,
+        email,
         wx,
         qq,
         dingding,

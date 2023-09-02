@@ -1,0 +1,48 @@
+services:
+#  postgres:
+#    image: postgres
+#    restart: always
+#    environment:
+#      POSTGRES_USE: postgres
+#      POSTGRES_PASSWORD: okstar
+#      PGDATA: /var/lib/postgresql/data/pgdata
+#    healthcheck:
+#      test: [ "CMD-SHELL", "pg_isready" ]
+#      interval: 1s
+#      timeout: 5s
+#      retries: 10
+#    volumes:
+#      - ./postgres/initdb.d:/docker-entrypoint-initdb.d/
+#      - ./postgres/data_dir:/var/lib/postgresql/data
+#    ports:
+#      - 5432:5432
+  db:
+    image: "mariadb:10.6.15"
+    ports:
+      - "3306:3306"
+    volumes:
+      - ./mariadb/data:/var/lib/mysql
+      - ./mariadb/initdb.d:/docker-entrypoint-initdb.d
+    environment:
+      MYSQL_ROOT_PASSWORD: "okstar"
+
+  keycloak:
+    build:
+      context: keycloak
+    environment:
+      - KC_DB=mariadb
+      - KC_DB_URL=jdbc:mariadb://db/keycloak?autoReconnect=true&useUnicode=true&characterEncoding=utf8
+      - KC_DB_USERNAME=root
+      - KC_DB_PASSWORD=okstar
+      - KC_HOSTNAME=localhost
+      - KEYCLOAK_ADMIN=admin
+      - KEYCLOAK_ADMIN_PASSWORD=okstar
+    ports:
+      - 8080:8080
+      - 8443:8443
+      - 10990:10990
+    depends_on:
+      - db
+
+
+

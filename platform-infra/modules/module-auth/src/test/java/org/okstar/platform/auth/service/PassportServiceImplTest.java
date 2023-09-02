@@ -15,7 +15,12 @@ package org.okstar.platform.auth.service;
 
 import io.quarkus.logging.Log;
 import io.quarkus.test.junit.QuarkusTest;
+import io.smallrye.common.constraint.Assert;
+import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
+import org.okstar.platform.common.core.utils.IdUtils;
+import org.okstar.platform.system.dto.SignUpForm;
+import org.okstar.platform.system.dto.SignUpResultDto;
 
 import javax.inject.Inject;
 
@@ -25,5 +30,24 @@ class PassportServiceImplTest {
     @Inject
     PassportService passportService;
 
-
+    /**
+     * 注册用户
+     */
+    @Test
+    @Order(1)
+    void signUp() {
+        String uuid = IdUtils.makeUuid();
+        SignUpForm form = new SignUpForm();
+        form.setTs(1L);
+        form.setAccount("%s@okstar.org".formatted(uuid));
+        form.setPassword("okstar");
+        form.setFirstName("Ok");
+        form.setLastName("Star");
+        form.setIso("CN");
+        form.setAccountType(SignUpForm.AccountType.email);
+        SignUpResultDto resultDto = passportService.signUp(form);
+        Log.infof("result=>%s", resultDto);
+        Assert.assertNotNull(resultDto);
+        Assert.assertNotNull(resultDto.getUsername());
+    }
 }
