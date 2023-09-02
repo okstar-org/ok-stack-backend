@@ -30,5 +30,24 @@
         <maven.compiler.target>17</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
+    <dependencies>
+
+        <dependency>
+            <groupId>org.okstar.platform</groupId>
+            <artifactId>common-jpa</artifactId>
+            <version>1.0-SNAPSHOT</version>
+            <scope>compile</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.okstar.platform</groupId>
+            <artifactId>module-org-api</artifactId>
+            <version>${revision}</version>
+            <scope>compile</scope>
+        </dependency>
+
+
+
+    </dependencies>
 
 </project>

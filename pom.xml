@@ -54,9 +54,9 @@
         <quarkus.datasource.jdbc.driver>org.h2.Driver</quarkus.datasource.jdbc.driver>
         <quarkus.datasource.jdbc.mix-size>1</quarkus.datasource.jdbc.mix-size>
         <quarkus.datasource.jdbc.max-size>5</quarkus.datasource.jdbc.max-size>
-
         <quarkus.hibernate-orm.dialect>org.hibernate.dialect.H2Dialect</quarkus.hibernate-orm.dialect>
         <quarkus.hibernate-orm.log.sql>true</quarkus.hibernate-orm.log.sql>
+
     </properties>
 
     <profiles>
@@ -69,16 +69,13 @@
                 </property>
             </activation>
             <properties>
-                <quarkus.datasource.db-kind>postgres</quarkus.datasource.db-kind>
-                <quarkus.datasource.username>postgres</quarkus.datasource.username>
+                <quarkus.datasource.db-kind>mariadb</quarkus.datasource.db-kind>
+                <quarkus.datasource.username>root</quarkus.datasource.username>
                 <quarkus.datasource.password>okstar</quarkus.datasource.password>
-                <quarkus.datasource.jdbc.url>jdbc:postgresql://localhost/${artifactId}</quarkus.datasource.jdbc.url>
-                <quarkus.datasource.jdbc.driver>org.postgresql.Driver</quarkus.datasource.jdbc.driver>
-                <quarkus.datasource.jdbc.mix-size>1</quarkus.datasource.jdbc.mix-size>
-                <quarkus.datasource.jdbc.max-size>5</quarkus.datasource.jdbc.max-size>
-
+                <quarkus.datasource.jdbc.url>jdbc:mariadb://localhost/${artifactId}</quarkus.datasource.jdbc.url>
+                <quarkus.datasource.jdbc.driver>org.mariadb.jdbc.Driver</quarkus.datasource.jdbc.driver>
+                <quarkus.hibernate-orm.dialect>org.hibernate.dialect.MariaDB106Dialect</quarkus.hibernate-orm.dialect>
             </properties>
-
         </profile>
 
         <profile>

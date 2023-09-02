@@ -17,6 +17,7 @@
         <module>module-system-api</module>
         <module>module-auth</module>
         <module>module-auth-api</module>
+        <module>module-org-api</module>
     </modules>
 
     <description>OkStack-Platform::infra::modules</description>

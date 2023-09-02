@@ -26,9 +26,6 @@
 
     <artifactId>common-jpa</artifactId>
 
-    <description>
-        platform-common-datasource多数据源
-    </description>
 
     <dependencies>
         <dependency>
@@ -36,10 +33,9 @@
             <artifactId>quarkus-jdbc-h2</artifactId>
         </dependency>
 
-        <!-- JDBC driver dependencies -->
         <dependency>
-            <groupId>io.quarkus</groupId>
-            <artifactId>quarkus-jdbc-postgresql</artifactId>
+            <groupId>org.mariadb.jdbc</groupId>
+            <artifactId>mariadb-java-client</artifactId>
         </dependency>
 
         <dependency>

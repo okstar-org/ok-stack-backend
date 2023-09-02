@@ -18,9 +18,9 @@ import org.eclipse.microprofile.rest.client.inject.RestClient;
 import org.okstar.platform.auth.backend.BackUser;
 import org.okstar.platform.auth.backend.BackUserManager;
 import org.okstar.platform.common.core.utils.IdUtils;
-import org.okstar.platform.system.dto.SignUpForm;
-import org.okstar.platform.system.dto.SignUpResultDto;
-import org.okstar.platform.system.rpc.SysUserRpc;
+import org.okstar.platform.org.dto.SignUpForm;
+import org.okstar.platform.org.dto.SignUpResultDto;
+import org.okstar.platform.org.rpc.SysUserRpc;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;

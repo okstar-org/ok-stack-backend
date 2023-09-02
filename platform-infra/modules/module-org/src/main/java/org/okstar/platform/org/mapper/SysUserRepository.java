@@ -1,0 +1,149 @@
+/*
+ * * Copyright (c) 2022 船山科技 chuanshantech.com
+ * OkStack is licensed under Mulan PubL v2.
+ * You can use this software according to the terms and conditions of the Mulan
+ * PubL v2. You may obtain a copy of Mulan PubL v2 at:
+ *          http://license.coscl.org.cn/MulanPubL-2.0
+ * THIS SOFTWARE IS PROVIDED ON AN "AS IS" BASIS, WITHOUT WARRANTIES OF ANY KIND,
+ * EITHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO NON-INFRINGEMENT,
+ * MERCHANTABILITY OR FIT FOR A PARTICULAR PURPOSE.
+ * See the Mulan PubL v2 for more details.
+ * /
+ */
+
+package org.okstar.platform.org.mapper;
+
+import io.quarkus.hibernate.orm.panache.PanacheRepository;
+import org.okstar.platform.org.domain.SysUser;
+
+import javax.enterprise.context.ApplicationScoped;
+
+
+/**
+ * 用户表 数据层
+ * 
+ * 
+ */
+@ApplicationScoped
+public class SysUserRepository implements PanacheRepository<SysUser>
+{
+    /**
+     * 根据条件分页查询用户列表
+     * 
+     * @param sysUser 用户信息
+     * @return 用户信息集合信息
+     */
+//    public List<SysUser> selectUserList(SysUser sysUser);
+    /**
+     * 根据条件分页查询未已配用户角色列表
+     * 
+     * @param user 用户信息
+     * @return 用户信息集合信息
+     */
+//    public List<SysUser> selectAllocatedList(SysUser user);
+
+    /**
+     * 根据条件分页查询未分配用户角色列表
+     * 
+     * @param user 用户信息
+     * @return 用户信息集合信息
+     */
+//    public List<SysUser> selectUnallocatedList(SysUser user);
+
+    /**
+     * 通过用户名查询用户
+     * 
+     * @param userName 用户名
+     * @return 用户对象信息
+     */
+//    public SysUser selectUserByUserName(String userName);
+
+    /**
+     * 通过用户ID查询用户
+     * 
+     * @param userId 用户ID
+     * @return 用户对象信息
+     */
+//    public SysUser selectUserById(Long userId);
+
+    /**
+     * 新增用户信息
+     * 
+     * @param user 用户信息
+     * @return 结果
+     */
+//    public int insertUser(SysUser user);
+
+    /**
+     * 修改用户信息
+     * 
+     * @param user 用户信息
+     * @return 结果
+     */
+//    public int updateUser(SysUser user);
+
+    /**
+     * 修改用户头像
+     * 
+     * @param userName 用户名
+     * @param avatar 头像地址
+     * @return 结果
+     */
+//    public int updateUserAvatar( String userName,  String avatar);
+
+    /**
+     * 重置用户密码
+     * 
+     * @param userName 用户名
+     * @param password 密码
+     * @return 结果
+     */
+//    public int resetUserPwd( String userName,  String password);
+
+    /**
+     * 通过用户ID删除用户
+     * 
+     * @param userId 用户ID
+     * @return 结果
+     */
+//    public int deleteUserById(Long userId);
+
+    /**
+     * 批量删除用户信息
+     * 
+     * @param userIds 需要删除的用户ID
+     * @return 结果
+     */
+//    public int deleteUserByIds(Long[] userIds);
+
+    /**
+     * 校验用户名称是否唯一
+     * 
+     * @param userName 用户名称
+     * @return 结果
+     */
+//    public int checkUserNameUnique(String userName);
+
+    /**
+     * 校验手机号码是否唯一
+     *
+     * @param phonenumber 手机号码
+     * @return 结果
+     */
+//    public SysUser checkPhoneUnique(String phonenumber);
+
+    /**
+     * 校验email是否唯一
+     *
+     * @param email 用户邮箱
+     * @return 结果
+     */
+//    public SysUser checkEmailUnique(String email);
+
+    /**
+     * 某角色下的用户列表
+     * @param roleKey
+     * @return
+     */
+//    List<SysUser> selectUserListByRoleKey(String roleKey);
+}

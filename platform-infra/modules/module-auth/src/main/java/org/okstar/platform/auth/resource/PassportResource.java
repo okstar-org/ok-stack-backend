@@ -17,8 +17,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.okstar.platform.auth.service.PassportService;
 import org.okstar.platform.common.core.web.bean.Res;
 import org.okstar.platform.common.core.web.controller.OkBaseController;
-import org.okstar.platform.system.dto.SignUpForm;
-import org.okstar.platform.system.dto.SignUpResultDto;
+import org.okstar.platform.org.dto.SignUpForm;
+import org.okstar.platform.org.dto.SignUpResultDto;
 
 import javax.inject.Inject;
 import javax.ws.rs.POST;

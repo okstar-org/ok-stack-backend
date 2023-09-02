@@ -13,8 +13,9 @@
 
 package org.okstar.platform.auth.service;
 
-import org.okstar.platform.system.dto.SignUpForm;
-import org.okstar.platform.system.dto.SignUpResultDto;
+
+import org.okstar.platform.org.dto.SignUpForm;
+import org.okstar.platform.org.dto.SignUpResultDto;
 
 public interface PassportService {
 
