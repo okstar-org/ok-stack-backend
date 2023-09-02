@@ -11,28 +11,23 @@
  * /
  */
 
-package org.okstar.platform.common.core.enums;
+package org.okstar.platform.common.core.web.page;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
-import lombok.Getter;
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
+public class OkPageable {
 
-public interface UserBindDefined {
+    int pageNumber;
+    int pageSize;
 
-    @Getter
-    enum BindType {
-        /**
-         *  * 手机号
-         *  * 邮箱
-         *  * 微信
-         *  * QQ
-         *  * 钉钉
-         *  * 飞书
-         */
-        phone,
-        email,
-        wx,
-        qq,
-        dingding,
-        feishu
+    public static OkPageable of(int page, int size) {
+        return new OkPageable(page, size);
     }
 }

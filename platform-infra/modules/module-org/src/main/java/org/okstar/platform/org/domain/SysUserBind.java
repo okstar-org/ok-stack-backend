@@ -14,7 +14,7 @@
 package org.okstar.platform.org.domain;
 
 import lombok.Data;
-import org.okstar.platform.common.core.enums.UserBindDefined.BindType;
+import org.okstar.platform.common.core.defined.UserDefines;
 
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
@@ -33,7 +33,7 @@ public class SysUserBind extends BaseEntity {
     /**
      * 绑定类型
      */
-    BindType bindType;
+    UserDefines.BindType bindType;
 
     /**
      * 绑定值

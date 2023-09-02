@@ -11,39 +11,21 @@
  * /
  */
 
-package org.okstar.platform.common.core.enums;
+package org.okstar.platform.org.mapper;
+
+
+import io.quarkus.hibernate.orm.panache.PanacheRepository;
+import org.okstar.platform.org.domain.SysUserRole;
+
+import javax.enterprise.context.ApplicationScoped;
 
 /**
- * 消息类型
- *
- *
+ * 用户与角色关联表
+ * 
+ * 
  */
-public enum MessageType {
-    /**
-     * 消息提醒
-     */
-    MESSAGE_REMIND("1", "消息提醒"),
-    /**
-     * 消息待办
-     */
-    MESSAGE_TODO("2", "消息待办");
+@ApplicationScoped
+public class SysUserRoleRepository implements PanacheRepository<SysUserRole>
+{
 
-    private final String code;
-    private final String info;
-
-    MessageType(String code, String info)
-    {
-        this.code = code;
-        this.info = info;
-    }
-
-    public String getCode()
-    {
-        return code;
-    }
-
-    public String getInfo()
-    {
-        return info;
-    }
 }

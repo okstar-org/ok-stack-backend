@@ -11,33 +11,26 @@
  * /
  */
 
-package org.okstar.platform.common.core.enums;
+package org.okstar.platform.common.core.defined;
 
-/**
- * 用户状态
- * 
- *
- */
-public enum UserStatus
-{
-    OK("0", "正常"), DISABLE("1", "停用"), DELETED("2", "删除");
+import lombok.Getter;
 
-    private final String code;
-    private final String info;
-
-    UserStatus(String code, String info)
-    {
-        this.code = code;
-        this.info = info;
-    }
-
-    public String getCode()
-    {
-        return code;
-    }
-
-    public String getInfo()
-    {
-        return info;
+public interface UserDefines {
+    @Getter
+   enum BindType {
+        /**
+         *  * 手机号
+         *  * 邮箱
+         *  * 微信
+         *  * QQ
+         *  * 钉钉
+         *  * 飞书
+         */
+        phone,
+        email,
+        wx,
+        qq,
+        dingding,
+        feishu
     }
 }

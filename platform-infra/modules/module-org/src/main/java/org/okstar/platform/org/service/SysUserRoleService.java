@@ -15,14 +15,31 @@ package org.okstar.platform.org.service;
 
 
 import org.okstar.platform.common.datasource.OkService;
-import org.okstar.platform.org.domain.SysLogininfor;
+import org.okstar.platform.org.domain.SysUserRole;
 
 /**
- * 系统访问日志情况信息 服务层
+ * 在线用户 服务层
  * 
  *
  */
-public interface ISysLogininforService extends OkService<SysLogininfor, Long>
+public interface SysUserRoleService extends OkService<SysUserRole, Long>
 {
+    long countByRoleId(Long roleId);
 
+    /**
+     * 批量取消授权用户角色
+     *
+     * @param roleId  角色ID
+     * @param userIds 需要取消授权的用户数据ID
+     * @return 结果
+     */
+    long deleteByUserIds(Long roleId, Long[] userIds);
+
+    /**
+     * 批量选择授权用户角色
+     *
+     * @param roleId  角色ID
+     * @param userIds 需要删除的用户数据ID
+     */
+    void insertUsers(Long roleId, Long[] userIds);
 }

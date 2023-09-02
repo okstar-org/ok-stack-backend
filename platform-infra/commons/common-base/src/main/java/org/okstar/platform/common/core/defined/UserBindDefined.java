@@ -11,35 +11,10 @@
  * /
  */
 
-package org.okstar.platform.common.core.enums;
+package org.okstar.platform.common.core.defined;
 
-/**
- * 消息 系统来源
- *
- * 
- */
-public enum MessageSource {
 
-    /**
-     * 本机
-     */
-    INNER_SYSTEM("1", "本系统");
-    private final String code;
-    private final String info;
+public interface UserBindDefined {
 
-    MessageSource(String code, String info)
-    {
-        this.code = code;
-        this.info = info;
-    }
 
-    public String getCode()
-    {
-        return code;
-    }
-
-    public String getInfo()
-    {
-        return info;
-    }
 }

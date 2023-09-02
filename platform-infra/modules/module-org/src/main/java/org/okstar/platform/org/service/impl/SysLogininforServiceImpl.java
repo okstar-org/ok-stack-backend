@@ -14,8 +14,9 @@
 package org.okstar.platform.org.service.impl;
 
 
+import org.okstar.platform.common.core.web.page.OkPageResult;
+import org.okstar.platform.common.core.web.page.OkPageable;
 import org.okstar.platform.org.domain.SysLogininfor;
-import org.okstar.platform.org.mapper.SysLogininforMapper;
 import org.okstar.platform.org.service.ISysLogininforService;
 
 import javax.enterprise.context.ApplicationScoped;
@@ -30,50 +31,33 @@ import java.util.List;
 public class SysLogininforServiceImpl implements ISysLogininforService
 {
 
-//    @Inject
-    private SysLogininforMapper logininforMapper;
-
-    /**
-     * 新增系统登录日志
-     * 
-     * @param logininfor 访问日志对象
-     */
     @Override
-    public int insertLogininfor(SysLogininfor logininfor)
-    {
-        return logininforMapper.insertLogininfor(logininfor);
+    public void save(SysLogininfor sysLogininfor) {
+
     }
 
-    /**
-     * 查询系统登录日志集合
-     * 
-     * @param logininfor 访问日志对象
-     * @return 登录记录集合
-     */
     @Override
-    public List<SysLogininfor> selectLogininforList(SysLogininfor logininfor)
-    {
-        return logininforMapper.selectLogininforList(logininfor);
+    public List<SysLogininfor> findAll() {
+        return null;
     }
 
-    /**
-     * 批量删除系统登录日志
-     * 
-     * @param infoIds 需要删除的登录日志ID
-     * @return
-     */
     @Override
-    public int deleteLogininforByIds(Long[] infoIds)
-    {
-        return logininforMapper.deleteLogininforByIds(infoIds);
+    public OkPageResult<SysLogininfor> findPage(OkPageable page) {
+        return null;
     }
 
-    /**
-     * 清空系统登录日志
-     */
     @Override
-    public void cleanLogininfor()
-    {
-        logininforMapper.cleanLogininfor();
+    public SysLogininfor get(Long id) {
+        return null;
+    }
+
+    @Override
+    public void deleteById(Long id) {
+
+    }
+
+    @Override
+    public void delete(SysLogininfor sysLogininfor) {
+
     }
 }

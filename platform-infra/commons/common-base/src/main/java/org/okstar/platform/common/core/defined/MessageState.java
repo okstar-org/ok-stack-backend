@@ -11,7 +11,7 @@
  * /
  */
 
-package org.okstar.platform.common.core.enums;
+package org.okstar.platform.common.core.defined;
 
 /**
  * 消息状态

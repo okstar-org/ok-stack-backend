@@ -14,7 +14,6 @@
 package org.okstar.platform.org.service;
 
 
-import org.okstar.platform.common.core.web.page.Pageable;
 import org.okstar.platform.common.datasource.OkService;
 import org.okstar.platform.org.domain.SysUser;
 import org.okstar.platform.org.dto.SignUpForm;
@@ -124,14 +123,6 @@ public interface SysUserService extends OkService<SysUser, Long>
      * @return 结果
      */
     int updateUser(SysUser user);
-    
-    /**
-     * 用户授权角色
-     * 
-     * @param userId 用户ID
-     * @param roleIds 角色组
-     */
-    void insertUserAuth(Long userId, Long[] roleIds);
 
     /**
      * 修改用户状态
@@ -157,31 +148,6 @@ public interface SysUserService extends OkService<SysUser, Long>
      * @return 结果
      */
     boolean updateUserAvatar(String userName, String avatar);
-
-    /**
-     * 重置用户密码
-     * 
-     * @param user 用户信息
-     * @return 结果
-     */
-    int resetPwd(SysUser user);
-
-    /**
-     * 重置用户密码
-     * 
-     * @param userName 用户名
-     * @param password 密码
-     * @return 结果
-     */
-    int resetUserPwd(String userName, String password);
-
-    /**
-     * 通过用户ID删除用户
-     * 
-     * @param userId 用户ID
-     * @return 结果
-     */
-    int deleteUserById(Long userId);
 
     /**
      * 批量删除用户信息
@@ -211,9 +177,8 @@ public interface SysUserService extends OkService<SysUser, Long>
 
     SignUpResultDto signUp(SignUpForm signUpForm);
 
-    List<SysUser> findPage(Pageable page);
 
-    SysUser save(SysUser sysUser);
+    void save(SysUser sysUser);
 
     boolean isAdmin(Long userId);
 }

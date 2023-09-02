@@ -11,18 +11,32 @@
  * /
  */
 
-package org.okstar.platform.org.service;
+package org.okstar.platform.common.core.defined;
 
+public enum ModuleType {
+    PROCESS("process","工作流模块");
 
-import org.okstar.platform.common.datasource.OkService;
-import org.okstar.platform.org.domain.SysLogininfor;
+    ModuleType(String value, String name){
+        this.value = value;
+        this.name = name;
+    }
 
-/**
- * 系统访问日志情况信息 服务层
- * 
- *
- */
-public interface ISysLogininforService extends OkService<SysLogininfor, Long>
-{
+    private String value;
+    private String name;
 
+    public String getValue() {
+        return value;
+    }
+
+    public void setValue(String value) {
+        this.value = value;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
 }

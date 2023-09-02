@@ -11,26 +11,39 @@
  * /
  */
 
-package org.okstar.platform.org.service;
+package org.okstar.platform.common.core.defined;
 
-import java.util.Set;
-
-
-public interface ISysPermissionService
-{
+/**
+ * 消息类型
+ *
+ *
+ */
+public enum MessageType {
     /**
-     * 获取角色数据权限
-     * 
-     * @param userId 用户Id
-     * @return 角色权限信息
+     * 消息提醒
      */
-    Set<String> getRolePermission(Long userId);
-
+    MESSAGE_REMIND("1", "消息提醒"),
     /**
-     * 获取菜单数据权限
-     * 
-     * @param userId 用户Id
-     * @return 菜单权限信息
+     * 消息待办
      */
-    Set<String> getMenuPermission(Long userId);
+    MESSAGE_TODO("2", "消息待办");
+
+    private final String code;
+    private final String info;
+
+    MessageType(String code, String info)
+    {
+        this.code = code;
+        this.info = info;
+    }
+
+    public String getCode()
+    {
+        return code;
+    }
+
+    public String getInfo()
+    {
+        return info;
+    }
 }

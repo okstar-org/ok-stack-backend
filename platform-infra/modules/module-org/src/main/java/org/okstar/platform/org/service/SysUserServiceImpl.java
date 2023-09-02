@@ -22,12 +22,15 @@ import io.quarkus.panache.common.Page;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.okstar.platform.common.core.constant.UserConstants;
-import org.okstar.platform.common.core.enums.UserBindDefined;
+import org.okstar.platform.common.core.defined.UserDefines;
 import org.okstar.platform.common.core.exception.OkRuntimeException;
 import org.okstar.platform.common.core.utils.OkStringUtil;
-import org.okstar.platform.common.core.web.page.Pageable;
+import org.okstar.platform.common.core.web.page.OkPageResult;
+import org.okstar.platform.common.core.web.page.OkPageable;
 import org.okstar.platform.common.datasource.OkAbsService;
-import org.okstar.platform.org.domain.*;
+import org.okstar.platform.org.domain.SysPost;
+import org.okstar.platform.org.domain.SysUser;
+import org.okstar.platform.org.domain.SysUserBind;
 import org.okstar.platform.org.dto.SignUpForm;
 import org.okstar.platform.org.dto.SignUpResultDto;
 import org.okstar.platform.org.mapper.*;
@@ -37,7 +40,6 @@ import org.springframework.util.Assert;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import javax.transaction.Transactional;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
@@ -64,8 +66,6 @@ public class SysUserServiceImpl extends OkAbsService implements SysUserService {
     //    @Inject
     private SysPostMapper postMapper;
 
-    //    @Inject
-    private SysUserRoleMapper userRoleMapper;
 
     //    @Inject
     private SysUserPostMapper userPostMapper;
@@ -147,15 +147,7 @@ public class SysUserServiceImpl extends OkAbsService implements SysUserService {
      */
     @Override
     public String selectUserRoleGroup(String userName) {
-        List<SysRole> list = roleMapper.selectRolesByUserName(userName);
-        StringBuffer idsStr = new StringBuffer();
-        for (SysRole role : list) {
-            idsStr.append(role.getRoleName()).append(",");
-        }
-        if (OkStringUtil.isNotEmpty(idsStr.toString())) {
-            return idsStr.substring(0, idsStr.length() - 1);
-        }
-        return idsStr.toString();
+        return "";
     }
 
     /**
@@ -259,18 +251,6 @@ public class SysUserServiceImpl extends OkAbsService implements SysUserService {
         return 0;
     }
 
-    /**
-     * 用户授权角色
-     *
-     * @param userId  用户ID
-     * @param roleIds 角色组
-     */
-    @Override
-    @Transactional
-    public void insertUserAuth(Long userId, Long[] roleIds) {
-        userRoleMapper.deleteUserRoleByUserId(userId);
-        insertUserRole(userId, roleIds);
-    }
 
     /**
      * 修改用户状态
@@ -309,115 +289,6 @@ public class SysUserServiceImpl extends OkAbsService implements SysUserService {
     public boolean updateUserAvatar(String userName, String avatar) {
 //        return userMapper.updateUserAvatar(userName, avatar) > 0;
         return false;
-    }
-
-    /**
-     * 重置用户密码
-     *
-     * @param user 用户信息
-     * @return 结果
-     */
-    @Override
-    public int resetPwd(SysUser user) {
-//        return userMapper.updateUser(user);
-        return 0;
-    }
-
-    /**
-     * 重置用户密码
-     *
-     * @param userName 用户名
-     * @param password 密码
-     * @return 结果
-     */
-    @Override
-    public int resetUserPwd(String userName, String password) {
-//        return userMapper.resetUserPwd(userName, password);
-        return 0;
-    }
-
-    /**
-     * 新增用户角色信息
-     *
-     * @param user 用户对象
-     */
-    public void insertUserRole(SysUser user) {
-        Long[] roles = user.getRoleIds();
-        if (OkStringUtil.isNotNull(roles)) {
-            // 新增用户与角色管理
-            List<SysUserRole> list = new ArrayList<SysUserRole>();
-            for (Long roleId : roles) {
-                SysUserRole ur = new SysUserRole();
-                ur.setUserId(user.id);
-                ur.setRoleId(roleId);
-                list.add(ur);
-            }
-            if (list.size() > 0) {
-                userRoleMapper.batchUserRole(list);
-            }
-        }
-    }
-
-    /**
-     * 新增用户岗位信息
-     *
-     * @param user 用户对象
-     */
-    public void insertUserPost(SysUser user) {
-        Long[] posts = user.getPostIds();
-        if (OkStringUtil.isNotNull(posts)) {
-            // 新增用户与岗位管理
-            List<SysUserPost> list = new ArrayList<SysUserPost>();
-            for (Long postId : posts) {
-                SysUserPost up = new SysUserPost();
-                up.setUserId(user.id);
-                up.setPostId(postId);
-                list.add(up);
-            }
-            if (list.size() > 0) {
-                userPostMapper.batchUserPost(list);
-            }
-        }
-    }
-
-    /**
-     * 新增用户角色信息
-     *
-     * @param userId  用户ID
-     * @param roleIds 角色组
-     */
-    public void insertUserRole(Long userId, Long[] roleIds) {
-        if (OkStringUtil.isNotNull(roleIds)) {
-            // 新增用户与角色管理
-            List<SysUserRole> list = new ArrayList<SysUserRole>();
-            for (Long roleId : roleIds) {
-                SysUserRole ur = new SysUserRole();
-                ur.setUserId(userId);
-                ur.setRoleId(roleId);
-                list.add(ur);
-            }
-            if (list.size() > 0) {
-                userRoleMapper.batchUserRole(list);
-            }
-        }
-    }
-
-    /**
-     * 通过用户ID删除用户
-     *
-     * @param userId 用户ID
-     * @return 结果
-     */
-    @Override
-    @Transactional
-    public int deleteUserById(Long userId) {
-//        // 删除用户与角色关联
-//        userRoleMapper.deleteUserRoleByUserId(userId);
-//        // 删除用户与岗位表
-//        userPostMapper.deleteUserPostByUserId(userId);
-//        return userMapper.deleteUserById(userId);
-
-        return 0;
     }
 
     /**
@@ -528,11 +399,11 @@ public class SysUserServiceImpl extends OkAbsService implements SysUserService {
         SysUserBind bind = new SysUserBind();
         switch (signUpForm.getAccountType()) {
             case email -> {
-                bind.setBindType(UserBindDefined.BindType.email);
+                bind.setBindType(UserDefines.BindType.email);
                 bind.setBindValue(signUpForm.getAccount());
             }
             case phone -> {
-                bind.setBindType(UserBindDefined.BindType.phone);
+                bind.setBindType(UserDefines.BindType.phone);
                 //添加手机号绑定
                 try {
                     PhoneNumberUtil util = PhoneNumberUtil.getInstance();
@@ -575,17 +446,20 @@ public class SysUserServiceImpl extends OkAbsService implements SysUserService {
         sysUserRepository.delete(sysUser);
     }
 
+
     @Override
-    public List<SysUser> findPage(Pageable page) {
-        PanacheQuery<SysUser> all = sysUserRepository.findAll();
-        all.page(Page.of(page.getPage(), page.getSize()));
-        return all.list();
+    public OkPageResult<SysUser> findPage(OkPageable pageable) {
+        var all = sysUserRepository.findAll();
+        var query = all.page(Page.of(pageable.getPageNumber(), pageable.getPageSize()));
+        return OkPageResult.build(
+                query.list(),
+                query.count(),
+                query.pageCount());
     }
 
     @Override
-    public SysUser save(SysUser sysUser) {
+    public void save(SysUser sysUser) {
         sysUserRepository.persist(sysUser);
-        return sysUser;
     }
 
     @Override

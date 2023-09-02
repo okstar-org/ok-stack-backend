@@ -11,22 +11,35 @@
  * /
  */
 
-package org.okstar.platform.common.core.web.page;
+package org.okstar.platform.common.core.defined;
 
-import lombok.Data;
+/**
+ * 消息 系统来源
+ *
+ * 
+ */
+public enum MessageSource {
 
-@Data
-public class Pageable {
+    /**
+     * 本机
+     */
+    INNER_SYSTEM("1", "本系统");
+    private final String code;
+    private final String info;
 
-    private final int page;
-    private final int size;
-
-    public Pageable(int page, int size) {
-        this.page= page;
-        this.size = size;
+    MessageSource(String code, String info)
+    {
+        this.code = code;
+        this.info = info;
     }
 
-    public static Pageable of(int page, int size) {
-        return new Pageable(page, size);
+    public String getCode()
+    {
+        return code;
+    }
+
+    public String getInfo()
+    {
+        return info;
     }
 }

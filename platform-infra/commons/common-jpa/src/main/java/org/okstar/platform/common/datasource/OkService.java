@@ -13,13 +13,18 @@
 
 package org.okstar.platform.common.datasource;
 
+import org.okstar.platform.common.core.web.page.OkPageResult;
+import org.okstar.platform.common.core.web.page.OkPageable;
+
 import java.util.List;
 
 public interface OkService <T, ID> {
 
-    T save(T t);
+    void save(T t);
 
     List<T> findAll();
+
+    OkPageResult<T> findPage(OkPageable page);
 
     T get(ID id);
 

@@ -16,7 +16,7 @@ package org.okstar.platform.common.core.web.controller;
 import io.vertx.core.http.HttpServerRequest;
 import io.vertx.core.http.HttpServerResponse;
 import org.okstar.platform.common.core.web.domain.AjaxResult;
-import org.okstar.platform.common.core.web.page.PageResult;
+import org.okstar.platform.common.core.web.page.OkPageResult;
 import org.okstar.platform.common.core.web.page.TableDataInfo;
 
 import javax.ws.rs.core.Context;
@@ -47,11 +47,11 @@ public class OkBaseController {
         return rspData;
     }
 
-    protected TableDataInfo getDataTable(PageResult<?> pageResult) {
+    protected TableDataInfo getDataTable(OkPageResult<?> pageResult) {
         TableDataInfo rspData = new TableDataInfo();
         rspData.setCode(Response.Status.OK.getStatusCode());
         rspData.setRows(pageResult.getList());
-        rspData.setTotal(pageResult.getTotal());
+        rspData.setTotal(pageResult.getTotalCount());
         rspData.setMsg("查询成功");
         return rspData;
     }

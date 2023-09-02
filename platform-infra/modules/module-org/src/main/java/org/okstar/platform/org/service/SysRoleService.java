@@ -11,32 +11,19 @@
  * /
  */
 
-package org.okstar.platform.common.core.enums;
+package org.okstar.platform.org.service;
 
-public enum ModuleType {
-    PROCESS("process","工作流模块");
 
-    ModuleType(String value, String name){
-        this.value = value;
-        this.name = name;
-    }
+import org.okstar.platform.common.datasource.OkService;
+import org.okstar.platform.org.domain.SysRole;
 
-    private String value;
-    private String name;
+/**
+ * 角色业务层
+ * 
+ * 
+ */
+public interface SysRoleService extends OkService<SysRole, Long>
+{
 
-    public String getValue() {
-        return value;
-    }
 
-    public void setValue(String value) {
-        this.value = value;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
 }
