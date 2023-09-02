@@ -13,7 +13,7 @@
 
 package org.okstar.platform.org.service.impl;
 
-import org.okstar.platform.common.core.utils.DateUtils;
+import org.okstar.platform.common.core.utils.OkDateUtils;
 import org.okstar.platform.org.domain.SysMessage;
 import org.okstar.platform.org.mapper.SysMessageMapper;
 import org.okstar.platform.org.service.ISysMessageService;
@@ -65,7 +65,7 @@ public class SysMessageServiceImpl implements ISysMessageService
     @Override
     public int insertSysMessage(SysMessage sysMessage)
     {
-        sysMessage.setCreateAt(DateUtils.getNowDate());
+        sysMessage.setCreateAt(OkDateUtils.now());
         return sysMessageMapper.insertSysMessage(sysMessage);
     }
 
@@ -78,7 +78,7 @@ public class SysMessageServiceImpl implements ISysMessageService
     @Override
     public int updateSysMessage(SysMessage sysMessage)
     {
-        sysMessage.setUpdateAt(DateUtils.getNowDate());
+        sysMessage.setUpdateAt(OkDateUtils.now());
         return sysMessageMapper.updateSysMessage(sysMessage);
     }
 

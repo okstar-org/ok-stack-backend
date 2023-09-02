@@ -33,4 +33,15 @@ public interface UserDefines {
         dingding,
         feishu
     }
+
+    /**
+     * 性别
+     */
+    @Getter
+    enum GenderEnum  {
+        NONE,
+        MALE,
+        FEMALE,
+    }
+
 }
