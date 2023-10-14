@@ -13,3 +13,14 @@ mvn clean compile -P dev
 # dev-okstar 社区测试
 mvn clean compile -P dev-okstar
 ```
+## 启动依赖
+```shell
+
+# 进入到依赖
+cd depends
+
+# 启动MariaDB数据库与Keycloak认证服务器
+depends$ docker-compose up -d
+
+
+```
