@@ -13,7 +13,9 @@
 
 package org.okstar.platform.common.core.web.bean;
 
-import lombok.Getter;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.okstar.platform.common.core.constant.Constants;
 
 import java.util.LinkedHashMap;
@@ -22,7 +24,9 @@ import java.util.Map;
 /**
  * 响应信息主体
  */
-@Getter
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class Res<T> extends VO
 {
     /** 成功 */

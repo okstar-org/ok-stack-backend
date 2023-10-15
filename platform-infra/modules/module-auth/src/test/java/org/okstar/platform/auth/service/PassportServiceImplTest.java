@@ -27,6 +27,7 @@ import javax.inject.Inject;
 @QuarkusTest
 class PassportServiceImplTest {
 
+    public static final String STRING = "okstar";
     @Inject
     PassportService passportService;
 
@@ -39,12 +40,15 @@ class PassportServiceImplTest {
         String uuid = IdUtils.makeUuid();
         SignUpForm form = new SignUpForm();
         form.setTs(1L);
+
+        //采用邮箱注册
+        form.setAccountType(SignUpForm.AccountType.email);
         form.setAccount("%s@okstar.org".formatted(uuid));
-        form.setPassword("okstar");
+
+        form.setPassword(STRING);
         form.setFirstName("Ok");
         form.setLastName("Star");
         form.setIso("CN");
-        form.setAccountType(SignUpForm.AccountType.email);
         SignUpResultDto resultDto = passportService.signUp(form);
         Log.infof("result=>%s", resultDto);
         Assert.assertNotNull(resultDto);

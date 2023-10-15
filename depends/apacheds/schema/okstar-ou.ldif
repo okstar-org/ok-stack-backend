@@ -13,44 +13,5 @@ objectClass: organizationalUnit
 objectClass: top
 ou: groups
 
-dn: cn=Group 1,ou=groups,dc=okstar,dc=org
-objectClass: groupOfNames
-objectClass: top
-cn: group 1
-member: uid=gaojie,ou=users,dc=okstar,dc=org
-
-dn: cn=Group 1,cn=Group 1,ou=groups,dc=okstar,dc=org
-objectClass: groupOfNames
-objectClass: top
-cn: Group 1
-member: uid=gaojie,ou=users,dc=okstar,dc=org
-
-dn: cn=Group 2,ou=groups,dc=okstar,dc=org
-objectClass: groupOfNames
-objectClass: top
-cn: Group 2
-member: uid=ok1,ou=users,dc=okstar,dc=org
-
-dn: uid=gaojie,ou=users,dc=okstar,dc=org
-objectClass: inetOrgPerson
-objectClass: organizationalPerson
-objectClass: person
-objectClass: top
-cn:: 6auY5p2w
-sn: Gao
-uid: gaojie
-userPassword:: e1NTSEF9RDZ1S3FDTy85YUJCYmRuRzh1YWNXdGc1QmRLU0xnL2pGY1k3d0E9P
- Q==
-
-dn: uid=ok1,ou=users,dc=okstar,dc=org
-objectClass: inetOrgPerson
-objectClass: organizationalPerson
-objectClass: person
-objectClass: top
-cn: Ok 1
-sn: Ok
-gn: 1
-uid: ok1
-
 
 
