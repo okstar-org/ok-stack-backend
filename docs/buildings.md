@@ -1,23 +1,10 @@
-# 构建文档
-##  Profile说明与选择
-- <空> 本地测试，使用h2内存数据库
-- dev 本地测试，使用MariaDB本地(local)数据库
-- dev-okstar 社区测试，使用MariaDB社区(okstar.org.cn)数据库
+# 构建文档（Docker篇）
 
-## 编译
-```shell
-# 本地测试
-mvn clean compile
-# dev 本地测试 连接本地Docker启动的MariaDB数据库
-mvn clean compile -P dev
-# dev-okstar 社区测试 连接社区的MariaDB数据库
-mvn clean compile -P dev-okstar
-```
+## 部署Openfire
+- Clone Openfire 项目，执行：`git clone -b v4.7 https://gitee.com/okstar-org/ok-openfire`
+- 执行构建 `docker` 镜像, 执行：`./build/docker/buildWithDocker.sh | docker build . -t okstar-openfire:v4.7`
 
-
-## 测试方法
-
-### 启动依赖
+## 启动Docker依赖服务
 ```shell
 # 进入到依赖
 cd depends
@@ -26,20 +13,19 @@ cd depends
 depends$ docker-compose up -d
 ```
 
-### 配置Keycloak的LDAP服务
+## 配置依赖服务
+### 配置Keycloak服务
 - 登录：http://localhost:8080/admin/
 - 输入帐号：admin,okstar登录
 - 到左上角，选择 `okstar` ream (如果没有则增加okstar，按如下配置，保存即可)
 > 第一个Tab [Settings]
 ```text
 ======>General Settings<=========
-
 Client ID *:    okstack
 Name:   OkStack
 Always display in UI 
 
 ======>Access settings<=========
-
 Root URL :http://localhost:9100
 Home URL:http://localhost:9100/q/swagger-ui/
 Valid redirect URIs: *
@@ -49,10 +35,8 @@ Admin URL :http://localhost:9100
 ======>Capability config<=========
 Client authentication: ON
 Authentication flow: ON [Standard flow]  ON [Direct access grants]
-
-
-
 ```
+
 > 第三个Tab [credentials]
 ```text
 Client Authenticator：Client Id and Secret 
@@ -91,7 +75,6 @@ Pagination          :On
 > Synchronization settings
 
 ```text
-
 Import users        :On
 Sync Registrations  :On
 Periodic full sync  :On
@@ -101,24 +84,63 @@ Changed users sync period   :86400
 ```
 - 点击`Save`保存
 
+### 配置启动Openfire服务器
+> 打开服务器地址 http://localhost:9090/
+- 第一步，选择合适的语言
+- 第二步，服务器设置不用修改
+- 第三步，使用标准数据库
+  - 选择MySQL数据库
+  - 修改host和数据库名称其他不变，为：db:3306/openfire
+  - 用户名:root，密码:okstar
+- 第四步，设置LDAP服务器
+  - 目录服务器 (LDAP)
+  - 服务类型，选择“其他”
+  - 设置连接，Protocol:ldap	主机:apacheds	端口:10389
+  - 基础的DN:	ou=users,dc=okstar,dc=org
+  - 管理员DN:	uid=admin,ou=system，密码: okstar，点击测试
+- 第五步，选择LDAP管理员
+  - 第一项，输入`okstar`
+  - 第二项，选择第一个
+  - 第三项，点击`添加`列出用户即可，点击`完成`
+- 第六步，登录到主界面
+  - 输入管理员`okstar`和密码。
+  - 点击登录
 
-### 启动依赖服务
+
+## 构建OkStack后端服务
+> Profile说明与选择
+> - <空> 本地测试，使用h2内存数据库
+> - dev 本地测试，使用MariaDB本地(local)数据库
+> - dev-okstar 社区测试，使用MariaDB社区(okstar.org.cn)数据库
+
+### 构建
+```shell
+# 本地测试，连接内存数据库
+mvn clean compile
+# dev 本地测试 连接本地Docker启动的MariaDB数据库
+mvn clean compile -P dev
+# dev-okstar 社区测试 连接社区的MariaDB数据库
+mvn clean compile -P dev-okstar
+```
+
+# 测试
+## 启动依赖服务
 分别启动如下两个服务
 - ModuleOrgApplication
 - ModuleSystemApplication
 
-### 测试创建新帐号
+## 创建新帐号
 - 执行如下单元测试即可。
 ```shell
 org.okstar.platform.auth.service.PassportServiceImplTest.signUp
 ```
 - 通过日志，查找用户名
 ```shell
-# 找到如下日志(用户名：B5Ev0cK4i2Lq)
+# 找到如下日志(用户名：B5Ev0cK4i2Lq，你们可能不一样)
 2023-10-15 15:32:16,260 INFO  [org.oks.pla.aut.ser.PassportServiceImplTest] (main) result=>SignUpResultDto(userId=7, username=B5Ev0cK4i2Lq)
 ```
 
-### 测试认证
+### 测试接口
 > 通过如上步骤：用户: B5Ev0cK4i2Lq 密码: okstar
 - 打开Swagger接口测试页面 `http://localhost:9200/q/swagger-ui/`
 - 找到接口`/user/findAll`输入用户名和密码执行，得到如下则后端配置完全成功！
@@ -140,3 +162,4 @@ org.okstar.platform.auth.service.PassportServiceImplTest.signUp
   "extra": {}
 }
 ```
+> 通过上述流程就确认服务搭建通过！

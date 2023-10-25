@@ -15,3 +15,14 @@ ou: groups
 
 
 
+dn: cn=okstar,ou=users,dc=okstar,dc=org
+objectClass: inetOrgPerson
+objectClass: organizationalPerson
+objectClass: person
+objectClass: top
+cn: okstar
+sn: Ok
+givenName: Star
+uid: okstar
+userPassword:: e1NTSEF9ZzBEWmRGRm82MHZYYi9DbEhYYWFpVE94MWRmK01mUGtTdUlpYkE9P
+ Q==

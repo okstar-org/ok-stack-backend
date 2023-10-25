@@ -1,40 +1,21 @@
+version: "3"
 services:
-#  postgres:
-#    image: postgres
-#    restart: always
-#    environment:
-#      POSTGRES_USE: postgres
-#      POSTGRES_PASSWORD: okstar
-#      PGDATA: /var/lib/postgresql/data/pgdata
-#    healthcheck:
-#      test: [ "CMD-SHELL", "pg_isready" ]
-#      interval: 1s
-#      timeout: 5s
-#      retries: 10
-#    volumes:
-#      - ./postgres/initdb.d:/docker-entrypoint-initdb.d/
-#      - ./postgres/data_dir:/var/lib/postgresql/data
-#    ports:
-#      - 5432:5432
   db:
     image: "mariadb:10.6.15"
     ports:
       - "3306:3306"
     volumes:
-      - ./mariadb/data:/var/lib/mysql
       - ./mariadb/initdb.d:/docker-entrypoint-initdb.d
     environment:
       MYSQL_ROOT_PASSWORD: "okstar"
-
   apacheds:
     build:
-      context: apacheds
+      context: ./apacheds
     ports:
       - 10389:10389
-
   keycloak:
     build:
-      context: keycloak
+      context: ./keycloak
     environment:
       - KC_DB=mariadb
       - KC_DB_URL=jdbc:mariadb://db/keycloak?autoReconnect=true&useUnicode=true&characterEncoding=utf8
@@ -50,6 +31,24 @@ services:
     depends_on:
       - apacheds
       - db
-
-
+  openfire:
+    image: okstar-openfire:v4.7
+    ports:
+      - 3478:3478
+      - 3479:3479
+      - 5222:5222
+      - 5223:5223
+      - 5229:5229
+      - 5262:5262
+      - 5263:5263
+      - 5275:5275
+      - 5276:5276
+      - 7070:7070
+      - 7443:7443
+      - 7777:7777
+      - 9090:9090
+      - 9091:9091
+      - 5005:5005
+    depends_on:
+      - db
 
