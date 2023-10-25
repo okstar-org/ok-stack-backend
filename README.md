@@ -10,7 +10,7 @@
 
 # 🎁 项目介绍
 
-**OkStack由OkStar社区开发，基于Quarkus微服务云原生框架的后台管理系统，为OkMSG、OkEDU等提供数据、控制等管理服务。**
+**OkStack由OkStar社区开发，基于Quarkus微服务云原生框架的后台管理系统，为OkMSG、OkEDU等应用提供数据、控制等管理服务。**
 - 具备跨平台、拓展性。
 - 可独立部署私有化系统。
 - 兼容Windows、Linux等平台。
