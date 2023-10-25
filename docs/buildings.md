@@ -6,10 +6,10 @@
 
 ## 启动Docker依赖服务
 ```shell
-# 进入到依赖
+# 进入到依赖目录
 cd depends
 
-# 启动MariaDB数据库与Keycloak认证服务器
+# 启动依赖服务
 depends$ docker-compose up -d
 ```
 
