@@ -113,14 +113,10 @@ Changed users sync period   :86400
 > - dev 本地测试，使用MariaDB本地(local)数据库
 > - dev-okstar 社区测试，使用MariaDB社区(okstar.org.cn)数据库
 
-### 构建
+- 构建命令
 ```shell
-# 本地测试，连接内存数据库
-mvn clean compile
 # dev 本地测试 连接本地Docker启动的MariaDB数据库
 mvn clean compile -P dev
-# dev-okstar 社区测试 连接社区的MariaDB数据库
-mvn clean compile -P dev-okstar
 ```
 
 # 测试
@@ -140,7 +136,7 @@ org.okstar.platform.auth.service.PassportServiceImplTest.signUp
 2023-10-15 15:32:16,260 INFO  [org.oks.pla.aut.ser.PassportServiceImplTest] (main) result=>SignUpResultDto(userId=7, username=B5Ev0cK4i2Lq)
 ```
 
-### 测试接口
+## 测试接口
 > 通过如上步骤：用户: B5Ev0cK4i2Lq 密码: okstar
 - 打开Swagger接口测试页面 `http://localhost:9200/q/swagger-ui/`
 - 找到接口`/user/findAll`输入用户名和密码执行，得到如下则后端配置完全成功！
