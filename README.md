@@ -39,23 +39,6 @@
 - 🪟 Windows
 
 # ⚙️ 构建开发
-
-##  Profile说明与选择
-- <空> 本地测试，使用h2内存数据库
-- dev 本地测试，使用MariaDB本地(local)数据库
-- dev-okstar 社区测试，使用MariaDB社区(okstar.org.cn)数据库
-
-## 编译
-```shell
-# 本地测试
-mvn clean compile
-# dev 本地测试 连接本地Docker启动的MariaDB数据库
-mvn clean compile -P dev
-# dev-okstar 社区测试 连接社区的MariaDB数据库
-mvn clean compile -P dev-okstar
-```
-
-## 测试开发
 > 具体参考：[buildings.md](docs%2Fbuildings.md)
 
 # ⚒️ 开发规范
