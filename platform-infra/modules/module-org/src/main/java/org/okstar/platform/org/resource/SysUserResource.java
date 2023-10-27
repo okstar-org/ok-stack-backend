@@ -28,7 +28,6 @@ import java.util.List;
 /**
  * 用户信息
  */
-
 @Path("/user")
 @Authenticated
 public class SysUserResource extends OkBaseController {

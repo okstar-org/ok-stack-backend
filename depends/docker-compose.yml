@@ -2,10 +2,14 @@ version: "3"
 services:
   db:
     image: "mariadb:10.6.15"
+    container_name: "db"
     ports:
       - "3306:3306"
     volumes:
+      - /etc/timezone:/etc/timezone
+      - /etc/localtime:/etc/localtime
       - ./mariadb/initdb.d:/docker-entrypoint-initdb.d
+      - ./mariadb/data:/var/lib/mysql
     environment:
       MYSQL_ROOT_PASSWORD: "okstar"
   apacheds:
@@ -16,6 +20,7 @@ services:
   keycloak:
     build:
       context: ./keycloak
+    container_name: "keycloak"
     environment:
       - KC_DB=mariadb
       - KC_DB_URL=jdbc:mariadb://db/keycloak?autoReconnect=true&useUnicode=true&characterEncoding=utf8
@@ -24,8 +29,11 @@ services:
       - KC_HOSTNAME=localhost
       - KEYCLOAK_ADMIN=admin
       - KEYCLOAK_ADMIN_PASSWORD=okstar
+    volumes:
+      - /etc/timezone:/etc/timezone
+      - /etc/localtime:/etc/localtime
     ports:
-      - 8080:8080
+      - 8043:8080
       - 8443:8443
       - 10990:10990
     depends_on:
@@ -33,6 +41,7 @@ services:
       - db
   openfire:
     image: okstar-openfire:v4.7
+    container_name: "openfire"
     ports:
       - 3478:3478
       - 3479:3479
@@ -52,3 +61,16 @@ services:
     depends_on:
       - db
 
+  gateway:
+    image: "flytreeleft/nginx-gateway"
+    container_name: "gateway"
+    volumes:
+      - "/usr/share/zoneinfo:/usr/share/zoneinfo:ro"
+      - "/etc/localtime:/etc/localtime:ro"
+      - "./nginx/logs:/var/log/nginx/sites"
+      - "./nginx/certs:/etc/letsencrypt"
+      - "./nginx/vhost.d:/etc/nginx/vhost.d"
+      - "./nginx/stream.d:/etc/nginx/stream.d"
+      - "./nginx/epage.d:/etc/nginx/epage.d"
+    restart: "always"
+    network_mode: "host"

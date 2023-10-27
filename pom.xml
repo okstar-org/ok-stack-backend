@@ -54,8 +54,11 @@
         <quarkus.datasource.jdbc.driver>org.h2.Driver</quarkus.datasource.jdbc.driver>
         <quarkus.datasource.jdbc.mix-size>1</quarkus.datasource.jdbc.mix-size>
         <quarkus.datasource.jdbc.max-size>5</quarkus.datasource.jdbc.max-size>
+
         <quarkus.hibernate-orm.dialect>org.hibernate.dialect.H2Dialect</quarkus.hibernate-orm.dialect>
         <quarkus.hibernate-orm.log.sql>true</quarkus.hibernate-orm.log.sql>
+
+        <quarkus.oidc.auth-server-url>http://localhost:8043/realms/okstar</quarkus.oidc.auth-server-url>
     </properties>
 
     <profiles>
