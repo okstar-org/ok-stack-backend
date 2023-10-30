@@ -1,8 +1,10 @@
 # 构建文档（Docker篇）
 
 ## 部署Openfire
-- Clone Openfire 项目，执行：`git clone -b v4.7 https://gitee.com/okstar-org/ok-openfire`
-- 执行构建 `docker` 镜像, 执行：`./build/docker/buildWithDocker.sh | docker build . -t okstar-openfire:v4.7`
+- Clone Openfire 项目，执行：`git clone -b 4.7 https://gitee.com/okstar-org/ok-openfire`
+- 进入目录，执行：`cd ok-openfire`
+- 构建项目, 执行：`./build/docker/buildWithDocker.sh`
+- 构建Docker镜像，执行： `docker build . -t okstar-openfire:v4.7`
 
 ## 启动Docker依赖服务
 ```shell

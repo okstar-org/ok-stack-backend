@@ -37,6 +37,7 @@
 # 🖥️ 支持平台
 - 🐧 Linux
 - 🪟 Windows
+- Java 17
 
 # ⚙️ 构建开发
 > 具体参考：[buildings.md](docs%2Fbuildings.md)
