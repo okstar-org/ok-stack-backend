@@ -159,3 +159,11 @@ org.okstar.platform.auth.service.PassportServiceImplTest.signUp
 }
 ```
 > 通过上述流程就确认服务搭建通过！
+
+# 接口访问
+
+## 注册
+https://localhost/api/infra/auth/password/signUp
+
+## 查询全部用户（测试）
+https://localhost/api/infra/org/user/findAll

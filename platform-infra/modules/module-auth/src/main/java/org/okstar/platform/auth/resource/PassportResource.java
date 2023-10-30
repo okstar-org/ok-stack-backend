@@ -36,12 +36,10 @@ public class PassportResource extends OkBaseController {
 
     @POST
     @Path("signUp")
-//    @Produces(MediaType.APPLICATION_JSON)
     public Res<SignUpResultDto> signUp(SignUpForm signUpForm) {
         log.info("signUp:{}", signUpForm);
         var resultDto = passportService.signUp(signUpForm);
         log.info("resultDto=>{}", resultDto);
         return Res.ok(resultDto);
-
     }
 }
