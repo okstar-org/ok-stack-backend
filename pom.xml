@@ -87,8 +87,8 @@
                 <quarkus.datasource.jdbc.url>jdbc:mariadb://chuanshaninfo.com:3307</quarkus.datasource.jdbc.url>
                 <quarkus.datasource.jdbc.driver>org.mariadb.jdbc.Driver</quarkus.datasource.jdbc.driver>
                 <quarkus.hibernate-orm.dialect>org.hibernate.dialect.MariaDB106Dialect</quarkus.hibernate-orm.dialect>
-                <quarkus.oidc.auth-server-url>http://chuanshaninfo.com:8043/realms/okstar</quarkus.oidc.auth-server-url>
-                <quarkus.oidc.credentials.secret>dMcsGW7csSrw5JtzIVX97J2dP6ShriMo</quarkus.oidc.credentials.secret>
+                <quarkus.oidc.auth-server-url>https://chuanshaninfo.com:8443/realms/okstar</quarkus.oidc.auth-server-url>
+                <quarkus.oidc.credentials.secret>paYHiWpp0vV2jkIhz6EWLPw0HI5yv2XM</quarkus.oidc.credentials.secret>
             </properties>
         </profile>
 

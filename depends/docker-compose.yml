@@ -4,7 +4,7 @@ services:
     image: "mariadb:10.6.15"
     container_name: "db"
     ports:
-      - "3307:3306"
+      - "3306:3306"
     volumes:
       - /etc/timezone:/etc/timezone
       - /etc/localtime:/etc/localtime
