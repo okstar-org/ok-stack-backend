@@ -4,7 +4,7 @@ services:
     image: "mariadb:10.6.15"
     container_name: "db"
     ports:
-      - "3306:3306"
+      - "3307:3306"
     volumes:
       - /etc/timezone:/etc/timezone
       - /etc/localtime:/etc/localtime
@@ -19,8 +19,8 @@ services:
     container_name: "apacheds"
     ports:
       - 10389:10389
-#    volumes:
-#      - ./apacheds/data:/var/lib/apacheds-2.0.0.AM26
+  #    volumes:
+  #      - ./apacheds/data:/var/lib/apacheds-2.0.0.AM26
 
   keycloak:
     build:
@@ -37,6 +37,8 @@ services:
     volumes:
       - /etc/timezone:/etc/timezone
       - /etc/localtime:/etc/localtime
+        #    security_opt:
+      #- seccomp:unconfined
     ports:
       - 8043:8080
       - 8443:8443
@@ -77,4 +79,6 @@ services:
       - ./nginx/vhost.d:/etc/nginx/vhost.d
       - ./nginx/stream.d:/etc/nginx/stream.d
       - ./nginx/epage.d:/etc/nginx/epage.d
-    network_mode: "host"
+      #network_mode: "host"
+    ports:
+      - 8080:80

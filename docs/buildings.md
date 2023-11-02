@@ -20,29 +20,27 @@ depends$ docker-compose up -d
 - 登录：http://localhost:8043/admin/
 - 输入帐号：admin,okstar登录
 - 到左上角，选择 `okstar` ream (如果没有则增加okstar，按如下配置，保存即可)
-> 第一个Tab [Settings]
+- 创建Client `okstack`
 ```text
 ======>General Settings<=========
-Client ID *:    okstack
-Name:   OkStack
-Always display in UI 
-
-======>Access settings<=========
-Root URL :http://localhost:9100
-Home URL:http://localhost:9100/q/swagger-ui/
-Valid redirect URIs: *
-Valid post logout redirect URIs: http://localhost:9100/q/swagger-ui/
-Admin URL :http://localhost:9100
+Client ID * : okstack
+Name        : OkStack
 
 ======>Capability config<=========
 Client authentication: ON
 Authentication flow: ON [Standard flow]  ON [Direct access grants]
-```
 
-> 第三个Tab [credentials]
+======>Access settings<=========
+Root URL:   http://localhost:9100
+Home URL:   http://localhost:9100/q/swagger-ui/
+Valid redirect URIs: *
+Valid post logout redirect URIs:    http://localhost:9100/q/swagger-ui/
+Admin URL:  http://localhost:9100
+```
+- 第三个Tab [credentials]
 ```text
 Client Authenticator：Client Id and Secret 
-Client Secret：点击复制和保存 
+Client Secret：点击复制和保存 (保留后续配置到项目) 
 ```
 - 点击左下角  `User Federation`，选择增加`LDAP`
 > General options

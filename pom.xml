@@ -59,17 +59,12 @@
         <quarkus.hibernate-orm.log.sql>true</quarkus.hibernate-orm.log.sql>
 
         <quarkus.oidc.auth-server-url>http://localhost:8043/realms/okstar</quarkus.oidc.auth-server-url>
+        <quarkus.oidc.credentials.secret>i7CucuLUJYa4Tmn767GtdeQATCFgRH2e</quarkus.oidc.credentials.secret>
     </properties>
 
     <profiles>
         <profile>
             <id>dev</id>
-            <activation>
-                <activeByDefault>true</activeByDefault>
-                <property>
-                    <name>dev</name>
-                </property>
-            </activation>
             <properties>
                 <quarkus.datasource.db-kind>mariadb</quarkus.datasource.db-kind>
                 <quarkus.datasource.username>root</quarkus.datasource.username>
@@ -82,13 +77,18 @@
 
         <profile>
             <id>dev-okstar</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
             <properties>
                 <quarkus.datasource.db-kind>mariadb</quarkus.datasource.db-kind>
                 <quarkus.datasource.username>okstar</quarkus.datasource.username>
                 <quarkus.datasource.password>Encrypt=>YOzFYCG4evdiWnDP8vGdLw==</quarkus.datasource.password>
-                <quarkus.datasource.jdbc.url>jdbc:mariadb://okstar.org.cn</quarkus.datasource.jdbc.url>
+                <quarkus.datasource.jdbc.url>jdbc:mariadb://chuanshaninfo.com:3307</quarkus.datasource.jdbc.url>
                 <quarkus.datasource.jdbc.driver>org.mariadb.jdbc.Driver</quarkus.datasource.jdbc.driver>
                 <quarkus.hibernate-orm.dialect>org.hibernate.dialect.MariaDB106Dialect</quarkus.hibernate-orm.dialect>
+                <quarkus.oidc.auth-server-url>http://chuanshaninfo.com:8043/realms/okstar</quarkus.oidc.auth-server-url>
+                <quarkus.oidc.credentials.secret>dMcsGW7csSrw5JtzIVX97J2dP6ShriMo</quarkus.oidc.credentials.secret>
             </properties>
         </profile>
 
