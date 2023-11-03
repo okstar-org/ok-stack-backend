@@ -15,24 +15,11 @@ package org.okstar.platform.common.core.defined;
 
 import lombok.Getter;
 
+/**
+ * 用户相关定义
+ */
 public interface UserDefines {
-    @Getter
-   enum BindType {
-        /**
-         *  * 手机号
-         *  * 邮箱
-         *  * 微信
-         *  * QQ
-         *  * 钉钉
-         *  * 飞书
-         */
-        phone,
-        email,
-        wx,
-        qq,
-        dingding,
-        feishu
-    }
+
 
     /**
      * 性别

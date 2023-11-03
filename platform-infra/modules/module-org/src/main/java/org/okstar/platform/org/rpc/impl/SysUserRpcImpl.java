@@ -14,7 +14,7 @@
 package org.okstar.platform.org.rpc.impl;
 
 import org.okstar.platform.common.core.utils.bean.OkBeanUtils;
-import org.okstar.platform.org.domain.SysUser;
+import org.okstar.platform.org.domain.SysAccount;
 import org.okstar.platform.org.dto.SignUpForm;
 import org.okstar.platform.org.dto.SignUpResultDto;
 import org.okstar.platform.org.dto.SysUserDto;
@@ -37,7 +37,7 @@ public class SysUserRpcImpl implements SysUserRpc {
 
     @Override
     public SysUserDto findByUsername(String username) {
-        SysUser sysUser = userService.selectUserByUserName(username);
+        SysAccount sysUser = userService.selectUserByUserName(username);
         SysUserDto dto = new SysUserDto();
         OkBeanUtils.copyPropertiesTo(sysUser, dto);
         return dto;

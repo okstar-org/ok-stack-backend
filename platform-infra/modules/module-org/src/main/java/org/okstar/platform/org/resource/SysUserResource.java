@@ -16,7 +16,7 @@ package org.okstar.platform.org.resource;
 import io.quarkus.security.Authenticated;
 import org.okstar.platform.common.core.web.bean.Res;
 import org.okstar.platform.common.core.web.controller.OkBaseController;
-import org.okstar.platform.org.domain.SysUser;
+import org.okstar.platform.org.domain.SysAccount;
 import org.okstar.platform.org.service.SysUserService;
 
 import javax.inject.Inject;
@@ -37,8 +37,8 @@ public class SysUserResource extends OkBaseController {
 
     @GET
     @Path("findAll")
-    public Res<List<SysUser>> findAll(){
-        List<SysUser> all = sysUserService.findAll();
+    public Res<List<SysAccount>> findAll(){
+        List<SysAccount> all = sysUserService.findAll();
         return Res.ok(all);
     }
 

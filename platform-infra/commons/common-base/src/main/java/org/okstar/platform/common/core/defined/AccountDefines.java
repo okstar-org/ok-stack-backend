@@ -11,37 +11,40 @@
  * /
  */
 
-package org.okstar.platform.org.domain;
+package org.okstar.platform.common.core.defined;
 
-import lombok.Data;
-import org.okstar.platform.common.core.defined.AccountDefines;
-
-import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
+import lombok.Getter;
 
 /**
- * 用户绑定
-
+ * 帐号相关定义
  */
-@Data
-@Entity
-public class SysUserBind extends BaseEntity {
+public interface AccountDefines {
 
-    @ManyToOne
-    SysAccount user;
+    @Getter
+    enum BindType {
+        /**
+         *  * 手机号
+         *  * 邮箱
+         *  * 微信
+         *  * QQ
+         *  * 钉钉
+         *  * 飞书
+         */
+        phone,
+        email,
+        wx,
+        qq,
+        dingding,
+        feishu
+    }
 
     /**
-     * 绑定类型
+     * 帐号状态
      */
-    AccountDefines.BindType bindType;
-
-    /**
-     * 绑定值
-     */
-    String bindValue;
-
-    /**
-     * 是否合法
-     */
-    Boolean isValid;
+    @Getter
+    enum Status  {
+        NONE,
+        OK,
+        DISABLED,
+    }
 }

@@ -14,19 +14,20 @@
 package org.okstar.platform.org.domain;
 
 import lombok.Data;
-
+import org.okstar.platform.common.core.defined.AccountDefines;
+import org.okstar.platform.common.core.defined.SystemDefines;
 
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
 /**
- * 用户对象 sys_user
+ * 帐号实体
  */
 @Data
 @Entity
 @Table(uniqueConstraints = {@UniqueConstraint(columnNames = {"username"})})
-public class SysUser extends BaseEntity {
+public class SysAccount extends BaseEntity {
 
     /**
      * 用户账号
@@ -44,27 +45,22 @@ public class SysUser extends BaseEntity {
     private String lastName;
 
     /**
-     * 用户性别
-     */
-    private String sex;
-
-    /**
      * 用户头像
      */
     private String avatar;
 
     /**
-     * 帐号状态（0正常 1停用）
+     * 帐号状态
      */
-    private String status;
+    private AccountDefines.Status status;
 
     /**
-     * 删除标志（0代表存在 2代表删除）
+     * 标志
      */
-    private String delFlag;
+    private SystemDefines.DataFlag dataFlag;
 
     /**
-     * 用户国家代号
+     * 所在国家代号
      * @link https://www.iso.org/obp/ui/#search
      */
     private String iso;

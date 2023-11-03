@@ -22,14 +22,14 @@ import io.quarkus.panache.common.Page;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.okstar.platform.common.core.constant.UserConstants;
-import org.okstar.platform.common.core.defined.UserDefines;
+import org.okstar.platform.common.core.defined.AccountDefines;
 import org.okstar.platform.common.core.exception.OkRuntimeException;
 import org.okstar.platform.common.core.utils.OkStringUtil;
 import org.okstar.platform.common.core.web.page.OkPageResult;
 import org.okstar.platform.common.core.web.page.OkPageable;
 import org.okstar.platform.common.datasource.OkAbsService;
+import org.okstar.platform.org.domain.SysAccount;
 import org.okstar.platform.org.domain.SysPost;
-import org.okstar.platform.org.domain.SysUser;
 import org.okstar.platform.org.domain.SysUserBind;
 import org.okstar.platform.org.dto.SignUpForm;
 import org.okstar.platform.org.dto.SignUpResultDto;
@@ -80,8 +80,8 @@ public class SysUserServiceImpl extends OkAbsService implements SysUserService {
      * @return 用户信息集合信息
      */
     @Override
-    public List<SysUser> selectUserList(SysUser user) {
-        PanacheQuery<SysUser> p = RepositoryUtil.queryOfExample(sysUserRepository, user);
+    public List<SysAccount> selectUserList(SysAccount user) {
+        PanacheQuery<SysAccount> p = RepositoryUtil.queryOfExample(sysUserRepository, user);
         return p.list();
     }
 
@@ -93,7 +93,7 @@ public class SysUserServiceImpl extends OkAbsService implements SysUserService {
      */
     @Override
 
-    public List<SysUser> selectAllocatedList(SysUser user) {
+    public List<SysAccount> selectAllocatedList(SysAccount user) {
 //        return userMapper.selectAllocatedList(user);
         return Collections.emptyList();
 
@@ -108,7 +108,7 @@ public class SysUserServiceImpl extends OkAbsService implements SysUserService {
      */
     @Override
 
-    public List<SysUser> selectUnallocatedList(SysUser user) {
+    public List<SysAccount> selectUnallocatedList(SysAccount user) {
 //        return userMapper.selectUnallocatedList(user);
         return Collections.emptyList();
 
@@ -121,7 +121,7 @@ public class SysUserServiceImpl extends OkAbsService implements SysUserService {
      * @return 用户对象信息
      */
     @Override
-    public SysUser selectUserByUserName(String userName) {
+    public SysAccount selectUserByUserName(String userName) {
 //        return userMapper.selectUserByUserName(userName);
         return null;
 
@@ -134,7 +134,7 @@ public class SysUserServiceImpl extends OkAbsService implements SysUserService {
      * @return 用户对象信息
      */
     @Override
-    public SysUser selectUserById(Long userId) {
+    public SysAccount selectUserById(Long userId) {
 //        return userMapper.selectUserById(userId);
         return null;
     }
@@ -191,7 +191,7 @@ public class SysUserServiceImpl extends OkAbsService implements SysUserService {
      * @return
      */
     @Override
-    public String checkPhoneUnique(SysUser user) {
+    public String checkPhoneUnique(SysAccount user) {
 //        Long userId = StringUtils.isNull(user.getId()) ? -1L : user.getId();
 //        SysUser info = userMapper.checkPhoneUnique(user.getPhonenumber());
 //        if (StringUtils.isNotNull(info) && info.getUserId().longValue() != userId.longValue()) {
@@ -207,7 +207,7 @@ public class SysUserServiceImpl extends OkAbsService implements SysUserService {
      * @return
      */
     @Override
-    public String checkEmailUnique(SysUser user) {
+    public String checkEmailUnique(SysAccount user) {
 //        Long userId = StringUtils.isNull(user.getId()) ? -1L : user.getId();
 //        SysUser info = userMapper.checkEmailUnique(user.getEmail());
 //        if (StringUtils.isNotNull(info) && info.getUserId().longValue() != userId.longValue()) {
@@ -222,7 +222,7 @@ public class SysUserServiceImpl extends OkAbsService implements SysUserService {
      * @param user 用户信息
      */
     @Override
-    public void checkUserAllowed(SysUser user) {
+    public void checkUserAllowed(SysAccount user) {
 //        if (StringUtils.isNotNull(user.getId()) && user.isAdmin()) {
 //            throw new CustomException("不允许操作超级管理员用户");
 //        }
@@ -236,7 +236,7 @@ public class SysUserServiceImpl extends OkAbsService implements SysUserService {
      */
     @Override
     @Transactional
-    public int updateUser(SysUser user) {
+    public int updateUser(SysAccount user) {
 //        Long userId = user.getId();
 //        // 删除用户与角色关联
 //        userRoleMapper.deleteUserRoleByUserId(userId);
@@ -259,7 +259,7 @@ public class SysUserServiceImpl extends OkAbsService implements SysUserService {
      * @return 结果
      */
     @Override
-    public int updateUserStatus(SysUser user) {
+    public int updateUserStatus(SysAccount user) {
 //        return userMapper.updateUser(user);
 
         return 0;
@@ -272,7 +272,7 @@ public class SysUserServiceImpl extends OkAbsService implements SysUserService {
      * @return 结果
      */
     @Override
-    public int updateUserProfile(SysUser user) {
+    public int updateUserProfile(SysAccount user) {
 //        return userMapper.updateUser(user);
 
         return 0;
@@ -321,7 +321,7 @@ public class SysUserServiceImpl extends OkAbsService implements SysUserService {
      * @return 结果
      */
     @Override
-    public String importUser(List<SysUser> userList, Boolean isUpdateSupport, String operName) {
+    public String importUser(List<SysAccount> userList, Boolean isUpdateSupport, String operName) {
 //        if (StringUtils.isNull(userList) || userList.size() == 0) {
 //            throw new CustomException("导入用户数据不能为空！");
 //        }
@@ -373,7 +373,7 @@ public class SysUserServiceImpl extends OkAbsService implements SysUserService {
      * @return
      */
     @Override
-    public List<SysUser> selectUserListByRoleKey(String roleKey) {
+    public List<SysAccount> selectUserListByRoleKey(String roleKey) {
 //        return userMapper.selectUserListByRoleKey(roleKey);
         return Collections.emptyList();
     }
@@ -387,7 +387,7 @@ public class SysUserServiceImpl extends OkAbsService implements SysUserService {
         Assert.notNull(signUpForm.getAccountType());
         Assert.notNull(signUpForm.getAccount());
 
-        SysUser sysUser = new SysUser();
+        SysAccount sysUser = new SysAccount();
         sysUser.setIso(signUpForm.getIso());
         sysUser.setFirstName(signUpForm.getFirstName());
         sysUser.setLastName(signUpForm.getLastName());
@@ -399,11 +399,11 @@ public class SysUserServiceImpl extends OkAbsService implements SysUserService {
         SysUserBind bind = new SysUserBind();
         switch (signUpForm.getAccountType()) {
             case email -> {
-                bind.setBindType(UserDefines.BindType.email);
+                bind.setBindType(AccountDefines.BindType.email);
                 bind.setBindValue(signUpForm.getAccount());
             }
             case phone -> {
-                bind.setBindType(UserDefines.BindType.phone);
+                bind.setBindType(AccountDefines.BindType.phone);
                 //添加手机号绑定
                 try {
                     PhoneNumberUtil util = PhoneNumberUtil.getInstance();
@@ -427,12 +427,12 @@ public class SysUserServiceImpl extends OkAbsService implements SysUserService {
     }
 
     @Override
-    public List<SysUser> findAll() {
+    public List<SysAccount> findAll() {
         return sysUserRepository.findAll().list();
     }
 
     @Override
-    public SysUser get(Long id) {
+    public SysAccount get(Long id) {
         return sysUserRepository.findById(id);
     }
 
@@ -442,13 +442,13 @@ public class SysUserServiceImpl extends OkAbsService implements SysUserService {
     }
 
     @Override
-    public void delete(SysUser sysUser) {
+    public void delete(SysAccount sysUser) {
         sysUserRepository.delete(sysUser);
     }
 
 
     @Override
-    public OkPageResult<SysUser> findPage(OkPageable pageable) {
+    public OkPageResult<SysAccount> findPage(OkPageable pageable) {
         var all = sysUserRepository.findAll();
         var query = all.page(Page.of(pageable.getPageNumber(), pageable.getPageSize()));
         return OkPageResult.build(
@@ -458,7 +458,7 @@ public class SysUserServiceImpl extends OkAbsService implements SysUserService {
     }
 
     @Override
-    public void save(SysUser sysUser) {
+    public void save(SysAccount sysUser) {
         sysUserRepository.persist(sysUser);
     }
 

@@ -26,7 +26,7 @@ import javax.persistence.ManyToOne;
 public class SysUserPassword extends BaseEntity {
 
     @ManyToOne
-    SysUser user;
+    SysAccount user;
 
     /**
      * 密码

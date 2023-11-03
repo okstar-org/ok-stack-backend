@@ -15,7 +15,7 @@ package org.okstar.platform.org.service;
 
 
 import org.okstar.platform.common.datasource.OkService;
-import org.okstar.platform.org.domain.SysUser;
+import org.okstar.platform.org.domain.SysAccount;
 import org.okstar.platform.org.dto.SignUpForm;
 import org.okstar.platform.org.dto.SignUpResultDto;
 
@@ -26,7 +26,7 @@ import java.util.List;
  * 
  * 
  */
-public interface SysUserService extends OkService<SysUser, Long>
+public interface SysUserService extends OkService<SysAccount, Long>
 {
     /**
      * 根据条件分页查询用户列表
@@ -34,7 +34,7 @@ public interface SysUserService extends OkService<SysUser, Long>
      * @param user 用户信息
      * @return 用户信息集合信息
      */
-    List<SysUser> selectUserList(SysUser user);
+    List<SysAccount> selectUserList(SysAccount user);
 
     /**
      * 根据条件分页查询已分配用户角色列表
@@ -42,7 +42,7 @@ public interface SysUserService extends OkService<SysUser, Long>
      * @param user 用户信息
      * @return 用户信息集合信息
      */
-    List<SysUser> selectAllocatedList(SysUser user);
+    List<SysAccount> selectAllocatedList(SysAccount user);
 
     /**
      * 根据条件分页查询未分配用户角色列表
@@ -50,7 +50,7 @@ public interface SysUserService extends OkService<SysUser, Long>
      * @param user 用户信息
      * @return 用户信息集合信息
      */
-    List<SysUser> selectUnallocatedList(SysUser user);
+    List<SysAccount> selectUnallocatedList(SysAccount user);
 
     /**
      * 通过用户名查询用户
@@ -58,7 +58,7 @@ public interface SysUserService extends OkService<SysUser, Long>
      * @param userName 用户名
      * @return 用户对象信息
      */
-    SysUser selectUserByUserName(String userName);
+    SysAccount selectUserByUserName(String userName);
 
     /**
      * 通过用户ID查询用户
@@ -66,7 +66,7 @@ public interface SysUserService extends OkService<SysUser, Long>
      * @param userId 用户ID
      * @return 用户对象信息
      */
-    SysUser selectUserById(Long userId);
+    SysAccount selectUserById(Long userId);
 
     /**
      * 根据用户ID查询用户所属角色组
@@ -98,7 +98,7 @@ public interface SysUserService extends OkService<SysUser, Long>
      * @param user 用户信息
      * @return 结果
      */
-    String checkPhoneUnique(SysUser user);
+    String checkPhoneUnique(SysAccount user);
 
     /**
      * 校验email是否唯一
@@ -106,14 +106,14 @@ public interface SysUserService extends OkService<SysUser, Long>
      * @param user 用户信息
      * @return 结果
      */
-    String checkEmailUnique(SysUser user);
+    String checkEmailUnique(SysAccount user);
 
     /**
      * 校验用户是否允许操作
      * 
      * @param user 用户信息
      */
-    void checkUserAllowed(SysUser user);
+    void checkUserAllowed(SysAccount user);
 
 
     /**
@@ -122,7 +122,7 @@ public interface SysUserService extends OkService<SysUser, Long>
      * @param user 用户信息
      * @return 结果
      */
-    int updateUser(SysUser user);
+    int updateUser(SysAccount user);
 
     /**
      * 修改用户状态
@@ -130,7 +130,7 @@ public interface SysUserService extends OkService<SysUser, Long>
      * @param user 用户信息
      * @return 结果
      */
-    int updateUserStatus(SysUser user);
+    int updateUserStatus(SysAccount user);
 
     /**
      * 修改用户基本信息
@@ -138,7 +138,7 @@ public interface SysUserService extends OkService<SysUser, Long>
      * @param user 用户信息
      * @return 结果
      */
-    int updateUserProfile(SysUser user);
+    int updateUserProfile(SysAccount user);
 
     /**
      * 修改用户头像
@@ -165,20 +165,20 @@ public interface SysUserService extends OkService<SysUser, Long>
      * @param operName 操作用户
      * @return 结果
      */
-    String importUser(List<SysUser> userList, Boolean isUpdateSupport, String operName);
+    String importUser(List<SysAccount> userList, Boolean isUpdateSupport, String operName);
 
     /**
      * 某角色下的用户列表
      * @param roleKey
      * @return
      */
-    List<SysUser> selectUserListByRoleKey(String roleKey);
+    List<SysAccount> selectUserListByRoleKey(String roleKey);
 
 
     SignUpResultDto signUp(SignUpForm signUpForm);
 
 
-    void save(SysUser sysUser);
+    void save(SysAccount sysUser);
 
     boolean isAdmin(Long userId);
 }
