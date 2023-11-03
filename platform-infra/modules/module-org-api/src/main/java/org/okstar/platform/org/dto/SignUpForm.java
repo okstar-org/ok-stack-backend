@@ -33,13 +33,16 @@ public class SignUpForm extends Form {
         email,
     }
 
+    //帐号类型
     AccountType accountType;
 
-    String iso; //国家代号
+    //国家代号
+    String iso;
 
     //手机号或者邮箱
     String account;
 
+    //密码
     String password;
 
     String firstName;

@@ -58,6 +58,7 @@
         <quarkus.hibernate-orm.dialect>org.hibernate.dialect.H2Dialect</quarkus.hibernate-orm.dialect>
         <quarkus.hibernate-orm.log.sql>true</quarkus.hibernate-orm.log.sql>
 
+        <quarkus.keycloak.admin-client.server-url>http://localhost:8043</quarkus.keycloak.admin-client.server-url>
         <quarkus.oidc.auth-server-url>http://localhost:8043/realms/okstar</quarkus.oidc.auth-server-url>
         <quarkus.oidc.credentials.secret>i7CucuLUJYa4Tmn767GtdeQATCFgRH2e</quarkus.oidc.credentials.secret>
     </properties>
@@ -87,6 +88,7 @@
                 <quarkus.datasource.jdbc.url>jdbc:mariadb://chuanshaninfo.com:3307</quarkus.datasource.jdbc.url>
                 <quarkus.datasource.jdbc.driver>org.mariadb.jdbc.Driver</quarkus.datasource.jdbc.driver>
                 <quarkus.hibernate-orm.dialect>org.hibernate.dialect.MariaDB106Dialect</quarkus.hibernate-orm.dialect>
+                <quarkus.keycloak.admin-client.server-url>https://chuanshaninfo.com:8443</quarkus.keycloak.admin-client.server-url>
                 <quarkus.oidc.auth-server-url>https://chuanshaninfo.com:8443/realms/okstar</quarkus.oidc.auth-server-url>
                 <quarkus.oidc.credentials.secret>paYHiWpp0vV2jkIhz6EWLPw0HI5yv2XM</quarkus.oidc.credentials.secret>
             </properties>
