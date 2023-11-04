@@ -25,7 +25,7 @@ import javax.enterprise.context.ApplicationScoped;
  * 
  */
 @ApplicationScoped
-public class SysUserBindMapper implements OkRepository<SysAccountBind>
+public class SysAccountBindMapper implements OkRepository<SysAccountBind>
 {
 
 }

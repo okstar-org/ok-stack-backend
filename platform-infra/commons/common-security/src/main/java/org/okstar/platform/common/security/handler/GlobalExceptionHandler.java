@@ -13,7 +13,7 @@
 
 package org.okstar.platform.common.security.handler;
 
-import org.okstar.platform.common.core.exception.OkRuntimeException;
+import io.quarkus.logging.Log;
 
 import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.ExceptionMapper;
@@ -21,20 +21,13 @@ import javax.ws.rs.ext.Provider;
 
 /**
  * 全局异常处理器
- * 
- *
  */
 @Provider
-public class GlobalExceptionHandler implements ExceptionMapper<Exception>
-{
+public class GlobalExceptionHandler implements ExceptionMapper<Exception> {
     @Override
     public Response toResponse(Exception exception) {
-        String msg;
-        if (exception instanceof OkRuntimeException) {
-            msg = "系统异常: " + exception.getMessage();
-        } else {
-            msg = "未知异常: " + exception.getMessage();
-        }
-        return Response.status(Response.Status.BAD_REQUEST).entity(msg).build();
+        String msg = exception.getCause() != null ? exception.getCause().getMessage() : exception.getMessage();
+        Log.errorf("msg:%s", msg);
+        return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(msg).build();
     }
 }

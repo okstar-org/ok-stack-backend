@@ -13,8 +13,8 @@
 
 package org.okstar.platform.auth.keycloak;
 
-import io.quarkus.keycloak.admin.client.common.KeycloakAdminClientConfig;
 import io.quarkus.logging.Log;
+import io.quarkus.runtime.StartupEvent;
 import io.smallrye.common.constraint.Assert;
 import org.jboss.resteasy.client.jaxrs.internal.ResteasyClientBuilderImpl;
 import org.keycloak.admin.client.Keycloak;
@@ -28,30 +28,42 @@ import org.okstar.platform.auth.backend.BackUserManager;
 import org.okstar.platform.common.core.exception.OkRuntimeException;
 
 import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.event.Observes;
 import javax.ws.rs.core.Response;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @ApplicationScoped
 public class KeycloakUserManagerImpl extends KeycloakManagerImpl implements BackUserManager {
+    public static final String OKSTAR_REALM = "okstar";
 
-    private Keycloak init(){
-        Assert.assertTrue(config.grantType== KeycloakAdminClientConfig.GrantType.PASSWORD);
+    Keycloak keycloak;
 
-        return Keycloak.getInstance(
-                (config.serverUrl.get()),
-                (config.realm),
-                (config.username.get()),
-                (config.password.get()),
-                (config.clientId),
+    void startup(@Observes StartupEvent event) {
+        // # https://quarkus.io/guides/security-keycloak-admin-client
+        String realm = "master";
+//        String grantType = "PASSWORD";
+        String clientId = "admin-cli";
+        String username = "admin";
+        String password = "okstar";
+
+        Assert.assertTrue(config.serverUrl.isPresent());
+
+        //处理需要启动执行的任务
+        keycloak = Keycloak.getInstance(
+                config.serverUrl.get(),
+                realm,
+                username,
+                password,
+                clientId,
                 null,
                 null,
                 (new ResteasyClientBuilderImpl().connectionPoolSize(20).build()),
-                true,null,null);
+                true, null, null);
     }
 
     private UsersResource usersResource() {
-        RealmResource realm = init().realms().realm("okstar");
+        RealmResource realm = keycloak.realms().realm(OKSTAR_REALM);
         return realm.users();
     }
 

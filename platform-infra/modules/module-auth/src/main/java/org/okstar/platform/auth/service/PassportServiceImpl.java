@@ -17,6 +17,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.eclipse.microprofile.rest.client.inject.RestClient;
 import org.okstar.platform.auth.backend.BackUser;
 import org.okstar.platform.auth.backend.BackUserManager;
+import org.okstar.platform.common.core.defined.AccountDefines;
 import org.okstar.platform.common.core.utils.IdUtils;
 import org.okstar.platform.org.dto.SignUpForm;
 import org.okstar.platform.org.dto.SignUpResultDto;
@@ -52,7 +53,7 @@ public class PassportServiceImpl implements PassportService {
                 .password(signUpForm.getPassword())
                 .build();
 
-        if (signUpForm.getAccountType() == SignUpForm.AccountType.email) {
+        if (signUpForm.getAccountType() == AccountDefines.BindType.email) {
             user.setEmail(signUpForm.getAccount());
         }
 

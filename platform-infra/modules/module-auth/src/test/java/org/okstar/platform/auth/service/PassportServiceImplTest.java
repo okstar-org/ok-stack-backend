@@ -18,6 +18,7 @@ import io.quarkus.test.junit.QuarkusTest;
 import io.smallrye.common.constraint.Assert;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
+import org.okstar.platform.common.core.defined.AccountDefines;
 import org.okstar.platform.common.core.utils.IdUtils;
 import org.okstar.platform.org.dto.SignUpForm;
 import org.okstar.platform.org.dto.SignUpResultDto;
@@ -42,7 +43,7 @@ class PassportServiceImplTest {
         form.setTs(1L);
 
         //采用邮箱注册
-        form.setAccountType(SignUpForm.AccountType.email);
+        form.setAccountType(AccountDefines.BindType.email);
         form.setAccount("%s@okstar.org".formatted(uuid));
 
         form.setPassword(STRING);

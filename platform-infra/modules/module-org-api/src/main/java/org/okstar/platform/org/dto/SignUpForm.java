@@ -17,6 +17,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.okstar.platform.common.core.defined.AccountDefines;
 import org.okstar.platform.common.core.web.bean.Form;
 
 /**
@@ -28,13 +29,8 @@ import org.okstar.platform.common.core.web.bean.Form;
 @AllArgsConstructor
 public class SignUpForm extends Form {
 
-   public enum AccountType {
-        phone,
-        email,
-    }
-
     //帐号类型
-    AccountType accountType;
+    AccountDefines.BindType accountType;
 
     //国家代号
     String iso;

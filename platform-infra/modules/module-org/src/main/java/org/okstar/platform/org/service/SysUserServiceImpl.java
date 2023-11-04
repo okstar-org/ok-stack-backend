@@ -24,17 +24,21 @@ import org.apache.commons.lang3.RandomStringUtils;
 import org.okstar.platform.common.core.constant.UserConstants;
 import org.okstar.platform.common.core.defined.AccountDefines;
 import org.okstar.platform.common.core.exception.OkRuntimeException;
+import org.okstar.platform.common.core.exception.user.OkUserException;
 import org.okstar.platform.common.core.utils.OkStringUtil;
 import org.okstar.platform.common.core.web.page.OkPageResult;
 import org.okstar.platform.common.core.web.page.OkPageable;
 import org.okstar.platform.common.datasource.OkAbsService;
 import org.okstar.platform.org.account.SysAccount;
+import org.okstar.platform.org.account.SysAccountBind;
 import org.okstar.platform.org.account.SysAccountMapper;
 import org.okstar.platform.org.domain.SysPost;
-import org.okstar.platform.org.account.SysAccountBind;
 import org.okstar.platform.org.dto.SignUpForm;
 import org.okstar.platform.org.dto.SignUpResultDto;
-import org.okstar.platform.org.mapper.*;
+import org.okstar.platform.org.mapper.SysAccountBindMapper;
+import org.okstar.platform.org.mapper.SysPostMapper;
+import org.okstar.platform.org.mapper.SysRoleMapper;
+import org.okstar.platform.org.mapper.SysUserPostMapper;
 import org.okstar.platform.org.utils.RepositoryUtil;
 import org.springframework.util.Assert;
 
@@ -59,7 +63,7 @@ public class SysUserServiceImpl extends OkAbsService implements SysUserService {
     @Inject
     SysAccountMapper sysAccountMapper;
     @Inject
-    SysUserBindMapper sysUserBindMapper;
+    SysAccountBindMapper sysAccountBindMapper;
 
     //    @Inject
     private SysRoleMapper roleMapper;
@@ -388,6 +392,27 @@ public class SysUserServiceImpl extends OkAbsService implements SysUserService {
         Assert.notNull(signUpForm.getAccountType());
         Assert.notNull(signUpForm.getAccount());
 
+        long existed;
+        if (signUpForm.getAccountType() == AccountDefines.BindType.phone) {
+            try {
+                PhoneNumberUtil util = PhoneNumberUtil.getInstance();
+                Phonenumber.PhoneNumber number;
+                number = util.parse(signUpForm.getAccount(), signUpForm.getIso());
+                signUpForm.setAccount(util.format(number, INTERNATIONAL));
+            } catch (NumberParseException e) {
+                throw new OkUserException("Is not phone number", e);
+            }
+        }
+
+        existed = sysAccountBindMapper.count("bindType = ?1 and bindValue = ?2",
+                signUpForm.getAccountType(),
+                signUpForm.getAccount());
+
+        Log.infof("Find exist named account:%s => %s", signUpForm.getAccount(), existed);
+        if (existed > 0) {
+            throw new OkUserException("The account is existed");
+        }
+
         SysAccount sysUser = new SysAccount();
         sysUser.setIso(signUpForm.getIso());
         sysUser.setFirstName(signUpForm.getFirstName());
@@ -400,12 +425,9 @@ public class SysUserServiceImpl extends OkAbsService implements SysUserService {
         SysAccountBind bind = new SysAccountBind();
         switch (signUpForm.getAccountType()) {
             case email -> {
-                bind.setBindType(AccountDefines.BindType.email);
                 bind.setBindValue(signUpForm.getAccount());
             }
             case phone -> {
-                bind.setBindType(AccountDefines.BindType.phone);
-                //添加手机号绑定
                 try {
                     PhoneNumberUtil util = PhoneNumberUtil.getInstance();
                     Phonenumber.PhoneNumber number;
@@ -419,7 +441,7 @@ public class SysUserServiceImpl extends OkAbsService implements SysUserService {
 
 
         bind.setAccount(sysUser);
-        sysUserBindMapper.persist(bind);
+        sysAccountBindMapper.persist(bind);
 
         return SignUpResultDto.builder()
                 .username(sysUser.getUsername())

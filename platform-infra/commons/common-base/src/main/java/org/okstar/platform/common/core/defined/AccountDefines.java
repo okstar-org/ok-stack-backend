@@ -23,12 +23,12 @@ public interface AccountDefines {
     @Getter
     enum BindType {
         /**
-         *  * 手机号
-         *  * 邮箱
-         *  * 微信
-         *  * QQ
-         *  * 钉钉
-         *  * 飞书
+         * 手机号
+         * 邮箱
+         * 微信
+         * QQ
+         * 钉钉
+         * 飞书
          */
         phone,
         email,
@@ -42,7 +42,7 @@ public interface AccountDefines {
      * 帐号状态
      */
     @Getter
-    enum Status  {
+    enum Status {
         NONE,
         OK,
         DISABLED,

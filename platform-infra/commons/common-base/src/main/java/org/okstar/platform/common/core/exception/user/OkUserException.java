@@ -22,9 +22,22 @@ import org.okstar.platform.common.core.exception.OkRuntimeException;
  */
 public class OkUserException extends OkRuntimeException
 {
+    public OkUserException() {
+    }
 
-    public OkUserException(String code, Object[] args)
-    {
-        super(code, null);
+    public OkUserException(String message) {
+        super(message);
+    }
+
+    public OkUserException(String message, Throwable cause) {
+        super(message, cause);
+    }
+
+    public OkUserException(Throwable cause) {
+        super(cause);
+    }
+
+    public OkUserException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
+        super(message, cause, enableSuppression, writableStackTrace);
     }
 }
