@@ -24,9 +24,7 @@
 
     <artifactId>module-auth</artifactId>
 
-    <description>
-        platform-auth认证授权中心
-    </description>
+    <description>负责认证授权等功能</description>
 
     <dependencies>
 
@@ -61,6 +59,7 @@
         <dependency>
             <groupId>org.keycloak</groupId>
             <artifactId>keycloak-admin-client</artifactId>
+            <version>21.0.1</version>
         </dependency>
 
         <dependency>

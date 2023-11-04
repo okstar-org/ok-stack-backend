@@ -138,7 +138,7 @@ org.okstar.platform.auth.service.PassportServiceImplTest.signUp
 
 ## 测试接口
 > 通过如上步骤：用户: B5Ev0cK4i2Lq 密码: okstar
-- 打开Swagger接口测试页面 `http://localhost:9200/q/swagger-ui/`
+- 打开Swagger接口测试页面 `http://localhost:9000/q/swagger-ui/`
 - 找到接口`/user/findAll`输入用户名和密码执行，得到如下则后端配置完全成功！
 ```text
 {
@@ -163,7 +163,20 @@ org.okstar.platform.auth.service.PassportServiceImplTest.signUp
 # 接口访问
 
 ## 注册
-https://localhost/api/infra/auth/password/signUp
+- 打开Swagger接口测试页面 `http://localhost:9000/q/swagger-ui/`
+- 调用方法 `/password/signUp`,输入信息如下：
+```text
+{
+  "ts": 0,
+  "iso": "CN",
+  "accountType": "phone",
+  "account": "<手机号>",
+  "password": "<password>",
+  "firstName": "<firstName>",
+  "lastName": "<lastName>"
+}
+```
+- 返回成功即注册成功。
 
 ## 查询全部用户（测试）
 https://localhost/api/infra/org/user/findAll

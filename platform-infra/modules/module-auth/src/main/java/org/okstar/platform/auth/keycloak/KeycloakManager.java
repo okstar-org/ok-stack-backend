@@ -14,5 +14,5 @@
 package org.okstar.platform.auth.keycloak;
 
 public interface KeycloakManager {
-    String realmName = "okstar";
+
 }

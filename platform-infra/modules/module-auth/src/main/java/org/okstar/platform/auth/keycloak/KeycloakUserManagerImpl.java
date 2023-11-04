@@ -13,8 +13,11 @@
 
 package org.okstar.platform.auth.keycloak;
 
+import io.quarkus.keycloak.admin.client.common.KeycloakAdminClientConfig;
 import io.quarkus.logging.Log;
 import io.smallrye.common.constraint.Assert;
+import org.jboss.resteasy.client.jaxrs.internal.ResteasyClientBuilderImpl;
+import org.keycloak.admin.client.Keycloak;
 import org.keycloak.admin.client.resource.RealmResource;
 import org.keycloak.admin.client.resource.UserResource;
 import org.keycloak.admin.client.resource.UsersResource;
@@ -32,8 +35,23 @@ import java.util.stream.Collectors;
 @ApplicationScoped
 public class KeycloakUserManagerImpl extends KeycloakManagerImpl implements BackUserManager {
 
+    private Keycloak init(){
+        Assert.assertTrue(config.grantType== KeycloakAdminClientConfig.GrantType.PASSWORD);
+
+        return Keycloak.getInstance(
+                (config.serverUrl.get()),
+                (config.realm),
+                (config.username.get()),
+                (config.password.get()),
+                (config.clientId),
+                null,
+                null,
+                (new ResteasyClientBuilderImpl().connectionPoolSize(20).build()),
+                true,null,null);
+    }
+
     private UsersResource usersResource() {
-        RealmResource realm = keycloak.realm(realmName);
+        RealmResource realm = init().realms().realm("okstar");
         return realm.users();
     }
 

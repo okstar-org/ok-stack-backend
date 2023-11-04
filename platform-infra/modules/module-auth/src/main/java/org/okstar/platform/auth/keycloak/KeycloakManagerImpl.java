@@ -13,7 +13,7 @@
 
 package org.okstar.platform.auth.keycloak;
 
-import org.keycloak.admin.client.Keycloak;
+import io.quarkus.keycloak.admin.client.common.KeycloakAdminClientConfig;
 
 import javax.inject.Inject;
 
@@ -23,5 +23,5 @@ import javax.inject.Inject;
  */
 public class KeycloakManagerImpl implements KeycloakManager {
     @Inject
-    protected Keycloak keycloak;
+    KeycloakAdminClientConfig config;
 }

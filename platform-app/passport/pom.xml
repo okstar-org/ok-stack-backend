@@ -25,9 +25,7 @@
 
     <groupId>org.okstar.platform</groupId>
     <artifactId>passport</artifactId>
-    <name>App::Passport</name>
-    <description>接入服务：负责用户注册等功能</description>
-
+    <description>负责用户接入等功能</description>
     <properties>
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
