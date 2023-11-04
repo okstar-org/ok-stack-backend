@@ -27,4 +27,13 @@ public interface SystemDefines {
         OK, //正常
         DELETED,//删除
     }
+
+    @Getter
+    enum Endpoint {
+        PC, //电脑
+        MOBILE,//移动
+        PAD//平板
+    }
+
+
 }

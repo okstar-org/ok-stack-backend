@@ -15,7 +15,7 @@ package org.okstar.platform.org.service;
 
 
 import org.okstar.platform.common.datasource.OkService;
-import org.okstar.platform.org.domain.SysAccount;
+import org.okstar.platform.org.account.SysAccount;
 import org.okstar.platform.org.dto.SignUpForm;
 import org.okstar.platform.org.dto.SignUpResultDto;
 

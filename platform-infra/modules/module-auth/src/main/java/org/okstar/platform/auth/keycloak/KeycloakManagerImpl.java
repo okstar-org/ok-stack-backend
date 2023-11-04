@@ -17,6 +17,10 @@ import org.keycloak.admin.client.Keycloak;
 
 import javax.inject.Inject;
 
+/**
+ * KC管理接口
+ * 文档： https://quarkus.io/guides/security-keycloak-admin-client
+ */
 public class KeycloakManagerImpl implements KeycloakManager {
     @Inject
     protected Keycloak keycloak;

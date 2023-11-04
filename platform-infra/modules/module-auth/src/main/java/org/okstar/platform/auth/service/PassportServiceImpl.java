@@ -56,7 +56,8 @@ public class PassportServiceImpl implements PassportService {
             user.setEmail(signUpForm.getAccount());
         }
 
-        backUserManager.addUser(user);
+        BackUser backUser = backUserManager.addUser(user);
+        log.info("Added user:{}", backUser.getUsername());
 
         return resultDto;
     }

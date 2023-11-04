@@ -13,12 +13,15 @@
 
 package org.okstar.platform.org.service.impl;
 
-import org.okstar.platform.common.core.utils.OkStringUtil;
 import org.okstar.platform.org.domain.SysUserOnline;
+import org.okstar.platform.org.dto.SignInAttached;
+import org.okstar.platform.org.mapper.SysRoleMapper;
 import org.okstar.platform.org.service.ISysUserOnlineService;
-import org.okstar.platform.org.vo.LoginUser;
+import org.okstar.platform.org.vo.LoginJwtUser;
+import org.springframework.util.Assert;
 
 import javax.enterprise.context.ApplicationScoped;
+import javax.inject.Inject;
 
 
 /**
@@ -29,6 +32,9 @@ import javax.enterprise.context.ApplicationScoped;
 @ApplicationScoped
 public class SysUserOnlineServiceImpl implements ISysUserOnlineService
 {
+    @Inject
+    private SysRoleMapper roleMapper;
+
     /**
      * 通过登录地址查询信息
      * 
@@ -37,12 +43,8 @@ public class SysUserOnlineServiceImpl implements ISysUserOnlineService
      * @return 在线用户信息
      */
     @Override
-    public SysUserOnline selectOnlineByIpaddr(String ipaddr, LoginUser user)
+    public SysUserOnline selectOnlineByIpaddr(String ipaddr, LoginJwtUser user)
     {
-        if (OkStringUtil.equals(ipaddr, user.getIpaddr()))
-        {
-            return loginUserToUserOnline(user);
-        }
         return null;
     }
 
@@ -54,12 +56,9 @@ public class SysUserOnlineServiceImpl implements ISysUserOnlineService
      * @return 在线用户信息
      */
     @Override
-    public SysUserOnline selectOnlineByUserName(String userName, LoginUser user)
+    public SysUserOnline selectOnlineByUserName(String userName, LoginJwtUser user)
     {
-        if (OkStringUtil.equals(userName, user.getUsername()))
-        {
-            return loginUserToUserOnline(user);
-        }
+
         return null;
     }
 
@@ -72,33 +71,29 @@ public class SysUserOnlineServiceImpl implements ISysUserOnlineService
      * @return 在线用户信息
      */
     @Override
-    public SysUserOnline selectOnlineByInfo(String ipaddr, String userName, LoginUser user)
+    public SysUserOnline selectOnlineByInfo(String ipaddr, String userName, LoginJwtUser user)
     {
-        if (OkStringUtil.equals(ipaddr, user.getIpaddr()) && OkStringUtil.equals(userName, user.getUsername()))
-        {
-            return loginUserToUserOnline(user);
-        }
+
         return null;
     }
 
     /**
      * 设置在线用户信息
      * 
-     * @param user 用户信息
+     * @param jwtUser 用户信息
      * @return 在线用户
      */
-    @Override
-    public SysUserOnline loginUserToUserOnline(LoginUser user)
+    public SysUserOnline makeSaveOnline(LoginJwtUser jwtUser, SignInAttached signInAttached)
     {
-        if (OkStringUtil.isNull(user))
-        {
-            return null;
-        }
+        Assert.notNull(jwtUser, "参数异常！");
+
         SysUserOnline sysUserOnline = new SysUserOnline();
-        sysUserOnline.setTokenId(user.getToken());
-        sysUserOnline.setUserName(user.getUsername());
-        sysUserOnline.setIpaddr(user.getIpaddr());
-        sysUserOnline.setLoginTime(user.getLoginTime());
+        sysUserOnline.setSessionId(jwtUser.getToken());
+        sysUserOnline.setAccountId(jwtUser.getUserId());
+        sysUserOnline.setSignInAttached(signInAttached);
+
+
+
         return sysUserOnline;
     }
 }

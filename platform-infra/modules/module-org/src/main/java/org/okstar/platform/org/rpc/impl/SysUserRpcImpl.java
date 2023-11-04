@@ -14,7 +14,7 @@
 package org.okstar.platform.org.rpc.impl;
 
 import org.okstar.platform.common.core.utils.bean.OkBeanUtils;
-import org.okstar.platform.org.domain.SysAccount;
+import org.okstar.platform.org.account.SysAccount;
 import org.okstar.platform.org.dto.SignUpForm;
 import org.okstar.platform.org.dto.SignUpResultDto;
 import org.okstar.platform.org.dto.SysUserDto;

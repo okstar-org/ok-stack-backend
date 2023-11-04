@@ -11,25 +11,31 @@
  * /
  */
 
-package org.okstar.platform.org.domain;
+package org.okstar.platform.org.dto;
 
 import lombok.Data;
+import org.okstar.platform.common.core.defined.SystemDefines;
+import org.okstar.platform.common.core.web.bean.DTO;
 
-import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
-
-/**
- * 用户密码(修改历史)
- */
 @Data
-@Entity
-public class SysUserPassword extends BaseEntity {
+public class SignInAttached extends DTO {
 
-    @ManyToOne
-    SysAccount user;
+    /** 登录IP */
+    private String ip;
 
-    /**
-     * 密码
-     */
-    String password;
+    /** 登录地址 */
+    private String location;
+
+    /** 浏览器类型 */
+    private String browser;
+
+    private String browserVersion;
+
+    /** 操作系统 */
+    private String os;
+
+    private String osVersion;
+
+    /** 终端 */
+    private SystemDefines.Endpoint endpoint;
 }

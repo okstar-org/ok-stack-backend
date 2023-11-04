@@ -11,37 +11,20 @@
  * /
  */
 
-package org.okstar.platform.org.domain;
+package org.okstar.platform.org.account;
 
-import lombok.Data;
-import org.okstar.platform.common.core.defined.AccountDefines;
+import io.quarkus.hibernate.orm.panache.PanacheRepository;
 
-import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
+import javax.enterprise.context.ApplicationScoped;
+
 
 /**
- * 用户绑定
-
+ * 用户表 数据层
+ * 
+ * 
  */
-@Data
-@Entity
-public class SysUserBind extends BaseEntity {
+@ApplicationScoped
+public class SysAccountMapper implements PanacheRepository<SysAccount>
+{
 
-    @ManyToOne
-    SysAccount user;
-
-    /**
-     * 绑定类型
-     */
-    AccountDefines.BindType bindType;
-
-    /**
-     * 绑定值
-     */
-    String bindValue;
-
-    /**
-     * 是否合法
-     */
-    Boolean isValid;
 }

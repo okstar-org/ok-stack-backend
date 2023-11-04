@@ -11,11 +11,11 @@
  * /
  */
 
-package org.okstar.platform.org.domain;
+package org.okstar.platform.org.account;
 
 import lombok.Data;
 import org.okstar.platform.common.core.defined.AccountDefines;
-import org.okstar.platform.common.core.defined.SystemDefines;
+import org.okstar.platform.org.domain.BaseEntity;
 
 import javax.persistence.Entity;
 import javax.persistence.Table;
@@ -54,10 +54,7 @@ public class SysAccount extends BaseEntity {
      */
     private AccountDefines.Status status;
 
-    /**
-     * 标志
-     */
-    private SystemDefines.DataFlag dataFlag;
+
 
     /**
      * 所在国家代号

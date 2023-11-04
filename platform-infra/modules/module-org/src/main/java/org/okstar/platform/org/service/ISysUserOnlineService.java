@@ -15,7 +15,8 @@ package org.okstar.platform.org.service;
 
 
 import org.okstar.platform.org.domain.SysUserOnline;
-import org.okstar.platform.org.vo.LoginUser;
+import org.okstar.platform.org.dto.SignInAttached;
+import org.okstar.platform.org.vo.LoginJwtUser;
 
 /**
  * 在线用户 服务层
@@ -31,7 +32,7 @@ public interface ISysUserOnlineService
      * @param user 用户信息
      * @return 在线用户信息
      */
-    SysUserOnline selectOnlineByIpaddr(String ipaddr, LoginUser user);
+    SysUserOnline selectOnlineByIpaddr(String ipaddr, LoginJwtUser user);
 
     /**
      * 通过用户名称查询信息
@@ -40,7 +41,7 @@ public interface ISysUserOnlineService
      * @param user 用户信息
      * @return 在线用户信息
      */
-    SysUserOnline selectOnlineByUserName(String userName, LoginUser user);
+    SysUserOnline selectOnlineByUserName(String userName, LoginJwtUser user);
 
     /**
      * 通过登录地址/用户名称查询信息
@@ -50,7 +51,7 @@ public interface ISysUserOnlineService
      * @param user 用户信息
      * @return 在线用户信息
      */
-    SysUserOnline selectOnlineByInfo(String ipaddr, String userName, LoginUser user);
+    SysUserOnline selectOnlineByInfo(String ipaddr, String userName, LoginJwtUser user);
 
     /**
      * 设置在线用户信息
@@ -58,5 +59,5 @@ public interface ISysUserOnlineService
      * @param user 用户信息
      * @return 在线用户
      */
-    SysUserOnline loginUserToUserOnline(LoginUser user);
+    SysUserOnline makeSaveOnline(LoginJwtUser user, SignInAttached signInAttached);
 }

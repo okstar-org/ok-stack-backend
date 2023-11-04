@@ -28,9 +28,10 @@ import org.okstar.platform.common.core.utils.OkStringUtil;
 import org.okstar.platform.common.core.web.page.OkPageResult;
 import org.okstar.platform.common.core.web.page.OkPageable;
 import org.okstar.platform.common.datasource.OkAbsService;
-import org.okstar.platform.org.domain.SysAccount;
+import org.okstar.platform.org.account.SysAccount;
+import org.okstar.platform.org.account.SysAccountMapper;
 import org.okstar.platform.org.domain.SysPost;
-import org.okstar.platform.org.domain.SysUserBind;
+import org.okstar.platform.org.account.SysAccountBind;
 import org.okstar.platform.org.dto.SignUpForm;
 import org.okstar.platform.org.dto.SignUpResultDto;
 import org.okstar.platform.org.mapper.*;
@@ -56,9 +57,9 @@ import static com.google.i18n.phonenumbers.PhoneNumberUtil.PhoneNumberFormat.INT
 public class SysUserServiceImpl extends OkAbsService implements SysUserService {
 
     @Inject
-    SysUserRepository sysUserRepository;
+    SysAccountMapper sysAccountMapper;
     @Inject
-    SysUserBindRepository sysUserBindRepository;
+    SysUserBindMapper sysUserBindMapper;
 
     //    @Inject
     private SysRoleMapper roleMapper;
@@ -81,7 +82,7 @@ public class SysUserServiceImpl extends OkAbsService implements SysUserService {
      */
     @Override
     public List<SysAccount> selectUserList(SysAccount user) {
-        PanacheQuery<SysAccount> p = RepositoryUtil.queryOfExample(sysUserRepository, user);
+        PanacheQuery<SysAccount> p = RepositoryUtil.queryOfExample(sysAccountMapper, user);
         return p.list();
     }
 
@@ -392,11 +393,11 @@ public class SysUserServiceImpl extends OkAbsService implements SysUserService {
         sysUser.setFirstName(signUpForm.getFirstName());
         sysUser.setLastName(signUpForm.getLastName());
         sysUser.setUsername(RandomStringUtils.randomAlphanumeric(12));
-        sysUserRepository.persist(sysUser);
+        sysAccountMapper.persist(sysUser);
         Log.infof("User have been saved successfully.=>%s",
                 sysUser.getUsername(), sysUser);
 
-        SysUserBind bind = new SysUserBind();
+        SysAccountBind bind = new SysAccountBind();
         switch (signUpForm.getAccountType()) {
             case email -> {
                 bind.setBindType(AccountDefines.BindType.email);
@@ -417,8 +418,8 @@ public class SysUserServiceImpl extends OkAbsService implements SysUserService {
         }
 
 
-        bind.setUser(sysUser);
-        sysUserBindRepository.persist(bind);
+        bind.setAccount(sysUser);
+        sysUserBindMapper.persist(bind);
 
         return SignUpResultDto.builder()
                 .username(sysUser.getUsername())
@@ -428,28 +429,28 @@ public class SysUserServiceImpl extends OkAbsService implements SysUserService {
 
     @Override
     public List<SysAccount> findAll() {
-        return sysUserRepository.findAll().list();
+        return sysAccountMapper.findAll().list();
     }
 
     @Override
     public SysAccount get(Long id) {
-        return sysUserRepository.findById(id);
+        return sysAccountMapper.findById(id);
     }
 
     @Override
     public void deleteById(Long id) {
-        sysUserRepository.deleteById(id);
+        sysAccountMapper.deleteById(id);
     }
 
     @Override
     public void delete(SysAccount sysUser) {
-        sysUserRepository.delete(sysUser);
+        sysAccountMapper.delete(sysUser);
     }
 
 
     @Override
     public OkPageResult<SysAccount> findPage(OkPageable pageable) {
-        var all = sysUserRepository.findAll();
+        var all = sysAccountMapper.findAll();
         var query = all.page(Page.of(pageable.getPageNumber(), pageable.getPageSize()));
         return OkPageResult.build(
                 query.list(),
@@ -459,7 +460,7 @@ public class SysUserServiceImpl extends OkAbsService implements SysUserService {
 
     @Override
     public void save(SysAccount sysUser) {
-        sysUserRepository.persist(sysUser);
+        sysAccountMapper.persist(sysUser);
     }
 
     @Override

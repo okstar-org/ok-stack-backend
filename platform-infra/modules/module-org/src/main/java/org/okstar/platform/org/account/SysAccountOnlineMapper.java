@@ -11,17 +11,20 @@
  * /
  */
 
-package org.okstar.platform.auth.service;
+package org.okstar.platform.org.account;
+
+import org.okstar.platform.common.datasource.OkRepository;
+
+import javax.enterprise.context.ApplicationScoped;
 
 
-import org.okstar.platform.org.dto.SignUpForm;
-import org.okstar.platform.org.dto.SignUpResultDto;
-
-import javax.transaction.Transactional;
-
-@Transactional
-public interface PassportService {
-
-    SignUpResultDto signUp(SignUpForm signUpForm);
+/**
+ * 用户绑定
+ * 
+ * 
+ */
+@ApplicationScoped
+public class SysAccountOnlineMapper implements OkRepository<SysAccountBind>
+{
 
 }

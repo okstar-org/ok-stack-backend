@@ -13,19 +13,19 @@
 
 package org.okstar.platform.org.mapper;
 
-import io.quarkus.hibernate.orm.panache.PanacheRepository;
-import org.okstar.platform.org.domain.SysAccount;
+import org.okstar.platform.common.datasource.OkRepository;
+import org.okstar.platform.org.account.SysAccountBind;
 
 import javax.enterprise.context.ApplicationScoped;
 
 
 /**
- * 用户表 数据层
+ * 用户绑定
  * 
  * 
  */
 @ApplicationScoped
-public class SysUserRepository implements PanacheRepository<SysAccount>
+public class SysUserBindMapper implements OkRepository<SysAccountBind>
 {
 
 }

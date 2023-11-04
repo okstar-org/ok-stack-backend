@@ -22,5 +22,11 @@ import java.util.List;
 public interface BackUserManager {
     List<BackUser> users();
 
-    String addUser(BackUser user);
+    /**
+     * 增加用户
+     *
+     * @param user
+     * @return
+     */
+    BackUser addUser(BackUser user);
 }

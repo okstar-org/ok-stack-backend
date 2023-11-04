@@ -16,6 +16,7 @@ package org.okstar.platform.common.datasource.domain;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import io.quarkus.hibernate.orm.panache.PanacheEntity;
 import lombok.Data;
+import org.okstar.platform.common.core.defined.SystemDefines;
 
 import javax.persistence.MappedSuperclass;
 import java.util.Date;
@@ -24,8 +25,10 @@ import java.util.Date;
 @MappedSuperclass
 public class OkEntity extends PanacheEntity {
 
-
-
+    /**
+     * 数据UUID
+     */
+    private String uuid;
 
     /**
      * 创建者
@@ -49,6 +52,11 @@ public class OkEntity extends PanacheEntity {
      */
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date updateAt;
+
+    /**
+     * 数据标志
+     */
+    private SystemDefines.DataFlag dataFlag;
 
     private Boolean disabled;
 

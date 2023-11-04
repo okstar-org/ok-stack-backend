@@ -11,21 +11,29 @@
  * /
  */
 
-package org.okstar.platform.org.mapper;
+package org.okstar.platform.org.account;
 
-import org.okstar.platform.common.datasource.OkRepository;
-import org.okstar.platform.org.domain.SysUserBind;
+import lombok.Data;
+import org.okstar.platform.org.domain.BaseEntity;
 
-import javax.enterprise.context.ApplicationScoped;
-
+import javax.persistence.Entity;
+import javax.persistence.ManyToOne;
 
 /**
- * 用户绑定
- * 
- * 
+ * 用户密码(修改历史)
  */
-@ApplicationScoped
-public class SysUserBindRepository implements OkRepository<SysUserBind>
-{
+@Data
+@Entity
+public class SysAccountPassword extends BaseEntity {
 
+    /**
+     * 绑定到帐号
+     */
+    @ManyToOne
+    SysAccount account;
+
+    /**
+     * 密码
+     */
+    String password;
 }

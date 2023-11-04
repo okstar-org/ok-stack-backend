@@ -14,6 +14,7 @@
 package org.okstar.platform.auth.keycloak;
 
 import io.quarkus.logging.Log;
+import io.smallrye.common.constraint.Assert;
 import org.keycloak.admin.client.resource.RealmResource;
 import org.keycloak.admin.client.resource.UserResource;
 import org.keycloak.admin.client.resource.UsersResource;
@@ -21,7 +22,7 @@ import org.keycloak.representations.idm.CredentialRepresentation;
 import org.keycloak.representations.idm.UserRepresentation;
 import org.okstar.platform.auth.backend.BackUser;
 import org.okstar.platform.auth.backend.BackUserManager;
-import org.springframework.util.Assert;
+import org.okstar.platform.common.core.exception.OkRuntimeException;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.ws.rs.core.Response;
@@ -33,7 +34,6 @@ public class KeycloakUserManagerImpl extends KeycloakManagerImpl implements Back
 
     private UsersResource usersResource() {
         RealmResource realm = keycloak.realm(realmName);
-
         return realm.users();
     }
 
@@ -47,26 +47,25 @@ public class KeycloakUserManagerImpl extends KeycloakManagerImpl implements Back
 
 
     @Override
-    public String addUser(BackUser user) {
+    public BackUser addUser(BackUser user) {
         Log.infof("addUser:%s", user.getUsername());
-
         UsersResource usersResource = usersResource();
         try (Response response = usersResource.create(toRepresent(user))) {
             Log.infof("statusCode=>%s", response.getStatus());
-            Assert.isTrue(response.getStatus() == Response.Status.CREATED.getStatusCode(),
-                    "添加失败");
+            Assert.assertTrue(response.getStatus() == Response.Status.CREATED.getStatusCode());
+        } catch (Exception e) {
+            throw new OkRuntimeException("Creating account exception occurred: %s".formatted(e.getMessage()), e);
         }
 
-        usersResource.search(user.getUsername()).forEach(ur -> {
-            Log.infof("user:%s=>%s", user.getUsername(), ur.getId());
+        return usersResource.search(user.getUsername()).stream().peek(userRepresentation -> {
+            Log.infof("user:%s=>%s", user.getUsername(), userRepresentation.getId());
             CredentialRepresentation cr = new CredentialRepresentation();
             cr.setUserLabel("My password");
             cr.setType("password");
             cr.setValue(user.getPassword());
-            UserResource userResource = usersResource.get(ur.getId());
+            UserResource userResource = usersResource.get(userRepresentation.getId());
             userResource.resetPassword(cr);
-        });
-        return user.getUsername();
+        }).findFirst().map(KeycloakUserManagerImpl::toBackend).orElse(null);
     }
 
     private UserRepresentation toRepresent(BackUser user) {
