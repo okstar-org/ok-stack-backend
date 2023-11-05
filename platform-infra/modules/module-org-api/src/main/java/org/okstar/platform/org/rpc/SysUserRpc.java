@@ -13,6 +13,7 @@
 
 package org.okstar.platform.org.rpc;
 
+import io.smallrye.common.annotation.Blocking;
 import org.eclipse.microprofile.rest.client.inject.RegisterRestClient;
 import org.okstar.platform.org.dto.SignUpForm;
 import org.okstar.platform.org.dto.SignUpResultDto;
@@ -30,6 +31,7 @@ public interface SysUserRpc {
 
     @POST
     @Path("signUp")
+    @Blocking
     SignUpResultDto signUp(SignUpForm signUpDto);
 
     @GET

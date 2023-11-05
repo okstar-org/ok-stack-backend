@@ -80,6 +80,9 @@
             <id>dev-okstar</id>
             <activation>
                 <activeByDefault>true</activeByDefault>
+                <property>
+                    <name>dev-okstar</name>
+                </property>
             </activation>
             <properties>
                 <quarkus.datasource.db-kind>mariadb</quarkus.datasource.db-kind>
@@ -116,7 +119,7 @@
 
         <dependency>
             <groupId>io.quarkus</groupId>
-            <artifactId>quarkus-resteasy</artifactId>
+            <artifactId>quarkus-resteasy-reactive</artifactId>
         </dependency>
 
         <dependency>

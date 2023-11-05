@@ -29,7 +29,5 @@
     <modules>
         <module>commons</module>
         <module>modules</module>
-        <module>modules/module-org</module>
     </modules>
-
 </project>

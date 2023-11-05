@@ -17,12 +17,11 @@ import io.quarkus.logging.Log;
 
 import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.ExceptionMapper;
-import javax.ws.rs.ext.Provider;
 
 /**
  * 全局异常处理器
  */
-@Provider
+//@Provider
 public class GlobalExceptionHandler implements ExceptionMapper<Exception> {
     @Override
     public Response toResponse(Exception exception) {
