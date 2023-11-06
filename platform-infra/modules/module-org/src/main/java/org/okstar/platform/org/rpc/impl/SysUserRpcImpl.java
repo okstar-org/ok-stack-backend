@@ -14,6 +14,7 @@
 package org.okstar.platform.org.rpc.impl;
 
 import org.okstar.platform.common.core.utils.bean.OkBeanUtils;
+import org.okstar.platform.common.rpc.RpcResult;
 import org.okstar.platform.org.account.SysAccount;
 import org.okstar.platform.org.dto.SignUpForm;
 import org.okstar.platform.org.dto.SignUpResultDto;
@@ -31,8 +32,13 @@ public class SysUserRpcImpl implements SysUserRpc {
     SysUserService userService;
 
     @Override
-    public SignUpResultDto signUp(SignUpForm signUpDto) {
-        return userService.signUp(signUpDto);
+    public RpcResult<SignUpResultDto> signUp(SignUpForm signUpForm) {
+        try {
+            SignUpResultDto resultDto = userService.signUp(signUpForm);
+            return RpcResult.<SignUpResultDto>builder().success(true).data(resultDto).build();
+        } catch (Exception e) {
+            return RpcResult.<SignUpResultDto>builder().success(false).msg(e.getMessage()).build();
+        }
     }
 
     @Override

@@ -98,7 +98,7 @@ import java.util.Map;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Res<T> extends VO
+public class Res<T> extends DTO
 {
     private Long ts;
     private int code;

@@ -14,19 +14,22 @@
 package org.okstar.platform.common.security.handler;
 
 import io.quarkus.logging.Log;
+import org.okstar.platform.common.core.web.bean.Res;
 
 import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.ExceptionMapper;
+import javax.ws.rs.ext.Provider;
 
 /**
  * 全局异常处理器
  */
-//@Provider
+@Provider
 public class GlobalExceptionHandler implements ExceptionMapper<Exception> {
     @Override
     public Response toResponse(Exception exception) {
         String msg = exception.getCause() != null ? exception.getCause().getMessage() : exception.getMessage();
         Log.errorf("msg:%s", msg);
-        return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(msg).build();
+        Res<Object> error = Res.error(msg);
+        return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(error).build();
     }
 }

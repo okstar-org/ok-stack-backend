@@ -15,6 +15,7 @@ package org.okstar.platform.org.rpc;
 
 import io.smallrye.common.annotation.Blocking;
 import org.eclipse.microprofile.rest.client.inject.RegisterRestClient;
+import org.okstar.platform.common.rpc.RpcResult;
 import org.okstar.platform.org.dto.SignUpForm;
 import org.okstar.platform.org.dto.SignUpResultDto;
 import org.okstar.platform.org.dto.SysUserDto;
@@ -32,7 +33,7 @@ public interface SysUserRpc {
     @POST
     @Path("signUp")
     @Blocking
-    SignUpResultDto signUp(SignUpForm signUpDto);
+    RpcResult<SignUpResultDto> signUp(SignUpForm signUpDto);
 
     @GET
     @Path("findByUsername")
