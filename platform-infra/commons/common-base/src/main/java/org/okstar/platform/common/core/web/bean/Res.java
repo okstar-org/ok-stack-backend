@@ -13,7 +13,6 @@
 
 package org.okstar.platform.common.core.web.bean;
 
-import io.netty.handler.codec.http.HttpResponseStatus;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -22,6 +21,8 @@ import org.okstar.platform.common.core.utils.OkDateUtils;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Optional;
+
+
 
 /**
  * 响应信息主体
@@ -102,6 +103,9 @@ import java.util.Optional;
 @NoArgsConstructor
 public class Res<T> extends DTO {
 
+    private static final int OK = 0;
+    private static final int CREATED = 1;
+    private static final int ERROR = -1;
     private int takes;
     private int code;
     private String msg;
@@ -117,15 +121,15 @@ public class Res<T> extends DTO {
      * @return
      */
     public static <T> Res<T> ok(Req req) {
-        return build(req, null, HttpResponseStatus.OK.code(), null);
+        return build(req, null, OK, null);
     }
 
     public static <T> Res<T> ok(Req req, T data) {
-        return build(req, data, HttpResponseStatus.OK.code(), null);
+        return build(req, data,  OK , null);
     }
 
     public static <T> Res<T> ok(Req req, T data, String msg) {
-        return build(req, data, HttpResponseStatus.OK.code(), msg);
+        return build(req, data,  OK , msg);
     }
 
 
@@ -136,15 +140,15 @@ public class Res<T> extends DTO {
      * @return
      */
     public static <T> Res<T> created() {
-        return build(null, null, HttpResponseStatus.CREATED.code(), null);
+        return build(null, null, CREATED, null);
     }
 
     public static <T> Res<T> created(T data) {
-        return build(null, data, HttpResponseStatus.CREATED.code(), null);
+        return build(null, data, CREATED, null);
     }
 
     public static <T> Res<T> created(T data, String msg) {
-        return build(null, null, HttpResponseStatus.CREATED.code(), msg);
+        return build(null, null, CREATED, msg);
     }
 
     /**
@@ -154,15 +158,15 @@ public class Res<T> extends DTO {
      * @return
      */
     public static <T> Res<T> error(Req req) {
-        return build(req, null, HttpResponseStatus.INTERNAL_SERVER_ERROR.code(), null);
+        return build(req, null, ERROR, null);
     }
 
     public static <T> Res<T> error(Req req, String msg) {
-        return build(req, null, HttpResponseStatus.INTERNAL_SERVER_ERROR.code(), msg);
+        return build(req, null, ERROR, msg);
     }
 
     public static <T> Res<T> error(Req req, T data, String msg) {
-        return build(req, data, HttpResponseStatus.INTERNAL_SERVER_ERROR.code(), msg);
+        return build(req, data, ERROR, msg);
     }
 
 
