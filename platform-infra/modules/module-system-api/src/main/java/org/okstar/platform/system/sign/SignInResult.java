@@ -11,18 +11,27 @@
  * /
  */
 
-package org.okstar.platform.auth.service;
+package org.okstar.platform.system.sign;
 
+import lombok.Builder;
+import lombok.Data;
 
-import org.okstar.platform.system.sign.SignInForm;
-import org.okstar.platform.system.sign.SignInResult;
-import org.okstar.platform.system.sign.SignUpForm;
-import org.okstar.platform.system.sign.SignUpResult;
-
-
-public interface PassportService {
-
-    SignUpResult signUp(SignUpForm signUpForm);
-
-    SignInResult signIn(SignInForm signInForm);
+/**
+ * 登录返回信息
+ * <p>
+ * export interface Token {
+ * access_token: string;
+ * refresh_token: string;
+ * token?: string;
+ * token_type?: string;
+ * expires_in?: number;
+ * }
+ */
+@Data
+@Builder
+public class SignInResult {
+    private String token;
+    private String refresh_token;
+    private String token_type;
+    private Long expires_in;
 }

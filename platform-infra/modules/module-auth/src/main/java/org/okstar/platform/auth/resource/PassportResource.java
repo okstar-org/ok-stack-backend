@@ -17,8 +17,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.okstar.platform.auth.service.PassportService;
 import org.okstar.platform.common.core.web.bean.Res;
 import org.okstar.platform.common.core.web.controller.OkBaseController;
-import org.okstar.platform.system.vo.SignUpForm;
-import org.okstar.platform.system.vo.SignUpResultDto;
+import org.okstar.platform.system.sign.SignInForm;
+import org.okstar.platform.system.sign.SignInResult;
+import org.okstar.platform.system.sign.SignUpForm;
+import org.okstar.platform.system.sign.SignUpResult;
 
 import javax.inject.Inject;
 import javax.ws.rs.POST;
@@ -36,10 +38,19 @@ public class PassportResource extends OkBaseController {
 
     @POST
     @Path("signUp")
-    public Res<SignUpResultDto> signUp(SignUpForm signUpForm) {
+    public Res<SignUpResult> signUp(SignUpForm signUpForm) {
         log.info("signUp:{}", signUpForm);
         var resultDto = passportService.signUp(signUpForm);
         log.info("resultDto=>{}", resultDto);
         return Res.ok(signUpForm, resultDto);
+    }
+
+    @POST
+    @Path("signIn")
+    public Res<SignInResult> signIn(SignInForm signInForm) {
+        log.info("signIn:{}", signInForm);
+        var resultDto = passportService.signIn(signInForm);
+        log.info("resultDto=>{}", resultDto);
+        return Res.ok(signInForm, resultDto);
     }
 }

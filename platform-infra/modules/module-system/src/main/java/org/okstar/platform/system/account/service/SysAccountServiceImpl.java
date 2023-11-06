@@ -26,8 +26,8 @@ import org.okstar.platform.common.core.exception.user.OkUserException;
 import org.okstar.platform.common.core.web.page.OkPageResult;
 import org.okstar.platform.common.core.web.page.OkPageable;
 import org.okstar.platform.common.datasource.OkAbsService;
-import org.okstar.platform.system.vo.SignUpForm;
-import org.okstar.platform.system.vo.SignUpResultDto;
+import org.okstar.platform.system.sign.SignUpForm;
+import org.okstar.platform.system.sign.SignUpResult;
 import org.okstar.platform.system.account.mapper.SysAccountBindMapper;
 import org.okstar.platform.system.account.mapper.SysAccountMapper;
 import org.okstar.platform.system.account.domain.SysAccount;
@@ -60,18 +60,25 @@ public class SysAccountServiceImpl extends OkAbsService implements SysAccountSer
     /**
      * 通过用户名查询用户
      *
-     * @param userName 用户名
-     * @return 用户对象信息
+     * @param bindType
+     * @param bindValue
+     * @return
      */
     @Override
-    public SysAccount selectUserByUserName(String userName) {
-//        return userMapper.selectUserByUserName(userName);
-        return null;
+    public SysAccount selectUserByUserName(AccountDefines.BindType bindType, String bindValue) {
+        List<SysAccountBind> list = sysAccountBindMapper.list("bindType = ?1 and bindValue = ?2",
+                bindType,
+                bindValue);
+        if(list.isEmpty()){
+            return null;
+        }
+
+        return list.stream().findFirst().get().getAccount();
 
     }
 
     @Override
-    public SignUpResultDto signUp(SignUpForm signUpForm) {
+    public SignUpResult signUp(SignUpForm signUpForm) {
         Log.infof("signUp:%s", signUpForm);
 
         Assert.hasText(signUpForm.getIso());
@@ -129,7 +136,7 @@ public class SysAccountServiceImpl extends OkAbsService implements SysAccountSer
         bind.setAccount(sysUser);
         sysAccountBindMapper.persist(bind);
 
-        return SignUpResultDto.builder()
+        return SignUpResult.builder()
                 .username(sysUser.getUsername())
                 .userId(sysUser.id)
                 .build();

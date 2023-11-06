@@ -15,14 +15,18 @@ package org.okstar.platform.auth.service;
 
 import lombok.extern.slf4j.Slf4j;
 import org.eclipse.microprofile.rest.client.inject.RestClient;
+import org.okstar.platform.auth.backend.AuthzClientManager;
 import org.okstar.platform.auth.backend.BackUser;
 import org.okstar.platform.auth.backend.BackUserManager;
 import org.okstar.platform.common.core.defined.AccountDefines;
 import org.okstar.platform.common.core.utils.IdUtils;
 import org.okstar.platform.common.rpc.RpcAssert;
-import org.okstar.platform.system.vo.SignUpForm;
-import org.okstar.platform.system.vo.SignUpResultDto;
+import org.okstar.platform.system.sign.SignInForm;
+import org.okstar.platform.system.sign.SignInResult;
+import org.okstar.platform.system.sign.SignUpForm;
+import org.okstar.platform.system.sign.SignUpResult;
 import org.okstar.platform.system.rpc.SysUserRpc;
+import org.okstar.platform.system.vo.SysUserDto;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
@@ -38,13 +42,15 @@ public class PassportServiceImpl implements PassportService {
 
     @Inject
     BackUserManager backUserManager;
+    @Inject
+    AuthzClientManager authzClientManager;
 
 
     @Override
-    public SignUpResultDto signUp(SignUpForm signUpForm) {
+    public SignUpResult signUp(SignUpForm signUpForm) {
         log.info("signUp:{}", signUpForm);
 
-        SignUpResultDto resultDto = RpcAssert.isTrue(sysUserRpc.signUp(signUpForm));
+        SignUpResult resultDto = RpcAssert.isTrue(sysUserRpc.signUp(signUpForm));
 
         BackUser user = BackUser.builder()
                 .username(resultDto.getUsername())
@@ -62,6 +68,12 @@ public class PassportServiceImpl implements PassportService {
         log.info("Added user:{}", backUser.getUsername());
 
         return resultDto;
+    }
+
+    @Override
+    public SignInResult signIn(SignInForm signInForm) {
+        SysUserDto userDto = RpcAssert.isTrue(sysUserRpc.findByUsername(signInForm.getAccountType(), signInForm.getAccount()));
+        return authzClientManager.authorization(userDto.getUsername(), signInForm.getPassword());
     }
 
 

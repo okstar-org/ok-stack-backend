@@ -20,8 +20,8 @@ import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.okstar.platform.common.core.defined.AccountDefines;
 import org.okstar.platform.common.core.utils.IdUtils;
-import org.okstar.platform.system.vo.SignUpForm;
-import org.okstar.platform.system.vo.SignUpResultDto;
+import org.okstar.platform.system.sign.SignUpForm;
+import org.okstar.platform.system.sign.SignUpResult;
 
 import javax.inject.Inject;
 
@@ -50,7 +50,7 @@ class PassportServiceImplTest {
         form.setFirstName("Ok");
         form.setLastName("Star");
         form.setIso("CN");
-        SignUpResultDto resultDto = passportService.signUp(form);
+        SignUpResult resultDto = passportService.signUp(form);
         Log.infof("result=>%s", resultDto);
         Assert.assertNotNull(resultDto);
         Assert.assertNotNull(resultDto.getUsername());

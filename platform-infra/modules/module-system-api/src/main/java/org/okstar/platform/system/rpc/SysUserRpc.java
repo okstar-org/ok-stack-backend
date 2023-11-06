@@ -14,9 +14,10 @@
 package org.okstar.platform.system.rpc;
 
 import org.eclipse.microprofile.rest.client.inject.RegisterRestClient;
+import org.okstar.platform.common.core.defined.AccountDefines;
 import org.okstar.platform.common.rpc.RpcResult;
-import org.okstar.platform.system.vo.SignUpForm;
-import org.okstar.platform.system.vo.SignUpResultDto;
+import org.okstar.platform.system.sign.SignUpForm;
+import org.okstar.platform.system.sign.SignUpResult;
 import org.okstar.platform.system.vo.SysUserDto;
 
 import javax.ws.rs.GET;
@@ -31,9 +32,10 @@ public interface SysUserRpc {
 
     @POST
     @Path("signUp")
-    RpcResult<SignUpResultDto> signUp(SignUpForm signUpDto);
+    RpcResult<SignUpResult> signUp(SignUpForm signUpDto);
 
     @GET
     @Path("findByUsername")
-    SysUserDto findByUsername(@QueryParam("username") String username);
+    RpcResult<SysUserDto> findByUsername(@QueryParam("type") AccountDefines.BindType type,
+                                         @QueryParam("username") String username);
 }

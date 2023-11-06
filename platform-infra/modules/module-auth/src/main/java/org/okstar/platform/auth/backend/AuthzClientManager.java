@@ -11,18 +11,10 @@
  * /
  */
 
-package org.okstar.platform.auth.service;
+package org.okstar.platform.auth.backend;
 
-
-import org.okstar.platform.system.sign.SignInForm;
 import org.okstar.platform.system.sign.SignInResult;
-import org.okstar.platform.system.sign.SignUpForm;
-import org.okstar.platform.system.sign.SignUpResult;
 
-
-public interface PassportService {
-
-    SignUpResult signUp(SignUpForm signUpForm);
-
-    SignInResult signIn(SignInForm signInForm);
+public interface AuthzClientManager {
+    SignInResult authorization(String username, String password);
 }

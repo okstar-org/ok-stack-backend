@@ -14,10 +14,11 @@
 package org.okstar.platform.system.account.service;
 
 
+import org.okstar.platform.common.core.defined.AccountDefines;
 import org.okstar.platform.common.datasource.OkService;
-import org.okstar.platform.system.vo.SignUpForm;
-import org.okstar.platform.system.vo.SignUpResultDto;
 import org.okstar.platform.system.account.domain.SysAccount;
+import org.okstar.platform.system.sign.SignUpForm;
+import org.okstar.platform.system.sign.SignUpResult;
 
 /**
  * 用户业务层
@@ -28,9 +29,9 @@ public interface SysAccountService extends OkService<SysAccount, Long>
 {
 
 
-    SysAccount selectUserByUserName(String userName);
+     SysAccount selectUserByUserName(AccountDefines.BindType bindType, String bindValue);
 
-    SignUpResultDto signUp(SignUpForm signUpForm);
+    SignUpResult signUp(SignUpForm signUpForm);
 
 
     void save(SysAccount sysUser);

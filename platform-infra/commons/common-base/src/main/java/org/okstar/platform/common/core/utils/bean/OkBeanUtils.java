@@ -26,14 +26,13 @@ import java.util.Map;
 
 /**
  * Bean 工具类
- * 
- * 
  */
-public class OkBeanUtils extends BeanUtils
-{
+public class OkBeanUtils extends BeanUtils {
 
 
     public static void copyPropertiesTo(Object src, Object to) {
+        if (src == null)
+            return;
         try {
             copyProperties(to, src);
         } catch (IllegalAccessException | InvocationTargetException e) {

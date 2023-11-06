@@ -103,10 +103,9 @@ import java.util.Optional;
 public class Res<T> extends DTO {
 
     private int takes;
-
     private int code;
-    private T data;
     private String msg;
+    private T data;
 
     private final Map<String, Object> extra = new LinkedHashMap<>();
 

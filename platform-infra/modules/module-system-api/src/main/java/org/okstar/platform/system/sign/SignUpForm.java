@@ -11,20 +11,38 @@
  * /
  */
 
-package org.okstar.platform.system.vo;
+package org.okstar.platform.system.sign;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.okstar.platform.common.core.web.bean.DTO;
+import org.okstar.platform.common.core.defined.AccountDefines;
+import org.okstar.platform.common.core.web.bean.Req;
 
+/**
+ * 注册实体
+ */
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class SignUpResultDto extends DTO {
-    private Long userId;
-    private String username;
+public class SignUpForm extends Req {
+
+    //帐号类型
+    AccountDefines.BindType accountType;
+
+    //国家代号
+    String iso;
+
+    //手机号或者邮箱
+    String account;
+
+    //密码
+    String password;
+
+    String firstName;
+
+    String lastName;
 
 }

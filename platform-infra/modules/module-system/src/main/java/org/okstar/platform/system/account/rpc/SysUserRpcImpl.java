@@ -13,14 +13,14 @@
 
 package org.okstar.platform.system.account.rpc;
 
+import org.okstar.platform.common.core.defined.AccountDefines;
 import org.okstar.platform.common.core.utils.bean.OkBeanUtils;
 import org.okstar.platform.common.rpc.RpcResult;
-import org.okstar.platform.system.vo.SignUpForm;
-import org.okstar.platform.system.vo.SignUpResultDto;
-import org.okstar.platform.system.vo.SysUserDto;
-import org.okstar.platform.system.rpc.SysUserRpc;
-import org.okstar.platform.system.account.domain.SysAccount;
 import org.okstar.platform.system.account.service.SysAccountService;
+import org.okstar.platform.system.rpc.SysUserRpc;
+import org.okstar.platform.system.sign.SignUpForm;
+import org.okstar.platform.system.sign.SignUpResult;
+import org.okstar.platform.system.vo.SysUserDto;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
@@ -32,20 +32,20 @@ public class SysUserRpcImpl implements SysUserRpc {
     SysAccountService userService;
 
     @Override
-    public RpcResult<SignUpResultDto> signUp(SignUpForm signUpForm) {
+    public RpcResult<SignUpResult> signUp(SignUpForm signUpForm) {
         try {
-            SignUpResultDto resultDto = userService.signUp(signUpForm);
-            return RpcResult.<SignUpResultDto>builder().success(true).data(resultDto).build();
+            SignUpResult resultDto = userService.signUp(signUpForm);
+            return RpcResult.<SignUpResult>builder().success(true).data(resultDto).build();
         } catch (Exception e) {
-            return RpcResult.<SignUpResultDto>builder().success(false).msg(e.getMessage()).build();
+            return RpcResult.<SignUpResult>builder().success(false).msg(e.getMessage()).build();
         }
     }
 
     @Override
-    public SysUserDto findByUsername(String username) {
-        SysAccount sysUser = userService.selectUserByUserName(username);
+    public RpcResult<SysUserDto> findByUsername(AccountDefines.BindType type, String username) {
+        var sysUser = userService.selectUserByUserName(type, username);
         SysUserDto dto = new SysUserDto();
         OkBeanUtils.copyPropertiesTo(sysUser, dto);
-        return dto;
+        return RpcResult.<SysUserDto>builder().data(dto).success(true).build();
     }
 }
