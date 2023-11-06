@@ -46,22 +46,15 @@
             <version>${revision}</version>
         </dependency>
 
-
-
         <dependency>
-            <groupId>org.keycloak</groupId>
-            <artifactId>keycloak-admin-client</artifactId>
+            <groupId>org.okstar.platform</groupId>
+            <artifactId>module-org-api</artifactId>
+            <version>${revision}</version>
         </dependency>
 
         <dependency>
             <groupId>io.quarkus</groupId>
             <artifactId>quarkus-keycloak-admin-client</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.okstar.platform</groupId>
-            <artifactId>module-org-api</artifactId>
-            <version>${revision}</version>
         </dependency>
 
     </dependencies>
