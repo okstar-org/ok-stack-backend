@@ -11,14 +11,29 @@
  * /
  */
 
-package org.okstar.platform.org.dto;
+package org.okstar.platform.system.account.domain;
 
 import lombok.Data;
+import org.okstar.platform.system.domain.BaseEntity;
 
+import javax.persistence.Entity;
+import javax.persistence.ManyToOne;
+
+/**
+ * 用户密码(修改历史)
+ */
 @Data
-public class SysUserDto {
-    private String username;
-    private String nickName;
-    private String delFlag;
-    private String status;
+@Entity
+public class SysAccountPassword extends BaseEntity {
+
+    /**
+     * 绑定到帐号
+     */
+    @ManyToOne
+    SysAccount account;
+
+    /**
+     * 密码
+     */
+    String password;
 }

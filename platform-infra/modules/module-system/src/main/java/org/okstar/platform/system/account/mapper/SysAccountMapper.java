@@ -11,20 +11,21 @@
  * /
  */
 
-package org.okstar.platform.org.dto;
+package org.okstar.platform.system.account.mapper;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import org.okstar.platform.common.core.web.bean.DTO;
+import io.quarkus.hibernate.orm.panache.PanacheRepository;
+import org.okstar.platform.system.account.domain.SysAccount;
 
-@Data
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
-public class SignUpResultDto extends DTO {
-    private Long userId;
-    private String username;
+import javax.enterprise.context.ApplicationScoped;
+
+
+/**
+ * 用户表 数据层
+ * 
+ * 
+ */
+@ApplicationScoped
+public class SysAccountMapper implements PanacheRepository<SysAccount>
+{
 
 }

@@ -13,5 +13,10 @@
 
 package org.okstar.platform.common.core.web.bean;
 
-public class VO extends DTO {
+import java.io.Serializable;
+
+/**
+ * 数据显示实体，代表`输入数据`
+ */
+public abstract class VO implements Serializable {
 }

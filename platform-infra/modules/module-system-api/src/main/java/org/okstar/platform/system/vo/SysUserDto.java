@@ -11,35 +11,14 @@
  * /
  */
 
-package org.okstar.platform.org.domain;
+package org.okstar.platform.system.vo;
 
 import lombok.Data;
-import org.okstar.platform.org.dto.SignInAttached;
 
-import javax.persistence.*;
-
-/**
- * 当前在线会话
- * 
- *
- */
 @Data
-@Entity
-@Table(uniqueConstraints = {@UniqueConstraint(columnNames = {"sessionId"})})
-public class SysUserOnline extends BaseEntity
-{
-
-    /** 会话编号 */
-    private String sessionId;
-
-    /** 帐号 */
-    private Long  accountId;
-
-    /** 登录时间 */
-    private Long signInTime;
-
-    /*** 登录信息 */
-    @Embedded
-    private SignInAttached signInAttached;
-
+public class SysUserDto {
+    private String username;
+    private String nickName;
+    private String delFlag;
+    private String status;
 }

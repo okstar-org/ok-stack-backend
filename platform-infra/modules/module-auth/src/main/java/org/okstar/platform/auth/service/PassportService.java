@@ -14,12 +14,10 @@
 package org.okstar.platform.auth.service;
 
 
-import org.okstar.platform.org.dto.SignUpForm;
-import org.okstar.platform.org.dto.SignUpResultDto;
+import org.okstar.platform.system.vo.SignUpForm;
+import org.okstar.platform.system.vo.SignUpResultDto;
 
-import javax.transaction.Transactional;
 
-@Transactional
 public interface PassportService {
 
     SignUpResultDto signUp(SignUpForm signUpForm);

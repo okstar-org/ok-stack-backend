@@ -11,17 +11,15 @@
  * /
  */
 
-package org.okstar.platform.org.service.impl;
+package org.okstar.platform.system.account.service;
 
-import org.okstar.platform.org.domain.SysUserOnline;
-import org.okstar.platform.org.dto.SignInAttached;
-import org.okstar.platform.org.mapper.SysRoleMapper;
-import org.okstar.platform.org.service.ISysUserOnlineService;
+
 import org.okstar.platform.org.vo.LoginJwtUser;
+import org.okstar.platform.system.account.domain.SysAccountOnline;
+import org.okstar.platform.system.account.vo.SignInAttached;
 import org.springframework.util.Assert;
 
 import javax.enterprise.context.ApplicationScoped;
-import javax.inject.Inject;
 
 
 /**
@@ -30,11 +28,9 @@ import javax.inject.Inject;
  * 
  */
 @ApplicationScoped
-public class SysUserOnlineServiceImpl implements ISysUserOnlineService
+public class SysAccountOnlineServiceImpl implements ISysAccountOnlineService
 {
-    @Inject
-    private SysRoleMapper roleMapper;
-
+   
     /**
      * 通过登录地址查询信息
      * 
@@ -43,7 +39,7 @@ public class SysUserOnlineServiceImpl implements ISysUserOnlineService
      * @return 在线用户信息
      */
     @Override
-    public SysUserOnline selectOnlineByIpaddr(String ipaddr, LoginJwtUser user)
+    public SysAccountOnline selectOnlineByIpaddr(String ipaddr, LoginJwtUser user)
     {
         return null;
     }
@@ -56,7 +52,7 @@ public class SysUserOnlineServiceImpl implements ISysUserOnlineService
      * @return 在线用户信息
      */
     @Override
-    public SysUserOnline selectOnlineByUserName(String userName, LoginJwtUser user)
+    public SysAccountOnline selectOnlineByUserName(String userName, LoginJwtUser user)
     {
 
         return null;
@@ -71,7 +67,7 @@ public class SysUserOnlineServiceImpl implements ISysUserOnlineService
      * @return 在线用户信息
      */
     @Override
-    public SysUserOnline selectOnlineByInfo(String ipaddr, String userName, LoginJwtUser user)
+    public SysAccountOnline selectOnlineByInfo(String ipaddr, String userName, LoginJwtUser user)
     {
 
         return null;
@@ -83,17 +79,17 @@ public class SysUserOnlineServiceImpl implements ISysUserOnlineService
      * @param jwtUser 用户信息
      * @return 在线用户
      */
-    public SysUserOnline makeSaveOnline(LoginJwtUser jwtUser, SignInAttached signInAttached)
+    public SysAccountOnline makeSaveOnline(LoginJwtUser jwtUser, SignInAttached signInAttached)
     {
         Assert.notNull(jwtUser, "参数异常！");
 
-        SysUserOnline sysUserOnline = new SysUserOnline();
-        sysUserOnline.setSessionId(jwtUser.getToken());
-        sysUserOnline.setAccountId(jwtUser.getUserId());
-        sysUserOnline.setSignInAttached(signInAttached);
+        SysAccountOnline SysAccountOnline = new SysAccountOnline();
+        SysAccountOnline.setSessionId(jwtUser.getToken());
+        SysAccountOnline.setAccountId(jwtUser.getUserId());
+        SysAccountOnline.setSignInAttached(signInAttached);
 
 
 
-        return sysUserOnline;
+        return SysAccountOnline;
     }
 }

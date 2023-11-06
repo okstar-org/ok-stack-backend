@@ -11,16 +11,16 @@
  * /
  */
 
-package org.okstar.platform.org.rpc.impl;
+package org.okstar.platform.system.account.rpc;
 
 import org.okstar.platform.common.core.utils.bean.OkBeanUtils;
 import org.okstar.platform.common.rpc.RpcResult;
-import org.okstar.platform.org.account.SysAccount;
-import org.okstar.platform.org.dto.SignUpForm;
-import org.okstar.platform.org.dto.SignUpResultDto;
-import org.okstar.platform.org.dto.SysUserDto;
-import org.okstar.platform.org.rpc.SysUserRpc;
-import org.okstar.platform.org.service.SysUserService;
+import org.okstar.platform.system.vo.SignUpForm;
+import org.okstar.platform.system.vo.SignUpResultDto;
+import org.okstar.platform.system.vo.SysUserDto;
+import org.okstar.platform.system.rpc.SysUserRpc;
+import org.okstar.platform.system.account.domain.SysAccount;
+import org.okstar.platform.system.account.service.SysAccountService;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
@@ -29,7 +29,7 @@ import javax.inject.Inject;
 public class SysUserRpcImpl implements SysUserRpc {
 
     @Inject
-    SysUserService userService;
+    SysAccountService userService;
 
     @Override
     public RpcResult<SignUpResultDto> signUp(SignUpForm signUpForm) {

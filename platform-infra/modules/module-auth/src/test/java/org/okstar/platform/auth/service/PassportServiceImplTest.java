@@ -20,8 +20,8 @@ import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.okstar.platform.common.core.defined.AccountDefines;
 import org.okstar.platform.common.core.utils.IdUtils;
-import org.okstar.platform.org.dto.SignUpForm;
-import org.okstar.platform.org.dto.SignUpResultDto;
+import org.okstar.platform.system.vo.SignUpForm;
+import org.okstar.platform.system.vo.SignUpResultDto;
 
 import javax.inject.Inject;
 

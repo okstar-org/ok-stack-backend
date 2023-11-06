@@ -11,31 +11,21 @@
  * /
  */
 
-package org.okstar.platform.org.dto;
+package org.okstar.platform.system.account.mapper;
 
-import lombok.Data;
-import org.okstar.platform.common.core.defined.SystemDefines;
-import org.okstar.platform.common.core.web.bean.DTO;
+import org.okstar.platform.common.datasource.OkRepository;
+import org.okstar.platform.system.account.domain.SysAccountOnline;
 
-@Data
-public class SignInAttached extends DTO {
+import javax.enterprise.context.ApplicationScoped;
 
-    /** 登录IP */
-    private String ip;
 
-    /** 登录地址 */
-    private String location;
+/**
+ * 用户绑定
+ * 
+ * 
+ */
+@ApplicationScoped
+public class SysAccountOnlineMapper implements OkRepository<SysAccountOnline>
+{
 
-    /** 浏览器类型 */
-    private String browser;
-
-    private String browserVersion;
-
-    /** 操作系统 */
-    private String os;
-
-    private String osVersion;
-
-    /** 终端 */
-    private SystemDefines.Endpoint endpoint;
 }

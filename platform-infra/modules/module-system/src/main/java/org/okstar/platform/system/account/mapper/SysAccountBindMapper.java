@@ -11,11 +11,21 @@
  * /
  */
 
-package org.okstar.platform.common.core.web.bean;
+package org.okstar.platform.system.account.mapper;
 
-import lombok.Data;
+import org.okstar.platform.common.datasource.OkRepository;
+import org.okstar.platform.system.account.domain.SysAccountBind;
 
-@Data
-public class Form extends Req {
+import javax.enterprise.context.ApplicationScoped;
+
+
+/**
+ * 用户绑定
+ * 
+ * 
+ */
+@ApplicationScoped
+public class SysAccountBindMapper implements OkRepository<SysAccountBind>
+{
 
 }

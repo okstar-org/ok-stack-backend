@@ -20,9 +20,9 @@ import org.okstar.platform.auth.backend.BackUserManager;
 import org.okstar.platform.common.core.defined.AccountDefines;
 import org.okstar.platform.common.core.utils.IdUtils;
 import org.okstar.platform.common.rpc.RpcAssert;
-import org.okstar.platform.org.dto.SignUpForm;
-import org.okstar.platform.org.dto.SignUpResultDto;
-import org.okstar.platform.org.rpc.SysUserRpc;
+import org.okstar.platform.system.vo.SignUpForm;
+import org.okstar.platform.system.vo.SignUpResultDto;
+import org.okstar.platform.system.rpc.SysUserRpc;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;

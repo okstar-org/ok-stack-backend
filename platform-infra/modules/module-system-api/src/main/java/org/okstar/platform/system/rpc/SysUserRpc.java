@@ -11,14 +11,13 @@
  * /
  */
 
-package org.okstar.platform.org.rpc;
+package org.okstar.platform.system.rpc;
 
-import io.smallrye.common.annotation.Blocking;
 import org.eclipse.microprofile.rest.client.inject.RegisterRestClient;
 import org.okstar.platform.common.rpc.RpcResult;
-import org.okstar.platform.org.dto.SignUpForm;
-import org.okstar.platform.org.dto.SignUpResultDto;
-import org.okstar.platform.org.dto.SysUserDto;
+import org.okstar.platform.system.vo.SignUpForm;
+import org.okstar.platform.system.vo.SignUpResultDto;
+import org.okstar.platform.system.vo.SysUserDto;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -32,7 +31,6 @@ public interface SysUserRpc {
 
     @POST
     @Path("signUp")
-    @Blocking
     RpcResult<SignUpResultDto> signUp(SignUpForm signUpDto);
 
     @GET

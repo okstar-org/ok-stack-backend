@@ -17,23 +17,25 @@ import io.netty.handler.codec.http.HttpResponseStatus;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.okstar.platform.common.core.utils.OkDateUtils;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Optional;
 
 /**
  * 响应信息主体
- *
- *
+ * <p>
+ * <p>
  * 返回码：https://www.runoob.com/http/http-status-codes.html
- *HTTP 状态码
+ * HTTP 状态码
  * 当浏览者访问一个网页时，浏览者的浏览器会向网页所在服务器发出请求。
  * 当浏览器接收并显示网页前，此网页所在的服务器会返回一个包含 HTTP 状态码的信息头（server header）用以响应浏览器的请求。
- *
+ * <p>
  * HTTP 状态码的英文为 HTTP Status Code。。
- *
+ * <p>
  * 下面是常见的 HTTP 状态码：
- *
+ * <p>
  * 200 - 请求成功
  * 301 - 资源（网页等）被永久转移到其它URL
  * 404 - 请求的资源（网页等）不存在
@@ -43,7 +45,7 @@ import java.util.Map;
  * 响应分为五类：
  * 信息响应(100–199)，成功响应(200–299)，重定向(300–399)，
  * 客户端错误(400–499)和服务器错误 (500–599)：
- *
+ * <p>
  * 分类	分类描述
  * 1**	信息，服务器收到请求，需要请求者继续执行操作
  * 2**	成功，操作被成功接收并处理
@@ -51,7 +53,7 @@ import java.util.Map;
  * 4**	客户端错误，请求包含语法错误或无法完成请求
  * 5**	服务器错误，服务器在处理请求的过程中发生了错误
  * HTTP状态码列表:
- *
+ * <p>
  * 状态码	状态码英文名称	中文描述
  * 100	Continue	继续。客户端应继续其请求
  * 101	Switching Protocols	切换协议。服务器根据客户端的请求切换协议。只能切换到更高级的协议，例如，切换到HTTP的新版本协议
@@ -98,13 +100,13 @@ import java.util.Map;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Res<T> extends DTO
-{
-    private Long ts;
+public class Res<T> extends DTO {
+
+    private int takes;
+
     private int code;
     private T data;
     private String msg;
-
 
     private final Map<String, Object> extra = new LinkedHashMap<>();
 
@@ -112,73 +114,66 @@ public class Res<T> extends DTO
     /**
      * 处理成功，使用200返回码
      *
-     * @return
      * @param <T>
+     * @return
      */
-    public static <T> Res<T> ok()
-    {
-        return build(null, HttpResponseStatus.OK.code(), null);
+    public static <T> Res<T> ok(Req req) {
+        return build(req, null, HttpResponseStatus.OK.code(), null);
     }
 
-    public static <T> Res<T> ok(T data)
-    {
-        return build(data, HttpResponseStatus.OK.code(), null);
+    public static <T> Res<T> ok(Req req, T data) {
+        return build(req, data, HttpResponseStatus.OK.code(), null);
     }
 
-    public static <T> Res<T> ok(T data, String msg)
-    {
-        return build(data, HttpResponseStatus.OK.code(), msg);
+    public static <T> Res<T> ok(Req req, T data, String msg) {
+        return build(req, data, HttpResponseStatus.OK.code(), msg);
     }
 
 
     /**
      * 创建成功，使用201返回码
      *
-     * @return
      * @param <T>
+     * @return
      */
-    public static <T> Res<T> created()
-    {
-        return build(null, HttpResponseStatus.CREATED.code(), null);
+    public static <T> Res<T> created() {
+        return build(null, null, HttpResponseStatus.CREATED.code(), null);
     }
 
-    public static <T> Res<T> created(T data)
-    {
-        return build(data, HttpResponseStatus.CREATED.code(), null);
+    public static <T> Res<T> created(T data) {
+        return build(null, data, HttpResponseStatus.CREATED.code(), null);
     }
 
-    public static <T> Res<T> created(T data, String msg)
-    {
-        return build(data, HttpResponseStatus.CREATED.code(), msg);
+    public static <T> Res<T> created(T data, String msg) {
+        return build(null, null, HttpResponseStatus.CREATED.code(), msg);
     }
 
     /**
      * 内部服务器错误，使用500返回码
-     * @return
+     *
      * @param <T>
+     * @return
      */
-    public static <T> Res<T> error()
-    {
-        return build(null, HttpResponseStatus.INTERNAL_SERVER_ERROR.code(),  null);
+    public static <T> Res<T> error(Req req) {
+        return build(req, null, HttpResponseStatus.INTERNAL_SERVER_ERROR.code(), null);
     }
 
-    public static <T> Res<T> error(String msg)
-    {
-        return build(null, HttpResponseStatus.INTERNAL_SERVER_ERROR.code(), msg);
+    public static <T> Res<T> error(Req req, String msg) {
+        return build(req, null, HttpResponseStatus.INTERNAL_SERVER_ERROR.code(), msg);
     }
 
-    public static <T> Res<T> error(T data, String msg)
-    {
-        return build(data, HttpResponseStatus.INTERNAL_SERVER_ERROR.code(), msg);
+    public static <T> Res<T> error(Req req, T data, String msg) {
+        return build(req, data, HttpResponseStatus.INTERNAL_SERVER_ERROR.code(), msg);
     }
 
 
-    private static <T> Res<T> build(T data, int code, String msg)
-    {
+    private static <T> Res<T> build(Req req, T data, int code, String msg) {
         Res<T> res = new Res<>();
         res.setCode(code);
         res.setData(data);
         res.setMsg(msg);
+        var times = OkDateUtils.getTime() - Optional.ofNullable(req).orElse(Req.empty()).getTs();
+        res.setTakes(Math.toIntExact(times));
         return res;
     }
 

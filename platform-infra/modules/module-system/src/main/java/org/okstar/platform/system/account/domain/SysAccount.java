@@ -11,11 +11,11 @@
  * /
  */
 
-package org.okstar.platform.org.account;
+package org.okstar.platform.system.account.domain;
 
 import lombok.Data;
 import org.okstar.platform.common.core.defined.AccountDefines;
-import org.okstar.platform.org.domain.BaseEntity;
+import org.okstar.platform.system.domain.BaseEntity;
 
 import javax.persistence.Entity;
 import javax.persistence.Table;

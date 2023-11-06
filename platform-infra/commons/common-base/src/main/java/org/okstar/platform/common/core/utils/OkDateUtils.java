@@ -55,7 +55,7 @@ public class OkDateUtils extends DateUtils
     }
 
 
-    public static Instant nowInstant()
+    public static Instant instant()
     {
         return Instant.now();
     }
@@ -70,9 +70,9 @@ public class OkDateUtils extends DateUtils
         return dateTimeNow(YYYY_MM_DD);
     }
 
-    public static final String getTime()
+    public static long getTime()
     {
-        return dateTimeNow(YYYY_MM_DD_HH_MM_SS);
+        return now().getTime();
     }
 
     public static final String dateTimeNow()

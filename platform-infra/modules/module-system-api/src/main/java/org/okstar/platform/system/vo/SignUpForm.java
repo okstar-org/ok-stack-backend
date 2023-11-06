@@ -11,29 +11,38 @@
  * /
  */
 
-package org.okstar.platform.org.account;
+package org.okstar.platform.system.vo;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
-import org.okstar.platform.org.domain.BaseEntity;
-
-import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
+import lombok.NoArgsConstructor;
+import org.okstar.platform.common.core.defined.AccountDefines;
+import org.okstar.platform.common.core.web.bean.Req;
 
 /**
- * 用户密码(修改历史)
+ * 注册实体
  */
 @Data
-@Entity
-public class SysAccountPassword extends BaseEntity {
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+public class SignUpForm extends Req {
 
-    /**
-     * 绑定到帐号
-     */
-    @ManyToOne
-    SysAccount account;
+    //帐号类型
+    AccountDefines.BindType accountType;
 
-    /**
-     * 密码
-     */
+    //国家代号
+    String iso;
+
+    //手机号或者邮箱
+    String account;
+
+    //密码
     String password;
+
+    String firstName;
+
+    String lastName;
+
 }

@@ -11,38 +11,31 @@
  * /
  */
 
-package org.okstar.platform.org.dto;
+package org.okstar.platform.system.account.vo;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
-import lombok.NoArgsConstructor;
-import org.okstar.platform.common.core.defined.AccountDefines;
-import org.okstar.platform.common.core.web.bean.Form;
+import org.okstar.platform.common.core.defined.SystemDefines;
+import org.okstar.platform.common.core.web.bean.DTO;
 
-/**
- * 注册实体
- */
 @Data
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
-public class SignUpForm extends Form {
+public class SignInAttached extends DTO {
 
-    //帐号类型
-    AccountDefines.BindType accountType;
+    /** 登录IP */
+    private String ip;
 
-    //国家代号
-    String iso;
+    /** 登录地址 */
+    private String location;
 
-    //手机号或者邮箱
-    String account;
+    /** 浏览器类型 */
+    private String browser;
 
-    //密码
-    String password;
+    private String browserVersion;
 
-    String firstName;
+    /** 操作系统 */
+    private String os;
 
-    String lastName;
+    private String osVersion;
 
+    /** 终端 */
+    private SystemDefines.Endpoint endpoint;
 }

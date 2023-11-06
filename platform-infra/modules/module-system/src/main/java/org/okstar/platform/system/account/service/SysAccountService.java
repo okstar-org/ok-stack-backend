@@ -11,21 +11,29 @@
  * /
  */
 
-package org.okstar.platform.org.mapper;
+package org.okstar.platform.system.account.service;
 
-import org.okstar.platform.common.datasource.OkRepository;
-import org.okstar.platform.org.account.SysAccountBind;
 
-import javax.enterprise.context.ApplicationScoped;
-
+import org.okstar.platform.common.datasource.OkService;
+import org.okstar.platform.system.vo.SignUpForm;
+import org.okstar.platform.system.vo.SignUpResultDto;
+import org.okstar.platform.system.account.domain.SysAccount;
 
 /**
- * 用户绑定
+ * 用户业务层
  * 
  * 
  */
-@ApplicationScoped
-public class SysAccountBindMapper implements OkRepository<SysAccountBind>
+public interface SysAccountService extends OkService<SysAccount, Long>
 {
 
+
+    SysAccount selectUserByUserName(String userName);
+
+    SignUpResultDto signUp(SignUpForm signUpForm);
+
+
+    void save(SysAccount sysUser);
+
+    boolean isAdmin(Long userId);
 }

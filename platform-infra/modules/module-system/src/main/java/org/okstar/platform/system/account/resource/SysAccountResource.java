@@ -11,13 +11,14 @@
  * /
  */
 
-package org.okstar.platform.org.resource;
+package org.okstar.platform.system.account.resource;
 
 import io.quarkus.security.Authenticated;
+import org.okstar.platform.common.core.web.bean.Req;
 import org.okstar.platform.common.core.web.bean.Res;
 import org.okstar.platform.common.core.web.controller.OkBaseController;
-import org.okstar.platform.org.account.SysAccount;
-import org.okstar.platform.org.service.SysUserService;
+import org.okstar.platform.system.account.domain.SysAccount;
+import org.okstar.platform.system.account.service.SysAccountService;
 
 import javax.inject.Inject;
 import javax.ws.rs.GET;
@@ -26,20 +27,20 @@ import java.util.List;
 
 
 /**
- * 用户信息
+ * 账号信息
  */
-@Path("/user")
+@Path("/account")
 @Authenticated
-public class SysUserResource extends OkBaseController {
+public class SysAccountResource extends OkBaseController {
 
     @Inject
-    SysUserService sysUserService;
+    SysAccountService sysAccountService;
 
     @GET
     @Path("findAll")
     public Res<List<SysAccount>> findAll(){
-        List<SysAccount> all = sysUserService.findAll();
-        return Res.ok(all);
+        List<SysAccount> all = sysAccountService.findAll();
+        return Res.ok(Req.empty(), all);
     }
 
 }

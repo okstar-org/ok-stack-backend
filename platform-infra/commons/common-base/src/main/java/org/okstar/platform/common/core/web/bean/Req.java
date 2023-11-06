@@ -14,10 +14,17 @@
 package org.okstar.platform.common.core.web.bean;
 
 import lombok.Data;
+import org.okstar.platform.common.core.utils.OkDateUtils;
 
-import java.io.Serializable;
-
+/**
+ * 请求实体
+ */
 @Data
-public abstract class Req implements Serializable {
-    protected Long ts;
+public class Req extends VO {
+    //请求时间戳
+    protected Long ts = OkDateUtils.getTime();
+
+    public static Req empty(){
+        return new Req();
+    }
 }
