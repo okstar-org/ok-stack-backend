@@ -20,6 +20,8 @@ import org.okstar.platform.system.account.domain.SysAccount;
 import org.okstar.platform.system.sign.SignUpForm;
 import org.okstar.platform.system.sign.SignUpResult;
 
+import java.util.Optional;
+
 /**
  * 用户业务层
  * 
@@ -29,7 +31,7 @@ public interface SysAccountService extends OkService<SysAccount, Long>
 {
 
 
-     SysAccount selectUserByUserName(AccountDefines.BindType bindType, String bindValue);
+     SysAccount findByBind(String iso, AccountDefines.BindType bindType, String bindValue);
 
     SignUpResult signUp(SignUpForm signUpForm);
 
@@ -37,4 +39,6 @@ public interface SysAccountService extends OkService<SysAccount, Long>
     void save(SysAccount sysUser);
 
     boolean isAdmin(Long userId);
+
+    Optional<SysAccount> findByUsername(String username);
 }

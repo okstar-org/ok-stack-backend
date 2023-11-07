@@ -42,10 +42,24 @@ public class SysUserRpcImpl implements SysUserRpc {
     }
 
     @Override
-    public RpcResult<SysUserDto> findByUsername(AccountDefines.BindType type, String username) {
-        var sysUser = userService.selectUserByUserName(type, username);
+    public RpcResult<SysUserDto> findByBind(String iso, AccountDefines.BindType type, String bindValue) {
+        var sysUser = userService.findByBind(iso, type, bindValue);
+        if (sysUser == null)
+            return RpcResult.<SysUserDto>builder().success(true).build();
+
         SysUserDto dto = new SysUserDto();
         OkBeanUtils.copyPropertiesTo(sysUser, dto);
+        return RpcResult.<SysUserDto>builder().data(dto).success(true).build();
+    }
+
+    @Override
+    public RpcResult<SysUserDto> findByUsername(String username) {
+        var sysUser = userService.findByUsername(username);
+        if (sysUser.isEmpty())
+            return RpcResult.<SysUserDto>builder().success(true).build();
+
+        SysUserDto dto = new SysUserDto();
+        OkBeanUtils.copyPropertiesTo(sysUser.get(), dto);
         return RpcResult.<SysUserDto>builder().data(dto).success(true).build();
     }
 }

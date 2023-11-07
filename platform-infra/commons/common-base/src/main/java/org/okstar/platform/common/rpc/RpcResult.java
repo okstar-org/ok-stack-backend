@@ -34,4 +34,6 @@ public class RpcResult<T> extends DTO {
     private String msg;
     //数据
     private T data;
+
+
 }

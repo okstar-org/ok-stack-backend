@@ -72,8 +72,8 @@ public class PassportServiceImpl implements PassportService {
 
     @Override
     public SignInResult signIn(SignInForm signInForm) {
-        SysUserDto userDto = RpcAssert.isTrue(sysUserRpc.findByUsername(signInForm.getAccountType(), signInForm.getAccount()));
-        return authzClientManager.authorization(userDto.getUsername(), signInForm.getPassword());
+        SysUserDto userDto = RpcAssert.isTrue(sysUserRpc.findByBind(signInForm.getIso(), signInForm.getAccountType(), signInForm.getAccount()));
+        return authzClientManager.authorization(  userDto.getUsername(), signInForm.getPassword());
     }
 
 

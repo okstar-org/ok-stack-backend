@@ -88,7 +88,7 @@ public class KeycloakUserManagerImpl extends KeycloakManagerImpl implements Back
         }
 
         return usersResource.search(user.getUsername()).stream().peek(userRepresentation -> {
-            Log.infof("user:%s=>%s", user.getUsername(), userRepresentation.getId());
+            Log.infof("Find KC's user:%s=>%s", user.getUsername(), userRepresentation.getId());
             CredentialRepresentation cr = new CredentialRepresentation();
             cr.setUserLabel("My password");
             cr.setType("password");
@@ -105,6 +105,7 @@ public class KeycloakUserManagerImpl extends KeycloakManagerImpl implements Back
         userRepresentation.setLastName(user.getLastName());
         userRepresentation.setEmail(user.getEmail());
         userRepresentation.setId(user.getId());
+        userRepresentation.setEnabled(true);
         return userRepresentation;
     }
 

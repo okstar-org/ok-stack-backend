@@ -15,8 +15,8 @@ package org.okstar.platform.auth.backend;
 
 import org.keycloak.authorization.client.AuthzClient;
 import org.keycloak.representations.idm.authorization.AuthorizationRequest;
-import org.keycloak.representations.idm.authorization.AuthorizationResponse;
 import org.okstar.platform.system.sign.SignInResult;
+import org.springframework.util.Assert;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
@@ -29,12 +29,17 @@ class AuthzClientManagerImpl implements  AuthzClientManager {
 
     @Override
     public SignInResult authorization(String username, String password){
+        Assert.hasText(username,"username is empty");
+        Assert.hasText(password, "password is empty");
         AuthorizationRequest request = new AuthorizationRequest();
-        AuthorizationResponse response = authzClient.authorization(username, password).authorize(request);
+
+        var response = authzClient.authorization(username.toLowerCase(), password).authorize(request);
         return SignInResult.builder()
+                .session_state(response.getSessionState())
                 .token(response.getToken())
                 .expires_in(response.getExpiresIn())
                 .refresh_token(response.getRefreshToken())
+                .refresh_expires_in(response.getRefreshExpiresIn())
                 .token_type(response.getTokenType())
                 .build();
     }

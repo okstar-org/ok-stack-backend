@@ -15,10 +15,18 @@ package org.okstar.platform.system.vo;
 
 import lombok.Data;
 
+import java.util.Optional;
+
 @Data
 public class SysUserDto {
+    private String iso;
     private String username;
-    private String nickName;
-    private String delFlag;
-    private String status;
+    private String firstName;
+    private String lastName;
+    private String nickname;
+
+
+    public String getName(){
+        return Optional.ofNullable(nickname).orElse(username);
+    }
 }

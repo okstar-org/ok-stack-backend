@@ -23,6 +23,7 @@ import org.apache.commons.lang3.RandomStringUtils;
 import org.okstar.platform.common.core.defined.AccountDefines;
 import org.okstar.platform.common.core.exception.OkRuntimeException;
 import org.okstar.platform.common.core.exception.user.OkUserException;
+import org.okstar.platform.common.core.utils.OkPhoneUtils;
 import org.okstar.platform.common.core.web.page.OkPageResult;
 import org.okstar.platform.common.core.web.page.OkPageable;
 import org.okstar.platform.common.datasource.OkAbsService;
@@ -39,6 +40,7 @@ import javax.inject.Singleton;
 import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 import static com.google.i18n.phonenumbers.PhoneNumberUtil.PhoneNumberFormat.INTERNATIONAL;
 
@@ -56,20 +58,32 @@ public class SysAccountServiceImpl extends OkAbsService implements SysAccountSer
     @Inject
     SysAccountBindMapper sysAccountBindMapper;
 
+    @Override
+    public Optional<SysAccount> findByUsername(String username) {
+        return sysAccountMapper.find("username = ?1", username).stream().findFirst();
+
+    }
 
     /**
      * 通过用户名查询用户
      *
+     * @param iso
      * @param bindType
      * @param bindValue
      * @return
      */
     @Override
-    public SysAccount selectUserByUserName(AccountDefines.BindType bindType, String bindValue) {
-        List<SysAccountBind> list = sysAccountBindMapper.list("bindType = ?1 and bindValue = ?2",
+    public SysAccount findByBind(String iso, AccountDefines.BindType bindType, String bindValue) {
+        String bind = bindValue;
+        if (bindType == AccountDefines.BindType.phone) {
+            bind = OkPhoneUtils.canonical(bindValue, iso);
+        }
+
+        List<SysAccountBind> list = sysAccountBindMapper.list(
+                "bindType = ?1 and bindValue = ?2",
                 bindType,
-                bindValue);
-        if(list.isEmpty()){
+                bind);
+        if (list.isEmpty()) {
             return null;
         }
 
@@ -88,14 +102,7 @@ public class SysAccountServiceImpl extends OkAbsService implements SysAccountSer
 
         long existed;
         if (signUpForm.getAccountType() == AccountDefines.BindType.phone) {
-            try {
-                PhoneNumberUtil util = PhoneNumberUtil.getInstance();
-                Phonenumber.PhoneNumber number;
-                number = util.parse(signUpForm.getAccount(), signUpForm.getIso());
-                signUpForm.setAccount(util.format(number, INTERNATIONAL));
-            } catch (NumberParseException e) {
-                throw new OkUserException("Is not phone number", e);
-            }
+            signUpForm.setAccount(OkPhoneUtils.canonical(signUpForm.getAccount(), signUpForm.getIso()));
         }
 
         existed = sysAccountBindMapper.count("bindType = ?1 and bindValue = ?2",
@@ -183,4 +190,6 @@ public class SysAccountServiceImpl extends OkAbsService implements SysAccountSer
     public boolean isAdmin(Long userId) {
         return Objects.equals(1L, userId);
     }
+
+
 }

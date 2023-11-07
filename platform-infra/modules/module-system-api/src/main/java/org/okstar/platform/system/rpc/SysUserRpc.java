@@ -35,7 +35,12 @@ public interface SysUserRpc {
     RpcResult<SignUpResult> signUp(SignUpForm signUpDto);
 
     @GET
+    @Path("findByBind")
+    RpcResult<SysUserDto> findByBind(@QueryParam("iso")String iso,
+                                     @QueryParam("type") AccountDefines.BindType type,
+                                     @QueryParam("bindValue") String bindValue);
+
+    @GET
     @Path("findByUsername")
-    RpcResult<SysUserDto> findByUsername(@QueryParam("type") AccountDefines.BindType type,
-                                         @QueryParam("username") String username);
+    RpcResult<SysUserDto> findByUsername( @QueryParam("username") String username);
 }
