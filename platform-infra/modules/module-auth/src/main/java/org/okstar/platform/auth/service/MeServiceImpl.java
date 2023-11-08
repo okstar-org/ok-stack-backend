@@ -13,17 +13,5 @@
 
 package org.okstar.platform.auth.service;
 
-
-import org.okstar.platform.system.sign.*;
-
-
-public interface PassportService {
-
-    SignUpResult signUp(SignUpForm signUpForm);
-
-    SignInResult signIn(SignInForm signInForm);
-
-    SignInResult refresh(RefreshForm refreshForm);
-
-    void signOut(String accessToken);
+public class MeServiceImpl implements MeService {
 }

@@ -13,33 +13,16 @@
 
 package org.okstar.platform.system.sign;
 
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
-import lombok.NoArgsConstructor;
-import org.okstar.platform.common.core.defined.AccountDefines;
-import org.okstar.platform.common.core.web.bean.Req;
+import org.okstar.platform.common.core.web.bean.DTO;
 
-/**
- * 注册实体
- */
 @Data
 @Builder
-@NoArgsConstructor
-@AllArgsConstructor
-public class SignInForm extends Req {
-
-    /**
-     * account  :"18510248810"
-     * grantType:"password"
-     * password : "123456"
-     * remember_me: true
-     */
-
-    private AccountDefines.BindType accountType = AccountDefines.BindType.phone;
-    private String iso = "CN";
-    private String grantType;
-    private String account;
-    private String password;
-    private Boolean rememberMe;
+public class RefreshResult extends DTO {
+    boolean refresh;
+    String accessToken;
+    String refreshToken;
+    String tokenType;
+    Long exp;
 }

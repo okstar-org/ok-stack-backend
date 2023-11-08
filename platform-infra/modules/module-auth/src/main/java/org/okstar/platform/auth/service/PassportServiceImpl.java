@@ -21,10 +21,7 @@ import org.okstar.platform.auth.backend.BackUserManager;
 import org.okstar.platform.common.core.defined.AccountDefines;
 import org.okstar.platform.common.core.utils.IdUtils;
 import org.okstar.platform.common.rpc.RpcAssert;
-import org.okstar.platform.system.sign.SignInForm;
-import org.okstar.platform.system.sign.SignInResult;
-import org.okstar.platform.system.sign.SignUpForm;
-import org.okstar.platform.system.sign.SignUpResult;
+import org.okstar.platform.system.sign.*;
 import org.okstar.platform.system.rpc.SysUserRpc;
 import org.okstar.platform.system.vo.SysUserDto;
 
@@ -72,8 +69,21 @@ public class PassportServiceImpl implements PassportService {
 
     @Override
     public SignInResult signIn(SignInForm signInForm) {
-        SysUserDto userDto = RpcAssert.isTrue(sysUserRpc.findByBind(signInForm.getIso(), signInForm.getAccountType(), signInForm.getAccount()));
-        return authzClientManager.authorization(  userDto.getUsername(), signInForm.getPassword());
+        SysUserDto userDto = RpcAssert.isTrue(sysUserRpc.findByBind(
+                signInForm.getIso(),
+                signInForm.getAccountType(),
+                signInForm.getAccount()));
+        return authzClientManager.authorization(userDto.getUsername(), signInForm.getPassword());
+    }
+
+    @Override
+    public SignInResult refresh(RefreshForm refreshForm) {
+        return authzClientManager.refresh(refreshForm);
+    }
+
+    @Override
+    public void signOut(String accessToken) {
+        authzClientManager.revoke(accessToken);
     }
 
 

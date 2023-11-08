@@ -17,7 +17,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.okstar.platform.common.core.defined.AccountDefines;
 import org.okstar.platform.common.core.web.bean.Req;
 
 /**
@@ -27,19 +26,18 @@ import org.okstar.platform.common.core.web.bean.Req;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class SignInForm extends Req {
+public class RefreshForm extends Req {
 
     /**
-     * account  :"18510248810"
-     * grantType:"password"
-     * password : "123456"
-     * remember_me: true
+     refresh = false;
+     accessToken = '';
+     refreshToken = '';
+     tokenType = '';
+     exp = 0;
      */
-
-    private AccountDefines.BindType accountType = AccountDefines.BindType.phone;
-    private String iso = "CN";
-    private String grantType;
-    private String account;
-    private String password;
-    private Boolean rememberMe;
+    private Long exp;
+    private String tokenType;
+    private String refreshToken;
+    private String accessToken;
+    private Boolean refresh;
 }

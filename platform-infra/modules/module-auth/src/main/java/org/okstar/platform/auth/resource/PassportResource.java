@@ -13,14 +13,13 @@
 
 package org.okstar.platform.auth.resource;
 
+import io.quarkus.oidc.client.Tokens;
 import lombok.extern.slf4j.Slf4j;
 import org.okstar.platform.auth.service.PassportService;
+import org.okstar.platform.common.core.web.bean.Req;
 import org.okstar.platform.common.core.web.bean.Res;
 import org.okstar.platform.common.core.web.controller.OkBaseController;
-import org.okstar.platform.system.sign.SignInForm;
-import org.okstar.platform.system.sign.SignInResult;
-import org.okstar.platform.system.sign.SignUpForm;
-import org.okstar.platform.system.sign.SignUpResult;
+import org.okstar.platform.system.sign.*;
 
 import javax.inject.Inject;
 import javax.ws.rs.POST;
@@ -52,5 +51,36 @@ public class PassportResource extends OkBaseController {
         var resultDto = passportService.signIn(signInForm);
         log.info("resultDto=>{}", resultDto);
         return Res.ok(signInForm, resultDto);
+    }
+
+    @POST
+    @Path("signOut")
+    public Res<Boolean> signOut() {
+        String accessToken = tokens.getAccessToken();
+        passportService.signOut(accessToken);
+        return Res.ok(Req.empty(), true);
+    }
+
+
+    @Inject
+    Tokens tokens;
+
+
+    @POST
+    @Path("refresh")
+    public Res<RefreshResult> refresh(RefreshForm refreshForm) {
+//        log.info("refresh:{}", refreshForm);
+
+//        SignInResult result = passportService.refresh(refreshForm);
+
+        RefreshResult result = RefreshResult.builder()
+                .accessToken(tokens.getAccessToken())
+                .exp(tokens.getAccessTokenExpiresAt())
+                .refreshToken(tokens.getRefreshToken())
+                .refresh(refreshForm.getRefresh())
+                .build();
+
+        log.info("result:{}", result);
+        return Res.ok(refreshForm, result);
     }
 }
