@@ -19,7 +19,6 @@ import io.quarkus.oidc.client.Tokens;
 import io.smallrye.mutiny.Uni;
 import org.keycloak.authorization.client.AuthzClient;
 import org.keycloak.representations.idm.authorization.AuthorizationRequest;
-import org.okstar.platform.system.sign.RefreshForm;
 import org.okstar.platform.system.sign.SignInResult;
 import org.springframework.util.Assert;
 
@@ -52,8 +51,8 @@ class AuthzClientManagerImpl implements  AuthzClientManager {
     }
 
     @Override
-    public SignInResult refresh(RefreshForm refreshForm) {
-        Uni<Tokens> uni = oidcClient.refreshTokens(refreshForm.getRefreshToken());
+    public SignInResult refresh(String refreshToken) {
+        Uni<Tokens> uni = oidcClient.refreshTokens(refreshToken);
         try {
             Tokens tokens = uni.subscribeAsCompletionStage().get();
             return SignInResult.builder()

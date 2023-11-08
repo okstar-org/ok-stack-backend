@@ -23,7 +23,7 @@ public interface PassportService {
 
     SignInResult signIn(SignInForm signInForm);
 
-    SignInResult refresh(RefreshForm refreshForm);
+    SignInResult refresh(String refreshToken);
 
     void signOut(String accessToken);
 }

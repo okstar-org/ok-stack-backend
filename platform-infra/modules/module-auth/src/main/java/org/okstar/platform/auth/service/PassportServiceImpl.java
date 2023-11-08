@@ -77,7 +77,7 @@ public class PassportServiceImpl implements PassportService {
     }
 
     @Override
-    public SignInResult refresh(RefreshForm refreshForm) {
+    public SignInResult refresh(String refreshForm) {
         return authzClientManager.refresh(refreshForm);
     }
 

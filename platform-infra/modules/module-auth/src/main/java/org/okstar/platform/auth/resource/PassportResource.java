@@ -33,6 +33,9 @@ import javax.ws.rs.Path;
 public class PassportResource extends OkBaseController {
 
     @Inject
+    Tokens tokens;
+
+    @Inject
     PassportService passportService;
 
     @POST
@@ -61,16 +64,10 @@ public class PassportResource extends OkBaseController {
         return Res.ok(Req.empty(), true);
     }
 
-
-    @Inject
-    Tokens tokens;
-
-
     @POST
     @Path("refresh")
     public Res<RefreshResult> refresh(RefreshForm refreshForm) {
 //        log.info("refresh:{}", refreshForm);
-
 //        SignInResult result = passportService.refresh(refreshForm);
 
         RefreshResult result = RefreshResult.builder()
