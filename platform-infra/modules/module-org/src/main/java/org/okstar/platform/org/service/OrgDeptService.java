@@ -11,31 +11,18 @@
  * /
  */
 
-package org.okstar.platform.org.domain;
+package org.okstar.platform.org.service;
 
-import lombok.Data;
 
-import javax.persistence.Entity;
-import javax.persistence.Table;
-import javax.persistence.UniqueConstraint;
+import org.okstar.platform.common.datasource.OkService;
+import org.okstar.platform.org.domain.OrgDept;
 
 /**
- * 组织-岗位
+ * 部门管理 服务层
  * 
- * 
+ *
  */
-@Data
-@Entity
-@Table(uniqueConstraints = {@UniqueConstraint(columnNames = {"name", "no"})})
-public class SysOrgPost extends BaseEntity
+public interface OrgDeptService extends OkService<OrgDept, Long>
 {
-    /**
-     * 所在部门
-     */
-    private Long deptId;
 
-    /**
-     * 分配给（是否分配）
-     */
-    private String assignFor;
 }

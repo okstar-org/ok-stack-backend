@@ -23,4 +23,6 @@ public interface OrgService extends OkService<Org, Long>
 {
 
     Optional<Org> current();
+
+    void setDefault();
 }

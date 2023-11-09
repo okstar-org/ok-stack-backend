@@ -26,4 +26,5 @@ import javax.ws.rs.QueryParam;
 public class SysUserVO extends VO {
     @QueryParam("userName")
     String userName;
+
 }

@@ -36,4 +36,13 @@ public class BaseEntity extends OkEntity
      * 编号
      */
     private String no;
+
+    /**
+     * 禁用
+     */
+    private Boolean disabled;
+
+    public Boolean getDisabled() {
+        return disabled == null || disabled;
+    }
 }

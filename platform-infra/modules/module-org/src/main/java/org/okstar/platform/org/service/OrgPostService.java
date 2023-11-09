@@ -14,7 +14,7 @@
 package org.okstar.platform.org.service;
 
 
-import org.okstar.platform.org.domain.SysOrgPost;
+import org.okstar.platform.org.domain.OrgPost;
 
 import java.util.List;
 
@@ -23,7 +23,7 @@ import java.util.List;
  * 
  * 
  */
-public interface ISysPostService
+public interface OrgPostService
 {
     /**
      * 查询岗位信息集合
@@ -31,14 +31,14 @@ public interface ISysPostService
      * @param post 岗位信息
      * @return 岗位列表
      */
-    List<SysOrgPost> selectPostList(SysOrgPost post);
+    List<OrgPost> selectPostList(OrgPost post);
 
     /**
      * 查询所有岗位
      * 
      * @return 岗位列表
      */
-    List<SysOrgPost> selectPostAll();
+    List<OrgPost> selectPostAll();
 
     /**
      * 通过岗位ID查询岗位信息
@@ -46,7 +46,7 @@ public interface ISysPostService
      * @param postId 岗位ID
      * @return 角色对象信息
      */
-    SysOrgPost selectPostById(Long postId);
+    OrgPost selectPostById(Long postId);
 
     /**
      * 根据用户ID获取岗位选择框列表
@@ -62,7 +62,7 @@ public interface ISysPostService
      * @param post 岗位信息
      * @return 结果
      */
-    String checkPostNameUnique(SysOrgPost post);
+    String checkPostNameUnique(OrgPost post);
 
     /**
      * 校验岗位编码
@@ -70,7 +70,7 @@ public interface ISysPostService
      * @param post 岗位信息
      * @return 结果
      */
-    String checkPostCodeUnique(SysOrgPost post);
+    String checkPostCodeUnique(OrgPost post);
 
     /**
      * 通过岗位ID查询岗位使用数量
@@ -103,7 +103,7 @@ public interface ISysPostService
      * @param post 岗位信息
      * @return 结果
      */
-    int insertPost(SysOrgPost post);
+    int insertPost(OrgPost post);
 
     /**
      * 修改保存岗位信息
@@ -111,5 +111,5 @@ public interface ISysPostService
      * @param post 岗位信息
      * @return 结果
      */
-    int updatePost(SysOrgPost post);
+    int updatePost(OrgPost post);
 }

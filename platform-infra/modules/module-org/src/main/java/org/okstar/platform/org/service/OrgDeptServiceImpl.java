@@ -11,14 +11,14 @@
  * /
  */
 
-package org.okstar.platform.org.service.impl;
+package org.okstar.platform.org.service;
 
 import io.quarkus.panache.common.Page;
 import org.okstar.platform.common.core.web.page.OkPageResult;
 import org.okstar.platform.common.core.web.page.OkPageable;
-import org.okstar.platform.org.domain.SysOrgDept;
-import org.okstar.platform.org.mapper.SysDeptMapper;
-import org.okstar.platform.org.service.ISysDeptService;
+import org.okstar.platform.org.domain.OrgDept;
+import org.okstar.platform.org.mapper.OrgDeptMapper;
+import org.okstar.platform.org.service.OrgDeptService;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
@@ -28,23 +28,23 @@ import java.util.List;
  * 部门管理 服务实现
  */
 @ApplicationScoped
-public class SysDeptServiceImpl implements ISysDeptService {
+public class OrgDeptServiceImpl implements OrgDeptService {
     @Inject
-    private SysDeptMapper deptMapper;
+    private OrgDeptMapper orgDeptMapper;
 
     @Override
-    public void save(SysOrgDept sysDept) {
-        deptMapper.persist(sysDept);
+    public void save(OrgDept sysDept) {
+        orgDeptMapper.persist(sysDept);
     }
 
     @Override
-    public List<SysOrgDept> findAll() {
-        return deptMapper.findAll().stream().toList();
+    public List<OrgDept> findAll() {
+        return orgDeptMapper.findAll().stream().toList();
     }
 
     @Override
-    public OkPageResult<SysOrgDept> findPage(OkPageable pageable) {
-        var all = deptMapper.findAll();
+    public OkPageResult<OrgDept> findPage(OkPageable pageable) {
+        var all = orgDeptMapper.findAll();
         var query = all.page(Page.of(pageable.getPageNumber(), pageable.getPageSize()));
         return OkPageResult.build(
                 query.list(),
@@ -53,17 +53,17 @@ public class SysDeptServiceImpl implements ISysDeptService {
     }
 
     @Override
-    public SysOrgDept get(Long id) {
-        return deptMapper.findById(id);
+    public OrgDept get(Long id) {
+        return orgDeptMapper.findById(id);
     }
 
     @Override
     public void deleteById(Long id) {
-        deptMapper.deleteById(id);
+        orgDeptMapper.deleteById(id);
     }
 
     @Override
-    public void delete(SysOrgDept sysDept) {
-        deptMapper.delete(sysDept);
+    public void delete(OrgDept sysDept) {
+        orgDeptMapper.delete(sysDept);
     }
 }

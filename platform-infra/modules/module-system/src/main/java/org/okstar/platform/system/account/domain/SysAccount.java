@@ -71,5 +71,9 @@ public class SysAccount extends BaseEntity {
      */
     private String no;
 
+    /**
+     * 禁用
+     */
+    private Boolean disabled;
 
 }

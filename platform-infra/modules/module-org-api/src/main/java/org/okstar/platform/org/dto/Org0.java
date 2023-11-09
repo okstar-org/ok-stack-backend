@@ -19,4 +19,5 @@ import org.okstar.platform.common.core.web.bean.DTO;
 @Data
 public class Org0 extends DTO {
     private String name;
+    private String url;
 }

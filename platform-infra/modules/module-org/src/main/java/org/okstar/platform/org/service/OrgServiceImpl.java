@@ -13,25 +13,34 @@
 
 package org.okstar.platform.org.service;
 
+import io.quarkus.runtime.StartupEvent;
 import org.apache.commons.lang3.BooleanUtils;
+import org.okstar.platform.common.core.utils.OkDateUtils;
 import org.okstar.platform.common.core.web.page.OkPageResult;
 import org.okstar.platform.common.core.web.page.OkPageable;
 import org.okstar.platform.org.domain.Org;
 import org.okstar.platform.org.mapper.OrgMapper;
 
 import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.event.Observes;
 import javax.inject.Inject;
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 
+@Transactional
 @ApplicationScoped
 public class OrgServiceImpl implements OrgService {
     @Inject
     OrgMapper orgMapper;
 
-    @Override
-    public void save(Org sysOrg) {
+    void startup(@Observes StartupEvent event) {
+        setDefault();
+    }
 
+    @Override
+    public void save(Org org) {
+        orgMapper.persist(org);
     }
 
     @Override
@@ -45,23 +54,38 @@ public class OrgServiceImpl implements OrgService {
     }
 
     @Override
-    public Org get(Long aLong) {
-        return null;
+    public Org get(Long id) {
+        return orgMapper.findById(id);
     }
 
     @Override
-    public void deleteById(Long aLong) {
-
+    public void deleteById(Long id) {
+        orgMapper.deleteById(id);
     }
 
     @Override
     public void delete(Org sysOrg) {
-
+        orgMapper.delete(sysOrg);
     }
 
     @Override
     public Optional<Org> current() {
-        List<Org> orgs = findAll();
-        return orgs.stream().filter(o -> BooleanUtils.isTrue( o.getCurrent())).findFirst();
+        return findAll().stream().filter(o -> BooleanUtils.isTrue(o.getCurrent())).findFirst();
+    }
+
+    @Override
+    public synchronized void setDefault() {
+        Optional<Org> orgs = current();
+        if (orgs.isEmpty()) {
+            Org org = new Org();
+            org.setCurrent(true);
+            org.setName("OkStar开源社区");
+            org.setUrl("okstar.org");
+            org.setNo("1");
+            org.setParentId(0L);
+            org.setCreateBy(1L);
+            org.setCreateAt(OkDateUtils.now());
+            save(org);
+        }
     }
 }

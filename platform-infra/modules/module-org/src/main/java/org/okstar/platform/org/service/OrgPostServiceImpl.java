@@ -11,13 +11,12 @@
  * /
  */
 
-package org.okstar.platform.org.service.impl;
+package org.okstar.platform.org.service;
 
 import org.okstar.platform.common.core.constant.UserConstants;
-import org.okstar.platform.org.domain.SysOrgPost;
+import org.okstar.platform.org.domain.OrgPost;
 import org.okstar.platform.org.mapper.SysPostMapper;
 import org.okstar.platform.org.mapper.SysUserPostMapper;
-import org.okstar.platform.org.service.ISysPostService;
 
 import javax.enterprise.context.ApplicationScoped;
 import java.util.List;
@@ -28,7 +27,7 @@ import java.util.List;
  * 
  */
 @ApplicationScoped
-public class SysPostServiceImpl implements ISysPostService
+public class OrgPostServiceImpl implements OrgPostService
 {
 //    @Inject
     private SysPostMapper postMapper;
@@ -43,7 +42,7 @@ public class SysPostServiceImpl implements ISysPostService
      * @return 岗位信息集合
      */
     @Override
-    public List<SysOrgPost> selectPostList(SysOrgPost post)
+    public List<OrgPost> selectPostList(OrgPost post)
     {
         return postMapper.selectPostList(post);
     }
@@ -54,7 +53,7 @@ public class SysPostServiceImpl implements ISysPostService
      * @return 岗位列表
      */
     @Override
-    public List<SysOrgPost> selectPostAll()
+    public List<OrgPost> selectPostAll()
     {
         return postMapper.selectPostAll();
     }
@@ -66,7 +65,7 @@ public class SysPostServiceImpl implements ISysPostService
      * @return 角色对象信息
      */
     @Override
-    public SysOrgPost selectPostById(Long postId)
+    public OrgPost selectPostById(Long postId)
     {
         return postMapper.selectPostById(postId);
     }
@@ -90,7 +89,7 @@ public class SysPostServiceImpl implements ISysPostService
      * @return 结果
      */
     @Override
-    public String checkPostNameUnique(SysOrgPost post)
+    public String checkPostNameUnique(OrgPost post)
     {
 
         return UserConstants.UNIQUE;
@@ -103,7 +102,7 @@ public class SysPostServiceImpl implements ISysPostService
      * @return 结果
      */
     @Override
-    public String checkPostCodeUnique(SysOrgPost post)
+    public String checkPostCodeUnique(OrgPost post)
     {
 
         return UserConstants.UNIQUE;
@@ -157,7 +156,7 @@ public class SysPostServiceImpl implements ISysPostService
      * @return 结果
      */
     @Override
-    public int insertPost(SysOrgPost post)
+    public int insertPost(OrgPost post)
     {
         return postMapper.insertPost(post);
     }
@@ -169,7 +168,7 @@ public class SysPostServiceImpl implements ISysPostService
      * @return 结果
      */
     @Override
-    public int updatePost(SysOrgPost post)
+    public int updatePost(OrgPost post)
     {
         return postMapper.updatePost(post);
     }

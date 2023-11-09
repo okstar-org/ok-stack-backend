@@ -14,7 +14,7 @@
 package org.okstar.platform.org.mapper;
 
 
-import org.okstar.platform.org.domain.SysOrgPost;
+import org.okstar.platform.org.domain.OrgPost;
 
 import javax.inject.Singleton;
 import java.util.List;
@@ -34,14 +34,14 @@ public interface SysPostMapper
      * @param post 岗位信息
      * @return 岗位数据集合
      */
-    List<SysOrgPost> selectPostList(SysOrgPost post);
+    List<OrgPost> selectPostList(OrgPost post);
 
     /**
      * 查询所有岗位
      * 
      * @return 岗位列表
      */
-    List<SysOrgPost> selectPostAll();
+    List<OrgPost> selectPostAll();
 
     /**
      * 通过岗位ID查询岗位信息
@@ -49,7 +49,7 @@ public interface SysPostMapper
      * @param postId 岗位ID
      * @return 角色对象信息
      */
-    SysOrgPost selectPostById(Long postId);
+    OrgPost selectPostById(Long postId);
 
     /**
      * 根据用户ID获取岗位选择框列表
@@ -65,7 +65,7 @@ public interface SysPostMapper
      * @param userName 用户名
      * @return 结果
      */
-    List<SysOrgPost> selectPostsByUserName(String userName);
+    List<OrgPost> selectPostsByUserName(String userName);
 
     /**
      * 删除岗位信息
@@ -89,7 +89,7 @@ public interface SysPostMapper
      * @param post 岗位信息
      * @return 结果
      */
-    int updatePost(SysOrgPost post);
+    int updatePost(OrgPost post);
 
     /**
      * 新增岗位信息
@@ -97,7 +97,7 @@ public interface SysPostMapper
      * @param post 岗位信息
      * @return 结果
      */
-    int insertPost(SysOrgPost post);
+    int insertPost(OrgPost post);
 
     /**
      * 校验岗位名称
@@ -105,7 +105,7 @@ public interface SysPostMapper
      * @param postName 岗位名称
      * @return 结果
      */
-    SysOrgPost checkPostNameUnique(String postName);
+    OrgPost checkPostNameUnique(String postName);
 
     /**
      * 校验岗位编码
@@ -113,5 +113,5 @@ public interface SysPostMapper
      * @param postCode 岗位编码
      * @return 结果
      */
-    SysOrgPost checkPostCodeUnique(String postCode);
+    OrgPost checkPostCodeUnique(String postCode);
 }

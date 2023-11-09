@@ -27,7 +27,7 @@ import javax.persistence.UniqueConstraint;
 @Data
 @Entity
 @Table(uniqueConstraints = {@UniqueConstraint(columnNames = {"name", "no"})})
-public class SysOrgDept extends BaseEntity
+public class OrgDept extends BaseEntity
 {
 
     /** 父部门ID */
