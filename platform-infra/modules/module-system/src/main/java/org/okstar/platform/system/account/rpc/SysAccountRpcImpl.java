@@ -17,16 +17,16 @@ import org.okstar.platform.common.core.defined.AccountDefines;
 import org.okstar.platform.common.core.utils.bean.OkBeanUtils;
 import org.okstar.platform.common.rpc.RpcResult;
 import org.okstar.platform.system.account.service.SysAccountService;
-import org.okstar.platform.system.rpc.SysUserRpc;
+import org.okstar.platform.system.rpc.SysAccountRpc;
 import org.okstar.platform.system.sign.SignUpForm;
 import org.okstar.platform.system.sign.SignUpResult;
-import org.okstar.platform.system.vo.SysUserDto;
+import org.okstar.platform.system.vo.SysAccount0;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 
 @ApplicationScoped
-public class SysUserRpcImpl implements SysUserRpc {
+public class SysAccountRpcImpl implements SysAccountRpc {
 
     @Inject
     SysAccountService userService;
@@ -42,24 +42,24 @@ public class SysUserRpcImpl implements SysUserRpc {
     }
 
     @Override
-    public RpcResult<SysUserDto> findByBind(String iso, AccountDefines.BindType type, String bindValue) {
+    public RpcResult<SysAccount0> findByBind(String iso, AccountDefines.BindType type, String bindValue) {
         var sysUser = userService.findByBind(iso, type, bindValue);
         if (sysUser == null)
-            return RpcResult.<SysUserDto>builder().success(true).build();
+            return RpcResult.<SysAccount0>builder().success(true).build();
 
-        SysUserDto dto = new SysUserDto();
+        SysAccount0 dto = new SysAccount0();
         OkBeanUtils.copyPropertiesTo(sysUser, dto);
-        return RpcResult.<SysUserDto>builder().data(dto).success(true).build();
+        return RpcResult.<SysAccount0>builder().data(dto).success(true).build();
     }
 
     @Override
-    public RpcResult<SysUserDto> findByUsername(String username) {
+    public RpcResult<SysAccount0> findByUsername(String username) {
         var sysUser = userService.findByUsername(username);
         if (sysUser.isEmpty())
-            return RpcResult.<SysUserDto>builder().success(true).build();
+            return RpcResult.<SysAccount0>builder().success(true).build();
 
-        SysUserDto dto = new SysUserDto();
+        SysAccount0 dto = new SysAccount0();
         OkBeanUtils.copyPropertiesTo(sysUser.get(), dto);
-        return RpcResult.<SysUserDto>builder().data(dto).success(true).build();
+        return RpcResult.<SysAccount0>builder().data(dto).success(true).build();
     }
 }

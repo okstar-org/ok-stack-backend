@@ -22,8 +22,8 @@ import org.okstar.platform.common.core.defined.AccountDefines;
 import org.okstar.platform.common.core.utils.IdUtils;
 import org.okstar.platform.common.rpc.RpcAssert;
 import org.okstar.platform.system.sign.*;
-import org.okstar.platform.system.rpc.SysUserRpc;
-import org.okstar.platform.system.vo.SysUserDto;
+import org.okstar.platform.system.rpc.SysAccountRpc;
+import org.okstar.platform.system.vo.SysAccount0;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
@@ -35,7 +35,7 @@ public class PassportServiceImpl implements PassportService {
 
     @Inject
     @RestClient
-    SysUserRpc sysUserRpc;
+    SysAccountRpc sysAccountRpc;
 
     @Inject
     BackUserManager backUserManager;
@@ -47,7 +47,7 @@ public class PassportServiceImpl implements PassportService {
     public SignUpResult signUp(SignUpForm signUpForm) {
         log.info("signUp:{}", signUpForm);
 
-        SignUpResult resultDto = RpcAssert.isTrue(sysUserRpc.signUp(signUpForm));
+        SignUpResult resultDto = RpcAssert.isTrue(sysAccountRpc.signUp(signUpForm));
 
         BackUser user = BackUser.builder()
                 .username(resultDto.getUsername())
@@ -69,7 +69,7 @@ public class PassportServiceImpl implements PassportService {
 
     @Override
     public SignInResult signIn(SignInForm signInForm) {
-        SysUserDto userDto = RpcAssert.isTrue(sysUserRpc.findByBind(
+        SysAccount0 userDto = RpcAssert.isTrue(sysAccountRpc.findByBind(
                 signInForm.getIso(),
                 signInForm.getAccountType(),
                 signInForm.getAccount()));

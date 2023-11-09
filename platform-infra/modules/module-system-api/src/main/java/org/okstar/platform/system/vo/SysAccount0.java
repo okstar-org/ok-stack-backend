@@ -14,17 +14,26 @@
 package org.okstar.platform.system.vo;
 
 import lombok.Data;
+import org.okstar.platform.common.core.web.bean.DTO;
 
 import java.util.Optional;
 
+/**
+ * 简单帐号对象
+ */
 @Data
-public class SysUserDto {
+public class SysAccount0 extends DTO {
     private String iso;
     private String username;
+    private String nickname;
     private String firstName;
     private String lastName;
-    private String nickname;
+    private String no;
 
+    /**
+     * 头像
+     */
+    private String avatar;
 
     public String getName(){
         return Optional.ofNullable(nickname).orElse(username);

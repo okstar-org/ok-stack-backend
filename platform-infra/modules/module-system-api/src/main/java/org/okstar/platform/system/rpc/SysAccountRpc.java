@@ -18,7 +18,7 @@ import org.okstar.platform.common.core.defined.AccountDefines;
 import org.okstar.platform.common.rpc.RpcResult;
 import org.okstar.platform.system.sign.SignUpForm;
 import org.okstar.platform.system.sign.SignUpResult;
-import org.okstar.platform.system.vo.SysUserDto;
+import org.okstar.platform.system.vo.SysAccount0;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -26,9 +26,9 @@ import javax.ws.rs.Path;
 import javax.ws.rs.QueryParam;
 
 
-@Path("rpc/SysUserRpc")
+@Path("rpc/SysAccountRpc")
 @RegisterRestClient
-public interface SysUserRpc {
+public interface SysAccountRpc {
 
     @POST
     @Path("signUp")
@@ -36,11 +36,11 @@ public interface SysUserRpc {
 
     @GET
     @Path("findByBind")
-    RpcResult<SysUserDto> findByBind(@QueryParam("iso")String iso,
-                                     @QueryParam("type") AccountDefines.BindType type,
-                                     @QueryParam("bindValue") String bindValue);
+    RpcResult<SysAccount0> findByBind(@QueryParam("iso")String iso,
+                                      @QueryParam("type") AccountDefines.BindType type,
+                                      @QueryParam("bindValue") String bindValue);
 
     @GET
     @Path("findByUsername")
-    RpcResult<SysUserDto> findByUsername( @QueryParam("username") String username);
+    RpcResult<SysAccount0> findByUsername(@QueryParam("username") String username);
 }

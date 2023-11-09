@@ -20,8 +20,8 @@ import org.eclipse.microprofile.rest.client.inject.RestClient;
 import org.okstar.platform.common.core.web.bean.Req;
 import org.okstar.platform.common.core.web.bean.Res;
 import org.okstar.platform.common.rpc.RpcAssert;
-import org.okstar.platform.system.rpc.SysUserRpc;
-import org.okstar.platform.system.vo.SysUserDto;
+import org.okstar.platform.system.rpc.SysAccountRpc;
+import org.okstar.platform.system.vo.SysAccount0;
 
 import javax.inject.Inject;
 import javax.ws.rs.GET;
@@ -36,14 +36,14 @@ public class MeResource {
 
     @Inject
     @RestClient
-    SysUserRpc sysUserRpc;
+    SysAccountRpc sysAccountRpc;
 
     @GET
-    public Res<SysUserDto> get() {
+    public Res<SysAccount0> get() {
         for (var name : jwt.getClaimNames()) {
             Log.infof("claim=>%s %s", name, jwt.claim(name));
         }
         String name = jwt.getName();
-        return Res.ok(Req.empty(), RpcAssert.isTrue(sysUserRpc.findByUsername(name)));
+        return Res.ok(Req.empty(), RpcAssert.isTrue(sysAccountRpc.findByUsername(name)));
     }
 }

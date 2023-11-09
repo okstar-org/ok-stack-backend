@@ -34,6 +34,9 @@ public class SysAccount extends BaseEntity {
      */
     private String username;
 
+    /**
+     * 昵称
+     */
     private String nickname;
 
     /**
@@ -57,10 +60,16 @@ public class SysAccount extends BaseEntity {
     private AccountDefines.Status status;
 
 
-
     /**
      * 所在国家代号
      * @link https://www.iso.org/obp/ui/#search
      */
     private String iso;
+
+    /**
+     * 编号
+     */
+    private String no;
+
+
 }
