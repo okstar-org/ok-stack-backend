@@ -11,18 +11,21 @@
  * /
  */
 
-package org.okstar.platform.org.service;
+package org.okstar.platform.org.mapper;
 
 
-import org.okstar.platform.common.datasource.OkService;
+import io.quarkus.hibernate.orm.panache.PanacheRepository;
 import org.okstar.platform.org.domain.OrgPost;
 
-/**
- * 岗位信息 服务层
- * 
- * 
- */
-public interface OrgPostService extends OkService<OrgPost, Long>
-{
+import javax.enterprise.context.ApplicationScoped;
 
+
+/**
+ * 岗位信息 数据层
+ * 
+ *
+ */
+@ApplicationScoped
+public class OrgPostMapper implements PanacheRepository<OrgPost>
+{
 }
