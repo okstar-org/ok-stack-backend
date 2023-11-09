@@ -11,19 +11,16 @@
  * /
  */
 
-package org.okstar.platform.org.mapper;
+package org.okstar.platform.org.service;
 
 
-import io.quarkus.hibernate.orm.panache.PanacheRepository;
-import org.okstar.platform.org.domain.SysOrgDept;
+import org.okstar.platform.common.datasource.OkService;
+import org.okstar.platform.org.domain.Org;
 
-import javax.inject.Singleton;
+import java.util.Optional;
 
+public interface OrgService extends OkService<Org, Long>
+{
 
-/**
- * 部门管理 数据层
- */
-@Singleton
-public class SysDeptMapper implements PanacheRepository<SysOrgDept> {
-
+    Optional<Org> current();
 }

@@ -27,5 +27,13 @@ import javax.persistence.MappedSuperclass;
 @MappedSuperclass
 public class BaseEntity extends OkEntity
 {
+    /**
+     * 名称
+     */
+    private String name;
 
+    /**
+     * 编号
+     */
+    private String no;
 }

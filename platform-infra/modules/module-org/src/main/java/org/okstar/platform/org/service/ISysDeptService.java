@@ -15,14 +15,14 @@ package org.okstar.platform.org.service;
 
 
 import org.okstar.platform.common.datasource.OkService;
-import org.okstar.platform.org.domain.SysDept;
+import org.okstar.platform.org.domain.SysOrgDept;
 
 /**
  * 部门管理 服务层
  * 
  *
  */
-public interface ISysDeptService extends OkService<SysDept, Long>
+public interface ISysDeptService extends OkService<SysOrgDept, Long>
 {
 
 }

@@ -16,7 +16,7 @@ package org.okstar.platform.org.service.impl;
 import io.quarkus.panache.common.Page;
 import org.okstar.platform.common.core.web.page.OkPageResult;
 import org.okstar.platform.common.core.web.page.OkPageable;
-import org.okstar.platform.org.domain.SysDept;
+import org.okstar.platform.org.domain.SysOrgDept;
 import org.okstar.platform.org.mapper.SysDeptMapper;
 import org.okstar.platform.org.service.ISysDeptService;
 
@@ -33,17 +33,17 @@ public class SysDeptServiceImpl implements ISysDeptService {
     private SysDeptMapper deptMapper;
 
     @Override
-    public void save(SysDept sysDept) {
+    public void save(SysOrgDept sysDept) {
         deptMapper.persist(sysDept);
     }
 
     @Override
-    public List<SysDept> findAll() {
+    public List<SysOrgDept> findAll() {
         return deptMapper.findAll().stream().toList();
     }
 
     @Override
-    public OkPageResult<SysDept> findPage(OkPageable pageable) {
+    public OkPageResult<SysOrgDept> findPage(OkPageable pageable) {
         var all = deptMapper.findAll();
         var query = all.page(Page.of(pageable.getPageNumber(), pageable.getPageSize()));
         return OkPageResult.build(
@@ -53,7 +53,7 @@ public class SysDeptServiceImpl implements ISysDeptService {
     }
 
     @Override
-    public SysDept get(Long id) {
+    public SysOrgDept get(Long id) {
         return deptMapper.findById(id);
     }
 
@@ -63,7 +63,7 @@ public class SysDeptServiceImpl implements ISysDeptService {
     }
 
     @Override
-    public void delete(SysDept sysDept) {
+    public void delete(SysOrgDept sysDept) {
         deptMapper.delete(sysDept);
     }
 }

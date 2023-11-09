@@ -11,19 +11,32 @@
  * /
  */
 
-package org.okstar.platform.org.mapper;
+package org.okstar.platform.org.domain;
 
+import lombok.Data;
 
-import io.quarkus.hibernate.orm.panache.PanacheRepository;
-import org.okstar.platform.org.domain.SysOrgDept;
-
-import javax.inject.Singleton;
-
+import javax.persistence.Entity;
+import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 
 /**
- * 部门管理 数据层
+ * 组织-部门
+ * 
+ * 
  */
-@Singleton
-public class SysDeptMapper implements PanacheRepository<SysOrgDept> {
+@Data
+@Entity
+@Table(uniqueConstraints = {@UniqueConstraint(columnNames = {"name", "no"})})
+public class SysOrgDept extends BaseEntity
+{
+
+    /** 父部门ID */
+    private Long parentId;
+
+    /**
+     * 组织ID
+     */
+    private Long orgId;
+
 
 }

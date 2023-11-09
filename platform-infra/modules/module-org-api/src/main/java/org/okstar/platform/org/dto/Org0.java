@@ -11,19 +11,12 @@
  * /
  */
 
-package org.okstar.platform.org.mapper;
+package org.okstar.platform.org.dto;
 
+import lombok.Data;
+import org.okstar.platform.common.core.web.bean.DTO;
 
-import io.quarkus.hibernate.orm.panache.PanacheRepository;
-import org.okstar.platform.org.domain.SysOrgDept;
-
-import javax.inject.Singleton;
-
-
-/**
- * 部门管理 数据层
- */
-@Singleton
-public class SysDeptMapper implements PanacheRepository<SysOrgDept> {
-
+@Data
+public class Org0 extends DTO {
+    private String name;
 }
