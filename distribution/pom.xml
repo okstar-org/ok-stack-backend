@@ -18,37 +18,37 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>org.okstar.platform</groupId>
-        <artifactId>modules</artifactId>
+        <artifactId>okstack-platform</artifactId>
         <version>${revision}</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
 
-    <artifactId>module-org</artifactId>
+    <artifactId>distribution</artifactId>
+    <packaging>pom</packaging>
 
-    <properties>
-        <maven.compiler.source>17</maven.compiler.source>
-        <maven.compiler.target>17</maven.compiler.target>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <db.name>okstack_module_org</db.name>
-    </properties>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <configuration>
+                    <descriptors>
+                        <descriptor>assembly.xml</descriptor>
+                    </descriptors>
 
-    <dependencies>
-        <dependency>
-            <groupId>org.okstar.platform</groupId>
-            <artifactId>common-base</artifactId>
-            <version>${revision}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.okstar.platform</groupId>
-            <artifactId>common-jpa</artifactId>
-            <version>${revision}</version>
-        </dependency>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>assembly</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>single</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+        <finalName>okstack-platform</finalName>
+    </build>
 
-        <dependency>
-            <groupId>org.okstar.platform</groupId>
-            <artifactId>module-org-api</artifactId>
-            <version>${revision}</version>
-        </dependency>
-
-    </dependencies>
 </project>

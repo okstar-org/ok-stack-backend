@@ -95,10 +95,10 @@ public class SysAccountServiceImpl extends OkAbsService implements SysAccountSer
     public SignUpResult signUp(SignUpForm signUpForm) {
         Log.infof("signUp:%s", signUpForm);
 
-        Assert.hasText(signUpForm.getIso());
-        Assert.hasText(signUpForm.getPassword());
-        Assert.notNull(signUpForm.getAccountType());
-        Assert.notNull(signUpForm.getAccount());
+        Assert.hasText(signUpForm.getIso(),"iso is empty");
+        Assert.hasText(signUpForm.getPassword(),"password is empty");
+        Assert.notNull(signUpForm.getAccountType(),"accountType is empty");
+        Assert.notNull(signUpForm.getAccount(),"account is empty");
 
         long existed;
         if (signUpForm.getAccountType() == AccountDefines.BindType.phone) {

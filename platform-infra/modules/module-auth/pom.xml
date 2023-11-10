@@ -27,7 +27,11 @@
     <description>负责认证授权等功能</description>
 
     <dependencies>
-
+        <dependency>
+            <groupId>org.okstar.platform</groupId>
+            <artifactId>common-base</artifactId>
+            <version>${revision}</version>
+        </dependency>
         <dependency>
             <groupId>org.okstar.platform</groupId>
             <artifactId>common-security</artifactId>

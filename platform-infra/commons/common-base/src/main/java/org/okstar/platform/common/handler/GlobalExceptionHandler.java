@@ -11,7 +11,7 @@
  * /
  */
 
-package org.okstar.platform.common.security.handler;
+package org.okstar.platform.common.handler;
 
 import io.quarkus.logging.Log;
 import org.okstar.platform.common.core.web.bean.Req;

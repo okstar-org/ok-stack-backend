@@ -25,6 +25,7 @@
     <modules>
         <module>platform-app</module>
         <module>platform-infra</module>
+        <module>distribution</module>
     </modules>
 
     <properties>
@@ -323,11 +324,39 @@
                     <include>**/*.yaml</include>
                     <include>**/*.conf</include>
                     <include>**/*.factories</include>
+                    <include>**/io.smallrye.config.ConfigSourceInterceptor</include>
                 </includes>
             </resource>
         </resources>
 
         <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-resources-plugin</artifactId>
+                <version>3.3.1</version>
+                <executions>
+                    <execution>
+                        <id>copy-resources</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>copy-resources</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${project.build.directory}/${project.build.finalName}/META-INF</outputDirectory>
+                            <resources>
+                                <resource>
+                                    <directory>src/main/resources/META-INF</directory>
+                                    <filtering>true</filtering>
+                                    <includes>
+                                        <include>beans.xml</include>
+                                    </includes>
+                                </resource>
+                            </resources>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
             <plugin>
                 <groupId>io.quarkus.platform</groupId>
                 <artifactId>quarkus-maven-plugin</artifactId>
@@ -384,7 +413,6 @@
                     </execution>
                 </executions>
             </plugin>
-
         </plugins>
     </build>
 </project>
