@@ -11,21 +11,22 @@
  * /
  */
 
-package org.okstar.platform.org.mapper;
+package org.okstar.platform.org.staff;
 
-
-import io.quarkus.hibernate.orm.panache.PanacheRepository;
-import org.okstar.platform.org.rbac.OrgRbacUserRole;
-
-import javax.enterprise.context.ApplicationScoped;
+import org.okstar.platform.org.domain.BaseEntity;
+import org.okstar.platform.org.domain.OrgPost;
 
 /**
- * 用户与角色关联表
+ * 人员和岗位关联
  * 
- * 
+ *
  */
-@ApplicationScoped
-public class SysUserRoleRepository implements PanacheRepository<OrgRbacUserRole>
+public class OrgStaffPost extends BaseEntity
 {
+    /** 人员 */
+    private OrgStaff staff;
+    
+    /** 岗位 */
+    private OrgPost post;
 
 }

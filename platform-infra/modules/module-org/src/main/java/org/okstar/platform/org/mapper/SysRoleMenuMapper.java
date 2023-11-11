@@ -13,7 +13,7 @@
 
 package org.okstar.platform.org.mapper;
 
-import org.okstar.platform.org.domain.SysRoleMenu;
+import org.okstar.platform.org.rbac.SysRbacRoleResource;
 
 import javax.inject.Singleton;
 import java.util.List;
@@ -57,5 +57,5 @@ public interface SysRoleMenuMapper
      * @param roleMenuList 角色菜单列表
      * @return 结果
      */
-    int batchRoleMenu(List<SysRoleMenu> roleMenuList);
+    int batchRoleMenu(List<SysRbacRoleResource> roleMenuList);
 }

@@ -16,7 +16,7 @@ package org.okstar.platform.org.service.impl;
 import io.quarkus.panache.common.Page;
 import org.okstar.platform.common.core.web.page.OkPageResult;
 import org.okstar.platform.common.core.web.page.OkPageable;
-import org.okstar.platform.org.domain.SysRole;
+import org.okstar.platform.org.rbac.OrgRbacRole;
 import org.okstar.platform.org.mapper.SysRoleMapper;
 import org.okstar.platform.org.service.SysRoleService;
 
@@ -34,17 +34,17 @@ public class SysRoleServiceImpl implements SysRoleService {
 
 
     @Override
-    public void save(SysRole sysRole) {
-        roleMapper.persist(sysRole);
+    public void save(OrgRbacRole orgRbacRole) {
+        roleMapper.persist(orgRbacRole);
     }
 
     @Override
-    public List<SysRole> findAll() {
+    public List<OrgRbacRole> findAll() {
         return null;
     }
 
     @Override
-    public OkPageResult<SysRole> findPage(OkPageable pageable) {
+    public OkPageResult<OrgRbacRole> findPage(OkPageable pageable) {
         var all = roleMapper.findAll();
         var query = all.page(Page.of(pageable.getPageNumber(), pageable.getPageSize()));
         return OkPageResult.build(
@@ -54,7 +54,7 @@ public class SysRoleServiceImpl implements SysRoleService {
     }
 
     @Override
-    public SysRole get(Long aLong) {
+    public OrgRbacRole get(Long aLong) {
         return null;
     }
 
@@ -64,7 +64,7 @@ public class SysRoleServiceImpl implements SysRoleService {
     }
 
     @Override
-    public void delete(SysRole sysRole) {
+    public void delete(OrgRbacRole orgRbacRole) {
 
     }
 }

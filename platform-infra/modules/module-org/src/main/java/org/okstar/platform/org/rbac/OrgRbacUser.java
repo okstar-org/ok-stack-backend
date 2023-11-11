@@ -11,21 +11,24 @@
  * /
  */
 
-package org.okstar.platform.org.mapper;
+package org.okstar.platform.org.rbac;
 
+import lombok.Data;
+import org.okstar.platform.org.domain.BaseEntity;
 
-import io.quarkus.hibernate.orm.panache.PanacheRepository;
-import org.okstar.platform.org.rbac.OrgRbacUserRole;
-
-import javax.enterprise.context.ApplicationScoped;
+import javax.persistence.Entity;
+import javax.persistence.MappedSuperclass;
 
 /**
- * 用户与角色关联表
- * 
- * 
+ * RBAC-User
  */
-@ApplicationScoped
-public class SysUserRoleRepository implements PanacheRepository<OrgRbacUserRole>
-{
+@Data
+@Entity
+@MappedSuperclass
+public class OrgRbacUser extends BaseEntity {
+    /**
+     * 绑定的帐号
+     */
+    private Long accountId;
 
 }

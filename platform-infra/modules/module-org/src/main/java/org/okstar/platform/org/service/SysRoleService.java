@@ -15,14 +15,14 @@ package org.okstar.platform.org.service;
 
 
 import org.okstar.platform.common.datasource.OkService;
-import org.okstar.platform.org.domain.SysRole;
+import org.okstar.platform.org.rbac.OrgRbacRole;
 
 /**
  * 角色业务层
  * 
  * 
  */
-public interface SysRoleService extends OkService<SysRole, Long>
+public interface SysRoleService extends OkService<OrgRbacRole, Long>
 {
 
 

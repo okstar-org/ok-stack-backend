@@ -11,7 +11,7 @@
  * /
  */
 
-package org.okstar.platform.org.domain;
+package org.okstar.platform.system.domain;
 
 import lombok.Data;
 

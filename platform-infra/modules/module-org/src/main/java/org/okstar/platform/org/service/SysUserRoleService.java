@@ -15,14 +15,14 @@ package org.okstar.platform.org.service;
 
 
 import org.okstar.platform.common.datasource.OkService;
-import org.okstar.platform.org.domain.SysUserRole;
+import org.okstar.platform.org.rbac.OrgRbacUserRole;
 
 /**
  * 在线用户 服务层
  * 
  *
  */
-public interface SysUserRoleService extends OkService<SysUserRole, Long>
+public interface SysUserRoleService extends OkService<OrgRbacUserRole, Long>
 {
     long countByRoleId(Long roleId);
 
@@ -35,11 +35,4 @@ public interface SysUserRoleService extends OkService<SysUserRole, Long>
      */
     long deleteByUserIds(Long roleId, Long[] userIds);
 
-    /**
-     * 批量选择授权用户角色
-     *
-     * @param roleId  角色ID
-     * @param userIds 需要删除的用户数据ID
-     */
-    void insertUsers(Long roleId, Long[] userIds);
 }

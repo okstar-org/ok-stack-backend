@@ -15,7 +15,7 @@ package org.okstar.platform.org.service;
 
 import org.okstar.platform.common.core.web.page.OkPageResult;
 import org.okstar.platform.common.core.web.page.OkPageable;
-import org.okstar.platform.org.domain.SysUserRole;
+import org.okstar.platform.org.rbac.OrgRbacUserRole;
 import org.okstar.platform.org.mapper.SysUserRoleRepository;
 
 import javax.enterprise.context.ApplicationScoped;
@@ -31,22 +31,22 @@ public class SysUserRoleServiceImpl implements SysUserRoleService {
     private SysUserRoleRepository userRoleRepository;
 
     @Override
-    public void save(SysUserRole sysUserRole) {
-        userRoleRepository.persist(sysUserRole);
+    public void save(OrgRbacUserRole orgRbacUserRole) {
+        userRoleRepository.persist(orgRbacUserRole);
     }
 
     @Override
-    public List<SysUserRole> findAll() {
+    public List<OrgRbacUserRole> findAll() {
         return userRoleRepository.findAll().stream().toList();
     }
 
     @Override
-    public OkPageResult<SysUserRole> findPage(OkPageable page) {
+    public OkPageResult<OrgRbacUserRole> findPage(OkPageable page) {
         return null;
     }
 
     @Override
-    public SysUserRole get(Long id) {
+    public OrgRbacUserRole get(Long id) {
         return userRoleRepository.findById(id);
     }
 
@@ -56,8 +56,8 @@ public class SysUserRoleServiceImpl implements SysUserRoleService {
     }
 
     @Override
-    public void delete(SysUserRole sysUserRole) {
-        userRoleRepository.delete(sysUserRole);
+    public void delete(OrgRbacUserRole orgRbacUserRole) {
+        userRoleRepository.delete(orgRbacUserRole);
     }
     /**
      * 通过角色ID查询角色使用数量
@@ -90,27 +90,5 @@ public class SysUserRoleServiceImpl implements SysUserRoleService {
         return c;
     }
 
-    /**
-     * 批量选择授权用户角色
-     *
-     * @param roleId  角色ID
-     * @param userIds 需要删除的用户数据ID
-     */
-    @Override
-    public void insertUsers(Long roleId, Long[] userIds) {
-        if (userIds == null) {
-            return;
-        }
 
-        // 新增用户与角色管理
-        List<SysUserRole> list = Arrays.stream(userIds)
-                .map(userId -> {
-                    SysUserRole ur = new SysUserRole();
-                    ur.setUserId(userId);
-                    ur.setRoleId(roleId);
-                    return ur;
-                }).collect(Collectors.toList());
-
-        userRoleRepository.persist(list);
-    }
 }

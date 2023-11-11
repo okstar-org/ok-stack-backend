@@ -11,26 +11,25 @@
  * /
  */
 
-package org.okstar.platform.org.service.impl;
+package org.okstar.platform.system.service;
+
 
 import io.quarkus.panache.common.Page;
 import org.okstar.platform.common.core.web.page.OkPageResult;
 import org.okstar.platform.common.core.web.page.OkPageable;
-import org.okstar.platform.org.domain.SysMenu;
-import org.okstar.platform.org.mapper.SysMenuMapper;
-import org.okstar.platform.org.service.ISysMenuService;
+import org.okstar.platform.system.domain.SysMenu;
+import org.okstar.platform.system.mapper.SysMenuMapper;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import java.util.List;
 
-;
 
 /**
  * 菜单 业务层处理
  */
 @ApplicationScoped
-public class SysMenuServiceImpl implements ISysMenuService {
+public class SysMenuServiceImpl implements SysMenuService {
 
     @Inject
     SysMenuMapper sysMenuMapper;

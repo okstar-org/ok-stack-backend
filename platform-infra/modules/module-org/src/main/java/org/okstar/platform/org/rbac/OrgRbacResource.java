@@ -11,20 +11,24 @@
  * /
  */
 
-package org.okstar.platform.org.mapper;
+package org.okstar.platform.org.rbac;
 
-import io.quarkus.hibernate.orm.panache.PanacheRepository;
-import org.okstar.platform.org.domain.SysMenu;
+import lombok.Data;
+import org.okstar.platform.org.domain.BaseEntity;
 
-import javax.inject.Singleton;
+import javax.persistence.Entity;
+import javax.persistence.MappedSuperclass;
 
 /**
- * 菜单表 数据层
- * 
- * 
+ * RBAC-User
  */
-@Singleton
-public class SysMenuMapper implements PanacheRepository<SysMenu>
-{
+@Data
+@Entity
+@MappedSuperclass
+public class OrgRbacResource extends BaseEntity {
+    /**
+     * 绑定到菜单
+     */
+    private Long menuId;
 
 }

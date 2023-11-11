@@ -11,21 +11,26 @@
  * /
  */
 
-package org.okstar.platform.org.mapper;
+package org.okstar.platform.org.rbac;
 
+import lombok.Data;
 
-import io.quarkus.hibernate.orm.panache.PanacheRepository;
-import org.okstar.platform.org.rbac.OrgRbacUserRole;
-
-import javax.enterprise.context.ApplicationScoped;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 
 /**
- * 用户与角色关联表
+ * 用户和角色关联 sys_user_role
  * 
  * 
  */
-@ApplicationScoped
-public class SysUserRoleRepository implements PanacheRepository<OrgRbacUserRole>
+@Data
+@Entity
+@Table
+public class OrgRbacUserRole
 {
-
+    /** 用户 */
+    private OrgRbacUser user;
+    
+    /** 角色 */
+    private OrgRbacRole role;
 }

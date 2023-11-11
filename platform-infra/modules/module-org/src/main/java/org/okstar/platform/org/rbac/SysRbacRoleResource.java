@@ -11,19 +11,24 @@
  * /
  */
 
-package org.okstar.platform.org.domain;
+package org.okstar.platform.org.rbac;
+
+import javax.persistence.Entity;
+import javax.persistence.Table;
 
 /**
- * 用户和岗位关联 sys_user_post
+ * 角色和资源的关联
  * 
- *
+ * 
  */
-public class SysUserPost extends BaseEntity
+@Entity
+@Table
+public class SysRbacRoleResource
 {
-    /** 用户ID */
-    private Long userId;
+    /** 角色ID */
+    private OrgRbacRole role;
     
-    /** 岗位ID */
-    private Long postId;
+    /** 菜单ID */
+    private OrgRbacResource menuId;
 
 }

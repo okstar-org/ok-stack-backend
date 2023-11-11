@@ -14,7 +14,7 @@
 package org.okstar.platform.org.mapper;
 
 
-import org.okstar.platform.org.domain.SysUserPost;
+import org.okstar.platform.org.staff.OrgStaffPost;
 
 import javax.inject.Singleton;
 import java.util.List;
@@ -59,5 +59,5 @@ public interface SysUserPostMapper
      * @param userPostList 用户角色列表
      * @return 结果
      */
-    int batchUserPost(List<SysUserPost> userPostList);
+    int batchUserPost(List<OrgStaffPost> userPostList);
 }

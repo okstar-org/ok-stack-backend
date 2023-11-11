@@ -11,21 +11,19 @@
  * /
  */
 
-package org.okstar.platform.org.mapper;
+package org.okstar.platform.system.service;
 
 
-import io.quarkus.hibernate.orm.panache.PanacheRepository;
-import org.okstar.platform.org.rbac.OrgRbacUserRole;
-
-import javax.enterprise.context.ApplicationScoped;
+import org.okstar.platform.common.datasource.OkService;
+import org.okstar.platform.system.domain.SysMenu;
 
 /**
- * 用户与角色关联表
+ * 菜单 业务层
  * 
- * 
+ *
  */
-@ApplicationScoped
-public class SysUserRoleRepository implements PanacheRepository<OrgRbacUserRole>
+public interface SysMenuService extends OkService<SysMenu, Long>
 {
+
 
 }

@@ -29,6 +29,11 @@ import javax.persistence.UniqueConstraint;
 @Table(uniqueConstraints = {@UniqueConstraint(columnNames = {"name", "no"})})
 public class Org extends BaseEntity
 {
+    /**
+     * 名称
+     */
+    private String name;
+
 
     /** 上级组织 */
     private Long parentId;

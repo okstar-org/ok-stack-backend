@@ -11,21 +11,20 @@
  * /
  */
 
-package org.okstar.platform.org.domain;
+package org.okstar.platform.system.mapper;
 
-import lombok.Data;
+import io.quarkus.hibernate.orm.panache.PanacheRepository;
+import org.okstar.platform.system.domain.SysMenu;
+
+import javax.inject.Singleton;
 
 /**
- * 用户和角色关联 sys_user_role
+ * 菜单表 数据层
  * 
  * 
  */
-@Data
-public class SysUserRole extends BaseEntity
+@Singleton
+public class SysMenuMapper implements PanacheRepository<SysMenu>
 {
-    /** 用户ID */
-    private Long userId;
-    
-    /** 角色ID */
-    private Long roleId;
+
 }

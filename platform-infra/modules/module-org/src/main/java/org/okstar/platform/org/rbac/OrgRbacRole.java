@@ -11,19 +11,28 @@
  * /
  */
 
-package org.okstar.platform.org.service;
+package org.okstar.platform.org.rbac;
 
+import lombok.Data;
+import org.okstar.platform.org.domain.BaseEntity;
 
-import org.okstar.platform.common.datasource.OkService;
-import org.okstar.platform.org.domain.SysMenu;
+import javax.persistence.Entity;
+import javax.persistence.MappedSuperclass;
 
 /**
- * 菜单 业务层
- * 
- *
+ * RBAC-Role
  */
-public interface ISysMenuService extends OkService<SysMenu, Long>
+@Data
+@Entity
+@MappedSuperclass
+public class OrgRbacRole extends BaseEntity
 {
 
+    /** 角色名称 */
+    private String name;
 
+    /**
+     * 绑定到岗位
+     */
+    private Long postId;
 }

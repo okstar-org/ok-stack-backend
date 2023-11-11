@@ -15,7 +15,7 @@ package org.okstar.platform.org.mapper;
 
 
 import io.quarkus.hibernate.orm.panache.PanacheRepository;
-import org.okstar.platform.org.domain.SysRole;
+import org.okstar.platform.org.rbac.OrgRbacRole;
 
 import javax.enterprise.context.ApplicationScoped;
 
@@ -25,7 +25,7 @@ import javax.enterprise.context.ApplicationScoped;
  * 
  */
 @ApplicationScoped
-public class SysRoleMapper  implements PanacheRepository<SysRole>
+public class SysRoleMapper  implements PanacheRepository<OrgRbacRole>
 {
 
 }
