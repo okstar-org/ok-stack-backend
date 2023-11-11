@@ -38,5 +38,9 @@ public class OrgDept extends BaseEntity
      */
     private Long orgId;
 
+    /**
+     * 部门级别
+     */
+    private Integer level;
 
 }

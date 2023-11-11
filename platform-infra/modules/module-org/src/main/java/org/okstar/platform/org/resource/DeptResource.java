@@ -16,27 +16,40 @@ package org.okstar.platform.org.resource;
 import org.okstar.platform.common.core.web.bean.Req;
 import org.okstar.platform.common.core.web.bean.Res;
 import org.okstar.platform.org.domain.Org;
+import org.okstar.platform.org.domain.OrgDept;
+import org.okstar.platform.org.service.OrgDeptService;
 import org.okstar.platform.org.service.OrgService;
+import org.springframework.util.Assert;
 
 import javax.inject.Inject;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import java.util.List;
 import java.util.Optional;
 
-/**
- * 组织
- */
-@Path("")
-public class OrgResource {
-
+@Path("dept")
+public class DeptResource {
+    @Inject
+    OrgDeptService deptService;
     @Inject
     OrgService orgService;
 
     @GET
-    @Path("current")
-    public Res<Optional<Org>> current() {
-        var resultDto = orgService.current();
-        return Res.ok(Req.empty(), resultDto);
+    @Path("children")
+    public Res<List<OrgDept>> childrenByOrg() {
+        Optional<Org> current = orgService.current();
+        Assert.isTrue(current.isPresent(), "未初始化组织！");
+        List<OrgDept> list = deptService.getByOrgId(current.get().id);
+        return Res.ok(Req.empty(), list);
     }
+
+    @GET
+    @Path("children/{parentId}")
+    public Res<List<OrgDept>> children(@PathParam("parentId") Long parentId) {
+        List<OrgDept> list = deptService.children(parentId);
+        return Res.ok(Req.empty(), list);
+    }
+
 
 }

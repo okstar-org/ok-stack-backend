@@ -18,7 +18,6 @@ import org.okstar.platform.common.core.web.page.OkPageResult;
 import org.okstar.platform.common.core.web.page.OkPageable;
 import org.okstar.platform.org.domain.OrgDept;
 import org.okstar.platform.org.mapper.OrgDeptMapper;
-import org.okstar.platform.org.service.OrgDeptService;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
@@ -66,4 +65,15 @@ public class OrgDeptServiceImpl implements OrgDeptService {
     public void delete(OrgDept sysDept) {
         orgDeptMapper.delete(sysDept);
     }
+
+    @Override
+    public List<OrgDept> children(Long parentId) {
+        return orgDeptMapper.list("parentId", parentId).stream().toList();
+    }
+    @Override
+    public List<OrgDept> getByOrgId(Long orgId) {
+        return orgDeptMapper.list("parentId = ?1 and orgId = ?2", 0L, orgId).stream().toList();
+    }
+
+
 }

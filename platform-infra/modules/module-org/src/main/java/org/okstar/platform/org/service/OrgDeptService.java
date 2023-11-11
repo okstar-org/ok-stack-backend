@@ -17,6 +17,8 @@ package org.okstar.platform.org.service;
 import org.okstar.platform.common.datasource.OkService;
 import org.okstar.platform.org.domain.OrgDept;
 
+import java.util.List;
+
 /**
  * 部门管理 服务层
  * 
@@ -24,5 +26,10 @@ import org.okstar.platform.org.domain.OrgDept;
  */
 public interface OrgDeptService extends OkService<OrgDept, Long>
 {
+
+    List<OrgDept> children(Long parentId);
+
+    List<OrgDept> getByOrgId(Long orgId);
+
 
 }

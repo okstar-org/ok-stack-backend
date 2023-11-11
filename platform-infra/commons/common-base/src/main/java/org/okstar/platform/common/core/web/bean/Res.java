@@ -23,7 +23,6 @@ import java.util.Map;
 import java.util.Optional;
 
 
-
 /**
  * 响应信息主体
  * <p>
@@ -125,11 +124,11 @@ public class Res<T> extends DTO {
     }
 
     public static <T> Res<T> ok(Req req, T data) {
-        return build(req, data,  OK , null);
+        return build(req, data, OK, null);
     }
 
     public static <T> Res<T> ok(Req req, T data, String msg) {
-        return build(req, data,  OK , msg);
+        return build(req, data, OK, msg);
     }
 
 
@@ -183,4 +182,10 @@ public class Res<T> extends DTO {
     public void putExtra(String k, Object o) {
         extra.put(k, o);
     }
+
+
+    public boolean success() {
+        return code == OK || code == CREATED;
+    }
+
 }
