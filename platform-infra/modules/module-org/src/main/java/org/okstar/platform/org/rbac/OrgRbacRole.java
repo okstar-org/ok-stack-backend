@@ -18,11 +18,13 @@ import org.okstar.platform.org.domain.BaseEntity;
 
 import javax.persistence.Entity;
 import javax.persistence.MappedSuperclass;
+import javax.persistence.Table;
 
 /**
  * RBAC-Role
  */
 @Data
+@Table
 @Entity
 @MappedSuperclass
 public class OrgRbacRole extends BaseEntity

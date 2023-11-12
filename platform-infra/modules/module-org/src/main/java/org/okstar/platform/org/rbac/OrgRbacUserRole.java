@@ -13,9 +13,11 @@
 
 package org.okstar.platform.org.rbac;
 
+import io.quarkus.hibernate.orm.panache.PanacheEntity;
 import lombok.Data;
 
 import javax.persistence.Entity;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 /**
@@ -24,13 +26,15 @@ import javax.persistence.Table;
  * 
  */
 @Data
-@Entity
 @Table
-public class OrgRbacUserRole
+@Entity
+public class OrgRbacUserRole extends PanacheEntity
 {
     /** 用户 */
+    @ManyToOne
     private OrgRbacUser user;
     
     /** 角色 */
+    @ManyToOne
     private OrgRbacRole role;
 }

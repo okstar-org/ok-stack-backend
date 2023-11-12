@@ -13,6 +13,9 @@
 
 package org.okstar.platform.org.rbac;
 
+import io.quarkus.hibernate.orm.panache.PanacheEntity;
+import lombok.Data;
+
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
@@ -21,9 +24,10 @@ import javax.persistence.Table;
  * 
  * 
  */
-@Entity
+@Data
 @Table
-public class SysRbacRoleResource
+@Entity
+public class SysRbacRoleResource extends PanacheEntity
 {
     /** 角色ID */
     private OrgRbacRole role;
