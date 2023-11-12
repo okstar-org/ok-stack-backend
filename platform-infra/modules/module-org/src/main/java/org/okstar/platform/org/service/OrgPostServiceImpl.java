@@ -59,4 +59,9 @@ public class OrgPostServiceImpl implements OrgPostService {
     public void delete(OrgPost orgPost) {
         orgPostMapper.delete(orgPost);
     }
+
+    @Override
+    public List<OrgPost> findByDept(Long deptId) {
+        return orgPostMapper.find("deptId", deptId).stream().toList();
+    }
 }

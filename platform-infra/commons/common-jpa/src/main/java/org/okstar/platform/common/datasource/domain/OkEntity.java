@@ -13,7 +13,6 @@
 
 package org.okstar.platform.common.datasource.domain;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import io.quarkus.hibernate.orm.panache.PanacheEntity;
 import lombok.Data;
 
@@ -32,7 +31,6 @@ public class OkEntity extends PanacheEntity {
     /**
      * 创建时间
      */
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date createAt;
 
     /**
@@ -43,7 +41,6 @@ public class OkEntity extends PanacheEntity {
     /**
      * 更新时间
      */
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date updateAt;
 
 }

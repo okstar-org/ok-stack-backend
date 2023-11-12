@@ -14,7 +14,7 @@
 package org.okstar.platform.org.mapper;
 
 
-import org.okstar.platform.org.staff.OrgStaffPost;
+import org.okstar.platform.org.domain.OrgStaffPost;
 
 import javax.inject.Singleton;
 import java.util.List;

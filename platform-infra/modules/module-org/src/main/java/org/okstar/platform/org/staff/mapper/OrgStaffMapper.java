@@ -11,25 +11,19 @@
  * /
  */
 
-package org.okstar.platform.org.staff;
+package org.okstar.platform.org.staff.mapper;
 
-import lombok.Data;
-import org.okstar.platform.org.domain.BaseEntity;
 
-import javax.persistence.MappedSuperclass;
+import io.quarkus.hibernate.orm.panache.PanacheRepository;
+import org.okstar.platform.org.domain.OrgStaff;
+
+import javax.enterprise.context.ApplicationScoped;
 
 
 /**
- * 组织-人员
+ * 人员管理
  */
-@Data
-@MappedSuperclass
-public class OrgStaff extends BaseEntity {
-
-    /**
-     * 名称
-     */
-    private String name;
-
+@ApplicationScoped
+public class OrgStaffMapper implements PanacheRepository<OrgStaff> {
 
 }

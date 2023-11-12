@@ -11,21 +11,31 @@
  * /
  */
 
-package org.okstar.platform.org.service;
+package org.okstar.platform.org.domain;
 
+import io.quarkus.hibernate.orm.panache.PanacheEntity;
+import lombok.Data;
 
-import org.okstar.platform.common.datasource.OkService;
-import org.okstar.platform.org.domain.OrgPost;
-
-import java.util.List;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 
 /**
- * 岗位信息 服务层
- * 
- * 
+ * 人员和岗位关联
  */
-public interface OrgPostService extends OkService<OrgPost, Long>
-{
+@Data
+@Table
+@Entity
+public class OrgStaffPost extends PanacheEntity {
 
-    List<OrgPost> findByDept(Long deptId);
+    /**
+     * 人员
+     */
+    Long staffId;
+
+    /**
+     * 岗位
+     */
+    Long postId;
+
+
 }

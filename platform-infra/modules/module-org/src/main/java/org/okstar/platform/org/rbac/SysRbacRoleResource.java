@@ -17,6 +17,8 @@ import io.quarkus.hibernate.orm.panache.PanacheEntity;
 import lombok.Data;
 
 import javax.persistence.Entity;
+import javax.persistence.ManyToOne;
+import javax.persistence.MappedSuperclass;
 import javax.persistence.Table;
 
 /**
@@ -27,12 +29,15 @@ import javax.persistence.Table;
 @Data
 @Table
 @Entity
+@MappedSuperclass
 public class SysRbacRoleResource extends PanacheEntity
 {
     /** 角色ID */
+    @ManyToOne
     private OrgRbacRole role;
     
     /** 菜单ID */
+    @ManyToOne
     private OrgRbacResource menuId;
 
 }

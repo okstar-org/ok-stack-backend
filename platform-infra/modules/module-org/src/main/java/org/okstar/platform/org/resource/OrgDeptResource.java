@@ -29,7 +29,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Path("dept")
-public class DeptResource {
+public class OrgDeptResource {
     @Inject
     OrgDeptService deptService;
     @Inject

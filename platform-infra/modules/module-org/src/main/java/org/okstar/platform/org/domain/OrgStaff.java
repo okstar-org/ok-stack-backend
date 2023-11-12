@@ -11,22 +11,27 @@
  * /
  */
 
-package org.okstar.platform.org.staff;
+package org.okstar.platform.org.domain;
 
-import org.okstar.platform.org.domain.BaseEntity;
-import org.okstar.platform.org.domain.OrgPost;
+import lombok.Data;
+
+import javax.persistence.Entity;
+import javax.persistence.Table;
+
 
 /**
- * 人员和岗位关联
- * 
- *
+ * 组织-人员
  */
-public class OrgStaffPost extends BaseEntity
-{
-    /** 人员 */
-    private OrgStaff staff;
-    
-    /** 岗位 */
-    private OrgPost post;
+@Data
+@Table
+@Entity
+
+public class OrgStaff extends BaseEntity {
+
+    /**
+     * 名称
+     */
+    private String name;
+
 
 }

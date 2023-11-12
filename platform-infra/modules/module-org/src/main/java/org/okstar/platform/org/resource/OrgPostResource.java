@@ -11,27 +11,30 @@
  * /
  */
 
-package org.okstar.platform.common.handler;
+package org.okstar.platform.org.resource;
 
-import io.quarkus.logging.Log;
 import org.okstar.platform.common.core.web.bean.Req;
 import org.okstar.platform.common.core.web.bean.Res;
+import org.okstar.platform.org.domain.OrgPost;
+import org.okstar.platform.org.service.OrgPostService;
 
-import javax.ws.rs.core.Response;
-import javax.ws.rs.ext.ExceptionMapper;
-import javax.ws.rs.ext.Provider;
+import javax.inject.Inject;
+import javax.ws.rs.GET;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import java.util.List;
 
-/**
- * 全局异常处理器
- */
-@Provider
-public class GlobalExceptionHandler implements ExceptionMapper<Exception> {
-    @Override
-    public Response toResponse(Exception exception) {
-        String msg = exception.getCause() != null ? exception.getCause().getMessage() : exception.getMessage();
-        Log.errorf("msg: %s", msg);
-        Res<Object> error = Res.error(Req.empty(), msg);
-        return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(error).build();
+@Path("post")
+public class OrgPostResource {
+    @Inject
+    OrgPostService orgPostService;
+
+    @GET
+    @Path("findByDept/{deptId}")
+    public Res<List<OrgPost>> findByDept(@PathParam("deptId") Long deptId) {
+        List<OrgPost> list = orgPostService.findByDept(deptId);
+        return Res.ok(Req.empty(), list);
     }
+
 
 }

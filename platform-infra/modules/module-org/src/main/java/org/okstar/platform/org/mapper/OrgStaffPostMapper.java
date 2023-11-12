@@ -11,21 +11,19 @@
  * /
  */
 
-package org.okstar.platform.org.service;
+package org.okstar.platform.org.mapper;
 
 
-import org.okstar.platform.common.datasource.OkService;
-import org.okstar.platform.org.domain.OrgPost;
+import io.quarkus.hibernate.orm.panache.PanacheRepository;
+import org.okstar.platform.org.domain.OrgStaffPost;
 
-import java.util.List;
+import javax.enterprise.context.ApplicationScoped;
+
 
 /**
- * 岗位信息 服务层
- * 
- * 
+ * 人员与岗位关联
  */
-public interface OrgPostService extends OkService<OrgPost, Long>
-{
+@ApplicationScoped
+public class OrgStaffPostMapper implements PanacheRepository<OrgStaffPost> {
 
-    List<OrgPost> findByDept(Long deptId);
 }

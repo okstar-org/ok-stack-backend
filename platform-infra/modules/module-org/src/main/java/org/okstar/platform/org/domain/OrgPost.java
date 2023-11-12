@@ -43,4 +43,9 @@ public class OrgPost extends BaseEntity
      * 分配给（是否分配）
      */
     private String assignFor;
+
+    /**
+     * 招聘链接
+     */
+    private String recruit;
 }

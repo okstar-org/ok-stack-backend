@@ -23,7 +23,7 @@ import javax.validation.constraints.Size;
  * 
  *
  */
-public class SysConfig extends BaseEntity
+public class    SysConfig extends BaseEntity
 {
     private static final long serialVersionUID = 1L;
 

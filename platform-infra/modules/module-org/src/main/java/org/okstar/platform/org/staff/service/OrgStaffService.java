@@ -11,21 +11,20 @@
  * /
  */
 
-package org.okstar.platform.org.service;
+package org.okstar.platform.org.staff.service;
 
 
 import org.okstar.platform.common.datasource.OkService;
-import org.okstar.platform.org.domain.OrgPost;
+import org.okstar.platform.org.domain.OrgStaff;
 
 import java.util.List;
 
 /**
- * 岗位信息 服务层
- * 
- * 
+ * 部门管理 服务层
  */
-public interface OrgPostService extends OkService<OrgPost, Long>
-{
+public interface OrgStaffService extends OkService<OrgStaff, Long> {
 
-    List<OrgPost> findByDept(Long deptId);
+    List<OrgStaff> children(Long parentId);
+
+
 }

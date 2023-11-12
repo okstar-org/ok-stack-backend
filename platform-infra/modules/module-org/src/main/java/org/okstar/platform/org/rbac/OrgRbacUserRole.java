@@ -18,6 +18,7 @@ import lombok.Data;
 
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
+import javax.persistence.MappedSuperclass;
 import javax.persistence.Table;
 
 /**
@@ -28,6 +29,7 @@ import javax.persistence.Table;
 @Data
 @Table
 @Entity
+@MappedSuperclass
 public class OrgRbacUserRole extends PanacheEntity
 {
     /** 用户 */
