@@ -11,24 +11,23 @@
  * /
  */
 
-package org.okstar.platform.common.core.web.page;
+package org.okstar.platform.common.core.defined;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import org.okstar.platform.common.core.web.bean.VO;
+import lombok.Getter;
 
-@Data
-@AllArgsConstructor
-@NoArgsConstructor
-@Builder
-public class OkPageable extends VO {
+/**
+ * 工作相关定义
+ */
+public interface JobDefines {
 
-    int pageNumber;
-    int pageSize;
-
-    public static OkPageable of(int page, int size) {
-        return new OkPageable(page, size);
+    /**
+     * 岗位状态
+     */
+    @Getter
+    enum PostStatus {
+        pending,    //待入职
+        employed,   //已入职
+        left,     //已离职
     }
+
 }

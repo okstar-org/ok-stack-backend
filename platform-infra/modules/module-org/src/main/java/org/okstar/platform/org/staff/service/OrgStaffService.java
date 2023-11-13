@@ -26,5 +26,9 @@ public interface OrgStaffService extends OkService<OrgStaff, Long> {
 
     List<OrgStaff> children(Long parentId);
 
-
+    /**
+     * 查找待入职人员
+     * @return
+     */
+    List<OrgStaff> findPendings();
 }

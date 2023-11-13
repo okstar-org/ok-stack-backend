@@ -25,7 +25,7 @@ public interface UserDefines {
      * 性别
      */
     @Getter
-    enum GenderEnum  {
+    enum Gender {
         NONE,
         MALE,
         FEMALE,

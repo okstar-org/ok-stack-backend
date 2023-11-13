@@ -23,10 +23,10 @@ import org.okstar.platform.common.core.web.bean.DTO;
  * Rpc返回值
  * @param <T>
  */
+@Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Data
 public class RpcResult<T> extends DTO {
     //是否成功
     private boolean success;
@@ -34,6 +34,4 @@ public class RpcResult<T> extends DTO {
     private String msg;
     //数据
     private T data;
-
-
 }

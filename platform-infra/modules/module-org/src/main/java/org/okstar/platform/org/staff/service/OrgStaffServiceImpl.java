@@ -14,6 +14,7 @@
 package org.okstar.platform.org.staff.service;
 
 import io.quarkus.panache.common.Page;
+import org.okstar.platform.common.core.defined.JobDefines;
 import org.okstar.platform.common.core.web.page.OkPageResult;
 import org.okstar.platform.common.core.web.page.OkPageable;
 import org.okstar.platform.org.domain.OrgPost;
@@ -27,7 +28,6 @@ import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 
@@ -90,15 +90,22 @@ public class OrgStaffServiceImpl implements OrgStaffService {
             return Collections.emptyList();
         }
 
-        List<Long> staffIds = orgStaffPostMapper.list("postId in (:postIds)", Map.of("postIds", posIds))
+        List<Long> staffIds = orgStaffPostMapper    //
+                .list("postId in (?1)", posIds)    //
                 .stream()//
                 .map(OrgStaffPost::getStaffId)//
                 .collect(Collectors.toList());
-        if(staffIds.isEmpty()){
+        if (staffIds.isEmpty()) {
             return Collections.emptyList();
         }
 
         return orgStaffMapper.list("id in ?1", staffIds).stream().toList();
 
+    }
+
+
+    @Override
+    public List<OrgStaff> findPendings() {
+        return orgStaffMapper.list("postStatus = ?1", JobDefines.PostStatus.pending);
     }
 }

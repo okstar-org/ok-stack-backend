@@ -24,7 +24,7 @@ public interface OkService <T, ID> {
 
     List<T> findAll();
 
-    OkPageResult<T> findPage(OkPageable page);
+    OkPageResult<T> findPage( OkPageable page);
 
     T get(ID id);
 
