@@ -114,14 +114,13 @@ public class SysAccountServiceImpl extends OkAbsService implements SysAccountSer
             throw new OkUserException("The account is existed");
         }
 
-        SysAccount sysUser = new SysAccount();
-        sysUser.setIso(signUpForm.getIso());
-        sysUser.setFirstName(signUpForm.getFirstName());
-        sysUser.setLastName(signUpForm.getLastName());
-        sysUser.setUsername(RandomStringUtils.randomAlphanumeric(12));
-        sysAccountMapper.persist(sysUser);
+        SysAccount sysAccount = new SysAccount();
+        sysAccount.setIso(signUpForm.getIso());
+        sysAccount.setNickname(signUpForm.getFirstName()+signUpForm.getLastName());
+        sysAccount.setUsername(RandomStringUtils.randomAlphanumeric(12));
+        sysAccountMapper.persist(sysAccount);
         Log.infof("User have been saved successfully.=>%s",
-                sysUser.getUsername(), sysUser);
+                sysAccount.getUsername(), sysAccount);
 
         SysAccountBind bind = new SysAccountBind();
         bind.setBindType(signUpForm.getAccountType());
@@ -140,12 +139,12 @@ public class SysAccountServiceImpl extends OkAbsService implements SysAccountSer
         }
 
 
-        bind.setAccount(sysUser);
+        bind.setAccount(sysAccount);
         sysAccountBindMapper.persist(bind);
 
         return SignUpResult.builder()
-                .username(sysUser.getUsername())
-                .userId(sysUser.id)
+                .username(sysAccount.getUsername())
+                .userId(sysAccount.id)
                 .build();
     }
 

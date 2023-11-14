@@ -40,6 +40,17 @@ public class OrgStaff extends BaseEntity {
      */
     private String name;
 
+
+    /**
+     * 性
+     */
+    private String firstName;
+
+    /**
+     * 名
+     */
+    private String lastName;
+
     /**
      * 性别
      */
@@ -86,4 +97,9 @@ public class OrgStaff extends BaseEntity {
      */
     @Enumerated(EnumType.STRING)
     private JobDefines.PostStatus postStatus;
+
+    /**
+     * 居住地址
+     */
+    private String livingIn;
 }

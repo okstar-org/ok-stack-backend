@@ -39,15 +39,6 @@ public class SysAccount extends BaseEntity {
      */
     private String nickname;
 
-    /**
-     * 性
-     */
-    private String firstName;
-
-    /**
-     * 名
-     */
-    private String lastName;
 
     /**
      * 用户头像
