@@ -35,6 +35,11 @@ public class OrgPost extends BaseEntity
     private String name;
 
     /**
+     * 描述
+     */
+    private String descr;
+
+    /**
      * 所在部门
      */
     private Long deptId;

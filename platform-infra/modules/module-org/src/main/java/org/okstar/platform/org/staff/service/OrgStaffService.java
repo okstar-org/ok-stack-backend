@@ -38,19 +38,5 @@ public interface OrgStaffService extends OkService<OrgStaff, Long> {
      */
     List<OrgStaff> findLefts();
 
-    /**
-     * 操作离职
-     * @param staffId
-     * @return
-     */
-    boolean leave(Long staffId);
 
-    /**
-     * 操作入职
-     *
-     * @param staffId
-     * @param postId
-     * @return
-     */
-    boolean join(Long staffId, Long postId);
 }

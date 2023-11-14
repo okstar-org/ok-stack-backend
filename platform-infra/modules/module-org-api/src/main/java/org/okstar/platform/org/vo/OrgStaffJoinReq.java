@@ -18,10 +18,13 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import org.okstar.platform.common.core.web.bean.Req;
 
+/**
+ * 员工入职请求
+ */
 @Data
 @ToString(callSuper = true)
 @EqualsAndHashCode(callSuper = true)
-public class OrgStaffPostReq extends Req {
+public class OrgStaffJoinReq extends Req {
 
     /**
      * 人员ID
@@ -31,6 +34,6 @@ public class OrgStaffPostReq extends Req {
     /**
      * 岗位ID
      */
-    private Long postId;
+    private Long[] postIds;
 
 }

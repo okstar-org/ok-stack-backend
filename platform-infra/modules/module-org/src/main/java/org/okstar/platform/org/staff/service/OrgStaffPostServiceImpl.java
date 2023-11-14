@@ -14,10 +14,15 @@
 package org.okstar.platform.org.staff.service;
 
 import io.quarkus.panache.common.Page;
+import org.okstar.platform.common.core.defined.JobDefines;
+import org.okstar.platform.common.core.utils.OkDateUtils;
 import org.okstar.platform.common.core.web.page.OkPageResult;
 import org.okstar.platform.common.core.web.page.OkPageable;
+import org.okstar.platform.org.domain.OrgPost;
+import org.okstar.platform.org.domain.OrgStaff;
 import org.okstar.platform.org.domain.OrgStaffPost;
 import org.okstar.platform.org.mapper.OrgStaffPostMapper;
+import org.okstar.platform.org.service.OrgPostService;
 import org.springframework.util.Assert;
 
 import javax.enterprise.context.ApplicationScoped;
@@ -35,6 +40,10 @@ public class OrgStaffPostServiceImpl implements OrgStaffPostService {
 
     @Inject
     OrgStaffPostMapper orgStaffPostMapper;
+    @Inject
+    OrgStaffService staffService;
+    @Inject
+    OrgPostService postService;
 
 
     @Override
@@ -86,15 +95,63 @@ public class OrgStaffPostServiceImpl implements OrgStaffPostService {
         return orgStaffPostMapper.list("staffId in (?1)", staffIds);
     }
 
+
     @Override
-    public void add(Long staffId, Long postId) {
+    public synchronized boolean leave(Long staffId) {
+        Assert.isTrue(staffId != null && staffId > 0, "staffId is invalid");
+
+        OrgStaff staff = staffService.get(staffId);
+        Assert.notNull(staff, "staff is null");
+
+        //设置离职状态
+        staff.setPostStatus(JobDefines.PostStatus.left);
+
+        //设置离职日期
+        staff.setLeftDate(OkDateUtils.now());
+
+        //删除全部岗位关联
+        var staffPosts = findByStaffIds(Set.of(staff.id));
+        staffPosts.forEach(sp -> {
+
+            //清除分配标识
+            OrgPost post = postService.get(sp.getPostId());
+            post.setAssignFor(null);
+
+            //删除关联
+            delete(sp);
+        });
+
+        return true;
+    }
+
+    @Override
+    public synchronized boolean join(Long staffId, Long[] postIds) {
 
         Assert.isTrue(staffId != null && staffId > 0, "staffId is invalid");
-        Assert.isTrue(postId != null && postId > 0, "postId is invalid");
+        Assert.isTrue(postIds != null && postIds.length > 0, "postIds is invalid");
 
-        OrgStaffPost staffPost = new OrgStaffPost();
-        staffPost.setPostId(postId);
-        staffPost.setStaffId(staffId);
-        save(staffPost);
+        OrgStaff staff = staffService.get(staffId);
+        Assert.notNull(staff, "staff is null");
+
+        //设置入职状态
+        staff.setPostStatus(JobDefines.PostStatus.employed);
+        //设置入职日期
+        staff.setJoinedDate(OkDateUtils.now());
+        //设置离职日期
+        staff.setLeftDate(null);
+
+        for (Long postId : postIds) {
+            OrgPost post = postService.get(postId);
+            //设置分配标识
+            post.setAssignFor(String.valueOf(staff.id));
+
+            //保存关联
+            OrgStaffPost staffPost = new OrgStaffPost();
+            staffPost.setPostId(postId);
+            staffPost.setStaffId(staffId);
+            save(staffPost);
+        }
+
+        return true;
     }
 }

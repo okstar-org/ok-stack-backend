@@ -15,25 +15,26 @@ package org.okstar.platform.org.staff.resource;
 
 import org.okstar.platform.common.core.web.bean.Req;
 import org.okstar.platform.common.core.web.bean.Res;
-import org.okstar.platform.org.domain.OrgStaffPost;
-import org.okstar.platform.org.staff.service.OrgStaffPostService;
+import org.okstar.platform.org.domain.OrgPost;
+import org.okstar.platform.org.service.OrgPostService;
 
 import javax.inject.Inject;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import java.util.List;
 
-@Path("staff")
+@Path("staff/staffPost")
 public class OrgStaffPostResource {
 
     @Inject
-    OrgStaffPostService orgStaffService;
+    OrgPostService orgPostService;
 
     @GET
-    @Path("findAll")
-    public Res<List<OrgStaffPost>> findAll() {
-        var list = orgStaffService.findAll();
+    @Path("list")
+    public Res<List<OrgPost>> list() {
+        List<OrgPost> list = orgPostService.findAll();
         return Res.ok(Req.empty(), list);
     }
+
 
 }

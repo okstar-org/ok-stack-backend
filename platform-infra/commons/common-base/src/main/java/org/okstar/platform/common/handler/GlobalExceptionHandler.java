@@ -28,7 +28,7 @@ import javax.ws.rs.ext.Provider;
 public class GlobalExceptionHandler implements ExceptionMapper<Throwable> {
     @Override
     public Response toResponse(Throwable throwable) {
-        Log.errorf("msg: %s", throwable.getMessage());
+        Log.errorf("msg: %s".formatted(throwable.getMessage()));
         Res<Object> error = Res.error(Req.empty(), throwable.getMessage());
         return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(error).build();
     }

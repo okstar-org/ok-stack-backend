@@ -30,5 +30,20 @@ public interface OrgStaffPostService extends OkService<OrgStaffPost, Long> {
 
     List<OrgStaffPost> findByStaffIds(Set<Long> staffIds);
 
-    void add(Long staffId, Long postId);
+
+    /**
+     * 操作离职
+     * @param staffId
+     * @return
+     */
+    boolean leave(Long staffId);
+
+    /**
+     * 操作入职
+     *
+     * @param staffId
+     * @param postIds
+     * @return
+     */
+    boolean join(Long staffId, Long[] postIds);
 }

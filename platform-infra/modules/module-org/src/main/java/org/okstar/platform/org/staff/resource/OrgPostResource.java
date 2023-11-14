@@ -15,44 +15,25 @@ package org.okstar.platform.org.staff.resource;
 
 import org.okstar.platform.common.core.web.bean.Req;
 import org.okstar.platform.common.core.web.bean.Res;
-import org.okstar.platform.org.domain.OrgStaff;
-import org.okstar.platform.org.staff.service.OrgStaffPostService;
-import org.okstar.platform.org.staff.service.OrgStaffService;
-import org.okstar.platform.org.vo.OrgStaffJoinReq;
+import org.okstar.platform.org.domain.OrgPost;
+import org.okstar.platform.org.service.OrgPostService;
 
 import javax.inject.Inject;
 import javax.ws.rs.GET;
-import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import java.util.List;
 
-/**
- * 组织架构-人员管理-待入职
- */
-@Path("staff/pending")
-public class OrgStaffPendingResource {
+@Path("staff/post")
+public class OrgPostResource {
 
     @Inject
-    OrgStaffService orgStaffService;
-    @Inject
-    OrgStaffPostService staffPostService;
-
+    OrgPostService orgPostService;
 
     @GET
-    @Path("page")
-    public Res<List<OrgStaff>> page() {
-        var list = orgStaffService.findPendings();
+    @Path("list")
+    public Res<List<OrgPost>> list() {
+        var list = orgPostService.findAssignAble(false);
         return Res.ok(Req.empty(), list);
     }
 
-
-    /**
-     * 入职
-     */
-    @POST
-    @Path("join")
-    public Res<Boolean> join(OrgStaffJoinReq req) {
-        var yes = staffPostService.join(req.getStaffId(), req.getPostIds());
-        return Res.ok(req, yes);
-    }
 }

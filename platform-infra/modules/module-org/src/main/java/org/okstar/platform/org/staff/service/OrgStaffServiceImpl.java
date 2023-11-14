@@ -15,7 +15,6 @@ package org.okstar.platform.org.staff.service;
 
 import io.quarkus.panache.common.Page;
 import org.okstar.platform.common.core.defined.JobDefines;
-import org.okstar.platform.common.core.utils.OkDateUtils;
 import org.okstar.platform.common.core.web.page.OkPageResult;
 import org.okstar.platform.common.core.web.page.OkPageable;
 import org.okstar.platform.org.domain.OrgPost;
@@ -23,19 +22,19 @@ import org.okstar.platform.org.domain.OrgStaff;
 import org.okstar.platform.org.domain.OrgStaffPost;
 import org.okstar.platform.org.service.OrgPostService;
 import org.okstar.platform.org.staff.mapper.OrgStaffMapper;
-import org.springframework.util.Assert;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
+import javax.transaction.Transactional;
 import java.util.Collections;
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 
 /**
  * 人员服务
  */
+@Transactional
 @ApplicationScoped
 public class OrgStaffServiceImpl implements OrgStaffService {
     @Inject
@@ -115,40 +114,5 @@ public class OrgStaffServiceImpl implements OrgStaffService {
     }
 
 
-    @Override
-    public boolean leave(Long staffId) {
-        OrgStaff staff = get(staffId);
-        Assert.notNull(staff, "staff is null");
 
-        //设置离职状态
-        staff.setPostStatus(JobDefines.PostStatus.left);
-
-        //设置离职日期
-        staff.setLeftDate(OkDateUtils.now());
-
-        //删除全部岗位关联
-        var staffPosts = orgStaffPostService.findByStaffIds(Set.of(staff.id));
-        staffPosts.forEach(sp->{
-            orgStaffPostService.delete(sp);
-        });
-
-        return true;
-    }
-
-    @Override
-    public boolean join(Long staffId, Long postId) {
-
-        OrgStaff staff = get(staffId);
-        Assert.notNull(staff, "staff is null");
-
-        //设置入职状态
-        staff.setPostStatus(JobDefines.PostStatus.employed);
-        //设置入职日期
-        staff.setJoinedDate(OkDateUtils.now());
-        //设置离职日期
-        staff.setLeftDate(null);
-
-        orgStaffPostService.add(staffId, postId);
-        return false;
-    }
 }

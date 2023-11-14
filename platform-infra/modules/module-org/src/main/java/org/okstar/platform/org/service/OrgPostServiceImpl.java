@@ -13,6 +13,7 @@
 
 package org.okstar.platform.org.service;
 
+import io.quarkus.panache.common.Page;
 import org.okstar.platform.common.core.web.page.OkPageResult;
 import org.okstar.platform.common.core.web.page.OkPageable;
 import org.okstar.platform.org.domain.OrgPost;
@@ -29,6 +30,8 @@ import java.util.List;
 public class OrgPostServiceImpl implements OrgPostService {
     @Inject
     private OrgPostMapper orgPostMapper;
+    @Inject
+    private OrgDeptService orgDeptService;
 
     @Override
     public void save(OrgPost orgPost) {
@@ -41,8 +44,13 @@ public class OrgPostServiceImpl implements OrgPostService {
     }
 
     @Override
-    public OkPageResult<OrgPost> findPage(OkPageable page) {
-        return null;
+    public OkPageResult<OrgPost> findPage(OkPageable pageable) {
+        var all = orgPostMapper.findAll();
+        var query = all.page(Page.of(pageable.getPageNumber(), pageable.getPageSize()));
+        return OkPageResult.build(
+                query.list(),
+                query.count(),
+                query.pageCount());
     }
 
     @Override
@@ -63,5 +71,10 @@ public class OrgPostServiceImpl implements OrgPostService {
     @Override
     public List<OrgPost> findByDept(Long deptId) {
         return orgPostMapper.find("deptId", deptId).stream().toList();
+    }
+
+    @Override
+    public List<OrgPost> findAssignAble(boolean disabled) {
+        return orgPostMapper.find("assignFor is null and disabled = ?1", disabled).list();
     }
 }
