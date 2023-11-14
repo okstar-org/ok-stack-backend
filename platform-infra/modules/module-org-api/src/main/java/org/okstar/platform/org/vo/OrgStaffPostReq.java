@@ -11,24 +11,26 @@
  * /
  */
 
-package org.okstar.platform.org.staff.service;
+package org.okstar.platform.org.vo;
 
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
+import org.okstar.platform.common.core.web.bean.Req;
 
-import org.okstar.platform.common.datasource.OkService;
-import org.okstar.platform.org.domain.OrgStaffPost;
+@Data
+@ToString(callSuper = true)
+@EqualsAndHashCode(callSuper = true)
+public class OrgStaffPostReq extends Req {
 
-import java.util.List;
-import java.util.Set;
+    /**
+     * 人员ID
+     */
+    private Long staffId;
 
-/**
- * 人员与岗位关联
- */
-public interface OrgStaffPostService extends OkService<OrgStaffPost, Long> {
+    /**
+     * 岗位ID
+     */
+    private Long postId;
 
-
-    List<OrgStaffPost> findByPostIds(Set<Long> posIds);
-
-    List<OrgStaffPost> findByStaffIds(Set<Long> staffIds);
-
-    void add(Long staffId, Long postId);
 }

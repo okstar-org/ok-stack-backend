@@ -18,10 +18,13 @@ import org.okstar.platform.common.core.web.page.OkPageResult;
 import org.okstar.platform.common.core.web.page.OkPageable;
 import org.okstar.platform.org.domain.OrgStaffPost;
 import org.okstar.platform.org.mapper.OrgStaffPostMapper;
+import org.springframework.util.Assert;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 
 /**
@@ -32,7 +35,6 @@ public class OrgStaffPostServiceImpl implements OrgStaffPostService {
 
     @Inject
     OrgStaffPostMapper orgStaffPostMapper;
-
 
 
     @Override
@@ -70,4 +72,29 @@ public class OrgStaffPostServiceImpl implements OrgStaffPostService {
         orgStaffPostMapper.delete(sysDept);
     }
 
+
+    @Override
+    public List<OrgStaffPost> findByPostIds(Set<Long> posIds) {
+        return orgStaffPostMapper    //
+                .list("postId in (?1)", posIds)    //
+                .stream()//
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<OrgStaffPost> findByStaffIds(Set<Long> staffIds) {
+        return orgStaffPostMapper.list("staffId in (?1)", staffIds);
+    }
+
+    @Override
+    public void add(Long staffId, Long postId) {
+
+        Assert.isTrue(staffId != null && staffId > 0, "staffId is invalid");
+        Assert.isTrue(postId != null && postId > 0, "postId is invalid");
+
+        OrgStaffPost staffPost = new OrgStaffPost();
+        staffPost.setPostId(postId);
+        staffPost.setStaffId(staffId);
+        save(staffPost);
+    }
 }

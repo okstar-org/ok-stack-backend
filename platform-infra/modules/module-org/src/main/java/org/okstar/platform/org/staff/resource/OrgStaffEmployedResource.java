@@ -17,38 +17,26 @@ import org.okstar.platform.common.core.web.bean.Req;
 import org.okstar.platform.common.core.web.bean.Res;
 import org.okstar.platform.org.domain.OrgStaff;
 import org.okstar.platform.org.staff.service.OrgStaffService;
-import org.okstar.platform.org.vo.OrgStaffPostReq;
 
 import javax.inject.Inject;
 import javax.ws.rs.GET;
-import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import java.util.List;
 
 /**
  * 组织架构-人员管理-待入职
  */
-@Path("staff/pending")
-public class OrgStaffPendingResource {
+@Path("staff/employed")
+public class OrgStaffEmployedResource {
 
     @Inject
     OrgStaffService orgStaffService;
 
     @GET
-    @Path("page")
-    public Res<List<OrgStaff>> page() {
-        var list = orgStaffService.findPendings();
-        return Res.ok(Req.empty(), list);
-    }
-
-
-    /**
-     * 入职
-     */
-    @POST
-    @Path("join")
-    public Res<Boolean> join(OrgStaffPostReq req) {
-        var yes = orgStaffService.join(req.getStaffId(), req.getPostId());
-        return Res.ok(req, yes);
+    @Path("leave/{staffId}")
+    public Res<Boolean> page(@PathParam("staffId") Long staffId) {
+      boolean yes=  orgStaffService.leave(staffId);
+        return Res.ok(Req.empty(), yes);
     }
 }

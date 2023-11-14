@@ -77,6 +77,11 @@ public class OrgStaff extends BaseEntity {
     private Date joinedDate;
 
     /**
+     * 离职日期
+     */
+    private Date leftDate;
+
+    /**
      * 岗位状态
      */
     @Enumerated(EnumType.STRING)
