@@ -16,6 +16,7 @@ package org.okstar.platform.org.staff.service;
 
 import org.okstar.platform.common.datasource.OkService;
 import org.okstar.platform.org.domain.OrgStaff;
+import org.okstar.platform.org.vo.OrgStaffReq;
 
 import java.util.List;
 
@@ -38,5 +39,11 @@ public interface OrgStaffService extends OkService<OrgStaff, Long> {
      */
     List<OrgStaff> findLefts();
 
-
+    /**
+     * 添加员工，进入[待入职]模块
+     *
+     * @param req
+     * @return
+     */
+    boolean add(OrgStaffReq req);
 }

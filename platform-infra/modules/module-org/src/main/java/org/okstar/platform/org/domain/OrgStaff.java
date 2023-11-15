@@ -15,12 +15,9 @@ package org.okstar.platform.org.domain;
 
 import lombok.Data;
 import org.okstar.platform.common.core.defined.JobDefines;
-import org.okstar.platform.common.core.defined.UserDefines;
+import org.okstar.platform.org.dto.OrgStaffFragment;
 
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.util.Date;
 
 
@@ -32,55 +29,10 @@ import java.util.Date;
 @Entity
 public class OrgStaff extends BaseEntity {
 
-
     private Long accountId;
 
-    /**
-     * 名称
-     */
-    private String name;
-
-
-    /**
-     * 性
-     */
-    private String firstName;
-
-    /**
-     * 名
-     */
-    private String lastName;
-
-    /**
-     * 性别
-     */
-    private UserDefines.Gender gender;
-
-    /**
-     * 身份证ID
-     */
-    private String identity;
-
-    /**
-     * ISO国家代号
-     * @link https://www.iso.org/obp/ui/#search
-     */
-    private String iso;
-
-    /**
-     * 电话
-     */
-    private String phone;
-
-    /**
-     * 备注
-     */
-    private String descr;
-
-    /**
-     * 生日
-     */
-    private Date birthday;
+    @Embedded
+    private OrgStaffFragment fragment;
 
     /**
      * 入职日期
@@ -98,8 +50,4 @@ public class OrgStaff extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private JobDefines.PostStatus postStatus;
 
-    /**
-     * 居住地址
-     */
-    private String livingIn;
 }

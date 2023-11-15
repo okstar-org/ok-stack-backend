@@ -30,6 +30,11 @@ import javax.persistence.UniqueConstraint;
 public class OrgPost extends BaseEntity
 {
     /**
+     * 编号
+     */
+    private String no;
+
+    /**
      * 名称
      */
     private String name;

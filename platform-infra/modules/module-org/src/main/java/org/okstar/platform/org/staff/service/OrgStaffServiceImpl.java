@@ -15,19 +15,24 @@ package org.okstar.platform.org.staff.service;
 
 import io.quarkus.panache.common.Page;
 import org.okstar.platform.common.core.defined.JobDefines;
+import org.okstar.platform.common.core.utils.OkDateUtils;
 import org.okstar.platform.common.core.web.page.OkPageResult;
 import org.okstar.platform.common.core.web.page.OkPageable;
 import org.okstar.platform.org.domain.OrgPost;
 import org.okstar.platform.org.domain.OrgStaff;
 import org.okstar.platform.org.domain.OrgStaffPost;
+import org.okstar.platform.org.dto.OrgStaffFragment;
 import org.okstar.platform.org.service.OrgPostService;
 import org.okstar.platform.org.staff.mapper.OrgStaffMapper;
+import org.okstar.platform.org.vo.OrgStaffReq;
+import org.springframework.util.Assert;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.transaction.Transactional;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 
@@ -47,8 +52,13 @@ public class OrgStaffServiceImpl implements OrgStaffService {
     OrgPostService orgPostService;
 
     @Override
-    public void save(OrgStaff sysDept) {
-        orgStaffMapper.persist(sysDept);
+    public void save(OrgStaff staff) {
+        if (staff.id == null) {
+            staff.setCreateAt(OkDateUtils.now());
+        }else{
+            staff.setUpdateAt(OkDateUtils.now());
+        }
+        orgStaffMapper.persist(staff);
     }
 
     @Override
@@ -113,6 +123,33 @@ public class OrgStaffServiceImpl implements OrgStaffService {
         return orgStaffMapper.list("postStatus = ?1", JobDefines.PostStatus.left);
     }
 
+    @Override
+    public boolean add(OrgStaffReq req) {
+        Assert.notNull(req, "参数异常！");
+        OrgStaffFragment fragment = req.getFragment();
+        Assert.notNull(fragment, "参数异常！");
+
+        //设置姓名
+        fragment.setName(fragment.getFirstName() + fragment.getLastName());
+
+        //检查编号是否存在
+        String no = fragment.getNo();
+        Assert.notNull(no, "编号不能为空！");
+        var exist = findByNo(no);
+        Assert.isTrue(exist.isEmpty(), "用户已存在！");
+
+        OrgStaff entity = new OrgStaff();
+        entity.setDisabled(false);
+        entity.setFragment(req.getFragment());
+        entity.setJoinedDate(OkDateUtils.now());
+        entity.setPostStatus(JobDefines.PostStatus.pending);
+        save(entity);
+        return true;
+    }
+
+    private Optional<OrgStaff> findByNo(String no) {
+        return orgStaffMapper.find("no = ?1", no).stream().findFirst();
+    }
 
 
 }

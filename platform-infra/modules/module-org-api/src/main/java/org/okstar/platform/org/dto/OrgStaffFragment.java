@@ -11,24 +11,18 @@
  * /
  */
 
-package org.okstar.platform.org.domain;
+package org.okstar.platform.org.dto;
 
 import lombok.Data;
+import org.okstar.platform.common.core.defined.UserDefines;
 
-import javax.persistence.Entity;
-import javax.persistence.Table;
-import javax.persistence.UniqueConstraint;
+import java.util.Date;
 
 /**
- * 组织
- * 
- * 
+ * 人员片段
  */
 @Data
-@Entity
-@Table(uniqueConstraints = {@UniqueConstraint(columnNames = {"name", "no"})})
-public class Org extends BaseEntity
-{
+public class OrgStaffFragment {
     /**
      * 编号
      */
@@ -40,17 +34,49 @@ public class Org extends BaseEntity
     private String name;
 
 
-    /** 上级组织 */
-    private Long parentId;
+    /**
+     * 性
+     */
+    private String firstName;
 
     /**
-     * 组织地址
-     * 配置信息: {url}/org/.well-known/configuration
+     * 名
      */
-    private String url;
+    private String lastName;
 
     /**
-     * 当前组织
+     * 性别
      */
-    private Boolean current;
+    private UserDefines.Gender gender;
+
+    /**
+     * 身份证ID
+     */
+    private String identity;
+
+    /**
+     * ISO国家代号
+     * @link https://www.iso.org/obp/ui/#search
+     */
+    private String iso;
+
+    /**
+     * 电话
+     */
+    private String phone;
+
+    /**
+     * 备注
+     */
+    private String descr;
+
+    /**
+     * 生日
+     */
+    private Date birthday;
+
+    /**
+     * 居住地址
+     */
+    private String livingIn;
 }

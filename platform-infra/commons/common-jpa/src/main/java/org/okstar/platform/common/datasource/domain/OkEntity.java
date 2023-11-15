@@ -27,7 +27,6 @@ public class OkEntity extends PanacheEntity {
      */
     private Long createBy;
 
-
     /**
      * 创建时间
      */

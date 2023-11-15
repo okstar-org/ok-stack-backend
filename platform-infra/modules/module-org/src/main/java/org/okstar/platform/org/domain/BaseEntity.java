@@ -28,10 +28,7 @@ import javax.persistence.MappedSuperclass;
 public class BaseEntity extends OkEntity
 {
 
-    /**
-     * 编号
-     */
-    private String no;
+
 
     /**
      * 禁用

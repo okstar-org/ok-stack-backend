@@ -11,45 +11,24 @@
  * /
  */
 
-package org.okstar.platform.org.domain;
+package org.okstar.platform.org.vo;
 
 import lombok.Data;
-
-import javax.persistence.Entity;
-import javax.persistence.Table;
-import javax.persistence.UniqueConstraint;
+import lombok.ToString;
+import org.okstar.platform.common.core.web.bean.Req;
+import org.okstar.platform.org.dto.OrgStaffFragment;
 
 /**
- * 组织-部门
- * 
- * 
+ * 人员管理添加
  */
 @Data
-@Entity
-@Table(uniqueConstraints = {@UniqueConstraint(columnNames = {"name", "no"})})
-public class OrgDept extends BaseEntity
-{
-    /**
-     * 编号
-     */
-    private String no;
+@ToString(callSuper = true)
+public class OrgStaffReq extends Req {
 
     /**
-     * 名称
+     * 员工信息
      */
-    private String name;
+    private OrgStaffFragment fragment;
 
-    /** 父部门ID */
-    private Long parentId;
-
-    /**
-     * 组织ID
-     */
-    private Long orgId;
-
-    /**
-     * 部门级别
-     */
-    private Integer level;
 
 }
