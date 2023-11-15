@@ -67,6 +67,7 @@ services:
       - 5005:5005
     depends_on:
       - db
+      - apacheds
 
   gateway:
     image: "flytreeleft/nginx-gateway"
