@@ -51,11 +51,12 @@ public class OrgStaffServiceImpl implements OrgStaffService {
     @Inject
     OrgPostService orgPostService;
 
+
     @Override
     public void save(OrgStaff staff) {
         if (staff.id == null) {
             staff.setCreateAt(OkDateUtils.now());
-        }else{
+        } else {
             staff.setUpdateAt(OkDateUtils.now());
         }
         orgStaffMapper.persist(staff);
@@ -144,6 +145,7 @@ public class OrgStaffServiceImpl implements OrgStaffService {
         entity.setJoinedDate(OkDateUtils.now());
         entity.setPostStatus(JobDefines.PostStatus.pending);
         save(entity);
+
         return true;
     }
 

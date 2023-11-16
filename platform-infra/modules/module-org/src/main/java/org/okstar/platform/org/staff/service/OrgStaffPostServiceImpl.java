@@ -13,16 +13,23 @@
 
 package org.okstar.platform.org.staff.service;
 
+import io.quarkus.logging.Log;
 import io.quarkus.panache.common.Page;
+import org.eclipse.microprofile.rest.client.inject.RestClient;
+import org.okstar.platform.auth.rpc.PassportRpc;
+import org.okstar.platform.common.core.defined.AccountDefines;
 import org.okstar.platform.common.core.defined.JobDefines;
 import org.okstar.platform.common.core.utils.OkDateUtils;
 import org.okstar.platform.common.core.web.page.OkPageResult;
 import org.okstar.platform.common.core.web.page.OkPageable;
+import org.okstar.platform.common.rpc.RpcAssert;
 import org.okstar.platform.org.domain.OrgPost;
 import org.okstar.platform.org.domain.OrgStaff;
 import org.okstar.platform.org.domain.OrgStaffPost;
 import org.okstar.platform.org.mapper.OrgStaffPostMapper;
 import org.okstar.platform.org.service.OrgPostService;
+import org.okstar.platform.system.sign.SignUpForm;
+import org.okstar.platform.system.sign.SignUpResult;
 import org.springframework.util.Assert;
 
 import javax.enterprise.context.ApplicationScoped;
@@ -44,6 +51,10 @@ public class OrgStaffPostServiceImpl implements OrgStaffPostService {
     OrgStaffService staffService;
     @Inject
     OrgPostService postService;
+
+    @Inject
+    @RestClient
+    PassportRpc passportRpc;
 
 
     @Override
@@ -152,6 +163,22 @@ public class OrgStaffPostServiceImpl implements OrgStaffPostService {
             save(staffPost);
         }
 
-        return true;
+
+        /**
+         * 注册其帐号
+         */
+        SignUpForm form = new SignUpForm();
+        form.setAccountType(AccountDefines.BindType.phone);
+        form.setPassword(AccountDefines.DefaultPWD);
+        form.setIso(AccountDefines.DefaultISO);
+        form.setAccount(staff.getFragment().getPhone());
+        form.setFirstName(staff.getFragment().getFirstName());
+        form.setLastName(staff.getFragment().getLastName());
+
+        Log.debugf("注册帐号:%s", form);
+        var result = passportRpc.signUp(form);
+
+        SignUpResult upResult = RpcAssert.isTrue(result);
+        return upResult.getUserId() > 0;
     }
 }

@@ -48,7 +48,7 @@ class PassportServiceImplTest {
         form.setPassword(STRING);
         form.setFirstName("Ok");
         form.setLastName("Star");
-        form.setIso("CN");
+        form.setIso(AccountDefines.DefaultISO);
         SignUpResult resultDto = passportService.signUp(form);
         Log.infof("result=>%s", resultDto);
         Assert.assertNotNull(resultDto);

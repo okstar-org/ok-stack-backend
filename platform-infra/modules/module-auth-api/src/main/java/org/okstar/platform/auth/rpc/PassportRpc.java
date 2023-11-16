@@ -11,25 +11,21 @@
  * /
  */
 
-package org.okstar.platform.common.core.defined;
+package org.okstar.platform.auth.rpc;
 
-import lombok.Getter;
+import org.eclipse.microprofile.rest.client.inject.RegisterRestClient;
+import org.okstar.platform.common.rpc.RpcResult;
+import org.okstar.platform.system.sign.SignUpForm;
+import org.okstar.platform.system.sign.SignUpResult;
 
-/**
- * 用户相关定义
- */
-public interface UserDefines {
+import javax.ws.rs.POST;
+import javax.ws.rs.Path;
 
+@Path("rpc/PassportRpc")
+@RegisterRestClient
+public interface PassportRpc {
 
-    /**
-     * 性别
-     */
-    @Getter
-    enum Gender {
-        NONE,
-        MALE,
-        FEMALE,
-    }
-
-
+    @POST
+    @Path("signUp")
+    RpcResult<SignUpResult> signUp(SignUpForm signUpDto);
 }

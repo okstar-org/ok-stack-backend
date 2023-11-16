@@ -47,4 +47,8 @@ public interface AccountDefines {
         OK,
         DISABLED,
     }
+
+    String DefaultPWD="CN";
+    String DefaultISO="CN";
+
 }

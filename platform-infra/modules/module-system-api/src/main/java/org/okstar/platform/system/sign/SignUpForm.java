@@ -41,8 +41,10 @@ public class SignUpForm extends Req {
     //密码
     String password;
 
+    //姓
     String firstName;
 
+    //名
     String lastName;
 
 }

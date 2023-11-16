@@ -37,7 +37,7 @@ public class SignInForm extends Req {
      */
 
     private AccountDefines.BindType accountType = AccountDefines.BindType.phone;
-    private String iso = "CN";
+    private String iso = AccountDefines.DefaultISO;
     private String grantType;
     private String account;
     private String password;
