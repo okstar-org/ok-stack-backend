@@ -6,4 +6,5 @@
 9000 - auth
 9100 - system
 9200 - org
+9300 - chat
 ```

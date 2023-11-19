@@ -26,6 +26,7 @@
         <module>platform-app</module>
         <module>platform-infra</module>
         <module>distribution</module>
+        <module>thirdparty</module>
     </modules>
 
     <properties>
@@ -118,10 +119,6 @@
             <artifactId>quarkus-smallrye-openapi</artifactId>
         </dependency>
 
-        <dependency>
-            <groupId>io.quarkus</groupId>
-            <artifactId>quarkus-resteasy</artifactId>
-        </dependency>
 
         <dependency>
             <groupId>io.quarkus</groupId>

@@ -80,7 +80,8 @@ public class KeycloakUserManagerImpl extends KeycloakManagerImpl implements Back
     public BackUser addUser(BackUser user) {
         Log.infof("addUser:%s", user.getUsername());
         UsersResource usersResource = usersResource();
-        try (Response response = usersResource.create(toRepresent(user))) {
+        try {
+            Response response = usersResource.create(toRepresent(user));
             Log.infof("statusCode=>%s", response.getStatus());
             Assert.assertTrue(response.getStatus() == Response.Status.CREATED.getStatusCode());
         } catch (Exception e) {

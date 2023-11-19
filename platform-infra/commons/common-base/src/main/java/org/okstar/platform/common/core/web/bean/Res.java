@@ -123,6 +123,10 @@ public class Res<T> extends DTO {
         return build(req, null, OK, null);
     }
 
+    public static <T> Res<T> ok(T data) {
+        return build(Req.empty(), data, OK, null);
+    }
+
     public static <T> Res<T> ok(Req req, T data) {
         return build(req, data, OK, null);
     }

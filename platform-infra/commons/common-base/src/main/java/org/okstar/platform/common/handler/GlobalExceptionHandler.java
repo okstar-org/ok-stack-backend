@@ -13,7 +13,6 @@
 
 package org.okstar.platform.common.handler;
 
-import io.quarkus.logging.Log;
 import org.okstar.platform.common.core.web.bean.Req;
 import org.okstar.platform.common.core.web.bean.Res;
 
@@ -28,7 +27,7 @@ import javax.ws.rs.ext.Provider;
 public class GlobalExceptionHandler implements ExceptionMapper<Throwable> {
     @Override
     public Response toResponse(Throwable throwable) {
-        Log.errorf("msg: %s".formatted(throwable.getMessage()));
+        throwable.printStackTrace();
         Res<Object> error = Res.error(Req.empty(), throwable.getMessage());
         return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(error).build();
     }

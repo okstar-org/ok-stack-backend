@@ -20,6 +20,7 @@
         <module>module-org</module>
         <module>module-org-api</module>
         <module>module-org-sync-api</module>
+        <module>module-chat</module>
     </modules>
 
     <description>OkStack-Platform::infra::modules</description>
@@ -32,25 +33,14 @@
             <version>${revision}</version>
         </dependency>
 
-
         <dependency>
-            <groupId>io.smallrye.stork</groupId>
-            <artifactId>stork-service-discovery-consul</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>io.smallrye.reactive</groupId>
-            <artifactId>smallrye-mutiny-vertx-consul-client</artifactId>
+            <groupId>io.quarkus</groupId>
+            <artifactId>quarkus-resteasy</artifactId>
         </dependency>
 
         <dependency>
             <groupId>io.quarkus</groupId>
             <artifactId>quarkus-rest-client</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>io.quarkus</groupId>
-            <artifactId>quarkus-resteasy-jackson</artifactId>
         </dependency>
 
         <dependency>
