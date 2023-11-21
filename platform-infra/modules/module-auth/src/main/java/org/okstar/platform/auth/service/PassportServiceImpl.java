@@ -69,10 +69,15 @@ public class PassportServiceImpl implements PassportService {
 
     @Override
     public SignInResult signIn(SignInForm signInForm) {
+        String account = signInForm.getAccount();
+
+        //判断帐号类型
+        AccountDefines.BindType bindType = account.indexOf("@") > 0 ? AccountDefines.BindType.email : AccountDefines.BindType.phone;
         SysAccount0 userDto = RpcAssert.isTrue(sysAccountRpc.findByBind(
                 signInForm.getIso(),
-                signInForm.getAccountType(),
+                bindType,
                 signInForm.getAccount()));
+
         return authzClientManager.authorization(userDto.getUsername(), signInForm.getPassword());
     }
 
