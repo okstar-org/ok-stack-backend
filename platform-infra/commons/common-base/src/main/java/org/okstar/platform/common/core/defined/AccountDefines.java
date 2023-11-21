@@ -48,7 +48,8 @@ public interface AccountDefines {
         DISABLED,
     }
 
-    String DefaultPWD="CN";
     String DefaultISO="CN";
+
+    String DefaultPWD="okstar.123456#";
 
 }

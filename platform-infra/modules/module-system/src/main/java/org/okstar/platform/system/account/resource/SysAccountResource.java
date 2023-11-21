@@ -14,6 +14,7 @@
 package org.okstar.platform.system.account.resource;
 
 import io.quarkus.security.Authenticated;
+import org.okstar.platform.common.core.defined.AccountDefines;
 import org.okstar.platform.common.core.web.bean.Req;
 import org.okstar.platform.common.core.web.bean.Res;
 import org.okstar.platform.common.core.web.controller.OkBaseController;
@@ -23,7 +24,10 @@ import org.okstar.platform.system.account.service.SysAccountService;
 import javax.inject.Inject;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.QueryParam;
 import java.util.List;
+import java.util.Optional;
 
 
 /**
@@ -38,9 +42,23 @@ public class SysAccountResource extends OkBaseController {
 
     @GET
     @Path("findAll")
-    public Res<List<SysAccount>> findAll(){
+    public Res<List<SysAccount>> findAll() {
         List<SysAccount> all = sysAccountService.findAll();
         return Res.ok(Req.empty(), all);
+    }
+
+    @GET
+    @Path("username/{bindType}/{value}")
+    public Res<String> getUsername(@PathParam("bindType") AccountDefines.BindType bindType,
+                                   @PathParam("value") String value,
+                                   @QueryParam("iso") String iso) {
+
+        var account = sysAccountService.findByBind(
+                Optional.ofNullable(iso).orElse(AccountDefines.DefaultISO),
+                bindType,
+                value);
+
+        return account == null ? Res.error(Req.empty()) : Res.ok(Req.empty(), account.getUsername());
     }
 
 }

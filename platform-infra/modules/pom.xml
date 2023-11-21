@@ -21,6 +21,7 @@
         <module>module-org-api</module>
         <module>module-org-sync-api</module>
         <module>module-chat</module>
+        <module>module-chat-api</module>
     </modules>
 
     <description>OkStack-Platform::infra::modules</description>

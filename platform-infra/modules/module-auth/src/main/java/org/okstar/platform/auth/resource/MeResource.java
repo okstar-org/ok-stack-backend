@@ -44,6 +44,9 @@ public class MeResource {
             Log.infof("claim=>%s %s", name, jwt.claim(name));
         }
         String name = jwt.getName();
-        return Res.ok(Req.empty(), RpcAssert.isTrue(sysAccountRpc.findByUsername(name)));
+        Log.infof("name:%s", name);
+        var result = RpcAssert.isTrue(sysAccountRpc.findByUsername(name));
+        Log.infof("My info is:%s", result);
+        return Res.ok(Req.empty(), result);
     }
 }

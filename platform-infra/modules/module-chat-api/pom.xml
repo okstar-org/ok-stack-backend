@@ -20,55 +20,23 @@
         <groupId>org.okstar.platform</groupId>
         <artifactId>modules</artifactId>
         <version>${revision}</version>
+        <relativePath>../pom.xml</relativePath>
     </parent>
 
-    <artifactId>module-chat</artifactId>
+    <artifactId>module-chat-api</artifactId>
 
     <properties>
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
-
     <dependencies>
-
-        <dependency>
-            <groupId>org.igniterealtime</groupId>
-            <artifactId>rest-api-client</artifactId>
-            <version>1.1.6-SNAPSHOT</version>
-        </dependency>
-
-<!--        <dependency>-->
-<!--            <groupId>org.jboss.resteasy</groupId>-->
-<!--            <artifactId>resteasy-core</artifactId>-->
-<!--        </dependency>-->
-
-        <dependency>
-            <groupId>com.fasterxml.jackson.jaxrs</groupId>
-            <artifactId>jackson-jaxrs-json-provider</artifactId>
-        </dependency>
         <dependency>
             <groupId>org.okstar.platform</groupId>
-            <artifactId>module-chat-api</artifactId>
+            <artifactId>common-base</artifactId>
             <version>${revision}</version>
             <scope>compile</scope>
         </dependency>
-
-        <!--        <dependency>-->
-<!--            <groupId>org.jboss.resteasy</groupId>-->
-<!--            <artifactId>resteasy-jaxb-provider</artifactId>-->
-<!--        </dependency>-->
-
-<!--        <dependency>-->
-<!--            <groupId>io.quarkus</groupId>-->
-<!--            <artifactId>quarkus-resteasy-jaxb</artifactId>-->
-<!--        </dependency>-->
-
-<!--        <dependency>-->
-<!--            <groupId>org.jboss.resteasy</groupId>-->
-<!--            <artifactId>resteasy-jettison-provider</artifactId>-->
-<!--            <version>2.3.6.Final</version>-->
-<!--        </dependency>-->
     </dependencies>
 
 </project>

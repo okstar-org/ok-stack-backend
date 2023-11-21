@@ -13,6 +13,7 @@
 
 package org.okstar.platform.chat.openfire;
 
+import io.quarkus.arc.Arc;
 import io.quarkus.logging.Log;
 import io.quarkus.runtime.StartupEvent;
 import lombok.Getter;
@@ -24,24 +25,34 @@ import org.igniterealtime.restclient.enums.SupportedMediaType;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.event.Observes;
-import javax.ws.rs.client.Client;
-import javax.ws.rs.client.ClientBuilder;
+import java.util.concurrent.ExecutorService;
 
 @Getter
 @ApplicationScoped
-public class OpenfireManager {
+public class OpenfireManager extends Thread {
     //    @ConfigProperty(name = "chat.auth.secret-key")
     private String authSecretKey = "JxHQUSsqDLJbArL7";
 
     private RestApiClient restApiClient;
 
 
-
     public void init(@Observes StartupEvent e) {
+        setDaemon(true);
+        setName("OpenfireManager");
+
         // Shared secret key
         AuthenticationToken token = new AuthenticationToken(authSecretKey);
         restApiClient = new RestApiClient("http://meet.chuanshaninfo.com", 9090, //
                 token, SupportedMediaType.JSON);
+
+        ExecutorService executorService = Arc.container().getExecutorService();
+        executorService.submit(this);
+    }
+
+    @Override
+    public void run() {
+
+
     }
 
     public UserEntities users(){
