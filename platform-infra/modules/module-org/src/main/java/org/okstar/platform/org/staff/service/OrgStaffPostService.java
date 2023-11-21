@@ -46,4 +46,11 @@ public interface OrgStaffPostService extends OkService<OrgStaffPost, Long> {
      * @return
      */
     boolean join(Long staffId, Long[] postIds);
+
+    /**
+     * 查找员工的岗位
+     * @param staffId
+     * @return
+     */
+    List<OrgStaffPost> findByStaffId(Long staffId);
 }

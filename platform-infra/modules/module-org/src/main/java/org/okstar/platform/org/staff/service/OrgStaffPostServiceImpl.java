@@ -181,4 +181,9 @@ public class OrgStaffPostServiceImpl implements OrgStaffPostService {
         SignUpResult upResult = RpcAssert.isTrue(result);
         return upResult.getUserId() > 0;
     }
+
+    @Override
+    public List<OrgStaffPost> findByStaffId(Long staffId) {
+        return orgStaffPostMapper.find("staffId = ?1", staffId).stream().toList();
+    }
 }
