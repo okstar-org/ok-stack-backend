@@ -115,9 +115,11 @@ public class SysAccountServiceImpl extends OkAbsService implements SysAccountSer
         }
 
         SysAccount sysAccount = new SysAccount();
-        sysAccount.setIso(signUpForm.getIso());
-        sysAccount.setNickname(signUpForm.getFirstName()+signUpForm.getLastName());
         sysAccount.setUsername(RandomStringUtils.randomAlphanumeric(12));
+        sysAccount.setIso(signUpForm.getIso());
+        sysAccount.setNickname(Optional.ofNullable(signUpForm.getFirstName()).orElse("")
+                + Optional.ofNullable(signUpForm.getLastName()).orElse(""));
+
         sysAccountMapper.persist(sysAccount);
         Log.infof("User have been saved successfully.=>%s",
                 sysAccount.getUsername(), sysAccount);
