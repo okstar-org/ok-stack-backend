@@ -14,7 +14,6 @@
 package org.okstar.platform.chat.resource;
 
 import org.igniterealtime.restclient.entity.UserEntities;
-import org.igniterealtime.restclient.entity.UserEntity;
 import org.okstar.platform.chat.ChatUtils;
 import org.okstar.platform.chat.beans.ChatUser;
 import org.okstar.platform.chat.openfire.OpenfireManager;
@@ -28,7 +27,7 @@ import javax.ws.rs.PathParam;
 import java.util.List;
 
 @Path("user")
-public class UserResource {
+public class ChatUserResource {
 
     @Inject
     OpenfireManager openfireManager;
@@ -42,9 +41,9 @@ public class UserResource {
 
     @GET
     @Path("findByUsername/{username}")
-    public Res<UserEntity> findByUsername(@PathParam("username") String username) {
+    public Res<ChatUser> findByUsername(@PathParam("username") String username) {
         var user = openfireManager.findUserByUsername(username);
-        return Res.ok(Req.empty(), user);
+        return Res.ok(Req.empty(), ChatUtils.entity2bean(user));
     }
 
 }

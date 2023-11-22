@@ -14,6 +14,7 @@
 package org.okstar.platform.auth.backend;
 
 import java.util.List;
+import java.util.Optional;
 
 
 /**
@@ -21,6 +22,8 @@ import java.util.List;
  */
 public interface BackUserManager {
     List<BackUser> users();
+
+    Optional<BackUser> getUser(String username);
 
     /**
      * 增加用户

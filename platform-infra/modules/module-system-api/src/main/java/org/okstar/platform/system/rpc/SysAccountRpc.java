@@ -20,15 +20,16 @@ import org.okstar.platform.system.sign.SignUpForm;
 import org.okstar.platform.system.sign.SignUpResult;
 import org.okstar.platform.system.vo.SysAccount0;
 
-import javax.ws.rs.GET;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.QueryParam;
+import javax.ws.rs.*;
 
 
 @Path("rpc/SysAccountRpc")
 @RegisterRestClient
 public interface SysAccountRpc {
+
+    @GET
+    @Path("lastPassword/{accountId}")
+    RpcResult<String> lastPassword(@PathParam("accountId") Long accountId);
 
     @POST
     @Path("signUp")

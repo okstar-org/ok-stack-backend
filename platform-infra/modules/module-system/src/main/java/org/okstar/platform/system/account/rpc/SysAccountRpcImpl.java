@@ -32,6 +32,16 @@ public class SysAccountRpcImpl implements SysAccountRpc {
     SysAccountService userService;
 
     @Override
+    public RpcResult<String> lastPassword(Long accountId) {
+        var resultDto = userService.lastPassword(accountId);
+        if (resultDto.isEmpty()) {
+            return RpcResult.<String>builder().success(false).build();
+        }
+        return RpcResult.<String>builder().success(true).data(resultDto.get().getPassword()).build();
+    }
+
+
+    @Override
     public RpcResult<SignUpResult> signUp(SignUpForm signUpForm) {
         try {
             SignUpResult resultDto = userService.signUp(signUpForm);

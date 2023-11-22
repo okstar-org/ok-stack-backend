@@ -31,6 +31,7 @@ import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.event.Observes;
 import javax.ws.rs.core.Response;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @ApplicationScoped
@@ -73,6 +74,14 @@ public class KeycloakUserManagerImpl extends KeycloakManagerImpl implements Back
         return usersResource.list().stream()//
                 .map(KeycloakUserManagerImpl::toBackend)//
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public Optional<BackUser> getUser(String username) {
+        Log.infof("getUser:%s", username);
+        UsersResource usersResource = usersResource();
+        List<UserRepresentation> list = usersResource.search(username);
+        return list.stream().map(KeycloakUserManagerImpl::toBackend).toList().stream().findFirst();
     }
 
 

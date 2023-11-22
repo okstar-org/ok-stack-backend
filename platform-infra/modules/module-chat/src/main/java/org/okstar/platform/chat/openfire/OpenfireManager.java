@@ -63,9 +63,9 @@ public class OpenfireManager extends Thread {
 
     public UserEntity findUserByUsername(String username){
         Log.infof("findUserByUsername:%s", username);
-        UserEntity users = restApiClient.getUser(username);
-        Log.infof("user:%s", users);
-        return users;
+        UserEntity user = restApiClient.getUser(username);
+        Log.infof("user:%s", user);
+        return user;
     }
 
 }

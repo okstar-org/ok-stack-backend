@@ -13,20 +13,24 @@
 
 package org.okstar.platform.auth.service;
 
+import io.quarkus.logging.Log;
 import lombok.extern.slf4j.Slf4j;
 import org.eclipse.microprofile.rest.client.inject.RestClient;
 import org.okstar.platform.auth.backend.AuthzClientManager;
 import org.okstar.platform.auth.backend.BackUser;
 import org.okstar.platform.auth.backend.BackUserManager;
 import org.okstar.platform.common.core.defined.AccountDefines;
+import org.okstar.platform.common.core.exception.OkRuntimeException;
 import org.okstar.platform.common.core.utils.IdUtils;
 import org.okstar.platform.common.rpc.RpcAssert;
+import org.okstar.platform.common.rpc.RpcResult;
 import org.okstar.platform.system.sign.*;
 import org.okstar.platform.system.rpc.SysAccountRpc;
 import org.okstar.platform.system.vo.SysAccount0;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
+import java.util.Optional;
 
 @Slf4j
 @ApplicationScoped
@@ -68,7 +72,7 @@ public class PassportServiceImpl implements PassportService {
     }
 
     @Override
-    public SignInResult signIn(SignInForm signInForm) {
+    public synchronized SignInResult signIn(SignInForm signInForm) {
         String account = signInForm.getAccount();
 
         //判断帐号类型
@@ -78,6 +82,26 @@ public class PassportServiceImpl implements PassportService {
                 bindType,
                 signInForm.getAccount()));
 
+        if (userDto == null) {
+            throw new OkRuntimeException("user is not exist");
+        }
+
+        /**
+         * 初始化LDAP用户
+         */
+        Optional<BackUser> backUser = backUserManager.getUser(userDto.getUsername());
+        if(backUser.isEmpty()){
+            RpcResult<String> lastedPassword = sysAccountRpc.lastPassword(userDto.getId());
+            String pwd = RpcAssert.isTrue(lastedPassword);
+
+            BackUser addUser = new BackUser();
+            addUser.setId(String.valueOf(userDto.getId()));
+            addUser.setUsername(userDto.getUsername());
+            addUser.setPassword(pwd);
+
+            BackUser added = backUserManager.addUser(addUser);
+            Log.infof("User:%s is initialized to ldap successfully.", added.getUsername());
+        }
         return authzClientManager.authorization(userDto.getUsername(), signInForm.getPassword());
     }
 

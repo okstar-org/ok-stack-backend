@@ -15,7 +15,7 @@ package org.okstar.platform.system.account.domain;
 
 import lombok.Data;
 import org.okstar.platform.common.core.defined.AccountDefines;
-import org.okstar.platform.system.domain.BaseEntity;
+import org.okstar.platform.common.datasource.domain.OkEntity;
 
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -28,7 +28,7 @@ import javax.persistence.ManyToOne;
  */
 @Data
 @Entity
-public class SysAccountBind extends BaseEntity {
+public class SysAccountBind extends OkEntity {
 
     /**
      * 绑定到的帐号

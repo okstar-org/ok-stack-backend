@@ -17,6 +17,7 @@ package org.okstar.platform.system.account.service;
 import org.okstar.platform.common.core.defined.AccountDefines;
 import org.okstar.platform.common.datasource.OkService;
 import org.okstar.platform.system.account.domain.SysAccount;
+import org.okstar.platform.system.account.domain.SysAccountPassword;
 import org.okstar.platform.system.sign.SignUpForm;
 import org.okstar.platform.system.sign.SignUpResult;
 
@@ -35,10 +36,10 @@ public interface SysAccountService extends OkService<SysAccount, Long>
 
     SignUpResult signUp(SignUpForm signUpForm);
 
-
     void save(SysAccount sysUser);
 
-    boolean isAdmin(Long userId);
+
+    Optional<SysAccountPassword> lastPassword(Long accountId);
 
     Optional<SysAccount> findByUsername(String username);
 }

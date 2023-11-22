@@ -11,32 +11,21 @@
  * /
  */
 
-package org.okstar.platform.system.vo;
+package org.okstar.platform.system.account.mapper;
 
-import lombok.Data;
-import org.okstar.platform.common.core.web.bean.DTO;
+import org.okstar.platform.common.datasource.OkRepository;
+import org.okstar.platform.system.account.domain.SysAccountPassword;
 
-import java.util.Optional;
+import javax.enterprise.context.ApplicationScoped;
+
 
 /**
- * 简单帐号对象
+ * 帐号密码
+ * 
+ * 
  */
-@Data
-public class SysAccount0 extends DTO {
-    private Long id;
-    private String iso;
-    private String username;
-    private String nickname;
-    private String firstName;
-    private String lastName;
-    private String no;
+@ApplicationScoped
+public class SysAccountPasswordMapper implements OkRepository<SysAccountPassword>
+{
 
-    /**
-     * 头像
-     */
-    private String avatar;
-
-    public String getName(){
-        return Optional.ofNullable(nickname).orElse(username);
-    }
 }

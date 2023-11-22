@@ -23,23 +23,27 @@ import org.apache.commons.lang3.RandomStringUtils;
 import org.okstar.platform.common.core.defined.AccountDefines;
 import org.okstar.platform.common.core.exception.OkRuntimeException;
 import org.okstar.platform.common.core.exception.user.OkUserException;
+import org.okstar.platform.common.core.utils.OkDateUtils;
 import org.okstar.platform.common.core.utils.OkPhoneUtils;
 import org.okstar.platform.common.core.web.page.OkPageResult;
 import org.okstar.platform.common.core.web.page.OkPageable;
 import org.okstar.platform.common.datasource.OkAbsService;
-import org.okstar.platform.system.sign.SignUpForm;
-import org.okstar.platform.system.sign.SignUpResult;
-import org.okstar.platform.system.account.mapper.SysAccountBindMapper;
-import org.okstar.platform.system.account.mapper.SysAccountMapper;
+import org.okstar.platform.common.datasource.domain.OkEntity;
 import org.okstar.platform.system.account.domain.SysAccount;
 import org.okstar.platform.system.account.domain.SysAccountBind;
+import org.okstar.platform.system.account.domain.SysAccountPassword;
+import org.okstar.platform.system.account.mapper.SysAccountBindMapper;
+import org.okstar.platform.system.account.mapper.SysAccountMapper;
+import org.okstar.platform.system.account.mapper.SysAccountPasswordMapper;
+import org.okstar.platform.system.sign.SignUpForm;
+import org.okstar.platform.system.sign.SignUpResult;
 import org.springframework.util.Assert;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import javax.transaction.Transactional;
+import java.util.Comparator;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 
 import static com.google.i18n.phonenumbers.PhoneNumberUtil.PhoneNumberFormat.INTERNATIONAL;
@@ -57,11 +61,21 @@ public class SysAccountServiceImpl extends OkAbsService implements SysAccountSer
     SysAccountMapper sysAccountMapper;
     @Inject
     SysAccountBindMapper sysAccountBindMapper;
+    @Inject
+    SysAccountPasswordMapper sysAccountPasswordMapper;
+
+
+    @Override
+    public Optional<SysAccountPassword> lastPassword(Long accountId) {
+      return   sysAccountPasswordMapper.find("account.id = ?1", accountId)//
+              .stream()//
+              .sorted(Comparator.comparing(OkEntity::getCreateAt).reversed())//
+              .findFirst();
+    }
 
     @Override
     public Optional<SysAccount> findByUsername(String username) {
         return sysAccountMapper.find("username = ?1", username).stream().findFirst();
-
     }
 
     /**
@@ -100,12 +114,11 @@ public class SysAccountServiceImpl extends OkAbsService implements SysAccountSer
         Assert.notNull(signUpForm.getAccountType(),"accountType is empty");
         Assert.notNull(signUpForm.getAccount(),"account is empty");
 
-        long existed;
         if (signUpForm.getAccountType() == AccountDefines.BindType.phone) {
             signUpForm.setAccount(OkPhoneUtils.canonical(signUpForm.getAccount(), signUpForm.getIso()));
         }
 
-        existed = sysAccountBindMapper.count("bindType = ?1 and bindValue = ?2",
+        long existed = sysAccountBindMapper.count("bindType = ?1 and bindValue = ?2",
                 signUpForm.getAccountType(),
                 signUpForm.getAccount());
 
@@ -115,6 +128,7 @@ public class SysAccountServiceImpl extends OkAbsService implements SysAccountSer
         }
 
         SysAccount sysAccount = new SysAccount();
+        sysAccount.setCreateAt(OkDateUtils.now());
         sysAccount.setUsername(RandomStringUtils.randomAlphanumeric(12));
         sysAccount.setIso(signUpForm.getIso());
         sysAccount.setNickname(Optional.ofNullable(signUpForm.getFirstName()).orElse("")
@@ -143,6 +157,15 @@ public class SysAccountServiceImpl extends OkAbsService implements SysAccountSer
 
         bind.setAccount(sysAccount);
         sysAccountBindMapper.persist(bind);
+
+        /**
+         * 保存密码
+         */
+        SysAccountPassword pwd = new SysAccountPassword();
+        pwd.setAccount(sysAccount);
+        pwd.setCreateAt(sysAccount.getCreateAt());
+        pwd.setPassword(signUpForm.getPassword());
+        sysAccountPasswordMapper.persist(pwd);
 
         return SignUpResult.builder()
                 .username(sysAccount.getUsername())
@@ -186,11 +209,6 @@ public class SysAccountServiceImpl extends OkAbsService implements SysAccountSer
         sysAccountMapper.persist(sysUser);
     }
 
-
-    @Override
-    public boolean isAdmin(Long userId) {
-        return Objects.equals(1L, userId);
-    }
 
 
 }
