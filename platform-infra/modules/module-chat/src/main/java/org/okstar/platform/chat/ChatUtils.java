@@ -25,7 +25,7 @@ public class ChatUtils {
     private ChatUtils() {
     }
 
-    public static ChatUser entity2bean(UserEntity userEntity) {
+    public static ChatUser convertUser(UserEntity userEntity) {
         ChatUser user = new ChatUser();
         user.setUsername(userEntity.getUsername());
         user.setName(userEntity.getName());
@@ -33,11 +33,11 @@ public class ChatUtils {
         return user;
     }
 
-    public static List<ChatUser> entity2beans(UserEntities userEntities) {
+    public static List<ChatUser> convertUsers(UserEntities userEntities) {
         if (userEntities.getUsers() == null || userEntities.getUsers().isEmpty()) {
             return Collections.emptyList();
         }
-        return userEntities.getUsers().stream().map(ChatUtils::entity2bean).collect(Collectors.toList());
+        return userEntities.getUsers().stream().map(ChatUtils::convertUser).collect(Collectors.toList());
     }
 
 }

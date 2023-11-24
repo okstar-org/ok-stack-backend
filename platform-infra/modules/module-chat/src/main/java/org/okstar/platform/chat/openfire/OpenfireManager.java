@@ -19,6 +19,7 @@ import io.quarkus.runtime.StartupEvent;
 import lombok.Getter;
 import org.igniterealtime.restclient.RestApiClient;
 import org.igniterealtime.restclient.entity.AuthenticationToken;
+import org.igniterealtime.restclient.entity.RosterEntities;
 import org.igniterealtime.restclient.entity.UserEntities;
 import org.igniterealtime.restclient.entity.UserEntity;
 import org.igniterealtime.restclient.enums.SupportedMediaType;
@@ -42,7 +43,9 @@ public class OpenfireManager extends Thread {
 
         // Shared secret key
         AuthenticationToken token = new AuthenticationToken(authSecretKey);
-        restApiClient = new RestApiClient("http://meet.chuanshaninfo.com", 9090, //
+        restApiClient = new RestApiClient(
+                "http://meet.chuanshaninfo.com",
+                9090, //
                 token, SupportedMediaType.JSON);
 
         ExecutorService executorService = Arc.container().getExecutorService();
@@ -68,4 +71,10 @@ public class OpenfireManager extends Thread {
         return user;
     }
 
+    public RosterEntities findRosterByUsername(String username){
+        Log.infof("findRosterByUsername:%s", username);
+        RosterEntities rosterEntities = restApiClient.getRoster(username);
+        Log.infof("rosterEntities:%s", rosterEntities.getRosterItem());
+        return rosterEntities;
+    }
 }
