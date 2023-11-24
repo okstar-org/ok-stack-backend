@@ -15,7 +15,7 @@ package org.okstar.platform.org.mapper;
 
 
 import io.quarkus.hibernate.orm.panache.PanacheRepository;
-import org.okstar.platform.org.rbac.OrgRbacRole;
+import org.okstar.platform.org.rbac.domain.OrgRbacRole;
 
 import javax.enterprise.context.ApplicationScoped;
 

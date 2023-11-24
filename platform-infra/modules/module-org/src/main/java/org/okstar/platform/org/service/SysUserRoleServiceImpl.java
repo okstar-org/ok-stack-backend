@@ -16,7 +16,7 @@ package org.okstar.platform.org.service;
 import org.okstar.platform.common.core.web.page.OkPageResult;
 import org.okstar.platform.common.core.web.page.OkPageable;
 import org.okstar.platform.org.mapper.SysUserRoleRepository;
-import org.okstar.platform.org.rbac.OrgRbacUserRole;
+import org.okstar.platform.org.rbac.domain.OrgRbacUserRole;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;

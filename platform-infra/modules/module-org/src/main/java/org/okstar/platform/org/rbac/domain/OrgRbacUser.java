@@ -11,24 +11,25 @@
  * /
  */
 
-package org.okstar.platform.org.rbac;
+package org.okstar.platform.org.rbac.domain;
 
 import lombok.Data;
 import org.okstar.platform.org.domain.BaseEntity;
 
 import javax.persistence.Entity;
 import javax.persistence.MappedSuperclass;
+import javax.persistence.Table;
 
 /**
  * RBAC-User
  */
 @Data
 @Entity
-@MappedSuperclass
-public class OrgRbacResource extends BaseEntity {
+@Table
+public class OrgRbacUser extends BaseEntity {
     /**
-     * 绑定到菜单
+     * 绑定的帐号
      */
-    private Long menuId;
+    private Long accountId;
 
 }

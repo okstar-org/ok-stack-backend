@@ -15,7 +15,7 @@ package org.okstar.platform.org.service;
 
 
 import org.okstar.platform.common.datasource.OkService;
-import org.okstar.platform.org.rbac.OrgRbacRole;
+import org.okstar.platform.org.rbac.domain.OrgRbacRole;
 
 /**
  * 角色业务层

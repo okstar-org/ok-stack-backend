@@ -17,7 +17,7 @@ import io.quarkus.panache.common.Page;
 import org.okstar.platform.common.core.web.page.OkPageResult;
 import org.okstar.platform.common.core.web.page.OkPageable;
 import org.okstar.platform.org.mapper.SysRoleMapper;
-import org.okstar.platform.org.rbac.OrgRbacRole;
+import org.okstar.platform.org.rbac.domain.OrgRbacRole;
 import org.okstar.platform.org.service.SysRoleService;
 
 import javax.enterprise.context.ApplicationScoped;

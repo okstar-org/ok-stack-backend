@@ -11,13 +11,12 @@
  * /
  */
 
-package org.okstar.platform.org.rbac;
+package org.okstar.platform.org.rbac.domain;
 
 import lombok.Data;
 import org.okstar.platform.org.domain.BaseEntity;
 
 import javax.persistence.Entity;
-import javax.persistence.MappedSuperclass;
 import javax.persistence.Table;
 
 /**
@@ -26,7 +25,6 @@ import javax.persistence.Table;
 @Data
 @Table
 @Entity
-@MappedSuperclass
 public class OrgRbacRole extends BaseEntity
 {
 
@@ -34,7 +32,7 @@ public class OrgRbacRole extends BaseEntity
     private String name;
 
     /**
-     * 绑定到岗位
+     * 绑定到岗位 [OrgPost]
      */
     private Long postId;
 }

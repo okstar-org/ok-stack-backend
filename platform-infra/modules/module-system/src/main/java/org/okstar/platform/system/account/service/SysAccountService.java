@@ -25,14 +25,11 @@ import java.util.Optional;
 
 /**
  * 用户业务层
- * 
- * 
  */
-public interface SysAccountService extends OkService<SysAccount, Long>
-{
+public interface SysAccountService extends OkService<SysAccount, Long> {
 
 
-     SysAccount findByBind(String iso, AccountDefines.BindType bindType, String bindValue);
+    SysAccount findByBind(String iso, AccountDefines.BindType bindType, String bindValue);
 
     SignUpResult signUp(SignUpForm signUpForm);
 
@@ -42,4 +39,5 @@ public interface SysAccountService extends OkService<SysAccount, Long>
     Optional<SysAccountPassword> lastPassword(Long accountId);
 
     Optional<SysAccount> findByUsername(String username);
+
 }

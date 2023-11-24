@@ -16,6 +16,7 @@ package org.okstar.platform.system.account.rpc;
 import org.okstar.platform.common.core.defined.AccountDefines;
 import org.okstar.platform.common.core.utils.bean.OkBeanUtils;
 import org.okstar.platform.common.rpc.RpcResult;
+import org.okstar.platform.system.account.domain.SysAccount;
 import org.okstar.platform.system.account.service.SysAccountService;
 import org.okstar.platform.system.rpc.SysAccountRpc;
 import org.okstar.platform.system.sign.SignUpForm;
@@ -70,6 +71,14 @@ public class SysAccountRpcImpl implements SysAccountRpc {
 
         SysAccount0 dto = new SysAccount0();
         OkBeanUtils.copyPropertiesTo(sysUser.get(), dto);
+        return RpcResult.<SysAccount0>builder().data(dto).success(true).build();
+    }
+
+    @Override
+    public RpcResult<SysAccount0> findById(Long id) {
+        SysAccount account = userService.get(id);
+        SysAccount0 dto = new SysAccount0();
+        OkBeanUtils.copyPropertiesTo(account, dto);
         return RpcResult.<SysAccount0>builder().data(dto).success(true).build();
     }
 }

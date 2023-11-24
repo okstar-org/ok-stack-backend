@@ -44,4 +44,7 @@ public interface SysAccountRpc {
     @GET
     @Path("findByUsername")
     RpcResult<SysAccount0> findByUsername(@QueryParam("username") String username);
+    @GET
+    @Path("findById")
+    RpcResult<SysAccount0> findById(@QueryParam("id") Long id);
 }

@@ -13,7 +13,7 @@
 
 package org.okstar.platform.org.mapper;
 
-import org.okstar.platform.org.rbac.SysRbacRoleResource;
+import org.okstar.platform.org.rbac.domain.SysRbacRoleResource;
 
 import javax.inject.Singleton;
 import java.util.List;

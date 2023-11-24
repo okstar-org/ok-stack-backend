@@ -15,7 +15,7 @@ package org.okstar.platform.org.service;
 
 
 import org.okstar.platform.common.datasource.OkService;
-import org.okstar.platform.org.rbac.OrgRbacUserRole;
+import org.okstar.platform.org.rbac.domain.OrgRbacUserRole;
 
 /**
  * 在线用户 服务层

@@ -11,32 +11,24 @@
  * /
  */
 
-package org.okstar.platform.org.rbac;
+package org.okstar.platform.org.rbac.domain;
 
-import io.quarkus.hibernate.orm.panache.PanacheEntity;
 import lombok.Data;
+import org.okstar.platform.org.domain.BaseEntity;
 
 import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.Table;
 
 /**
- * 用户和角色关联 sys_user_role
- * 
- * 
+ * RBAC-User
  */
 @Data
-@Table
 @Entity
-@MappedSuperclass
-public class OrgRbacUserRole extends PanacheEntity
-{
-    /** 用户 */
-    @ManyToOne
-    private OrgRbacUser user;
-    
-    /** 角色 */
-    @ManyToOne
-    private OrgRbacRole role;
+@Table
+public class OrgRbacResource extends BaseEntity {
+    /**
+     * 绑定到菜单[SysMenu]
+     */
+    private Long menuId;
 }

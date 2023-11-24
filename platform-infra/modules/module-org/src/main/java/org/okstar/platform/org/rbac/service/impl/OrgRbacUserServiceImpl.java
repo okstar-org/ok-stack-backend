@@ -1,0 +1,75 @@
+package org.okstar.platform.org.rbac.service.impl;
+
+import io.quarkus.hibernate.orm.panache.PanacheRepositoryBase;
+import io.quarkus.panache.common.Parameters;
+import org.eclipse.microprofile.rest.client.inject.RestClient;
+import org.okstar.platform.common.core.utils.bean.OkBeanUtils;
+import org.okstar.platform.common.rpc.RpcResult;
+import org.okstar.platform.org.rbac.domain.OrgRbacRole;
+import org.okstar.platform.org.rbac.domain.OrgRbacUser;
+import org.okstar.platform.org.rbac.domain.OrgRbacUserRole;
+import org.okstar.platform.org.rbac.mapper.OrgRbacUserMapper;
+import org.okstar.platform.org.rbac.mapper.OrgRbacUserRoleMapper;
+import org.okstar.platform.org.rbac.resource.vo.OrgRbacUserResponseVo;
+import org.okstar.platform.org.rbac.service.OrgRbacUserService;
+import org.okstar.platform.system.rpc.SysAccountRpc;
+import org.okstar.platform.system.vo.SysAccount0;
+
+import javax.enterprise.context.ApplicationScoped;
+import javax.inject.Inject;
+import javax.persistence.TypedQuery;
+import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
+
+/**
+ * 用户服务类
+ */
+@ApplicationScoped
+public class OrgRbacUserServiceImpl implements OrgRbacUserService, PanacheRepositoryBase<OrgRbacUserRole, Long> {
+    @Inject
+    private OrgRbacUserMapper orgRbacUserMapper;
+    @Inject
+    @RestClient
+    SysAccountRpc sysAccountRpc;
+    @Inject
+    private OrgRbacUserRoleMapper orgRbacUserRoleMapper;
+
+    @Override
+    public List<OrgRbacUserResponseVo> queryUserList(Long roleId) {
+        TypedQuery<OrgRbacUserRole> query = getEntityManager().createQuery("SELECT ur.* FROM OrgRbacUserRole ur WHERE ur.role.id = :roleId", OrgRbacUserRole.class);
+        query.setParameter("roleId", roleId);
+        return query.getResultList().stream().map(orgRbacUserRole -> {
+            OrgRbacUser user = orgRbacUserRole.getUser();
+            SysAccount0 account = getAccount(user.getAccountId());
+            if (account != null) {
+                OrgRbacUserResponseVo orgRbacUserResponseVo = new OrgRbacUserResponseVo();
+                orgRbacUserResponseVo.setNickname(account.getNickname());
+                orgRbacUserResponseVo.setAvatar(account.getAvatar());
+                orgRbacUserResponseVo.setAccountId(user.getAccountId());
+                orgRbacUserResponseVo.setUsername(account.getUsername());
+                return orgRbacUserResponseVo;
+            }
+            return null;
+        }).filter(Objects::nonNull).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<OrgRbacUserResponseVo> queryUserList() {
+        return orgRbacUserMapper.listAll().stream().map(ids -> {
+            RpcResult<SysAccount0> sysAccount0RpcResult = sysAccountRpc.findById(ids.getAccountId());
+            SysAccount0 sysAccount = sysAccount0RpcResult.getData();
+            if (sysAccount != null) {
+                OrgRbacUserResponseVo user = new OrgRbacUserResponseVo();
+                OkBeanUtils.copyPropertiesTo(sysAccount, user);
+                return user;
+            }
+            return null;
+        }).filter(Objects::nonNull).collect(Collectors.toList());
+    }
+
+    public SysAccount0 getAccount(Long accountId) {
+        RpcResult<SysAccount0> sysAccount0RpcResult = sysAccountRpc.findById(accountId);
+        return sysAccount0RpcResult.getData();
+    }
+}

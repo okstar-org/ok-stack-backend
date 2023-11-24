@@ -11,15 +11,12 @@
  * /
  */
 
-package org.okstar.platform.org.rbac;
+package org.okstar.platform.org.rbac.domain;
 
 import io.quarkus.hibernate.orm.panache.PanacheEntity;
 import lombok.Data;
 
-import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
-import javax.persistence.MappedSuperclass;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 /**
  * 角色和资源的关联
@@ -29,7 +26,6 @@ import javax.persistence.Table;
 @Data
 @Table
 @Entity
-@MappedSuperclass
 public class SysRbacRoleResource extends PanacheEntity
 {
     /** 角色ID */
