@@ -32,25 +32,15 @@ public class ChatRosterItem extends DTO {
 
     /**
      * SubType
-     * <p>
      * * Indicates the roster item should be removed.
-     * <p>
-     * <p>
      * REMOVE(-1),
-     * * No subscription is established.
-     * <p>
-     * <p>
+     * No subscription is established.
      * NONE(0),
      * * The roster owner has a subscription to the roster item's presence.
-     * <p>
-     * <p>
      * TO(1),
      * * The roster item has a subscription to the roster owner's presence.
-     * <p>
-     * <p>
      * FROM(2),
      * * The roster item and owner have a mutual subscription.
-     * <p>
      * BOTH(3);
      */
     private int subscriptionType;
