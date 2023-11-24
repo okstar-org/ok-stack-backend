@@ -11,11 +11,18 @@
  * /
  */
 package org.okstar.platform.chat.beans;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.okstar.platform.common.core.web.bean.DTO;
 
 @Data
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class ChatUser extends DTO {
+
     /** The username. */
     private String username;
 
@@ -24,4 +31,5 @@ public class ChatUser extends DTO {
 
     /** The email. */
     private String email;
+
 }

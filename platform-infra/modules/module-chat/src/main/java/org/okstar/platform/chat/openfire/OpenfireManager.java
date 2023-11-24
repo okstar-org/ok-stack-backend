@@ -18,11 +18,9 @@ import io.quarkus.logging.Log;
 import io.quarkus.runtime.StartupEvent;
 import lombok.Getter;
 import org.igniterealtime.restclient.RestApiClient;
-import org.igniterealtime.restclient.entity.AuthenticationToken;
-import org.igniterealtime.restclient.entity.RosterEntities;
-import org.igniterealtime.restclient.entity.UserEntities;
-import org.igniterealtime.restclient.entity.UserEntity;
+import org.igniterealtime.restclient.entity.*;
 import org.igniterealtime.restclient.enums.SupportedMediaType;
+import org.okstar.platform.chat.beans.ChatGeneral;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.event.Observes;
@@ -58,23 +56,36 @@ public class OpenfireManager extends Thread {
 
     }
 
-    public UserEntities users(){
+    public UserEntities users() {
         UserEntities users = restApiClient.getUsers();
         Log.infof("users:%s", users);
         return users;
     }
 
-    public UserEntity findUserByUsername(String username){
+    public UserEntity findUserByUsername(String username) {
         Log.infof("findUserByUsername:%s", username);
         UserEntity user = restApiClient.getUser(username);
         Log.infof("user:%s", user);
         return user;
     }
 
-    public RosterEntities findRosterByUsername(String username){
+    public RosterEntities findRosterByUsername(String username) {
         Log.infof("findRosterByUsername:%s", username);
         RosterEntities rosterEntities = restApiClient.getRoster(username);
         Log.infof("rosterEntities:%s", rosterEntities.getRosterItem());
         return rosterEntities;
+    }
+
+    public ChatGeneral findChatGeneralByUsername(String username) {
+
+        RosterEntities roster = restApiClient.getRoster(username);
+        UserGroupsEntity groups = restApiClient.getUserGroups(username);
+        MessageArchiveEntities archive = restApiClient.getMessageArchive(username + "@meet.chuanshaninfo.com");
+
+        return ChatGeneral.builder()//
+                .groups(groups.getGroupNames() == null ? 0 : groups.getGroupNames().size())
+                .contacts(roster.getRosterItem() == null ? 0 : roster.getRosterItem().size())
+                .msgs(archive.getArchive()==null?0:archive.getArchive().getCount())
+                .build();
     }
 }
