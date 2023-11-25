@@ -20,11 +20,17 @@ import lombok.Getter;
 import org.igniterealtime.restclient.RestApiClient;
 import org.igniterealtime.restclient.entity.*;
 import org.igniterealtime.restclient.enums.SupportedMediaType;
+import org.okstar.platform.chat.ChatUtils;
 import org.okstar.platform.chat.beans.ChatGeneral;
+import org.okstar.platform.chat.beans.ChatRoom;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.event.Observes;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ExecutorService;
+import java.util.stream.Collectors;
 
 @Getter
 @ApplicationScoped
@@ -85,7 +91,22 @@ public class OpenfireManager extends Thread {
         return ChatGeneral.builder()//
                 .groups(groups.getGroupNames() == null ? 0 : groups.getGroupNames().size())
                 .contacts(roster.getRosterItem() == null ? 0 : roster.getRosterItem().size())
-                .msgs(archive.getArchive()==null?0:archive.getArchive().getCount())
+                .msgs(archive.getArchive() == null ? 0 : archive.getArchive().getCount())
                 .build();
+    }
+
+
+    public List<ChatRoom> listRooms() {
+        Map<String, String> q = new HashMap<>();
+        q.put("type", "all");
+        var rooms = restApiClient.getChatRooms(q);
+        return rooms.getChatRooms().stream()        //
+                .map(r -> ChatUtils.convertRoom(r)) //
+                .collect(Collectors.toList());
+    }
+
+    public ChatRoom findRoomByName(String username) {
+        MUCRoomEntity room = restApiClient.getChatRoom(username);
+        return ChatUtils.convertRoom(room);
     }
 }

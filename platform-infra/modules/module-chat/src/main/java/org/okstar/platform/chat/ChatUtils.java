@@ -13,8 +13,10 @@
 
 package org.okstar.platform.chat;
 
+import org.igniterealtime.restclient.entity.MUCRoomEntity;
 import org.igniterealtime.restclient.entity.UserEntities;
 import org.igniterealtime.restclient.entity.UserEntity;
+import org.okstar.platform.chat.beans.ChatRoom;
 import org.okstar.platform.chat.beans.ChatUser;
 
 import java.util.Collections;
@@ -38,6 +40,21 @@ public class ChatUtils {
             return Collections.emptyList();
         }
         return userEntities.getUsers().stream().map(ChatUtils::convertUser).collect(Collectors.toList());
+    }
+
+    public static ChatRoom convertRoom(MUCRoomEntity room) {
+        if (room == null)
+            return null;
+        return ChatRoom.builder()
+                .roomName(room.getRoomName())
+                .subject(room.getSubject())
+                .naturalName(room.getNaturalName())
+                .description(room.getDescription())
+                .owners(room.getOwners())
+                .maxUsers(room.getMaxUsers())
+                .members(room.getMembers() == null ? 0 : room.getMembers().size())
+                .publicRoom(room.isPublicRoom())
+                .build();
     }
 
 }
