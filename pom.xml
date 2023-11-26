@@ -193,7 +193,6 @@
             <version>5.3.24</version>
         </dependency>
 
-
     </dependencies>
 
     <dependencyManagement>
@@ -216,28 +215,6 @@
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
-
-
-
-
-
-            <!--            <dependency>-->
-            <!--                <groupId>mysql</groupId>-->
-            <!--                <artifactId>mysql-connector-java</artifactId>-->
-            <!--                <version>8.0.29</version>-->
-            <!--            </dependency>-->
-
-            <!--            <dependency>-->
-            <!--                <groupId>org.mariadb.jdbc</groupId>-->
-            <!--                <artifactId>mariadb-java-client</artifactId>-->
-            <!--                <version>3.1.2</version>-->
-            <!--            </dependency>-->
-
-            <!--            <dependency>-->
-            <!--                <groupId>com.h2database</groupId>-->
-            <!--                <artifactId>h2</artifactId>-->
-            <!--                <version>2.1.214</version>-->
-            <!--            </dependency>-->
 
             <dependency>
                 <groupId>com.alibaba.fastjson2</groupId>
@@ -274,7 +251,6 @@
                 <artifactId>javax.mail-api</artifactId>
                 <version>1.6.2</version>
             </dependency>
-
 
             <dependency>
                 <groupId>commons-beanutils</groupId>
