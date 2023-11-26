@@ -180,17 +180,19 @@ public class OrgStaffPostServiceImpl implements OrgStaffPostService {
         /**
          * 注册其帐号
          */
+        String phone = staff.getFragment().getPhone();
         RpcResult<SysAccount0> bind = sysAccountRpc.findByBind(
                 AccountDefines.DefaultISO,
                 AccountDefines.BindType.phone,
-                staff.getFragment().getPhone());
+                phone);
 
-        if (!bind.isSuccess()) {
+        SysAccount0 account0 = RpcAssert.isTrue(bind);
+        if (account0 == null) {
             SignUpForm form = new SignUpForm();
             form.setAccountType(AccountDefines.BindType.phone);
             form.setPassword(AccountDefines.DefaultPWD);
             form.setIso(AccountDefines.DefaultISO);
-            form.setAccount(staff.getFragment().getPhone());
+            form.setAccount(phone);
             form.setFirstName(staff.getFragment().getFirstName());
             form.setLastName(staff.getFragment().getLastName());
 
@@ -199,7 +201,6 @@ public class OrgStaffPostServiceImpl implements OrgStaffPostService {
             SignUpResult upResult = RpcAssert.isTrue(result);
             Log.infof("signUp=>", upResult.getUserId());
         }
-
         return true;
     }
 

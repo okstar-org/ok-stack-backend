@@ -19,6 +19,7 @@ import org.okstar.platform.org.domain.OrgPost;
 import org.okstar.platform.org.service.OrgPostService;
 
 import javax.inject.Inject;
+import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.QueryParam;
@@ -32,7 +33,7 @@ public class OrgStaffPostResource {
 
     @GET
     @Path("list")
-    public Res<List<OrgPost>> list(@QueryParam("assignment") Boolean assignment) {
+    public Res<List<OrgPost>> list(@QueryParam( "assignment") @DefaultValue("false") Boolean assignment) {
         var list = orgPostService.findAssignAble(assignment, false);
         return Res.ok(Req.empty(), list);
     }

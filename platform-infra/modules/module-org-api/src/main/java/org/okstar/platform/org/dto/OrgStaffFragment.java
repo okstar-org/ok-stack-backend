@@ -33,7 +33,6 @@ public class OrgStaffFragment {
      */
     private String name;
 
-
     /**
      * 性
      */
@@ -64,6 +63,11 @@ public class OrgStaffFragment {
      * 电话
      */
     private String phone;
+
+    /**
+     * 邮箱
+     */
+    private String email;
 
     /**
      * 备注

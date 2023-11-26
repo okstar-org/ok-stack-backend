@@ -54,13 +54,18 @@ public class SysAccountRpcImpl implements SysAccountRpc {
 
     @Override
     public RpcResult<SysAccount0> findByBind(String iso, AccountDefines.BindType type, String bindValue) {
-        var sysUser = userService.findByBind(iso, type, bindValue);
-        if (sysUser == null)
-            return RpcResult.<SysAccount0>builder().success(true).build();
+        try {
 
-        SysAccount0 dto = new SysAccount0();
-        OkBeanUtils.copyPropertiesTo(sysUser, dto);
-        return RpcResult.<SysAccount0>builder().data(dto).success(true).build();
+            var sysUser = userService.findByBind(iso, type, bindValue);
+            if (sysUser == null)
+                return RpcResult.<SysAccount0>builder().success(true).build();
+
+            SysAccount0 dto = new SysAccount0();
+            OkBeanUtils.copyPropertiesTo(sysUser, dto);
+            return RpcResult.<SysAccount0>builder().data(dto).success(true).build();
+        } catch (Exception e) {
+            return RpcResult.<SysAccount0>builder().success(false).msg(e.getMessage()).build();
+        }
     }
 
     @Override
