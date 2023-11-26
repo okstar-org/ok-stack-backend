@@ -22,6 +22,7 @@ import org.igniterealtime.restclient.entity.*;
 import org.igniterealtime.restclient.enums.SupportedMediaType;
 import org.okstar.platform.chat.ChatUtils;
 import org.okstar.platform.chat.beans.ChatGeneral;
+import org.okstar.platform.chat.beans.ChatParticipant;
 import org.okstar.platform.chat.beans.ChatRoom;
 
 import javax.enterprise.context.ApplicationScoped;
@@ -108,5 +109,12 @@ public class OpenfireManager extends Thread {
     public ChatRoom findRoomByName(String username) {
         MUCRoomEntity room = restApiClient.getChatRoom(username);
         return ChatUtils.convertRoom(room);
+    }
+
+    public List<ChatParticipant> findParticipantsByName(String username) {
+        ParticipantEntities participants = restApiClient.getChatRoomParticipants(username);
+        return participants.getParticipants().stream().map(e->
+                ChatUtils.convertParticipant(e)
+        ).toList();
     }
 }

@@ -19,6 +19,7 @@ import org.okstar.platform.org.domain.OrgStaffPost;
 
 import java.util.List;
 import java.util.Set;
+import java.util.SortedSet;
 
 /**
  * 人员与岗位关联
@@ -45,7 +46,7 @@ public interface OrgStaffPostService extends OkService<OrgStaffPost, Long> {
      * @param postIds
      * @return
      */
-    boolean join(Long staffId, Long[] postIds);
+    boolean join(Long staffId, SortedSet<Long> postIds);
 
     /**
      * 查找员工的岗位

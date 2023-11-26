@@ -19,6 +19,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Date;
 import java.util.List;
 
 @Data
@@ -30,7 +31,7 @@ public class ChatRoom {
     private String roomName;
     private String subject;
     private String description;
-    private String password;
+
     //"owners":["okstar@meet.chuanshaninfo.com"]
     private List<String> owners;
     //最大成员数量
@@ -39,7 +40,15 @@ public class ChatRoom {
     private int members;
     //是否公开
     private boolean publicRoom;
+
     //持久化房间（保存到数据库）
     private boolean persistent;
+    private String password;
+    private boolean canChangeNickname;
+    private boolean canOccupantsChangeSubject;
+    private boolean canOccupantsInvite;
+    private boolean logEnabled;
 
+    private Date creationDate;
+    private Date modificationDate;
 }

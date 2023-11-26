@@ -119,7 +119,8 @@ public class OrgStaffServiceImpl implements OrgStaffService {
             List<OrgStaffPost> staffPosts1 = orgStaffPostService.findByStaffId(staff.id);
             staffPosts1.forEach(sp -> {
                 OrgPost post = orgPostService.get(sp.getPostId());
-                staff.getPostInfo().add(post.getName());
+                staff.getPostNames().add(post.getName());
+                staff.getPostIds().add(post.id);
             });
         }
         return list;

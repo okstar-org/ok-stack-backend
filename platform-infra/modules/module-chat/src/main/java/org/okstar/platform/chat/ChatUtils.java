@@ -14,8 +14,10 @@
 package org.okstar.platform.chat;
 
 import org.igniterealtime.restclient.entity.MUCRoomEntity;
+import org.igniterealtime.restclient.entity.ParticipantEntity;
 import org.igniterealtime.restclient.entity.UserEntities;
 import org.igniterealtime.restclient.entity.UserEntity;
+import org.okstar.platform.chat.beans.ChatParticipant;
 import org.okstar.platform.chat.beans.ChatRoom;
 import org.okstar.platform.chat.beans.ChatUser;
 
@@ -53,8 +55,23 @@ public class ChatUtils {
                 .owners(room.getOwners())
                 .maxUsers(room.getMaxUsers())
                 .members(room.getMembers() == null ? 0 : room.getMembers().size())
+                .password(room.getPassword())
                 .publicRoom(room.isPublicRoom())
+                .persistent(room.isPersistent())
+                .canChangeNickname(room.isCanChangeNickname())
+                .canOccupantsChangeSubject(room.isCanOccupantsChangeSubject())
+                .canOccupantsInvite(room.isCanOccupantsInvite())
+                .logEnabled(room.isLogEnabled())
+                .creationDate(room.getCreationDate())
+                .modificationDate(room.getModificationDate())
                 .build();
     }
 
+    public static ChatParticipant convertParticipant(ParticipantEntity participant) {
+        return ChatParticipant.builder()
+                .jid(participant.getJid())
+                .role(participant.getRole())
+                .affiliation(participant.getAffiliation())
+                .build();
+    }
 }

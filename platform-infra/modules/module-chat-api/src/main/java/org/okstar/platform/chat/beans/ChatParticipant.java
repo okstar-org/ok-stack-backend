@@ -13,5 +13,19 @@
 
 package org.okstar.platform.chat.beans;
 
-public class ChatRoomDetail extends ChatRoom{
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
+public class ChatParticipant {
+
+    private String jid;
+    private String role;
+    private String affiliation;
 }

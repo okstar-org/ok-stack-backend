@@ -13,6 +13,7 @@
 
 package org.okstar.platform.chat.resource;
 
+import org.okstar.platform.chat.beans.ChatParticipant;
 import org.okstar.platform.chat.beans.ChatRoom;
 import org.okstar.platform.chat.openfire.OpenfireManager;
 import org.okstar.platform.common.core.web.bean.Res;
@@ -43,4 +44,10 @@ public class ChatRoomResource {
         return Res.ok(room);
     }
 
+    @GET
+    @Path("findParticipantsByName/{username}")
+    public Res<List<ChatParticipant>> findParticipantsByName(@PathParam("username") String username) {
+        List<ChatParticipant> list = openfireManager.findParticipantsByName(username);
+        return Res.ok(list);
+    }
 }
