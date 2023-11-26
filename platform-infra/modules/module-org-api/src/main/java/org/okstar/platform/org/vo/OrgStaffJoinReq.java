@@ -18,6 +18,8 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import org.okstar.platform.common.core.web.bean.Req;
 
+import java.util.SortedSet;
+
 /**
  * 员工入职请求
  */
@@ -34,6 +36,6 @@ public class OrgStaffJoinReq extends Req {
     /**
      * 岗位ID
      */
-    private Long[] postIds;
+    private SortedSet<Long> postIds;
 
 }

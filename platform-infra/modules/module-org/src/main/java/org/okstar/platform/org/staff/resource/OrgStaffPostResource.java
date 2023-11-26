@@ -21,9 +21,10 @@ import org.okstar.platform.org.service.OrgPostService;
 import javax.inject.Inject;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
+import javax.ws.rs.QueryParam;
 import java.util.List;
 
-@Path("staff/staffPost")
+@Path("staff/post")
 public class OrgStaffPostResource {
 
     @Inject
@@ -31,10 +32,9 @@ public class OrgStaffPostResource {
 
     @GET
     @Path("list")
-    public Res<List<OrgPost>> list() {
-        List<OrgPost> list = orgPostService.findAll();
+    public Res<List<OrgPost>> list(@QueryParam("assignment") Boolean assignment) {
+        var list = orgPostService.findAssignAble(assignment, false);
         return Res.ok(Req.empty(), list);
     }
-
 
 }

@@ -54,6 +54,9 @@ public class OrgStaff extends BaseEntity {
 
 
     @Transient
-    private List<String> postInfo = new LinkedList<>();
+    private List<String> postNames = new LinkedList<>();
+
+    @Transient
+    private List<Long> postIds = new LinkedList<>();
 
 }

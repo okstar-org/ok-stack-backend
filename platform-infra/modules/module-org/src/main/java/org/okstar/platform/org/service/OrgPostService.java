@@ -29,5 +29,5 @@ public interface OrgPostService extends OkService<OrgPost, Long>
 
     List<OrgPost> findByDept(Long deptId);
 
-    List<OrgPost> findAssignAble(boolean disabled);
+    List<OrgPost> findAssignAble(Boolean assignment, boolean disabled);
 }

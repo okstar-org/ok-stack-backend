@@ -39,6 +39,7 @@ import javax.inject.Inject;
 import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Set;
+import java.util.SortedSet;
 
 
 /**
@@ -137,10 +138,10 @@ public class OrgStaffPostServiceImpl implements OrgStaffPostService {
     }
 
     @Override
-    public synchronized boolean join(Long staffId, Long[] postIds) {
+    public synchronized boolean join(Long staffId, SortedSet<Long> postIds) {
 
         Assert.isTrue(staffId != null && staffId > 0, "staffId is invalid");
-        Assert.isTrue(postIds != null && postIds.length > 0, "postIds is invalid");
+        Assert.isTrue(postIds != null && !postIds.isEmpty(), "postIds is invalid");
 
         OrgStaff staff = staffService.get(staffId);
         Assert.notNull(staff, "staff is null");
@@ -152,7 +153,18 @@ public class OrgStaffPostServiceImpl implements OrgStaffPostService {
         //设置离职日期
         staff.setLeftDate(null);
 
+        //删除多余的绑定
+        List<OrgStaffPost> existed = findByStaffId(staffId);
+        List<OrgStaffPost> removable = existed.stream().filter(e -> !postIds.contains(e.id)).toList();
+        removable.forEach(this::delete);
+
+        //新增绑定
         for (Long postId : postIds) {
+            if (isLinked(staff.id, postId)) {
+                //已经绑定的岗位
+                continue;
+            }
+
             OrgPost post = postService.get(postId);
             //设置分配标识
             post.setAssignFor(String.valueOf(staff.id));
@@ -188,8 +200,11 @@ public class OrgStaffPostServiceImpl implements OrgStaffPostService {
             Log.infof("signUp=>", upResult.getUserId());
         }
 
-
         return true;
+    }
+
+    private boolean isLinked(Long staffId, Long postId) {
+        return orgStaffPostMapper.count("staffId = ?1 and postId = ?2", staffId, postId) > 0;
     }
 
     @Override
