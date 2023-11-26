@@ -19,10 +19,8 @@ import org.okstar.platform.org.domain.OrgPost;
 import org.okstar.platform.org.service.OrgPostService;
 
 import javax.inject.Inject;
-import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
-import javax.ws.rs.QueryParam;
 import java.util.List;
 
 @Path("staff/post")
