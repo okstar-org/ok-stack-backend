@@ -19,6 +19,8 @@ import org.okstar.platform.org.dto.OrgStaffFragment;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.LinkedList;
+import java.util.List;
 
 
 /**
@@ -49,5 +51,9 @@ public class OrgStaff extends BaseEntity {
      */
     @Enumerated(EnumType.STRING)
     private JobDefines.PostStatus postStatus;
+
+
+    @Transient
+    private List<String> postInfo = new LinkedList<>();
 
 }

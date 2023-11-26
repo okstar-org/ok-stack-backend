@@ -94,14 +94,18 @@ public class OrgStaffServiceImpl implements OrgStaffService {
 
     @Override
     public List<OrgStaff> children(Long deptId) {
+        //获取部门下面的岗位
         var posIds = orgPostService.findByDept(deptId)//
-                .stream().map(OrgPost::getDeptId)//
+                .stream().map(p->p.id)//
                 .collect(Collectors.toSet());
         if (posIds.isEmpty()) {
             return Collections.emptyList();
         }
 
-        List<Long> staffIds = orgStaffPostService.findByPostIds(posIds)
+        //获取与岗位关联的人员
+        List<OrgStaffPost> staffPosts = orgStaffPostService.findByPostIds(posIds);
+
+        List<Long> staffIds = staffPosts
                 .stream()//
                 .map(OrgStaffPost::getStaffId)//
                 .collect(Collectors.toList());
@@ -109,7 +113,16 @@ public class OrgStaffServiceImpl implements OrgStaffService {
             return Collections.emptyList();
         }
 
-        return orgStaffMapper.list("id in ?1", staffIds).stream().toList();
+
+        List<OrgStaff> list = orgStaffMapper.list("id in ?1", staffIds);
+        for (OrgStaff staff : list) {
+            List<OrgStaffPost> staffPosts1 = orgStaffPostService.findByStaffId(staff.id);
+            staffPosts1.forEach(sp -> {
+                OrgPost post = orgPostService.get(sp.getPostId());
+                staff.getPostInfo().add(post.getName());
+            });
+        }
+        return list;
 
     }
 

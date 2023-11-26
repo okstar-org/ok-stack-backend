@@ -16,8 +16,10 @@ package org.okstar.platform.common.datasource;
 import org.okstar.platform.common.core.web.page.OkPageResult;
 import org.okstar.platform.common.core.web.page.OkPageable;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
+@Transactional
 public interface OkService <T, ID> {
 
     void save(T t);

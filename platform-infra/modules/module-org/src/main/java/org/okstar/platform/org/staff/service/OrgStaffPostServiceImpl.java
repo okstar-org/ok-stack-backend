@@ -16,32 +16,35 @@ package org.okstar.platform.org.staff.service;
 import io.quarkus.logging.Log;
 import io.quarkus.panache.common.Page;
 import org.eclipse.microprofile.rest.client.inject.RestClient;
-import org.okstar.platform.auth.rpc.PassportRpc;
 import org.okstar.platform.common.core.defined.AccountDefines;
 import org.okstar.platform.common.core.defined.JobDefines;
 import org.okstar.platform.common.core.utils.OkDateUtils;
 import org.okstar.platform.common.core.web.page.OkPageResult;
 import org.okstar.platform.common.core.web.page.OkPageable;
 import org.okstar.platform.common.rpc.RpcAssert;
+import org.okstar.platform.common.rpc.RpcResult;
 import org.okstar.platform.org.domain.OrgPost;
 import org.okstar.platform.org.domain.OrgStaff;
 import org.okstar.platform.org.domain.OrgStaffPost;
 import org.okstar.platform.org.mapper.OrgStaffPostMapper;
 import org.okstar.platform.org.service.OrgPostService;
+import org.okstar.platform.system.rpc.SysAccountRpc;
 import org.okstar.platform.system.sign.SignUpForm;
 import org.okstar.platform.system.sign.SignUpResult;
+import org.okstar.platform.system.vo.SysAccount0;
 import org.springframework.util.Assert;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 
 /**
  * 人员服务
  */
+@Transactional
 @ApplicationScoped
 public class OrgStaffPostServiceImpl implements OrgStaffPostService {
 
@@ -54,7 +57,7 @@ public class OrgStaffPostServiceImpl implements OrgStaffPostService {
 
     @Inject
     @RestClient
-    PassportRpc passportRpc;
+    SysAccountRpc sysAccountRpc;
 
 
     @Override
@@ -96,9 +99,7 @@ public class OrgStaffPostServiceImpl implements OrgStaffPostService {
     @Override
     public List<OrgStaffPost> findByPostIds(Set<Long> posIds) {
         return orgStaffPostMapper    //
-                .list("postId in (?1)", posIds)    //
-                .stream()//
-                .collect(Collectors.toList());
+                .list("postId in (?1)", posIds);
     }
 
     @Override
@@ -167,19 +168,28 @@ public class OrgStaffPostServiceImpl implements OrgStaffPostService {
         /**
          * 注册其帐号
          */
-        SignUpForm form = new SignUpForm();
-        form.setAccountType(AccountDefines.BindType.phone);
-        form.setPassword(AccountDefines.DefaultPWD);
-        form.setIso(AccountDefines.DefaultISO);
-        form.setAccount(staff.getFragment().getPhone());
-        form.setFirstName(staff.getFragment().getFirstName());
-        form.setLastName(staff.getFragment().getLastName());
+        RpcResult<SysAccount0> bind = sysAccountRpc.findByBind(
+                AccountDefines.DefaultISO,
+                AccountDefines.BindType.phone,
+                staff.getFragment().getPhone());
 
-        Log.debugf("注册帐号:%s", form);
-        var result = passportRpc.signUp(form);
+        if (!bind.isSuccess()) {
+            SignUpForm form = new SignUpForm();
+            form.setAccountType(AccountDefines.BindType.phone);
+            form.setPassword(AccountDefines.DefaultPWD);
+            form.setIso(AccountDefines.DefaultISO);
+            form.setAccount(staff.getFragment().getPhone());
+            form.setFirstName(staff.getFragment().getFirstName());
+            form.setLastName(staff.getFragment().getLastName());
 
-        SignUpResult upResult = RpcAssert.isTrue(result);
-        return upResult.getUserId() > 0;
+            Log.debugf("注册帐号:%s", form);
+            var result = sysAccountRpc.signUp(form);
+            SignUpResult upResult = RpcAssert.isTrue(result);
+            Log.infof("signUp=>", upResult.getUserId());
+        }
+
+
+        return true;
     }
 
     @Override
