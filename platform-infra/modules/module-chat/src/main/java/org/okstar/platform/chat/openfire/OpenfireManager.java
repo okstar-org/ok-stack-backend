@@ -27,6 +27,7 @@ import org.okstar.platform.chat.beans.ChatRoom;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.event.Observes;
+import javax.ws.rs.core.Response;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -116,5 +117,11 @@ public class OpenfireManager extends Thread {
         return participants.getParticipants().stream().map(e->
                 ChatUtils.convertParticipant(e)
         ).toList();
+    }
+
+    public boolean updateRoom(ChatRoom room) {
+        MUCRoomEntity entity = ChatUtils.convertRoom(room);
+        Response response = restApiClient.updateChatRoom(entity);
+        return response.getStatus() == 200;
     }
 }

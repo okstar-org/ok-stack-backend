@@ -20,6 +20,7 @@ import org.okstar.platform.common.core.web.bean.Res;
 
 import javax.inject.Inject;
 import javax.ws.rs.GET;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import java.util.List;
@@ -49,5 +50,12 @@ public class ChatRoomResource {
     public Res<List<ChatParticipant>> findParticipantsByName(@PathParam("username") String username) {
         List<ChatParticipant> list = openfireManager.findParticipantsByName(username);
         return Res.ok(list);
+    }
+
+    @PUT
+    @Path("/update")
+    public Res<Boolean> update(ChatRoom room){
+       boolean y = openfireManager.updateRoom(room);
+        return Res.ok(y);
     }
 }

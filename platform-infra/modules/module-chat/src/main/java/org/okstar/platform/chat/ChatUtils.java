@@ -67,6 +67,20 @@ public class ChatUtils {
                 .build();
     }
 
+    public static MUCRoomEntity convertRoom(ChatRoom room) {
+        if (room == null)
+            return null;
+        MUCRoomEntity entity = new MUCRoomEntity();
+        entity.setRoomName(room.getRoomName());
+        entity.setNaturalName(room.getNaturalName());
+        entity.setPassword(room.getPassword());
+        entity.setCanChangeNickname(room.isCanChangeNickname());
+        entity.setCanOccupantsChangeSubject(room.isCanOccupantsChangeSubject());
+        entity.setCanOccupantsInvite(room.isCanOccupantsInvite());
+        entity.setLogEnabled(room.isLogEnabled());
+        return entity;
+    }
+
     public static ChatParticipant convertParticipant(ParticipantEntity participant) {
         return ChatParticipant.builder()
                 .jid(participant.getJid())
