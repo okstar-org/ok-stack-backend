@@ -22,6 +22,7 @@ import org.igniterealtime.restclient.entity.*;
 import org.igniterealtime.restclient.enums.SupportedMediaType;
 import org.okstar.platform.chat.ChatUtils;
 import org.okstar.platform.chat.beans.ChatGeneral;
+import org.okstar.platform.chat.beans.ChatGroup;
 import org.okstar.platform.chat.beans.ChatParticipant;
 import org.okstar.platform.chat.beans.ChatRoom;
 
@@ -124,4 +125,19 @@ public class OpenfireManager extends Thread {
         Response response = restApiClient.updateChatRoom(entity);
         return response.getStatus() == 200;
     }
+
+    public List<ChatGroup> listGroups() {
+        var groups = restApiClient.getGroups();
+        return groups.getGroups().stream().map(e->
+                ChatUtils.convertGroup(e)
+        ).toList();
+    }
+
+
+    public boolean updateGroup(ChatGroup room) {
+        GroupEntity entity = ChatUtils.convertGroup(room);
+        Response response = restApiClient.updateGroup(entity);
+        return response.getStatus() == 200;
+    }
+
 }

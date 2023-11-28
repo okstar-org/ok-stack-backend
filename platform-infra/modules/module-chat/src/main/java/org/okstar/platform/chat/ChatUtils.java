@@ -13,10 +13,8 @@
 
 package org.okstar.platform.chat;
 
-import org.igniterealtime.restclient.entity.MUCRoomEntity;
-import org.igniterealtime.restclient.entity.ParticipantEntity;
-import org.igniterealtime.restclient.entity.UserEntities;
-import org.igniterealtime.restclient.entity.UserEntity;
+import org.igniterealtime.restclient.entity.*;
+import org.okstar.platform.chat.beans.ChatGroup;
 import org.okstar.platform.chat.beans.ChatParticipant;
 import org.okstar.platform.chat.beans.ChatRoom;
 import org.okstar.platform.chat.beans.ChatUser;
@@ -68,8 +66,7 @@ public class ChatUtils {
     }
 
     public static MUCRoomEntity convertRoom(ChatRoom room) {
-        if (room == null)
-            return null;
+
         MUCRoomEntity entity = new MUCRoomEntity();
         entity.setRoomName(room.getRoomName());
         entity.setNaturalName(room.getNaturalName());
@@ -87,5 +84,20 @@ public class ChatUtils {
                 .role(participant.getRole())
                 .affiliation(participant.getAffiliation())
                 .build();
+    }
+
+    public static ChatGroup convertGroup(GroupEntity e) {
+        return ChatGroup.builder()
+                .name(e.getName())
+                .description(e.getDescription())
+                .members(e.getMembers()==null ? 0 : e.getMembers().size())
+                .build();
+    }
+
+    public static GroupEntity convertGroup(ChatGroup room) {
+        GroupEntity entity = new GroupEntity();
+        entity.setName(room.getName());
+        entity.setDescription(room.getDescription());
+        return entity;
     }
 }
