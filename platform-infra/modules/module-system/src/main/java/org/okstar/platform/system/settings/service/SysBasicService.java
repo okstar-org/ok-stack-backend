@@ -11,14 +11,18 @@
  * /
  */
 
-package org.okstar.platform.system.mapper;
+package org.okstar.platform.system.settings.service;
 
-import org.okstar.platform.common.datasource.OkRepository;
-import org.okstar.platform.system.domain.SysBasic;
 
-import javax.enterprise.context.ApplicationScoped;
+import org.okstar.platform.common.datasource.OkService;
+import org.okstar.platform.system.settings.domain.SysBasic;
 
-@ApplicationScoped
-public class SysBasicMapper implements OkRepository<SysBasic> {
+/**
+ *
+ */
+public interface SysBasicService extends OkService<SysBasic, Long>
+{
 
+
+    SysBasic findDefault();
 }

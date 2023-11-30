@@ -11,18 +11,14 @@
  * /
  */
 
-package org.okstar.platform.system.domain;
+package org.okstar.platform.system.settings.mapper;
 
-import lombok.Data;
+import org.okstar.platform.common.datasource.OkRepository;
+import org.okstar.platform.system.settings.domain.SysBasic;
 
-import javax.persistence.Entity;
+import javax.enterprise.context.ApplicationScoped;
 
-@Data
-@Entity
-public class SysBasic extends BaseEntity {
-    //zh_CN
-    boolean globalEnable;
-    boolean verifyAccount;
-    //中文（中国）
-    String locale;
+@ApplicationScoped
+public class SysBasicMapper implements OkRepository<SysBasic> {
+
 }

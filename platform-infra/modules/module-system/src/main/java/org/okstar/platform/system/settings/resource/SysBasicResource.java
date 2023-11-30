@@ -11,12 +11,12 @@
  * /
  */
 
-package org.okstar.platform.system.settings;
+package org.okstar.platform.system.settings.resource;
 
 import org.okstar.platform.common.core.web.bean.Res;
-import org.okstar.platform.system.domain.SysBasic;
+import org.okstar.platform.system.settings.domain.SysBasic;
 import org.okstar.platform.system.dto.SysLocale;
-import org.okstar.platform.system.service.SysBasicService;
+import org.okstar.platform.system.settings.service.SysBasicService;
 
 import javax.inject.Inject;
 import javax.ws.rs.GET;
@@ -43,7 +43,7 @@ public class SysBasicResource {
         List<SysLocale> list = new ArrayList<>();
         list.add(SysLocale.builder().label("中文（中国）").value(Locale.SIMPLIFIED_CHINESE.toString()).build());//
         list.add(SysLocale.builder().label("中文（台湾）").value(Locale.TRADITIONAL_CHINESE.toString()).build());//
-        list.add(SysLocale.builder().label("ENGLISH").value(Locale.ENGLISH.toString()).build());//
+        list.add(SysLocale.builder().label("English").value(Locale.ENGLISH.toString()).build());//
         return Res.ok(list);
     }
 
@@ -56,8 +56,6 @@ public class SysBasicResource {
     @PUT
     @Path("update")
     public void update(SysBasic basic) {
-
         service.save(basic);
-
     }
 }

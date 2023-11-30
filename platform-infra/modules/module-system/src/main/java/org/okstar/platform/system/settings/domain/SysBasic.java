@@ -11,18 +11,18 @@
  * /
  */
 
-package org.okstar.platform.system.service;
+package org.okstar.platform.system.settings.domain;
 
+import lombok.Data;
+import org.okstar.platform.system.domain.BaseEntity;
 
-import org.okstar.platform.common.datasource.OkService;
-import org.okstar.platform.system.domain.SysBasic;
+import javax.persistence.Entity;
 
-/**
- *
- */
-public interface SysBasicService extends OkService<SysBasic, Long>
-{
-
-
-    SysBasic findDefault();
+@Data
+@Entity
+public class SysBasic extends BaseEntity {
+    boolean globalEnable;
+    boolean verifyAccount;
+    //语言，格式：zh_CN
+    String locale;
 }

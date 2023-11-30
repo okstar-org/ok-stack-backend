@@ -11,12 +11,12 @@
  * /
  */
 
-package org.okstar.platform.system.service;
+package org.okstar.platform.system.settings.service;
 
 import org.okstar.platform.common.core.web.page.OkPageResult;
 import org.okstar.platform.common.core.web.page.OkPageable;
-import org.okstar.platform.system.domain.SysBasic;
-import org.okstar.platform.system.mapper.SysBasicMapper;
+import org.okstar.platform.system.settings.domain.SysBasic;
+import org.okstar.platform.system.settings.mapper.SysBasicMapper;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
