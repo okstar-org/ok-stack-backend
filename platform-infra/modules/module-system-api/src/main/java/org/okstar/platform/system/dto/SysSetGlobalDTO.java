@@ -11,22 +11,17 @@
  * /
  */
 
-package org.okstar.platform.system.settings.service;
+package org.okstar.platform.system.dto;
 
-
-import org.okstar.platform.common.datasource.OkService;
-import org.okstar.platform.system.account.domain.SysAccount;
-import org.okstar.platform.system.settings.domain.SysSetGlobal;
-import org.okstar.platform.system.settings.domain.SysSetPersonal;
+import org.okstar.platform.common.core.web.bean.DTO;
 
 /**
- *
+ * 全局设置
  */
-public interface SysBasicService extends OkService<SysSetGlobal, Long>
-{
-    SysSetGlobal findDefaultGlobal();
+public class SysSetGlobalDTO extends DTO {
 
-    SysSetPersonal findDefaultPersonal(SysAccount account);
+    boolean globalEnable;
+    boolean verifyAccount;
 
-    void savePersonal(SysSetPersonal personal);
+
 }

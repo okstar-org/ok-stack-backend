@@ -11,22 +11,21 @@
  * /
  */
 
-package org.okstar.platform.system.settings.service;
+package org.okstar.platform.system.settings.domain;
 
+import lombok.Data;
+import org.okstar.platform.system.domain.BaseEntity;
 
-import org.okstar.platform.common.datasource.OkService;
-import org.okstar.platform.system.account.domain.SysAccount;
-import org.okstar.platform.system.settings.domain.SysSetGlobal;
-import org.okstar.platform.system.settings.domain.SysSetPersonal;
+import javax.persistence.Entity;
+
 
 /**
+ * 系统管理-基础设置-全局设置
  *
  */
-public interface SysBasicService extends OkService<SysSetGlobal, Long>
-{
-    SysSetGlobal findDefaultGlobal();
-
-    SysSetPersonal findDefaultPersonal(SysAccount account);
-
-    void savePersonal(SysSetPersonal personal);
+@Data
+@Entity
+public class SysSetGlobal extends BaseEntity {
+    boolean globalEnable;
+    boolean verifyAccount;
 }

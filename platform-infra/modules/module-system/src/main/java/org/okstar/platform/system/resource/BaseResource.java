@@ -11,18 +11,24 @@
  * /
  */
 
-package org.okstar.platform.system.settings.domain;
+package org.okstar.platform.system.resource;
 
-import lombok.Data;
-import org.okstar.platform.system.domain.BaseEntity;
+import org.okstar.platform.common.resource.CommonResource;
+import org.okstar.platform.system.account.domain.SysAccount;
+import org.okstar.platform.system.account.service.SysAccountService;
 
-import javax.persistence.Entity;
+import javax.inject.Inject;
 
-@Data
-@Entity
-public class SysBasic extends BaseEntity {
-    boolean globalEnable;
-    boolean verifyAccount;
-    //语言，格式：zh_CN
-    String locale;
+public class BaseResource extends CommonResource {
+
+    @Inject
+    SysAccountService accountService;
+
+    /**
+     * 获取自己
+     * @return
+     */
+    protected SysAccount self() {
+        return accountService.loadByUsername(getUsername());
+    }
 }

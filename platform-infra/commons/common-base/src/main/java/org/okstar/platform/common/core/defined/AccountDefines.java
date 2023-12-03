@@ -50,6 +50,8 @@ public interface AccountDefines {
 
     String DefaultISO="CN";
 
+    String DefaultLocale="zh-CN";
+
     String DefaultPWD="okstar.123456#";
 
 }

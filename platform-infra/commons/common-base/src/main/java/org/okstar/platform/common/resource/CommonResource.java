@@ -11,22 +11,19 @@
  * /
  */
 
-package org.okstar.platform.system.settings.service;
+package org.okstar.platform.common.resource;
 
+import io.vertx.ext.web.RoutingContext;
+import org.okstar.platform.common.core.defined.SystemDefines;
 
-import org.okstar.platform.common.datasource.OkService;
-import org.okstar.platform.system.account.domain.SysAccount;
-import org.okstar.platform.system.settings.domain.SysSetGlobal;
-import org.okstar.platform.system.settings.domain.SysSetPersonal;
+import javax.inject.Inject;
 
-/**
- *
- */
-public interface SysBasicService extends OkService<SysSetGlobal, Long>
-{
-    SysSetGlobal findDefaultGlobal();
+public class CommonResource {
 
-    SysSetPersonal findDefaultPersonal(SysAccount account);
+    @Inject
+    protected RoutingContext rc;
 
-    void savePersonal(SysSetPersonal personal);
+    protected String getUsername(){
+       return rc.get(SystemDefines.Header_X_OK_username);
+    }
 }

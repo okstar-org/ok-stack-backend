@@ -67,15 +67,24 @@ public class SysAccountServiceImpl extends OkAbsService implements SysAccountSer
 
     @Override
     public Optional<SysAccountPassword> lastPassword(Long accountId) {
-      return   sysAccountPasswordMapper.find("account.id = ?1", accountId)//
-              .stream()//
-              .sorted(Comparator.comparing(OkEntity::getCreateAt).reversed())//
-              .findFirst();
+        return sysAccountPasswordMapper.find("account.id = ?1", accountId)//
+                .stream()//
+                .sorted(Comparator.comparing(OkEntity::getCreateAt).reversed())//
+                .findFirst();
     }
 
     @Override
     public Optional<SysAccount> findByUsername(String username) {
         return sysAccountMapper.find("username = ?1", username).stream().findFirst();
+    }
+
+    @Override
+    public SysAccount loadByUsername(String username) {
+        Optional<SysAccount> optional = findByUsername(username);
+        if (optional.isEmpty()) {
+            throw new OkUserException("Cannot find the user");
+        }
+        return optional.get();
     }
 
     /**
@@ -109,10 +118,10 @@ public class SysAccountServiceImpl extends OkAbsService implements SysAccountSer
     public SignUpResult signUp(SignUpForm signUpForm) {
         Log.infof("signUp:%s", signUpForm);
 
-        Assert.hasText(signUpForm.getIso(),"iso is empty");
-        Assert.hasText(signUpForm.getPassword(),"password is empty");
-        Assert.notNull(signUpForm.getAccountType(),"accountType is empty");
-        Assert.notNull(signUpForm.getAccount(),"account is empty");
+        Assert.hasText(signUpForm.getIso(), "iso is empty");
+        Assert.hasText(signUpForm.getPassword(), "password is empty");
+        Assert.notNull(signUpForm.getAccountType(), "accountType is empty");
+        Assert.notNull(signUpForm.getAccount(), "account is empty");
 
         if (signUpForm.getAccountType() == AccountDefines.BindType.phone) {
             signUpForm.setAccount(OkPhoneUtils.canonical(signUpForm.getAccount(), signUpForm.getIso()));

@@ -11,22 +11,14 @@
  * /
  */
 
-package org.okstar.platform.system.settings.service;
+package org.okstar.platform.system.settings.mapper;
 
-
-import org.okstar.platform.common.datasource.OkService;
-import org.okstar.platform.system.account.domain.SysAccount;
+import org.okstar.platform.common.datasource.OkRepository;
 import org.okstar.platform.system.settings.domain.SysSetGlobal;
-import org.okstar.platform.system.settings.domain.SysSetPersonal;
 
-/**
- *
- */
-public interface SysBasicService extends OkService<SysSetGlobal, Long>
-{
-    SysSetGlobal findDefaultGlobal();
+import javax.enterprise.context.ApplicationScoped;
 
-    SysSetPersonal findDefaultPersonal(SysAccount account);
+@ApplicationScoped
+public class SysSetGlobalMapper implements OkRepository<SysSetGlobal> {
 
-    void savePersonal(SysSetPersonal personal);
 }

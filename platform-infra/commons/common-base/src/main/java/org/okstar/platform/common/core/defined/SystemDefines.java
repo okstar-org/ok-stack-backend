@@ -19,6 +19,9 @@ import lombok.Getter;
  * 系统相关定义
  */
 public interface SystemDefines {
+
+    String Header_X_OK_username="X-OK-username";
+
     /**
      * 数据状态
      */

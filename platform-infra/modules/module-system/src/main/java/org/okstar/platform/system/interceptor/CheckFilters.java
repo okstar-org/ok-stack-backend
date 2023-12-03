@@ -11,22 +11,19 @@
  * /
  */
 
-package org.okstar.platform.system.settings.service;
+package org.okstar.platform.system.interceptor;
+
+import io.quarkus.vertx.web.RouteFilter;
+import io.vertx.ext.web.RoutingContext;
+
+import javax.enterprise.context.ApplicationScoped;
+
+@ApplicationScoped
+public class CheckFilters {
 
 
-import org.okstar.platform.common.datasource.OkService;
-import org.okstar.platform.system.account.domain.SysAccount;
-import org.okstar.platform.system.settings.domain.SysSetGlobal;
-import org.okstar.platform.system.settings.domain.SysSetPersonal;
-
-/**
- *
- */
-public interface SysBasicService extends OkService<SysSetGlobal, Long>
-{
-    SysSetGlobal findDefaultGlobal();
-
-    SysSetPersonal findDefaultPersonal(SysAccount account);
-
-    void savePersonal(SysSetPersonal personal);
+    @RouteFilter(99)
+    void usernameFilter(RoutingContext rc) {
+        rc.next();
+    }
 }

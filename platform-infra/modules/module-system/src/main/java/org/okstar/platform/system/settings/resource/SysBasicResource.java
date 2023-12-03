@@ -14,8 +14,11 @@
 package org.okstar.platform.system.settings.resource;
 
 import org.okstar.platform.common.core.web.bean.Res;
-import org.okstar.platform.system.settings.domain.SysBasic;
+import org.okstar.platform.system.account.domain.SysAccount;
 import org.okstar.platform.system.dto.SysLocale;
+import org.okstar.platform.system.resource.BaseResource;
+import org.okstar.platform.system.settings.domain.SysSetGlobal;
+import org.okstar.platform.system.settings.domain.SysSetPersonal;
 import org.okstar.platform.system.settings.service.SysBasicService;
 
 import javax.inject.Inject;
@@ -27,10 +30,12 @@ import java.util.List;
 import java.util.Locale;
 
 @Path("settings/basic")
-public class SysBasicResource {
+public class SysBasicResource extends BaseResource {
 
     @Inject
     SysBasicService service;
+
+
 
     @GET
     @Path("findLocales")
@@ -41,21 +46,34 @@ public class SysBasicResource {
          * 英语：en
          */
         List<SysLocale> list = new ArrayList<>();
-        list.add(SysLocale.builder().label("中文（中国）").value(Locale.SIMPLIFIED_CHINESE.toString()).build());//
-        list.add(SysLocale.builder().label("中文（台湾）").value(Locale.TRADITIONAL_CHINESE.toString()).build());//
-        list.add(SysLocale.builder().label("English").value(Locale.ENGLISH.toString()).build());//
+        list.add(SysLocale.builder().label("中文（中国）").value(Locale.SIMPLIFIED_CHINESE.toLanguageTag()).build());//
+        list.add(SysLocale.builder().label("中文（台湾）").value(Locale.TRADITIONAL_CHINESE.toLanguageTag()).build());//
+        list.add(SysLocale.builder().label("English").value(Locale.US.toLanguageTag()).build());//
         return Res.ok(list);
     }
 
     @GET
-    @Path("find")
-    public Res<SysBasic> find() {
-        return Res.ok(service.findDefault());
+    @Path("global")
+    public Res<SysSetGlobal> getGlobal() {
+        return Res.ok(service.findDefaultGlobal());
     }
 
     @PUT
-    @Path("update")
-    public void update(SysBasic basic) {
-        service.save(basic);
+    @Path("global")
+    public void updateGlobal(SysSetGlobal global) {
+        service.save(global);
+    }
+
+    @GET
+    @Path("personal")
+    public Res<SysSetPersonal> getPersonal() {
+        SysAccount account = self();
+        return Res.ok(service.findDefaultPersonal(account));
+    }
+
+    @PUT
+    @Path("personal")
+    public void updatePersonal(SysSetPersonal basic) {
+        service.savePersonal(basic);
     }
 }
