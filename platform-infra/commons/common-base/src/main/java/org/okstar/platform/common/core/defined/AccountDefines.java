@@ -48,10 +48,11 @@ public interface AccountDefines {
         DISABLED,
     }
 
-    String DefaultISO="CN";
+    String DefaultISO = "CN";
 
-    String DefaultLocale="zh-CN";
+    String DefaultLocale = "zh-CN";
 
-    String DefaultPWD="okstar.123456#";
+    String DefaultPWD = "okstar.123456#";
 
+    String DefaultAvatar = "/assets/images/avatar.jpg";
 }

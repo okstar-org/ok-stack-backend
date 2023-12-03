@@ -14,6 +14,7 @@
 package org.okstar.platform.system.vo;
 
 import lombok.Data;
+import org.okstar.platform.common.core.defined.AccountDefines;
 import org.okstar.platform.common.core.web.bean.DTO;
 
 import java.util.Optional;
@@ -35,6 +36,18 @@ public class SysAccount0 extends DTO {
      * 头像
      */
     private String avatar;
+
+    public String getAvatar() {
+        return Optional.ofNullable(avatar).orElse(AccountDefines.DefaultAvatar);
+    }
+
+    public String getFirstName() {
+        return Optional.ofNullable(firstName).orElse("");
+    }
+
+    public String getLastName() {
+        return Optional.ofNullable(lastName).orElse("");
+    }
 
     public String getName(){
         return Optional.ofNullable(nickname).orElse(username);
