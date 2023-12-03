@@ -11,24 +11,27 @@
  * /
  */
 
-package org.okstar.platform.system.resource;
+package org.okstar.platform.common.resource;
 
-import org.okstar.platform.common.resource.CommonResource;
-import org.okstar.platform.system.account.domain.SysAccount;
-import org.okstar.platform.system.account.service.SysAccountService;
+import io.vertx.core.http.HttpServerRequest;
+import io.vertx.core.http.HttpServerResponse;
+import io.vertx.ext.web.RoutingContext;
+import org.okstar.platform.common.core.defined.SystemDefines;
 
 import javax.inject.Inject;
+import javax.ws.rs.core.Context;
 
-public class BaseResource extends CommonResource {
+public class OkCommonResource {
+
+    @Context
+    protected HttpServerRequest req;
+    @Context
+    protected HttpServerResponse res;
 
     @Inject
-    SysAccountService accountService;
+    protected RoutingContext rc;
 
-    /**
-     * 获取自己
-     * @return
-     */
-    protected SysAccount self() {
-        return accountService.loadByUsername(getUsername());
+    protected String getUsername(){
+       return rc.get(SystemDefines.Header_X_OK_username);
     }
 }

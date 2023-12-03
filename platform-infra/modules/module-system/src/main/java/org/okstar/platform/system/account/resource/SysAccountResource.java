@@ -17,7 +17,7 @@ import io.quarkus.security.Authenticated;
 import org.okstar.platform.common.core.defined.AccountDefines;
 import org.okstar.platform.common.core.web.bean.Req;
 import org.okstar.platform.common.core.web.bean.Res;
-import org.okstar.platform.common.core.web.controller.OkBaseController;
+import org.okstar.platform.common.resource.OkCommonResource;
 import org.okstar.platform.system.account.domain.SysAccount;
 import org.okstar.platform.system.account.service.SysAccountService;
 
@@ -35,7 +35,7 @@ import java.util.Optional;
  */
 @Path("/account")
 @Authenticated
-public class SysAccountResource extends OkBaseController {
+public class SysAccountResource extends OkCommonResource {
 
     @Inject
     SysAccountService sysAccountService;

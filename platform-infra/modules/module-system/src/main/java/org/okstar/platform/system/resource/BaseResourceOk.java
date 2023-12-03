@@ -11,19 +11,24 @@
  * /
  */
 
-package org.okstar.platform.system.interceptor;
+package org.okstar.platform.system.resource;
 
-import io.quarkus.vertx.web.RouteFilter;
-import io.vertx.ext.web.RoutingContext;
+import org.okstar.platform.common.resource.OkCommonResource;
+import org.okstar.platform.system.account.domain.SysAccount;
+import org.okstar.platform.system.account.service.SysAccountService;
 
-import javax.enterprise.context.ApplicationScoped;
+import javax.inject.Inject;
 
-@ApplicationScoped
-public class CheckFilters {
+public class BaseResourceOk extends OkCommonResource {
 
+    @Inject
+    SysAccountService accountService;
 
-    @RouteFilter(99)
-    void usernameFilter(RoutingContext rc) {
-        rc.next();
+    /**
+     * 获取自己
+     * @return
+     */
+    protected SysAccount self() {
+        return accountService.loadByUsername(getUsername());
     }
 }

@@ -18,7 +18,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.okstar.platform.auth.service.PassportService;
 import org.okstar.platform.common.core.web.bean.Req;
 import org.okstar.platform.common.core.web.bean.Res;
-import org.okstar.platform.common.core.web.controller.OkBaseController;
+import org.okstar.platform.common.resource.OkCommonResource;
 import org.okstar.platform.system.sign.*;
 
 import javax.inject.Inject;
@@ -30,7 +30,7 @@ import javax.ws.rs.Path;
  */
 @Slf4j
 @Path("passport")
-public class PassportResource extends OkBaseController {
+public class PassportResource extends OkCommonResource {
 
     @Inject
     Tokens tokens;
