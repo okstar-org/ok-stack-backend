@@ -45,7 +45,6 @@
             <groupId>io.quarkus</groupId>
             <artifactId>quarkus-oidc</artifactId>
         </dependency>
-
         <dependency>
             <groupId>io.quarkus</groupId>
             <artifactId>quarkus-oidc-client-filter</artifactId>
@@ -55,10 +54,6 @@
             <artifactId>quarkus-oidc-token-propagation</artifactId>
         </dependency>
 
-        <dependency>
-            <groupId>io.quarkus</groupId>
-            <artifactId>quarkus-reactive-routes</artifactId>
-        </dependency>
 
         <dependency>
             <groupId>org.okstar.platform</groupId>
