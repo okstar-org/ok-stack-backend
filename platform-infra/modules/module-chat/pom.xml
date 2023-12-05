@@ -44,15 +44,6 @@
             </exclusions>
         </dependency>
 
-<!--        <dependency>-->
-<!--            <groupId>org.jboss.resteasy</groupId>-->
-<!--            <artifactId>resteasy-core</artifactId>-->
-<!--        </dependency>-->
-
-        <dependency>
-            <groupId>com.fasterxml.jackson.jaxrs</groupId>
-            <artifactId>jackson-jaxrs-json-provider</artifactId>
-        </dependency>
         <dependency>
             <groupId>org.okstar.platform</groupId>
             <artifactId>module-chat-api</artifactId>
@@ -60,21 +51,12 @@
             <scope>compile</scope>
         </dependency>
 
-        <!--        <dependency>-->
-<!--            <groupId>org.jboss.resteasy</groupId>-->
-<!--            <artifactId>resteasy-jaxb-provider</artifactId>-->
-<!--        </dependency>-->
+        <dependency>
+            <groupId>org.okstar.platform</groupId>
+            <artifactId>common-security</artifactId>
+            <version>${revision}</version>
+        </dependency>
 
-<!--        <dependency>-->
-<!--            <groupId>io.quarkus</groupId>-->
-<!--            <artifactId>quarkus-resteasy-jaxb</artifactId>-->
-<!--        </dependency>-->
-
-<!--        <dependency>-->
-<!--            <groupId>org.jboss.resteasy</groupId>-->
-<!--            <artifactId>resteasy-jettison-provider</artifactId>-->
-<!--            <version>2.3.6.Final</version>-->
-<!--        </dependency>-->
     </dependencies>
 
 </project>
