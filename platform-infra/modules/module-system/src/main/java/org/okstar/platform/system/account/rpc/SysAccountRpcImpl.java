@@ -53,6 +53,16 @@ public class SysAccountRpcImpl implements SysAccountRpc {
     }
 
     @Override
+    public RpcResult<Boolean> signDown(Long accountId) {
+        try {
+            userService.signDown(accountId);
+            return RpcResult.<Boolean>builder().success(true).data(true).build();
+        } catch (Exception e) {
+            return RpcResult.<Boolean>builder().success(false).msg(e.getMessage()).build();
+        }
+    }
+
+    @Override
     public RpcResult<SysAccount0> findByBind(String iso, AccountDefines.BindType type, String bindValue) {
         try {
 

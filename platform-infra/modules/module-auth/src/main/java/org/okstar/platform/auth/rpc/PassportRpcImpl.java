@@ -33,4 +33,11 @@ public class PassportRpcImpl implements PassportRpc {
         SignUpResult result = passportService.signUp(form);
         return RpcResult.<SignUpResult>builder().success(true).data(result).build();
     }
+
+    @Override
+    public RpcResult<Boolean> signDown(Long accountId) {
+        passportService.signDown(accountId);
+        return RpcResult.<Boolean>builder().success(true).build();
+    }
+
 }

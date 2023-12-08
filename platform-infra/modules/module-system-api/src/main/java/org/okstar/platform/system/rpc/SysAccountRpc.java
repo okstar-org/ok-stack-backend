@@ -35,6 +35,10 @@ public interface SysAccountRpc {
     @Path("signUp")
     RpcResult<SignUpResult> signUp(SignUpForm signUpDto);
 
+    @DELETE
+    @Path("signDown/{accountId}")
+    RpcResult<Boolean> signDown(@PathParam("accountId") Long accountId);
+
     @GET
     @Path("findByBind")
     RpcResult<SysAccount0> findByBind(@QueryParam("iso")String iso,
@@ -47,4 +51,6 @@ public interface SysAccountRpc {
     @GET
     @Path("findById")
     RpcResult<SysAccount0> findById(@QueryParam("id") Long id);
+
+
 }

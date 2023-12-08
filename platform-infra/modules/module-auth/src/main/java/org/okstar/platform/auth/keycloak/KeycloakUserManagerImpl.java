@@ -87,7 +87,7 @@ public class KeycloakUserManagerImpl extends KeycloakManagerImpl implements Back
 
     @Override
     public BackUser addUser(BackUser user) {
-        Log.infof("addUser:%s", user.getUsername());
+        Log.infof("Add user:%s", user.getUsername());
         UsersResource usersResource = usersResource();
         try {
             Response response = usersResource.create(toRepresent(user));
@@ -97,8 +97,8 @@ public class KeycloakUserManagerImpl extends KeycloakManagerImpl implements Back
             throw new OkRuntimeException("Creating account exception occurred: %s".formatted(e.getMessage()), e);
         }
 
-        return usersResource.search(user.getUsername()).stream().peek(userRepresentation -> {
-            Log.infof("Find KC's user:%s=>%s", user.getUsername(), userRepresentation.getId());
+        var u = usersResource.search(user.getUsername()).stream().peek(userRepresentation -> {
+            Log.infof("Find auth system user:%s=>%s", user.getUsername(), userRepresentation.getId());
             CredentialRepresentation cr = new CredentialRepresentation();
             cr.setUserLabel("My password");
             cr.setType("password");
@@ -106,6 +106,22 @@ public class KeycloakUserManagerImpl extends KeycloakManagerImpl implements Back
             UserResource userResource = usersResource.get(userRepresentation.getId());
             userResource.resetPassword(cr);
         }).findFirst().map(KeycloakUserManagerImpl::toBackend).orElse(null);
+        Log.debugf("User is:%s", u);
+        return u;
+    }
+
+    @Override
+    public boolean deleteUser(String username) {
+        Log.infof("Delete user:%s", username);
+        Optional<BackUser> backUser = getUser(username);
+        if (backUser.isEmpty()) {
+            Log.warnf("User:%s is not exist", username);
+            return true;
+        }
+        UsersResource usersResource = usersResource();
+        Response response = usersResource.delete(backUser.get().getId());
+        Log.infof("Delete user:%s=>", username, response.getStatus());
+        return response.getStatus() == Response.Status.NO_CONTENT.getStatusCode();
     }
 
     private UserRepresentation toRepresent(BackUser user) {
@@ -125,6 +141,7 @@ public class KeycloakUserManagerImpl extends KeycloakManagerImpl implements Back
         builder.firstName(userRepresentation.getFirstName());
         builder.lastName(userRepresentation.getLastName());
         builder.email(userRepresentation.getEmail());
+        builder.id(userRepresentation.getId());
         return builder.build();
     }
 }

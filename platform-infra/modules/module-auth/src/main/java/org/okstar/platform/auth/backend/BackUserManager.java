@@ -32,4 +32,12 @@ public interface BackUserManager {
      * @return
      */
     BackUser addUser(BackUser user);
+
+    /**
+     * 删除用户
+     *
+     * @param username
+     * @return
+     */
+    boolean deleteUser(String username);
 }

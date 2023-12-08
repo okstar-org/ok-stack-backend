@@ -18,8 +18,10 @@ import org.okstar.platform.common.rpc.RpcResult;
 import org.okstar.platform.system.sign.SignUpForm;
 import org.okstar.platform.system.sign.SignUpResult;
 
+import javax.ws.rs.DELETE;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 
 @Path("rpc/PassportRpc")
 @RegisterRestClient
@@ -28,4 +30,9 @@ public interface PassportRpc {
     @POST
     @Path("signUp")
     RpcResult<SignUpResult> signUp(SignUpForm signUpDto);
+
+
+    @DELETE
+    @Path("signDown/{accountId}")
+    RpcResult<Boolean> signDown(@PathParam("accountId") Long accountId);
 }

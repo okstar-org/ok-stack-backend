@@ -46,4 +46,6 @@ public interface OrgStaffService extends OkService<OrgStaff, Long> {
      * @return
      */
     boolean add(OrgStaffReq req);
+
+    void setAccountId(Long id, Long accountId);
 }

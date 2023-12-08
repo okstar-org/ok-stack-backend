@@ -96,7 +96,7 @@ public class OrgStaffServiceImpl implements OrgStaffService {
     public List<OrgStaff> children(Long deptId) {
         //获取部门下面的岗位
         var posIds = orgPostService.findByDept(deptId)//
-                .stream().map(p->p.id)//
+                .stream().map(p -> p.id)//
                 .collect(Collectors.toSet());
         if (posIds.isEmpty()) {
             return Collections.emptyList();
@@ -161,6 +161,14 @@ public class OrgStaffServiceImpl implements OrgStaffService {
         save(entity);
 
         return true;
+    }
+
+    @Override
+    public void setAccountId(Long id, Long accountId) {
+        OrgStaff staff = get(id);
+        if (staff == null)
+            return;
+        staff.setAccountId(accountId);
     }
 
     private Optional<OrgStaff> findByNo(String no) {

@@ -21,12 +21,15 @@ import org.okstar.platform.auth.backend.BackUser;
 import org.okstar.platform.auth.backend.BackUserManager;
 import org.okstar.platform.common.core.defined.AccountDefines;
 import org.okstar.platform.common.core.exception.OkRuntimeException;
-import org.okstar.platform.common.core.utils.IdUtils;
 import org.okstar.platform.common.rpc.RpcAssert;
 import org.okstar.platform.common.rpc.RpcResult;
-import org.okstar.platform.system.sign.*;
 import org.okstar.platform.system.rpc.SysAccountRpc;
+import org.okstar.platform.system.sign.SignInForm;
+import org.okstar.platform.system.sign.SignInResult;
+import org.okstar.platform.system.sign.SignUpForm;
+import org.okstar.platform.system.sign.SignUpResult;
 import org.okstar.platform.system.vo.SysAccount0;
+import org.springframework.util.Assert;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
@@ -51,16 +54,14 @@ public class PassportServiceImpl implements PassportService {
     public SignUpResult signUp(SignUpForm signUpForm) {
         log.info("signUp:{}", signUpForm);
 
+        //初始化系统帐号
         SignUpResult resultDto = RpcAssert.isTrue(sysAccountRpc.signUp(signUpForm));
-
         BackUser user = BackUser.builder()
                 .username(resultDto.getUsername())
-                .id(("%s_%s").formatted(resultDto.getUserId(), IdUtils.makeUuid()))
                 .firstName(signUpForm.getFirstName())
                 .lastName(signUpForm.getLastName())
                 .password(signUpForm.getPassword())
                 .build();
-
         if (signUpForm.getAccountType() == AccountDefines.BindType.email) {
             user.setEmail(signUpForm.getAccount());
         }
@@ -72,16 +73,33 @@ public class PassportServiceImpl implements PassportService {
     }
 
     @Override
+    public void signDown(Long accountId) {
+        log.info("signDown:{}", accountId);
+
+        SysAccount0 account0 = RpcAssert.isTrue(sysAccountRpc.findById(accountId));
+
+        //删除认证信息
+        boolean backUser = backUserManager.deleteUser(account0.getUsername());
+        Log.infof("Sign down auth account:%s=>%s", accountId, backUser);
+        Assert.isTrue(backUser, "Sign down auth account failed");
+
+        //删除系统帐号
+        Boolean aTrue = RpcAssert.isTrue(sysAccountRpc.signDown(accountId));
+        Log.infof("Sign down system account:%s=>%s", accountId, aTrue);
+        Assert.isTrue(aTrue, "Delete system account failed");
+    }
+
+    @Override
     public synchronized SignInResult signIn(SignInForm signInForm) {
         String account = signInForm.getAccount();
+        Log.infof("signIn:%s", account);
 
         //判断帐号类型
-        AccountDefines.BindType bindType = account.indexOf("@") > 0 ? AccountDefines.BindType.email : AccountDefines.BindType.phone;
-        SysAccount0 userDto = RpcAssert.isTrue(sysAccountRpc.findByBind(
-                signInForm.getIso(),
-                bindType,
-                signInForm.getAccount()));
+        AccountDefines.BindType bindType = account.indexOf("@") > 0 ?
+                AccountDefines.BindType.email : //
+                AccountDefines.BindType.phone;  //
 
+        SysAccount0 userDto = RpcAssert.isTrue(sysAccountRpc.findByBind(signInForm.getIso(), bindType, signInForm.getAccount()));
         if (userDto == null) {
             throw new OkRuntimeException("user is not exist");
         }
@@ -90,7 +108,7 @@ public class PassportServiceImpl implements PassportService {
          * 初始化LDAP用户
          */
         Optional<BackUser> backUser = backUserManager.getUser(userDto.getUsername());
-        if(backUser.isEmpty()){
+        if (backUser.isEmpty()) {
             RpcResult<String> lastedPassword = sysAccountRpc.lastPassword(userDto.getId());
             String pwd = RpcAssert.isTrue(lastedPassword);
 

@@ -33,6 +33,8 @@ public interface SysAccountService extends OkService<SysAccount, Long> {
 
     SignUpResult signUp(SignUpForm signUpForm);
 
+    void signDown(Long accountId);
+
     void save(SysAccount sysUser);
 
 

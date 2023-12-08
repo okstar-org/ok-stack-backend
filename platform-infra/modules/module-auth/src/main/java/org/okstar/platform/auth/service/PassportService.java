@@ -21,6 +21,8 @@ public interface PassportService {
 
     SignUpResult signUp(SignUpForm signUpForm);
 
+    void signDown(Long accountId);
+
     SignInResult signIn(SignInForm signInForm);
 
     SignInResult refresh(String refreshToken);

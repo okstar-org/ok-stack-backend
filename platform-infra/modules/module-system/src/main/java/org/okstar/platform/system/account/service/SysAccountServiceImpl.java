@@ -80,9 +80,10 @@ public class SysAccountServiceImpl extends OkAbsService implements SysAccountSer
 
     @Override
     public SysAccount loadByUsername(String username) {
+        Log.infof("loadByUsername:%s", username);
         Optional<SysAccount> optional = findByUsername(username);
         if (optional.isEmpty()) {
-            throw new OkUserException("Cannot find the user");
+            throw new OkUserException("Can not find the user:%s.".formatted(username));
         }
         return optional.get();
     }
@@ -143,7 +144,7 @@ public class SysAccountServiceImpl extends OkAbsService implements SysAccountSer
         sysAccount.setAvatar(AccountDefines.DefaultAvatar);
         sysAccount.setNickname(
                 Optional.ofNullable(signUpForm.getFirstName()).orElse("")
-                + Optional.ofNullable(signUpForm.getLastName()).orElse("")
+                        + Optional.ofNullable(signUpForm.getLastName()).orElse("")
         );
 
         sysAccountMapper.persist(sysAccount);
@@ -151,6 +152,7 @@ public class SysAccountServiceImpl extends OkAbsService implements SysAccountSer
                 sysAccount.getUsername(), sysAccount);
 
         SysAccountBind bind = new SysAccountBind();
+        bind.setAccount(sysAccount);
         bind.setBindType(signUpForm.getAccountType());
         switch (signUpForm.getAccountType()) {
             case email -> bind.setBindValue(signUpForm.getAccount());
@@ -165,9 +167,6 @@ public class SysAccountServiceImpl extends OkAbsService implements SysAccountSer
                 }
             }
         }
-
-
-        bind.setAccount(sysAccount);
         sysAccountBindMapper.persist(bind);
 
         /**
@@ -183,6 +182,29 @@ public class SysAccountServiceImpl extends OkAbsService implements SysAccountSer
                 .username(sysAccount.getUsername())
                 .userId(sysAccount.id)
                 .build();
+    }
+
+    @Override
+    public synchronized void signDown(Long accountId) {
+        SysAccount account = get(accountId);
+        if (account == null) {
+            //已删除
+            Log.warnf("Account:%s have been deleted.", accountId);
+            return;
+        }
+
+        //删除关联信息 AccountBind
+        Long delete = sysAccountBindMapper.delete("account.id", accountId);
+        Log.debugf("AccountBind is deleted by accountId:%s=>%s", accountId, delete);
+
+        //删除关联信息 AccountPassword
+        Long delete1 = sysAccountPasswordMapper.delete("account.id", accountId);
+        Log.debugf("AccountPassword is deleted by accountId:%s=>%s", accountId, delete1);
+
+        //删除帐号
+        deleteById(account.id);
+        Log.debugf("Account is deleted by id:%s", account.id);
+
     }
 
     @Override

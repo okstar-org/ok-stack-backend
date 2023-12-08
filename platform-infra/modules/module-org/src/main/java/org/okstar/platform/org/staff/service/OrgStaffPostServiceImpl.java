@@ -16,6 +16,7 @@ package org.okstar.platform.org.staff.service;
 import io.quarkus.logging.Log;
 import io.quarkus.panache.common.Page;
 import org.eclipse.microprofile.rest.client.inject.RestClient;
+import org.okstar.platform.auth.rpc.PassportRpc;
 import org.okstar.platform.common.core.defined.AccountDefines;
 import org.okstar.platform.common.core.defined.JobDefines;
 import org.okstar.platform.common.core.utils.OkDateUtils;
@@ -60,6 +61,9 @@ public class OrgStaffPostServiceImpl implements OrgStaffPostService {
     @RestClient
     SysAccountRpc sysAccountRpc;
 
+    @Inject
+    @RestClient
+    PassportRpc passportRpc;
 
     @Override
     public void save(OrgStaffPost sysDept) {
@@ -134,6 +138,23 @@ public class OrgStaffPostServiceImpl implements OrgStaffPostService {
             delete(sp);
         });
 
+
+        /**
+         * 注销其帐号
+         */
+        String phone = staff.getFragment().getPhone();
+        RpcResult<SysAccount0> bind = sysAccountRpc.findByBind(
+                AccountDefines.DefaultISO,
+                AccountDefines.BindType.phone,
+                phone);
+
+        SysAccount0 account0 = RpcAssert.isTrue(bind);
+        if (account0 != null) {
+            Log.debugf("注销帐号:%s", account0.getUsername());
+            Boolean result = RpcAssert.isTrue(passportRpc.signDown(account0.getId()));
+            Log.debugf("注销帐号:%s=>%s", account0.getUsername(), result);
+        }
+
         return true;
     }
 
@@ -189,17 +210,22 @@ public class OrgStaffPostServiceImpl implements OrgStaffPostService {
         SysAccount0 account0 = RpcAssert.isTrue(bind);
         if (account0 == null) {
             SignUpForm form = new SignUpForm();
-            form.setAccountType(AccountDefines.BindType.phone);
             form.setPassword(AccountDefines.DefaultPWD);
             form.setIso(AccountDefines.DefaultISO);
+
+            //设置为手机号为帐号
             form.setAccount(phone);
+            form.setAccountType(AccountDefines.BindType.phone);
+
             form.setFirstName(staff.getFragment().getFirstName());
             form.setLastName(staff.getFragment().getLastName());
 
             Log.debugf("注册帐号:%s", form);
-            var result = sysAccountRpc.signUp(form);
+            var result = passportRpc.signUp(form);
             SignUpResult upResult = RpcAssert.isTrue(result);
-            Log.infof("signUp=>", upResult.getUserId());
+            Log.infof("signUp=>{userId: %s, username: %s}", upResult.getUserId(), upResult.getUsername());
+
+            staffService.setAccountId(staff.id, upResult.getUserId());
         }
         return true;
     }
