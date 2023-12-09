@@ -95,32 +95,26 @@ public class PassportServiceImpl implements PassportService {
         Log.infof("signIn:%s", account);
 
         //判断帐号类型
-        AccountDefines.BindType bindType = account.indexOf("@") > 0 ?
-                AccountDefines.BindType.email : //
-                AccountDefines.BindType.phone;  //
-
-        SysAccount0 userDto = RpcAssert.isTrue(sysAccountRpc.findByBind(signInForm.getIso(), bindType, signInForm.getAccount()));
-        if (userDto == null) {
-            throw new OkRuntimeException("user is not exist");
-        }
+        SysAccount0 account0 = getAccount(account);
+        Log.debugf("Get Account info is:%s", account0);
 
         /**
          * 初始化LDAP用户
          */
-        Optional<BackUser> backUser = backUserManager.getUser(userDto.getUsername());
+        Optional<BackUser> backUser = backUserManager.getUser(account0.getUsername());
         if (backUser.isEmpty()) {
-            RpcResult<String> lastedPassword = sysAccountRpc.lastPassword(userDto.getId());
+            RpcResult<String> lastedPassword = sysAccountRpc.lastPassword(account0.getId());
             String pwd = RpcAssert.isTrue(lastedPassword);
 
             BackUser addUser = new BackUser();
-            addUser.setId(String.valueOf(userDto.getId()));
-            addUser.setUsername(userDto.getUsername());
+            addUser.setId(String.valueOf(account0.getId()));
+            addUser.setUsername(account0.getUsername());
             addUser.setPassword(pwd);
 
             BackUser added = backUserManager.addUser(addUser);
             Log.infof("User:%s is initialized to ldap successfully.", added.getUsername());
         }
-        return authzClientManager.authorization(userDto.getUsername(), signInForm.getPassword());
+        return authzClientManager.authorization(account0.getUsername(), signInForm.getPassword());
     }
 
     @Override
@@ -131,6 +125,21 @@ public class PassportServiceImpl implements PassportService {
     @Override
     public void signOut(String accessToken) {
         authzClientManager.revoke(accessToken);
+    }
+
+    @Override
+    public SysAccount0 getAccount(String account) {
+        //判断帐号类型
+        AccountDefines.BindType bindType = account.indexOf("@") > 0 ?
+                AccountDefines.BindType.email : //
+                AccountDefines.BindType.phone;  //
+
+        SysAccount0 account0 = RpcAssert.isTrue(sysAccountRpc.findByBind(AccountDefines.DefaultISO, bindType, account));
+        if (account0 == null) {
+            throw new OkRuntimeException("Account is not exist");
+        }
+
+        return account0;
     }
 
 

@@ -67,8 +67,6 @@ public class PassportResource extends OkCommonResource {
     @POST
     @Path("refresh")
     public Res<RefreshResult> refresh(RefreshForm refreshForm) {
-//        log.info("refresh:{}", refreshForm);
-//        SignInResult result = passportService.refresh(refreshForm);
 
         RefreshResult result = RefreshResult.builder()
                 .accessToken(tokens.getAccessToken())

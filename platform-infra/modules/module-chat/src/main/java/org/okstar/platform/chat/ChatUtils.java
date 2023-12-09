@@ -32,6 +32,7 @@ public class ChatUtils {
         user.setUsername(userEntity.getUsername());
         user.setName(userEntity.getName());
         user.setEmail(userEntity.getEmail());
+        user.setOnline(userEntity.isOnline());
         return user;
     }
 
@@ -66,7 +67,6 @@ public class ChatUtils {
     }
 
     public static MUCRoomEntity convertRoom(ChatRoom room) {
-
         MUCRoomEntity entity = new MUCRoomEntity();
         entity.setRoomName(room.getRoomName());
         entity.setNaturalName(room.getNaturalName());

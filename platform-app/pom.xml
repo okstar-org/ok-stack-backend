@@ -32,7 +32,7 @@
     </properties>
 
     <modules>
-        <module>passport</module>
+        <module>app-open</module>
         <module>app-okmsg</module>
     </modules>
 </project>

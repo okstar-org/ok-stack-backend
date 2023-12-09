@@ -10,28 +10,15 @@
  * See the Mulan PubL v2 for more details.
  * /
  */
-package org.okstar.platform.chat.beans;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import org.okstar.platform.common.core.web.bean.DTO;
 
-@Data
-@Builder
-@AllArgsConstructor
-@NoArgsConstructor
-public class ChatUser extends DTO {
+package org.okstar.platform.open;
 
-    /** The username. */
-    private String username;
+import io.quarkus.runtime.Quarkus;
+import io.quarkus.runtime.annotations.QuarkusMain;
 
-    /** The name. */
-    private String name;
-
-    /** The email. */
-    private String email;
-
-    private boolean online;
-
+@QuarkusMain
+public class AppOpenApplication {
+    public static void main(String... args) {
+        Quarkus.run(args);
+    }
 }

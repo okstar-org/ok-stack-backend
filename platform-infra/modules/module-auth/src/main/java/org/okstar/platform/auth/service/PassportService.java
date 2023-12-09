@@ -15,6 +15,7 @@ package org.okstar.platform.auth.service;
 
 
 import org.okstar.platform.system.sign.*;
+import org.okstar.platform.system.vo.SysAccount0;
 
 
 public interface PassportService {
@@ -28,4 +29,6 @@ public interface PassportService {
     SignInResult refresh(String refreshToken);
 
     void signOut(String accessToken);
+
+    SysAccount0 getAccount(String account);
 }

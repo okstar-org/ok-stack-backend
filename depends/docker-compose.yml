@@ -80,6 +80,5 @@ services:
       - ./nginx/vhost.d:/etc/nginx/vhost.d
       - ./nginx/stream.d:/etc/nginx/stream.d
       - ./nginx/epage.d:/etc/nginx/epage.d
-      #network_mode: "host"
     ports:
       - 8080:80

@@ -17,11 +17,9 @@ import org.eclipse.microprofile.rest.client.inject.RegisterRestClient;
 import org.okstar.platform.common.rpc.RpcResult;
 import org.okstar.platform.system.sign.SignUpForm;
 import org.okstar.platform.system.sign.SignUpResult;
+import org.okstar.platform.system.vo.SysAccount0;
 
-import javax.ws.rs.DELETE;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
+import javax.ws.rs.*;
 
 @Path("rpc/PassportRpc")
 @RegisterRestClient
@@ -35,4 +33,8 @@ public interface PassportRpc {
     @DELETE
     @Path("signDown/{accountId}")
     RpcResult<Boolean> signDown(@PathParam("accountId") Long accountId);
+
+    @GET
+    @Path("getAccount/{account}")
+    RpcResult<SysAccount0> getAccount(@PathParam("account") String account);
 }

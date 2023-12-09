@@ -24,11 +24,17 @@
         </fileSet>
 
         <fileSet>
+            <directory>../platform-app/app-open/target/quarkus-app</directory>
+            <outputDirectory>./app/app-open</outputDirectory>
+        </fileSet>
+
+        <fileSet>
             <includes>
                 <include>bin/*</include>
             </includes>
             <fileMode>0755</fileMode>
         </fileSet>
+
     </fileSets>
     <files>
         <file>
