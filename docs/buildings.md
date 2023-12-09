@@ -108,15 +108,24 @@ Changed users sync period   :86400
 
 
 ## 构建OkStack后端服务
+- 获取源码
+```shell
+git clone https://gitee.com/okstar-org/ok-stack-backend.git
+cd ok-stack-backend
+# 更新子项目
+git submodule update --init --recursive
+```
+
+- 构建项目
 > Profile说明与选择
 > - <空> 本地测试，使用h2内存数据库
-> - dev 本地测试，使用MariaDB本地(local)数据库
-> - dev-okstar 社区测试，使用MariaDB社区(okstar.org.cn)数据库
-
-- 构建命令
+> - dev 本地测试，使用本地数据库
+> - dev-okstar 社区测试，使用在线的社区数据库
 ```shell
-# dev 本地测试 连接本地Docker启动的MariaDB数据库
+# 依赖本地Docker服务
 mvn clean compile -P dev
+# 依赖在线服务
+mvn clean compile -P dev-star
 ```
 
 # 测试
