@@ -27,5 +27,5 @@ import javax.persistence.Entity;
 public class SysSetPersonal extends BaseEntity {
     Long accountId;
     //语言，格式：zh_CN
-    String locale;
+    String language;
 }

@@ -172,12 +172,13 @@ public class OkStringUtil extends org.apache.commons.lang3.StringUtils {
      * Other => firstName+' '+lastName
      * </pre>
      *
-     * @param iso
+     * @param language
      * @param firstName
      * @param lastName
      * @return
      */
-    public static String combinePeopleName(String iso, String firstName, String lastName) {
+    public static String combinePeopleName(String language, String firstName, String lastName) {
+
         if (firstName == null && lastName == null)
             return null;
 
@@ -190,7 +191,7 @@ public class OkStringUtil extends org.apache.commons.lang3.StringUtils {
 
         String fmt;
         if (firstName.trim().isEmpty() || lastName.trim().isEmpty()
-                || (iso != null && (iso.startsWith("zh") || iso.startsWith("ko") || iso.startsWith("ja")))) {
+                || (language != null && (language.startsWith("zh") || language.startsWith("ko") || language.startsWith("ja")))) {
             fmt = "%s%s";
         } else {
             fmt = "%s %s";

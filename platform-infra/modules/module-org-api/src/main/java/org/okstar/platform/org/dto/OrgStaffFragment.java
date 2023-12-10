@@ -45,7 +45,7 @@ public class OrgStaffFragment {
     private String name;
 
     public String getName() {
-        return OkStringUtil.combinePeopleName(iso, firstName, lastName);
+        return OkStringUtil.combinePeopleName(language, firstName, lastName);
     }
 
     /**
@@ -60,9 +60,16 @@ public class OrgStaffFragment {
 
     /**
      * ISO国家代号
-     * @link https://www.iso.org/obp/ui/#search
+     * @link https://www.iso.org/iso-3166-country-codes.html
+     * @link https://www.iso.org/obp/ui/#search/code/
      */
     private String iso;
+
+    /**
+     * 语言,格式:zh-CN, zh-TW, zh-HK, en-US
+     * @link https://www.loc.gov/standards/iso639-2/php/code_list.php
+     */
+    private String language;
 
     /**
      * 电话

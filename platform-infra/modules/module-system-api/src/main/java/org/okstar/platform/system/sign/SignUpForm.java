@@ -36,6 +36,9 @@ public class SignUpForm extends Req {
     //国家代号
     String iso;
 
+    //语言
+    String language;
+
     //手机号或者邮箱
     String account;
 
@@ -49,6 +52,6 @@ public class SignUpForm extends Req {
     String lastName;
 
     public String getName() {
-        return OkStringUtil.combinePeopleName(iso, firstName, lastName);
+        return OkStringUtil.combinePeopleName(language, firstName, lastName);
     }
 }

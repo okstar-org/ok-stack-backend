@@ -24,6 +24,7 @@ class OkStringUtilTest {
         Assert.assertTrue("高".equals(OkStringUtil.combinePeopleName("zh", "高", "")));
         Assert.assertTrue("高".equals(OkStringUtil.combinePeopleName("zh", "", "高")));
         Assert.assertTrue("高".equals(OkStringUtil.combinePeopleName("zh", null, "高")));
+        Assert.assertTrue("高杰".equals(OkStringUtil.combinePeopleName("zh", "高", "杰")));
 
         Assert.assertTrue("Bill".equals(OkStringUtil.combinePeopleName("en", "Bill", "")));
         Assert.assertTrue("Bill".equals(OkStringUtil.combinePeopleName("en", "Bill", null)));

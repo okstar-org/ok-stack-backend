@@ -92,7 +92,7 @@ public class SysBasicServiceImpl implements SysBasicService {
 
         SysSetPersonal personal = new SysSetPersonal();
         personal.setAccountId(account.id);
-        personal.setLocale(AccountDefines.DefaultLocale);
+        personal.setLanguage(AccountDefines.DefaultLanguage);
         personalMapper.persist(personal);
         return personal;
     }
@@ -100,7 +100,7 @@ public class SysBasicServiceImpl implements SysBasicService {
     @Override
     public synchronized void savePersonal(SysSetPersonal personal) {
         SysSetPersonal exist = getPersonal(personal.id);
-        exist.setLocale(personal.getLocale());
+        exist.setLanguage(personal.getLanguage());
         personalMapper.persist(exist);
     }
 
