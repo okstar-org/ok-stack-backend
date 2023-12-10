@@ -23,6 +23,8 @@ import org.okstar.platform.common.core.defined.AccountDefines;
 import org.okstar.platform.common.core.exception.OkRuntimeException;
 import org.okstar.platform.common.rpc.RpcAssert;
 import org.okstar.platform.common.rpc.RpcResult;
+import org.okstar.platform.org.dto.OrgStaffFragment;
+import org.okstar.platform.org.rpc.OrgStaffRpc;
 import org.okstar.platform.system.rpc.SysAccountRpc;
 import org.okstar.platform.system.sign.SignInForm;
 import org.okstar.platform.system.sign.SignInResult;
@@ -35,6 +37,8 @@ import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import java.util.Optional;
 
+import static org.okstar.platform.common.core.defined.AccountDefines.BindType.email;
+
 @Slf4j
 @ApplicationScoped
 public class PassportServiceImpl implements PassportService {
@@ -45,31 +49,52 @@ public class PassportServiceImpl implements PassportService {
     SysAccountRpc sysAccountRpc;
 
     @Inject
+    @RestClient
+    OrgStaffRpc orgStaffRpc;
+
+    @Inject
     BackUserManager backUserManager;
     @Inject
     AuthzClientManager authzClientManager;
 
 
     @Override
-    public SignUpResult signUp(SignUpForm signUpForm) {
+    public synchronized SignUpResult signUp(SignUpForm signUpForm) {
         log.info("signUp:{}", signUpForm);
 
         //初始化系统帐号
-        SignUpResult resultDto = RpcAssert.isTrue(sysAccountRpc.signUp(signUpForm));
+        SignUpResult signUpResult = RpcAssert.isTrue(sysAccountRpc.signUp(signUpForm));
+        Log.infof("保存到系统帐号=>%s", signUpResult.getUsername());
+
+        OrgStaffFragment staff = new OrgStaffFragment();
+        staff.setName(signUpForm.getName());
+        staff.setFirstName(signUpForm.getFirstName());
+        staff.setLastName(signUpForm.getLastName());
+        staff.setIso(signUpForm.getIso());
+        switch (signUpForm.getAccountType()) {
+            case email -> staff.setEmail(signUpForm.getAccount());
+            case phone -> staff.setPhone(signUpForm.getAccount());
+        }
+        var added = RpcAssert.isTrue(orgStaffRpc.add(staff));
+        Log.infof("保存到人员帐号=>%s", added);
+
         BackUser user = BackUser.builder()
-                .username(resultDto.getUsername())
+                .username(signUpResult.getUsername())
                 .firstName(signUpForm.getFirstName())
                 .lastName(signUpForm.getLastName())
                 .password(signUpForm.getPassword())
                 .build();
-        if (signUpForm.getAccountType() == AccountDefines.BindType.email) {
+
+        if (signUpForm.getAccountType() == email) {
             user.setEmail(signUpForm.getAccount());
         }
+
 
         BackUser backUser = backUserManager.addUser(user);
         log.info("Added user:{}", backUser.getUsername());
 
-        return resultDto;
+
+        return signUpResult;
     }
 
     @Override
@@ -131,7 +156,7 @@ public class PassportServiceImpl implements PassportService {
     public SysAccount0 getAccount(String account) {
         //判断帐号类型
         AccountDefines.BindType bindType = account.indexOf("@") > 0 ?
-                AccountDefines.BindType.email : //
+                email : //
                 AccountDefines.BindType.phone;  //
 
         SysAccount0 account0 = RpcAssert.isTrue(sysAccountRpc.findByBind(AccountDefines.DefaultISO, bindType, account));

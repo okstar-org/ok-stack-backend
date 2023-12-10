@@ -13,10 +13,9 @@
 
 package org.okstar.platform.common.core.utils.ip;
 
-import org.okstar.platform.common.core.utils.OkStringUtil;
-
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.util.Objects;
 
 /**
  * 获取IP方法
@@ -34,7 +33,7 @@ public class IpUtils
 
     private static boolean internalIp(byte[] addr)
     {
-        if (OkStringUtil.isNull(addr) || addr.length < 2)
+        if (Objects.isNull(addr) || addr.length < 2)
         {
             return true;
         }

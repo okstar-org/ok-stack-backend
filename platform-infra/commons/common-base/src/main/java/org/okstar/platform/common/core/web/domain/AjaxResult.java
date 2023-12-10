@@ -13,8 +13,6 @@
 
 package org.okstar.platform.common.core.web.domain;
 
-import org.okstar.platform.common.core.utils.OkStringUtil;
-
 import javax.ws.rs.core.Response;
 import java.util.HashMap;
 
@@ -72,9 +70,9 @@ public class AjaxResult extends HashMap<String, Object> {
     public AjaxResult(int code, String msg, Object data) {
         super.put(CODE_TAG, code);
         super.put(MSG_TAG, msg);
-        if (OkStringUtil.isNotNull(data)) {
+
             super.put(DATA_TAG, data);
-        }
+
     }
 
     /**

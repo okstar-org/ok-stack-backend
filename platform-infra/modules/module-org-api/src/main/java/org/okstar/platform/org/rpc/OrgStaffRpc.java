@@ -11,24 +11,21 @@
  * /
  */
 
-package org.okstar.platform.org.vo;
+package org.okstar.platform.org.rpc;
 
-import lombok.Data;
-import lombok.ToString;
-import org.okstar.platform.common.core.web.bean.Req;
+import org.eclipse.microprofile.rest.client.inject.RegisterRestClient;
+import org.okstar.platform.common.rpc.RpcResult;
 import org.okstar.platform.org.dto.OrgStaffFragment;
 
-/**
- * 人员管理添加
- */
-@Data
-@ToString(callSuper = true)
-public class OrgStaffReq extends Req {
+import javax.ws.rs.POST;
+import javax.ws.rs.Path;
 
-    private Long id;
+@Path("rpc/OrgStaffRpc")
+@RegisterRestClient
+public interface OrgStaffRpc {
 
-    /**
-     * 员工信息
-     */
-    private OrgStaffFragment fragment;
+    @POST
+    @Path("add")
+    RpcResult<Boolean> add(OrgStaffFragment staffFragment);
+
 }

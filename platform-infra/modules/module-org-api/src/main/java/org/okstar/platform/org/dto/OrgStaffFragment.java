@@ -15,6 +15,7 @@ package org.okstar.platform.org.dto;
 
 import lombok.Data;
 import org.okstar.platform.common.core.defined.UserDefines;
+import org.okstar.platform.common.core.utils.OkStringUtil;
 
 import java.util.Date;
 
@@ -29,11 +30,6 @@ public class OrgStaffFragment {
     private String no;
 
     /**
-     * 名称
-     */
-    private String name;
-
-    /**
      * 性
      */
     private String firstName;
@@ -42,6 +38,15 @@ public class OrgStaffFragment {
      * 名
      */
     private String lastName;
+
+    /**
+     * 名称
+     */
+    private String name;
+
+    public String getName() {
+        return OkStringUtil.combinePeopleName(iso, firstName, lastName);
+    }
 
     /**
      * 性别

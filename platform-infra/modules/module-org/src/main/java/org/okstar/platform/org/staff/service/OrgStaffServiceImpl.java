@@ -16,6 +16,7 @@ package org.okstar.platform.org.staff.service;
 import io.quarkus.panache.common.Page;
 import org.okstar.platform.common.core.defined.JobDefines;
 import org.okstar.platform.common.core.utils.OkDateUtils;
+import org.okstar.platform.common.core.utils.OkStringUtil;
 import org.okstar.platform.common.core.web.page.OkPageResult;
 import org.okstar.platform.common.core.web.page.OkPageable;
 import org.okstar.platform.org.domain.OrgPost;
@@ -32,6 +33,7 @@ import javax.inject.Inject;
 import javax.transaction.Transactional;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -141,25 +143,31 @@ public class OrgStaffServiceImpl implements OrgStaffService {
     @Override
     public boolean add(OrgStaffReq req) {
         Assert.notNull(req, "参数异常！");
+
         OrgStaffFragment fragment = req.getFragment();
         Assert.notNull(fragment, "参数异常！");
 
-        //设置姓名
-        fragment.setName(fragment.getFirstName() + fragment.getLastName());
+
+        Long id = req.getId();
 
         //检查编号是否存在
         String no = fragment.getNo();
-        Assert.notNull(no, "编号不能为空！");
-        var exist = findByNo(no);
-        Assert.isTrue(exist.isEmpty(), "用户已存在！");
-
-        OrgStaff entity = new OrgStaff();
-        entity.setDisabled(false);
+        if (!OkStringUtil.isEmpty(no)) {
+            var exist = findByNo(no);
+            Assert.isTrue(exist.isEmpty() || Objects.equals(id, exist.get().id),
+                    "存在该编号的用户！");
+        }
+        OrgStaff entity;
+        if (id != null) {
+            entity = get(id);
+        } else {
+            entity = new OrgStaff();
+            entity.setDisabled(false);
+            entity.setJoinedDate(OkDateUtils.now());
+            entity.setPostStatus(JobDefines.PostStatus.pending);
+        }
         entity.setFragment(req.getFragment());
-        entity.setJoinedDate(OkDateUtils.now());
-        entity.setPostStatus(JobDefines.PostStatus.pending);
         save(entity);
-
         return true;
     }
 

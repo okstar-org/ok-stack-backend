@@ -18,6 +18,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.okstar.platform.common.core.defined.AccountDefines;
+import org.okstar.platform.common.core.utils.OkStringUtil;
 import org.okstar.platform.common.core.web.bean.Req;
 
 /**
@@ -47,4 +48,7 @@ public class SignUpForm extends Req {
     //名
     String lastName;
 
+    public String getName() {
+        return OkStringUtil.combinePeopleName(iso, firstName, lastName);
+    }
 }

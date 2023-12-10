@@ -20,7 +20,7 @@ if [ ! -z "$pid" ] ; then
         exit -1;
 fi
 
-MODULES=("module-system" "module-org" "module-auth")
+MODULES=("module-system" "module-org" "module-auth" "module-chat")
 for item in "${MODULES[@]}"
 do
     echo "The $item is starting."

@@ -30,7 +30,7 @@ public class SysAccount0 extends DTO {
     private String nickname;
     private String firstName;
     private String lastName;
-    private String no;
+
 
     /**
      * 头像

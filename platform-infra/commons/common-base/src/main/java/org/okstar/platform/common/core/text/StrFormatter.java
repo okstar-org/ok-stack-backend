@@ -13,6 +13,7 @@
 
 package org.okstar.platform.common.core.text;
 
+import org.apache.commons.lang3.ArrayUtils;
 import org.okstar.platform.common.core.utils.OkStringUtil;
 
 /**
@@ -42,7 +43,7 @@ public class StrFormatter
      */
     public static String format(final String strPattern, final Object... argArray)
     {
-        if (OkStringUtil.isEmpty(strPattern) || OkStringUtil.isEmpty(argArray))
+        if (OkStringUtil.isEmpty(strPattern) || ArrayUtils.isEmpty(argArray))
         {
             return strPattern;
         }

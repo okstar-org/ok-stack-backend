@@ -22,7 +22,10 @@
             <directory>../platform-infra/modules/module-org/target/quarkus-app</directory>
             <outputDirectory>./infra/module-org</outputDirectory>
         </fileSet>
-
+        <fileSet>
+            <directory>../platform-infra/modules/module-chat/target/quarkus-app</directory>
+            <outputDirectory>./infra/module-chat</outputDirectory>
+        </fileSet>
         <fileSet>
             <directory>../platform-app/app-open/target/quarkus-app</directory>
             <outputDirectory>./app/app-open</outputDirectory>
