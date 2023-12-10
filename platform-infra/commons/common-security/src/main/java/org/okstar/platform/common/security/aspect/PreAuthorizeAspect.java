@@ -30,6 +30,7 @@ import javax.inject.Inject;
 import javax.ws.rs.core.Context;
 import java.lang.reflect.Method;
 import java.util.Collection;
+import java.util.Objects;
 
 
 /**
@@ -127,7 +128,7 @@ public class PreAuthorizeAspect
     public boolean hasPermi(String permission)
     {
         LoginUser userInfo = tokenService.getLoginUser(request);
-        if (OkStringUtil.isNull(userInfo) || CollectionUtils.isEmpty(userInfo.getPermissions()))
+        if (Objects.isNull(userInfo) || CollectionUtils.isEmpty(userInfo.getPermissions()))
         {
             return false;
         }
@@ -154,7 +155,7 @@ public class PreAuthorizeAspect
     public boolean hasAnyPermi(String[] permissions)
     {
         LoginUser userInfo = tokenService.getLoginUser(request);
-        if (OkStringUtil.isNull(userInfo) || CollectionUtils.isEmpty(userInfo.getPermissions()))
+        if (Objects.isNull(userInfo) || CollectionUtils.isEmpty(userInfo.getPermissions()))
         {
             return false;
         }
@@ -178,7 +179,7 @@ public class PreAuthorizeAspect
     public boolean hasRole(String role)
     {
         LoginUser userInfo = tokenService.getLoginUser(request);
-        if (OkStringUtil.isNull(userInfo) || CollectionUtils.isEmpty(userInfo.getRoles()))
+        if (Objects.isNull(userInfo) || CollectionUtils.isEmpty(userInfo.getRoles()))
         {
             return false;
         }
@@ -212,7 +213,7 @@ public class PreAuthorizeAspect
     public boolean hasAnyRoles(String[] roles)
     {
         LoginUser userInfo = tokenService.getLoginUser(request);
-        if (OkStringUtil.isNull(userInfo) || CollectionUtils.isEmpty(userInfo.getRoles()))
+        if (Objects.isNull(userInfo) || CollectionUtils.isEmpty(userInfo.getRoles()))
         {
             return false;
         }
@@ -235,7 +236,7 @@ public class PreAuthorizeAspect
      */
     private boolean hasPermissions(Collection<String> authorities, String permission)
     {
-        return authorities.stream().filter(OkStringUtil::hasText)
+        return authorities.stream().filter(OkStringUtil::isNotEmpty)
                 .anyMatch(x -> ALL_PERMISSION.contains(x));
     }
 }

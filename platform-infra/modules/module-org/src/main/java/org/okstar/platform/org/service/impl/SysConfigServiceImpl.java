@@ -24,6 +24,7 @@ import org.okstar.platform.org.service.ISysConfigService;
 
 import javax.enterprise.context.ApplicationScoped;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * 参数配置 服务层实现
@@ -171,9 +172,9 @@ public class SysConfigServiceImpl implements ISysConfigService
     @Override
     public String checkConfigKeyUnique(SysConfig config)
     {
-        Long configId = OkStringUtil.isNull(config.getConfigId()) ? -1L : config.getConfigId();
+        Long configId = Objects.isNull(config.getConfigId()) ? -1L : config.getConfigId();
         SysConfig info = configMapper.checkConfigKeyUnique(config.getConfigKey());
-        if (OkStringUtil.isNotNull(info) && info.getConfigId().longValue() != configId.longValue())
+        if (!Objects.isNull(info) && info.getConfigId().longValue() != configId.longValue())
         {
             return UserConstants.NOT_UNIQUE;
         }

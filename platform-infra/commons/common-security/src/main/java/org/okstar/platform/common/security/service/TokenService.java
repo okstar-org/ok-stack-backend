@@ -28,6 +28,7 @@ import org.okstar.platform.common.security.utils.SecurityUtils;
 import javax.inject.Singleton;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
 
@@ -119,7 +120,7 @@ public class TokenService {
      * 设置用户身份信息
      */
     public void setLoginUser(LoginUser loginUser) {
-        if (OkStringUtil.isNotNull(loginUser) && OkStringUtil.isNotEmpty(loginUser.getToken())) {
+        if (!Objects.isNull(loginUser) && OkStringUtil.isNotEmpty(loginUser.getToken())) {
             refreshToken(loginUser);
         }
     }
