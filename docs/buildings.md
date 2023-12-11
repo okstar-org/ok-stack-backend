@@ -17,7 +17,7 @@ depends$ docker-compose up -d
 
 ## 配置依赖服务
 ### 配置Keycloak服务
-- 登录：http://localhost:8043/admin/
+- 登录地址：`http://localhost:8043/admin/`
 - 输入帐号：admin,okstar登录
 - 到左上角，选择 `okstar` ream (如果没有则增加okstar，按如下配置，保存即可)
 - 创建Client `okstack`
@@ -85,7 +85,7 @@ Changed users sync period   :86400
 - 点击`Save`保存
 
 ### 配置启动Openfire服务器
-> 打开服务器地址 http://localhost:9090/
+> 打开服务器地址：`http://localhost:9090/`
 - 第一步，选择合适的语言
 - 第二步，服务器设置不用修改
 - 第三步，使用标准数据库
