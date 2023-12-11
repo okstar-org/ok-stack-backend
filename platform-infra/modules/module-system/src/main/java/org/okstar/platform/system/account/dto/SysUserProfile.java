@@ -11,24 +11,12 @@
  * /
  */
 
-package org.okstar.platform.common.datasource;
+package org.okstar.platform.system.account.dto;
 
-import org.okstar.platform.common.core.web.page.OkPageResult;
-import org.okstar.platform.common.core.web.page.OkPageable;
+import org.okstar.platform.system.account.domain.SysProfile;
 
-import java.util.List;
 
-public interface OkService <T, ID> {
+public class SysUserProfile extends SysProfile {
 
-    void save(T t);
 
-    List<T> findAll();
-
-    OkPageResult<T> findPage( OkPageable page);
-
-    T get(ID id);
-
-    void deleteById(ID id);
-
-    void delete(T t);
 }

@@ -11,38 +11,30 @@
  * /
  */
 
-package org.okstar.platform.org.resource;
+package org.okstar.platform.system.account.resource;
 
+import io.quarkus.security.Authenticated;
 import org.okstar.platform.common.core.web.bean.Req;
 import org.okstar.platform.common.core.web.bean.Res;
-import org.okstar.platform.org.domain.OrgPost;
-import org.okstar.platform.org.service.OrgPostService;
+import org.okstar.platform.common.resource.OkCommonResource;
+import org.okstar.platform.system.account.domain.SysProfile;
+import org.okstar.platform.system.account.service.SysProfileService;
 
 import javax.inject.Inject;
 import javax.ws.rs.GET;
-import javax.ws.rs.POST;
 import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import java.util.List;
 
-@Path("post")
-public class OrgPostResource {
+@Authenticated
+@Path("/profile")
+public class SysProfileResource extends OkCommonResource {
+
     @Inject
-    OrgPostService orgPostService;
+    SysProfileService profileService;
 
     @GET
-    @Path("findByDept/{deptId}")
-    public Res<List<OrgPost>> findByDept(@PathParam("deptId") Long deptId) {
-        List<OrgPost> list = orgPostService.findByDept(deptId);
-        return Res.ok(Req.empty(), list);
+    public Res<SysProfile> get() {
+        String username = getUsername();
+        var profile = profileService.loadByAccountId(username);
+        return Res.ok(Req.empty(), profile);
     }
-
-    @POST
-    @Path("save")
-    public Res<List<OrgPost>> save(OrgPost post) {
-        orgPostService.save(post);
-        return Res.ok(null);
-    }
-
-
 }

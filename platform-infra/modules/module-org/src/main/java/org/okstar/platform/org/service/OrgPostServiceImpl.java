@@ -18,14 +18,17 @@ import org.okstar.platform.common.core.web.page.OkPageResult;
 import org.okstar.platform.common.core.web.page.OkPageable;
 import org.okstar.platform.org.domain.OrgPost;
 import org.okstar.platform.org.mapper.OrgPostMapper;
+import org.springframework.util.Assert;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
+import javax.transaction.Transactional;
 import java.util.List;
 
 /**
  * 岗位信息 服务层处理
  */
+@Transactional
 @ApplicationScoped
 public class OrgPostServiceImpl implements OrgPostService {
     @Inject
@@ -35,6 +38,7 @@ public class OrgPostServiceImpl implements OrgPostService {
 
     @Override
     public void save(OrgPost orgPost) {
+        Assert.isTrue(orgPost.getDeptId() != null && orgPost.getDeptId() > 0, "请选择部门");
         orgPostMapper.persist(orgPost);
     }
 

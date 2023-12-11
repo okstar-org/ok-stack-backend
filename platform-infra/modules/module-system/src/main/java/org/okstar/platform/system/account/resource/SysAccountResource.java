@@ -33,8 +33,8 @@ import java.util.Optional;
 /**
  * 账号信息
  */
-@Path("/account")
 @Authenticated
+@Path("/account")
 public class SysAccountResource extends OkCommonResource {
 
     @Inject

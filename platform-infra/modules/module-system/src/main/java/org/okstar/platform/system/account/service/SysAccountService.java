@@ -17,10 +17,12 @@ package org.okstar.platform.system.account.service;
 import org.okstar.platform.common.core.defined.AccountDefines;
 import org.okstar.platform.common.datasource.OkService;
 import org.okstar.platform.system.account.domain.SysAccount;
+import org.okstar.platform.system.account.domain.SysAccountBind;
 import org.okstar.platform.system.account.domain.SysAccountPassword;
 import org.okstar.platform.system.sign.SignUpForm;
 import org.okstar.platform.system.sign.SignUpResult;
 
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -44,4 +46,5 @@ public interface SysAccountService extends OkService<SysAccount, Long> {
 
     SysAccount loadByUsername(String username);
 
+    List<SysAccountBind> listBind(Long id);
 }

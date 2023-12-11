@@ -68,9 +68,7 @@ public class SysAccountServiceImpl extends OkAbsService implements SysAccountSer
     @Override
     public Optional<SysAccountPassword> lastPassword(Long accountId) {
         return sysAccountPasswordMapper.find("account.id = ?1", accountId)//
-                .stream()//
-                .sorted(Comparator.comparing(OkEntity::getCreateAt).reversed())//
-                .findFirst();
+                .stream().max(Comparator.comparing(OkEntity::getCreateAt));
     }
 
     @Override
@@ -141,6 +139,7 @@ public class SysAccountServiceImpl extends OkAbsService implements SysAccountSer
         sysAccount.setCreateAt(OkDateUtils.now());
         sysAccount.setUsername(RandomStringUtils.randomAlphanumeric(12));
         sysAccount.setIso(signUpForm.getIso());
+        sysAccount.setLanguage(signUpForm.getLanguage());
         sysAccount.setAvatar(AccountDefines.DefaultAvatar);
         sysAccount.setNickname(
                 Optional.ofNullable(signUpForm.getFirstName()).orElse("")
@@ -244,4 +243,8 @@ public class SysAccountServiceImpl extends OkAbsService implements SysAccountSer
     }
 
 
+    @Override
+    public List<SysAccountBind> listBind(Long id) {
+        return sysAccountBindMapper.find("account.id", id).list();
+    }
 }

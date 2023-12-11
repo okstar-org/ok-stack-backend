@@ -11,24 +11,19 @@
  * /
  */
 
-package org.okstar.platform.common.datasource;
+package org.okstar.platform.system.account.mapper;
 
-import org.okstar.platform.common.core.web.page.OkPageResult;
-import org.okstar.platform.common.core.web.page.OkPageable;
+import io.quarkus.hibernate.orm.panache.PanacheRepository;
+import org.okstar.platform.system.account.domain.SysProfile;
 
-import java.util.List;
+import javax.enterprise.context.ApplicationScoped;
 
-public interface OkService <T, ID> {
 
-    void save(T t);
+/**
+ * 用户Profile
+ */
+@ApplicationScoped
+public class SysProfileMapper implements PanacheRepository<SysProfile>
+{
 
-    List<T> findAll();
-
-    OkPageResult<T> findPage( OkPageable page);
-
-    T get(ID id);
-
-    void deleteById(ID id);
-
-    void delete(T t);
 }

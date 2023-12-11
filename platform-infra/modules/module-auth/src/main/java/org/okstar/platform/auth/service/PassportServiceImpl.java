@@ -92,8 +92,6 @@ public class PassportServiceImpl implements PassportService {
 
         BackUser backUser = backUserManager.addUser(user);
         log.info("Added user:{}", backUser.getUsername());
-
-
         return signUpResult;
     }
 
@@ -115,7 +113,7 @@ public class PassportServiceImpl implements PassportService {
     }
 
     @Override
-    public synchronized SignInResult signIn(SignInForm signInForm) {
+    public SignInResult signIn(SignInForm signInForm) {
         String account = signInForm.getAccount();
         Log.infof("signIn:%s", account);
 
