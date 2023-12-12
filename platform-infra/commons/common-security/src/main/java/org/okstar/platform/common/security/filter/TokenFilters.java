@@ -36,7 +36,7 @@ public class TokenFilters {
         Log.infof("uri=%s", uri);
 
         String username = jwt.getName();
-        if (uri.contains("/passport") || uri.contains("/rpc")) {
+        if (uri.contains("/passport") || uri.contains("/rpc")||uri.contains("/_well-known")) {
             rc.next();
             return;
         }

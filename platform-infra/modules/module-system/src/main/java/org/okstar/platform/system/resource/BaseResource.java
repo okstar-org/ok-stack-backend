@@ -11,16 +11,24 @@
  * /
  */
 
-package org.okstar.platform.system.dto;
+package org.okstar.platform.system.resource;
 
-import lombok.Builder;
-import lombok.Data;
+import org.okstar.platform.common.resource.OkCommonResource;
+import org.okstar.platform.system.account.domain.SysAccount;
+import org.okstar.platform.system.account.service.SysAccountService;
 
-@Data
-@Builder
-public class SysLocale {
-    //zh_CN
-    String value;
-    //中文（中国）
-    String label;
+import javax.inject.Inject;
+
+public class BaseResource extends OkCommonResource {
+
+    @Inject
+    SysAccountService accountService;
+
+    /**
+     * 获取自己
+     * @return
+     */
+    protected SysAccount self() {
+        return accountService.loadByUsername(getUsername());
+    }
 }

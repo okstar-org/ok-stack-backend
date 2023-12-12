@@ -13,6 +13,9 @@
 
 package org.okstar.platform.common.resource;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import io.quarkus.logging.Log;
 import io.vertx.core.http.HttpServerRequest;
 import io.vertx.core.http.HttpServerResponse;
 import io.vertx.ext.web.RoutingContext;
@@ -20,9 +23,12 @@ import org.okstar.platform.common.core.defined.SystemDefines;
 
 import javax.inject.Inject;
 import javax.ws.rs.core.Context;
+import java.io.IOException;
+import java.io.InputStream;
 
 public class OkCommonResource {
 
+    public static final String GIT_PROPERTIES = "/git.properties";
     @Context
     protected HttpServerRequest req;
     @Context
@@ -31,7 +37,23 @@ public class OkCommonResource {
     @Inject
     protected RoutingContext rc;
 
-    protected String getUsername(){
-       return rc.get(SystemDefines.Header_X_OK_username);
+    @Inject
+    ObjectMapper objectMapper;
+
+    protected String getUsername() {
+        return rc.get(SystemDefines.Header_X_OK_username);
+    }
+
+    protected JsonNode gitVersion() {
+        try (InputStream stream = getClass().getResourceAsStream(GIT_PROPERTIES)) {
+
+            return objectMapper.readTree(stream);
+
+
+        } catch (IOException e) {
+            Log.warnf(e, "Read git: %s", GIT_PROPERTIES);
+            return null;
+        }
+
     }
 }

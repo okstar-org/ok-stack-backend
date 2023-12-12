@@ -11,24 +11,19 @@
  * /
  */
 
-package org.okstar.platform.system.resource;
+package org.okstar.platform.common.resource;
 
-import org.okstar.platform.common.resource.OkCommonResource;
-import org.okstar.platform.system.account.domain.SysAccount;
-import org.okstar.platform.system.account.service.SysAccountService;
+import com.fasterxml.jackson.databind.JsonNode;
 
-import javax.inject.Inject;
+import javax.ws.rs.GET;
+import javax.ws.rs.Path;
 
-public class BaseResourceOk extends OkCommonResource {
+@Path("_well-known")
+public class OkWellKnownResource extends OkCommonResource {
 
-    @Inject
-    SysAccountService accountService;
-
-    /**
-     * 获取自己
-     * @return
-     */
-    protected SysAccount self() {
-        return accountService.loadByUsername(getUsername());
+    @GET
+    @Path("git")
+    public JsonNode get() {
+        return gitVersion();
     }
 }

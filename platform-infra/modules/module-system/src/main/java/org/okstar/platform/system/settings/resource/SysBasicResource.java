@@ -15,8 +15,8 @@ package org.okstar.platform.system.settings.resource;
 
 import org.okstar.platform.common.core.web.bean.Res;
 import org.okstar.platform.system.account.domain.SysAccount;
-import org.okstar.platform.system.dto.SysLocale;
-import org.okstar.platform.system.resource.BaseResourceOk;
+import org.okstar.platform.system.dto.SysLanguage;
+import org.okstar.platform.system.resource.BaseResource;
 import org.okstar.platform.system.settings.domain.SysSetGlobal;
 import org.okstar.platform.system.settings.domain.SysSetPersonal;
 import org.okstar.platform.system.settings.service.SysBasicService;
@@ -30,20 +30,19 @@ import java.util.List;
 import java.util.Locale;
 
 @Path("settings/basic")
-public class SysBasicResourceOk extends BaseResourceOk {
+public class SysBasicResource extends BaseResource {
 
     @Inject
     SysBasicService service;
 
 
-
     @GET
-    @Path("findLocales")
-    public Res<List<SysLocale>> findLocales() {
-        List<SysLocale> list = new ArrayList<>();
-        list.add(SysLocale.builder().label("中文（简体）").value(Locale.SIMPLIFIED_CHINESE.toLanguageTag()).build());//
-        list.add(SysLocale.builder().label("中文（繁体）").value(Locale.TRADITIONAL_CHINESE.toLanguageTag()).build());//
-        list.add(SysLocale.builder().label("English").value(Locale.US.toLanguageTag()).build());//
+    @Path("languages")
+    public Res<List<SysLanguage>> languages() {
+        List<SysLanguage> list = new ArrayList<>();
+        list.add(SysLanguage.builder().label("中文（简体）").value(Locale.SIMPLIFIED_CHINESE.toLanguageTag()).build());//
+        list.add(SysLanguage.builder().label("中文（繁体）").value(Locale.TRADITIONAL_CHINESE.toLanguageTag()).build());//
+        list.add(SysLanguage.builder().label("English").value(Locale.US.toLanguageTag()).build());//
         return Res.ok(list);
     }
 
