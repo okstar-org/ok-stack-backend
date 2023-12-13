@@ -29,7 +29,7 @@ import java.util.List;
 @ApplicationScoped
 public class OrgDeptServiceImpl implements OrgDeptService {
     @Inject
-    private OrgDeptMapper orgDeptMapper;
+    OrgDeptMapper orgDeptMapper;
 
     @Override
     public void save(OrgDept sysDept) {

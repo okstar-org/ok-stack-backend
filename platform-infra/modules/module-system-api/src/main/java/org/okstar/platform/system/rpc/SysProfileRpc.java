@@ -11,15 +11,22 @@
  * /
  */
 
-package org.okstar.platform.system.account.service;
+package org.okstar.platform.system.rpc;
 
 
-import org.okstar.platform.common.datasource.OkService;
-import org.okstar.platform.system.account.domain.SysProfile;
+import org.eclipse.microprofile.rest.client.inject.RegisterRestClient;
+import org.okstar.platform.system.dto.SysProfileDTO;
 
-public interface SysProfileService extends OkService<SysProfile, Long> {
+import javax.ws.rs.GET;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 
-    SysProfile loadByUsername(String username);
+@RegisterRestClient
+@Path("rpc/SysProfileRpc")
+public interface SysProfileRpc {
 
-    SysProfile loadByAccount(Long accountId);
+
+    @GET
+    @Path("getByAccount/{accountId}")
+    SysProfileDTO getByAccount(@PathParam("accountId") Long accountId);
 }

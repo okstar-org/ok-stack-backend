@@ -179,8 +179,13 @@ public class OrgStaffServiceImpl implements OrgStaffService {
         staff.setAccountId(accountId);
     }
 
+    @Override
+    public Optional<OrgStaff> getByAccountId(Long id) {
+        return orgStaffMapper.find("accountId", id).stream().findFirst();
+    }
+
     private Optional<OrgStaff> findByNo(String no) {
-        return orgStaffMapper.find("no = ?1", no).stream().findFirst();
+        return orgStaffMapper.find("no", no).stream().findFirst();
     }
 
 

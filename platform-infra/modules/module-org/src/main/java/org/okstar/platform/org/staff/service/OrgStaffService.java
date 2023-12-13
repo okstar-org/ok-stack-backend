@@ -19,6 +19,7 @@ import org.okstar.platform.org.domain.OrgStaff;
 import org.okstar.platform.org.vo.OrgStaffReq;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * 部门管理 服务层
@@ -48,4 +49,6 @@ public interface OrgStaffService extends OkService<OrgStaff, Long> {
     boolean add(OrgStaffReq req);
 
     void setAccountId(Long id, Long accountId);
+
+    Optional<OrgStaff> getByAccountId(Long id);
 }

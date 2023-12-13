@@ -49,6 +49,11 @@ public class Org extends BaseEntity
     private String url;
 
     /**
+     * 组织位置
+     */
+    private String location;
+
+    /**
      * 组织头像（Logo）
      */
     private String avatar;

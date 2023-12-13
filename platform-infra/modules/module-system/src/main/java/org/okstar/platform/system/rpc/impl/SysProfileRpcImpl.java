@@ -11,37 +11,28 @@
  * /
  */
 
-package org.okstar.platform.system.account.resource;
+package org.okstar.platform.system.rpc.impl;
 
-import io.quarkus.security.Authenticated;
-import org.okstar.platform.common.core.web.bean.Req;
-import org.okstar.platform.common.core.web.bean.Res;
-import org.okstar.platform.common.resource.OkCommonResource;
+import org.okstar.platform.common.core.utils.bean.OkBeanUtils;
 import org.okstar.platform.system.account.domain.SysProfile;
 import org.okstar.platform.system.account.service.SysProfileService;
+import org.okstar.platform.system.dto.SysProfileDTO;
+import org.okstar.platform.system.rpc.SysProfileRpc;
 
+import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
-import javax.ws.rs.GET;
-import javax.ws.rs.PUT;
-import javax.ws.rs.Path;
 
-@Authenticated
-@Path("/profile")
-public class SysProfileResource extends OkCommonResource {
+@ApplicationScoped
+public class SysProfileRpcImpl implements SysProfileRpc {
 
     @Inject
     SysProfileService profileService;
 
-    @GET
-    public Res<SysProfile> get() {
-        String username = getUsername();
-        var profile = profileService.loadByUsername(username);
-        return Res.ok(Req.empty(), profile);
-    }
-
-    @PUT
-    public Res<Boolean> put(SysProfile profile){
-        profileService.save(profile);
-        return Res.ok(true);
+    @Override
+    public SysProfileDTO getByAccount(Long accountId) {
+        SysProfileDTO dto = new SysProfileDTO();
+        SysProfile profile = profileService.loadByAccount(accountId);
+        OkBeanUtils.copyPropertiesTo(profile, dto);
+        return dto;
     }
 }

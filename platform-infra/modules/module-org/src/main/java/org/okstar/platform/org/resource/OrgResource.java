@@ -14,13 +14,14 @@
 package org.okstar.platform.org.resource;
 
 import io.quarkus.logging.Log;
+import org.eclipse.microprofile.rest.client.inject.RestClient;
 import org.okstar.platform.common.core.web.bean.Req;
 import org.okstar.platform.common.core.web.bean.Res;
 import org.okstar.platform.common.resource.OkCommonResource;
+import org.okstar.platform.common.rpc.RpcAssert;
 import org.okstar.platform.org.domain.Org;
 import org.okstar.platform.org.domain.OrgDept;
 import org.okstar.platform.org.domain.OrgPost;
-import org.okstar.platform.org.domain.OrgStaff;
 import org.okstar.platform.org.dto.MyOrgInfo;
 import org.okstar.platform.org.dto.MyPostInfo;
 import org.okstar.platform.org.dto.Org0;
@@ -30,6 +31,10 @@ import org.okstar.platform.org.service.OrgPostService;
 import org.okstar.platform.org.service.OrgService;
 import org.okstar.platform.org.staff.service.OrgStaffPostService;
 import org.okstar.platform.org.staff.service.OrgStaffService;
+import org.okstar.platform.system.dto.SysProfileDTO;
+import org.okstar.platform.system.rpc.SysAccountRpc;
+import org.okstar.platform.system.rpc.SysProfileRpc;
+import org.springframework.util.Assert;
 
 import javax.inject.Inject;
 import javax.ws.rs.GET;
@@ -54,6 +59,12 @@ public class OrgResource extends OkCommonResource {
     OrgPostService orgPostService;
     @Inject
     OrgDeptService orgDeptService;
+    @Inject
+    @RestClient
+    SysProfileRpc sysProfileRpc;
+    @Inject
+    @RestClient
+    SysAccountRpc sysAccountRpc;
 
 
     @GET
@@ -66,19 +77,25 @@ public class OrgResource extends OkCommonResource {
     @GET
     @Path("me")
     public Res<MyOrgInfo> me() {
-        Optional<Org> org = orgService.current();
-        if (org.isEmpty()) {
+        Optional<Org> orgOpt = orgService.current();
+        if (orgOpt.isEmpty()) {
             return Res.error(Req.empty());
         }
+        Org org = orgOpt.get();
+        Log.infof("org:%s", org.getName());
 
         String username = getUsername();
         Log.infof("username:%s", username);
 
+        var account0 = RpcAssert.isTrue(sysAccountRpc.findByUsername(username));
+        Log.infof("findByUsername:%s=>%s", account0);
 
-        OrgStaff staff = staffService.get(1L);
+        var staff = staffService.getByAccountId(account0.getId());
+        Assert.isTrue(staff.isPresent(), "Staff is not exist");
 
-        //TODO 暂时固定1L
-        var staffPosts = staffPostService.findByStaffId(1L);
+        Log.infof("getByAccountId:%s=>%s", staff);
+
+        var staffPosts = staffPostService.findByStaffId(staff.get().id);
         if (staffPosts.isEmpty()) {
             return Res.error(Req.empty());
         }
@@ -97,18 +114,18 @@ public class OrgResource extends OkCommonResource {
 
         MyOrgInfo info = new MyOrgInfo();
         info.setOrg(Org0.builder()
-                .name(org.get().getName())
-                .url(org.get().getUrl())
-                .avatar(org.get().getAvatar())
+                .name(org.getName())
+                .url(org.getUrl())
+                .avatar(org.getAvatar())
+                .location(org.getLocation())
                 .build());
 
+        SysProfileDTO profile = sysProfileRpc.getByAccount(account0.getId());
         info.setStaff(Staff0.builder()
-                .no(staff.getFragment().getNo())
-                .phone(staff.getFragment().getPhone())
-                .email(staff.getFragment().getEmail())
+                .no(staff.get().getFragment().getNo())
+                .phone(profile.getPhone()).email(profile.getEmail())
                 .build());
         info.setPostInfo(infos);
-
-        return Res.ok(Req.empty(), info);
+        return Res.ok(info);
     }
 }

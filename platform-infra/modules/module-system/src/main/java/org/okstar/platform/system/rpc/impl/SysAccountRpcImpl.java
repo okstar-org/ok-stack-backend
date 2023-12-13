@@ -11,7 +11,7 @@
  * /
  */
 
-package org.okstar.platform.system.account.rpc;
+package org.okstar.platform.system.rpc.impl;
 
 import org.okstar.platform.common.core.defined.AccountDefines;
 import org.okstar.platform.common.core.utils.bean.OkBeanUtils;

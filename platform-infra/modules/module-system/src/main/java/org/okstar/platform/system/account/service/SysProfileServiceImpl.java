@@ -85,11 +85,20 @@ public class SysProfileServiceImpl implements SysProfileService {
     }
 
     @Override
-    public SysProfile loadByAccountId(String username) {
-
+    public SysProfile loadByUsername(String username) {
         SysAccount account = accountService.loadByUsername(username);
         Assert.notNull(account, "Invalid username");
+        return getProfile(account);
+    }
 
+    @Override
+    public SysProfile loadByAccount(Long accountId) {
+        SysAccount account = accountService.get(accountId);
+        Assert.notNull(account, "Invalid id");
+        return getProfile(account);
+    }
+
+    private SysProfile getProfile(SysAccount account) {
         Optional<SysProfile> first = mapper.find("accountId", account.id).stream().findFirst();
         if (first.isEmpty()) {
             SysProfile profile = new SysProfile();
@@ -107,6 +116,5 @@ public class SysProfileServiceImpl implements SysProfileService {
             return profile;
         }
         return first.get();
-
     }
 }

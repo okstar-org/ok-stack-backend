@@ -32,9 +32,7 @@ import java.util.List;
 @ApplicationScoped
 public class OrgPostServiceImpl implements OrgPostService {
     @Inject
-    private OrgPostMapper orgPostMapper;
-    @Inject
-    private OrgDeptService orgDeptService;
+    OrgPostMapper orgPostMapper;
 
     @Override
     public void save(OrgPost orgPost) {
