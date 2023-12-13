@@ -13,11 +13,18 @@
 
 package org.okstar.platform.org.dto;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.okstar.platform.common.core.web.bean.DTO;
 
 @Data
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class Org0 extends DTO {
     private String name;
     private String url;
+    private String avatar;
 }

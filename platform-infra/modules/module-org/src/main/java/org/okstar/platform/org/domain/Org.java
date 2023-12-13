@@ -45,9 +45,13 @@ public class Org extends BaseEntity
 
     /**
      * 组织地址
-     * 配置信息: {url}/org/.well-known/configuration
      */
     private String url;
+
+    /**
+     * 组织头像（Logo）
+     */
+    private String avatar;
 
     /**
      * 当前组织

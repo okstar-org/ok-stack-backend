@@ -38,6 +38,7 @@ import javax.inject.Inject;
 import java.util.Optional;
 
 import static org.okstar.platform.common.core.defined.AccountDefines.BindType.email;
+import static org.okstar.platform.common.core.defined.AccountDefines.BindType.phone;
 
 @Slf4j
 @ApplicationScoped
@@ -153,9 +154,7 @@ public class PassportServiceImpl implements PassportService {
     @Override
     public SysAccount0 getAccount(String account) {
         //判断帐号类型
-        AccountDefines.BindType bindType = account.indexOf("@") > 0 ?
-                email : //
-                AccountDefines.BindType.phone;  //
+        AccountDefines.BindType bindType = account.indexOf("@") > 0 ? email : phone;  //
 
         SysAccount0 account0 = RpcAssert.isTrue(sysAccountRpc.findByBind(AccountDefines.DefaultISO, bindType, account));
         if (account0 == null) {

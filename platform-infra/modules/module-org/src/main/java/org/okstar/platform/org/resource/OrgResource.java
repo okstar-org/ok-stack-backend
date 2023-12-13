@@ -13,17 +13,23 @@
 
 package org.okstar.platform.org.resource;
 
+import io.quarkus.logging.Log;
 import org.okstar.platform.common.core.web.bean.Req;
 import org.okstar.platform.common.core.web.bean.Res;
+import org.okstar.platform.common.resource.OkCommonResource;
 import org.okstar.platform.org.domain.Org;
 import org.okstar.platform.org.domain.OrgDept;
 import org.okstar.platform.org.domain.OrgPost;
+import org.okstar.platform.org.domain.OrgStaff;
 import org.okstar.platform.org.dto.MyOrgInfo;
 import org.okstar.platform.org.dto.MyPostInfo;
+import org.okstar.platform.org.dto.Org0;
+import org.okstar.platform.org.dto.Staff0;
 import org.okstar.platform.org.service.OrgDeptService;
 import org.okstar.platform.org.service.OrgPostService;
 import org.okstar.platform.org.service.OrgService;
 import org.okstar.platform.org.staff.service.OrgStaffPostService;
+import org.okstar.platform.org.staff.service.OrgStaffService;
 
 import javax.inject.Inject;
 import javax.ws.rs.GET;
@@ -36,16 +42,19 @@ import java.util.stream.Collectors;
  * 组织
  */
 @Path("")
-public class OrgResource {
+public class OrgResource extends OkCommonResource {
 
     @Inject
     OrgService orgService;
     @Inject
     OrgStaffPostService staffPostService;
     @Inject
+    OrgStaffService staffService;
+    @Inject
     OrgPostService orgPostService;
     @Inject
     OrgDeptService orgDeptService;
+
 
     @GET
     @Path("current")
@@ -62,6 +71,12 @@ public class OrgResource {
             return Res.error(Req.empty());
         }
 
+        String username = getUsername();
+        Log.infof("username:%s", username);
+
+
+        OrgStaff staff = staffService.get(1L);
+
         //TODO 暂时固定1L
         var staffPosts = staffPostService.findByStaffId(1L);
         if (staffPosts.isEmpty()) {
@@ -73,7 +88,6 @@ public class OrgResource {
             OrgPost post = orgPostService.get(postId);
             MyPostInfo postInfo = new MyPostInfo();
             postInfo.setPost(post.getName());
-
             OrgDept dept = orgDeptService.get(post.getDeptId());
             if (dept != null)
                 postInfo.setDept(dept.getName());
@@ -82,8 +96,18 @@ public class OrgResource {
         }).collect(Collectors.toList());
 
         MyOrgInfo info = new MyOrgInfo();
-        info.setOrg(org.get().getName());
+        info.setOrg(Org0.builder()
+                .name(org.get().getName())
+                .url(org.get().getUrl())
+                .avatar(org.get().getAvatar())
+                .build());
+
+        info.setStaff(Staff0.builder()
+                .no(staff.getFragment().getNo())
+                .phone(staff.getFragment().getPhone())
+                .build());
         info.setPostInfo(infos);
+
         return Res.ok(Req.empty(), info);
     }
 }

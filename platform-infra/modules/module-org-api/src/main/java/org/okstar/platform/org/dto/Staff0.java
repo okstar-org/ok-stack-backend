@@ -13,25 +13,16 @@
 
 package org.okstar.platform.org.dto;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
-import org.okstar.platform.common.core.web.bean.DTO;
-
-import java.util.List;
-
-/**
- * 我的组织信息
- */
+import lombok.NoArgsConstructor;
 
 @Data
-public class MyOrgInfo extends DTO {
-
-    /**
-     * 人员编号
-     */
-    private Staff0 staff;
-
-    private Org0 org;
-
-    private List<MyPostInfo> postInfo;
-
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
+public class Staff0 {
+    private String no;
+    private String phone;
 }

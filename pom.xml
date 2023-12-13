@@ -54,8 +54,8 @@
         <quarkus.datasource.password></quarkus.datasource.password>
         <quarkus.datasource.jdbc.url>jdbc:h2:mem:${artifactId}</quarkus.datasource.jdbc.url>
         <quarkus.datasource.jdbc.driver>org.h2.Driver</quarkus.datasource.jdbc.driver>
-        <quarkus.datasource.jdbc.mix-size>1</quarkus.datasource.jdbc.mix-size>
-        <quarkus.datasource.jdbc.max-size>5</quarkus.datasource.jdbc.max-size>
+        <quarkus.datasource.jdbc.mix-size>2</quarkus.datasource.jdbc.mix-size>
+        <quarkus.datasource.jdbc.max-size>15</quarkus.datasource.jdbc.max-size>
 
         <quarkus.hibernate-orm.dialect>org.hibernate.dialect.H2Dialect</quarkus.hibernate-orm.dialect>
         <quarkus.hibernate-orm.log.sql>true</quarkus.hibernate-orm.log.sql>
@@ -91,6 +91,7 @@
                 <quarkus.datasource.username>okstar</quarkus.datasource.username>
                 <quarkus.datasource.password>Encrypt=>YOzFYCG4evdiWnDP8vGdLw==</quarkus.datasource.password>
                 <quarkus.datasource.jdbc.url>jdbc:mariadb://chuanshaninfo.com:3307</quarkus.datasource.jdbc.url>
+                <quarkus.datasource.jdbc.args>autoReconnect=true&amp;connectTimeout=5000&amp;socketTimeout=60000</quarkus.datasource.jdbc.args>
                 <quarkus.datasource.jdbc.driver>org.mariadb.jdbc.Driver</quarkus.datasource.jdbc.driver>
                 <quarkus.hibernate-orm.dialect>org.hibernate.dialect.MariaDB106Dialect</quarkus.hibernate-orm.dialect>
                 <quarkus.keycloak.admin-client.server-url>https://chuanshaninfo.com:8443</quarkus.keycloak.admin-client.server-url>

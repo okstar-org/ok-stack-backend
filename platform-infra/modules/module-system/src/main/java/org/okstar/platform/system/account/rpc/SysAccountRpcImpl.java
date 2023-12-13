@@ -65,7 +65,6 @@ public class SysAccountRpcImpl implements SysAccountRpc {
     @Override
     public RpcResult<SysAccount0> findByBind(String iso, AccountDefines.BindType type, String bindValue) {
         try {
-
             var sysUser = userService.findByBind(iso, type, bindValue);
             if (sysUser == null)
                 return RpcResult.<SysAccount0>builder().success(true).build();

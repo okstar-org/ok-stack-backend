@@ -90,20 +90,22 @@ public class SysAccountServiceImpl extends OkAbsService implements SysAccountSer
      * 通过用户名查询用户
      *
      * @param iso
-     * @param bindType
-     * @param bindValue
+     * @param type
+     * @param value
      * @return
      */
     @Override
-    public SysAccount findByBind(String iso, AccountDefines.BindType bindType, String bindValue) {
-        String bind = bindValue;
-        if (bindType == AccountDefines.BindType.phone) {
-            bind = OkPhoneUtils.canonical(bindValue, iso);
+    public SysAccount findByBind(String iso, AccountDefines.BindType type, String value) {
+        Log.infof("findByBind iso:%s type:%s value:%s", iso, type, value);
+
+        String bind = value;
+        if (type == AccountDefines.BindType.phone) {
+            bind = OkPhoneUtils.canonical(value, iso);
         }
 
         List<SysAccountBind> list = sysAccountBindMapper.list(
                 "bindType = ?1 and bindValue = ?2",
-                bindType,
+                type,
                 bind);
         if (list.isEmpty()) {
             return null;
