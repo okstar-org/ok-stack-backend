@@ -38,13 +38,30 @@ public class SysProfileServiceImpl implements SysProfileService {
     SysAccountService accountService;
 
     @Override
-    public void save(SysProfile sysProfile) {
-        mapper.persist(sysProfile);
+    public void save(SysProfile entity) {
+        if (entity.id != null && entity.id > 0) {
+            SysProfile exist = get(entity.id);
+            exist.setFirstName(entity.getFirstName());
+            exist.setLastName(entity.getLastName());
+            exist.setGender(entity.getGender());
+            exist.setIdentify(entity.getIdentify());
+            exist.setCountry(entity.getCountry());
+            exist.setCity(entity.getCity());
+            exist.setAddress(entity.getAddress());
+            exist.setEmail(entity.getEmail());
+            exist.setPhone(entity.getPhone());
+            exist.setTelephone(entity.getTelephone());
+            exist.setWebsite(entity.getWebsite());
+            exist.setBirthday(entity.getBirthday());
+            mapper.persist(exist);
+        } else {
+            mapper.persist(entity);
+        }
     }
 
     @Override
     public List<SysProfile> findAll() {
-        return null;
+        return mapper.findAll().list();
     }
 
     @Override
@@ -53,18 +70,18 @@ public class SysProfileServiceImpl implements SysProfileService {
     }
 
     @Override
-    public SysProfile get(Long aLong) {
-        return null;
+    public SysProfile get(Long id) {
+        return mapper.findById(id);
     }
 
     @Override
-    public void deleteById(Long aLong) {
-
+    public void deleteById(Long id) {
+        mapper.deleteById(id);
     }
 
     @Override
     public void delete(SysProfile sysProfile) {
-
+        mapper.delete(sysProfile);
     }
 
     @Override

@@ -98,21 +98,23 @@ public class SysAccountServiceImpl extends OkAbsService implements SysAccountSer
     public SysAccount findByBind(String iso, AccountDefines.BindType type, String value) {
         Log.infof("findByBind iso:%s type:%s value:%s", iso, type, value);
 
-        String bind = value;
+        String bindValue = value;
         if (type == AccountDefines.BindType.phone) {
-            bind = OkPhoneUtils.canonical(value, iso);
+            bindValue = OkPhoneUtils.canonical(value, iso);
         }
 
         List<SysAccountBind> list = sysAccountBindMapper.list(
                 "bindType = ?1 and bindValue = ?2",
                 type,
-                bind);
+                bindValue);
         if (list.isEmpty()) {
             return null;
         }
 
-        return list.stream().findFirst().get().getAccount();
+        SysAccountBind accountBind = list.get(0);
+        Log.infof("bind=>%s", accountBind);
 
+        return get(accountBind.getAccountId());
     }
 
     @Override
@@ -153,7 +155,7 @@ public class SysAccountServiceImpl extends OkAbsService implements SysAccountSer
                 sysAccount.getUsername(), sysAccount);
 
         SysAccountBind bind = new SysAccountBind();
-        bind.setAccount(sysAccount);
+        bind.setAccountId(sysAccount.id);
         bind.setBindType(signUpForm.getAccountType());
         switch (signUpForm.getAccountType()) {
             case email -> bind.setBindValue(signUpForm.getAccount());

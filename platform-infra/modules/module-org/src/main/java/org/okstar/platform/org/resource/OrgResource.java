@@ -105,6 +105,7 @@ public class OrgResource extends OkCommonResource {
         info.setStaff(Staff0.builder()
                 .no(staff.getFragment().getNo())
                 .phone(staff.getFragment().getPhone())
+                .email(staff.getFragment().getEmail())
                 .build());
         info.setPostInfo(infos);
 

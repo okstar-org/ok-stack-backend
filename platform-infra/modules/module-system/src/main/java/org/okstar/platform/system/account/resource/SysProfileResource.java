@@ -22,6 +22,7 @@ import org.okstar.platform.system.account.service.SysProfileService;
 
 import javax.inject.Inject;
 import javax.ws.rs.GET;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 
 @Authenticated
@@ -36,5 +37,11 @@ public class SysProfileResource extends OkCommonResource {
         String username = getUsername();
         var profile = profileService.loadByAccountId(username);
         return Res.ok(Req.empty(), profile);
+    }
+
+    @PUT
+    public Res<Boolean> put(SysProfile profile){
+        profileService.save(profile);
+        return Res.ok(true);
     }
 }

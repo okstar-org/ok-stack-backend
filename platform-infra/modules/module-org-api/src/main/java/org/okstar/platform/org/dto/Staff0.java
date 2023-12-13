@@ -25,4 +25,5 @@ import lombok.NoArgsConstructor;
 public class Staff0 {
     private String no;
     private String phone;
+    private String email;
 }

@@ -20,7 +20,6 @@ import org.okstar.platform.common.datasource.domain.OkEntity;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.ManyToOne;
 
 /**
  * 用户绑定
@@ -33,8 +32,8 @@ public class SysAccountBind extends OkEntity {
     /**
      * 绑定到的帐号
      */
-    @ManyToOne
-    SysAccount account;
+//    @ManyToOne
+    Long accountId;
 
     /**
      * 绑定类型
