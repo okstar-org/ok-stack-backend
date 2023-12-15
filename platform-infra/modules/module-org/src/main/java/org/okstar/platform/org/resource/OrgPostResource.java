@@ -13,10 +13,13 @@
 
 package org.okstar.platform.org.resource;
 
+import org.okstar.platform.common.core.utils.OkStringUtil;
 import org.okstar.platform.common.core.web.bean.Req;
 import org.okstar.platform.common.core.web.bean.Res;
 import org.okstar.platform.org.domain.OrgPost;
+import org.okstar.platform.org.domain.OrgStaff;
 import org.okstar.platform.org.service.OrgPostService;
+import org.okstar.platform.org.staff.service.OrgStaffService;
 
 import javax.inject.Inject;
 import javax.ws.rs.GET;
@@ -30,10 +33,20 @@ public class OrgPostResource {
     @Inject
     OrgPostService orgPostService;
 
+    @Inject
+    OrgStaffService orgStaffService;
+
+
     @GET
     @Path("findByDept/{deptId}")
     public Res<List<OrgPost>> findByDept(@PathParam("deptId") Long deptId) {
         List<OrgPost> list = orgPostService.findByDept(deptId);
+        list.stream().filter(e-> OkStringUtil.isNotEmpty(e.getAssignFor())).forEach(post -> {
+            OrgStaff staff = (orgStaffService.get(Long.valueOf(post.getAssignFor())));
+            if (staff != null) {
+                post.setAssignFor(staff.getFragment().getName());
+            }
+        });
         return Res.ok(Req.empty(), list);
     }
 

@@ -13,12 +13,14 @@
 
 package org.okstar.platform.org.resource;
 
+import org.eclipse.microprofile.rest.client.inject.RestClient;
 import org.okstar.platform.common.core.web.bean.Req;
 import org.okstar.platform.common.core.web.bean.Res;
 import org.okstar.platform.org.domain.Org;
 import org.okstar.platform.org.domain.OrgDept;
 import org.okstar.platform.org.service.OrgDeptService;
 import org.okstar.platform.org.service.OrgService;
+import org.okstar.platform.system.rpc.SysAccountRpc;
 import org.springframework.util.Assert;
 
 import javax.inject.Inject;
@@ -34,6 +36,8 @@ public class OrgDeptResource {
     OrgDeptService deptService;
     @Inject
     OrgService orgService;
+
+
 
     @GET
     @Path("children")

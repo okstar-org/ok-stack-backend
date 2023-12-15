@@ -45,6 +45,8 @@ public class OrgStaffFragment {
     private String name;
 
     public String getName() {
+        if(OkStringUtil.isNotEmpty(name))
+            return name;
         return OkStringUtil.combinePeopleName(language, firstName, lastName);
     }
 

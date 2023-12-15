@@ -14,6 +14,7 @@
 package org.okstar.platform.org.service;
 
 import io.quarkus.panache.common.Page;
+import org.okstar.platform.common.core.utils.OkDateUtils;
 import org.okstar.platform.common.core.web.page.OkPageResult;
 import org.okstar.platform.common.core.web.page.OkPageable;
 import org.okstar.platform.org.domain.OrgPost;
@@ -36,8 +37,19 @@ public class OrgPostServiceImpl implements OrgPostService {
 
     @Override
     public void save(OrgPost orgPost) {
-        Assert.isTrue(orgPost.getDeptId() != null && orgPost.getDeptId() > 0, "请选择部门");
-        orgPostMapper.persist(orgPost);
+        if (orgPost.id != null && orgPost.id > 0) {
+            OrgPost post = orgPostMapper.findById(orgPost.id);
+            post.setName(orgPost.getName());
+            post.setNo(orgPost.getNo());
+            post.setDescr(orgPost.getDescr());
+            post.setRecruit(orgPost.getRecruit());
+            post.setUpdateAt(OkDateUtils.now());
+            orgPostMapper.persist(post);
+        } else {
+            Assert.isTrue(orgPost.getDeptId() != null && orgPost.getDeptId() > 0, "请选择部门");
+            orgPost.setCreateAt(OkDateUtils.now());
+            orgPostMapper.persist(orgPost);
+        }
     }
 
     @Override
