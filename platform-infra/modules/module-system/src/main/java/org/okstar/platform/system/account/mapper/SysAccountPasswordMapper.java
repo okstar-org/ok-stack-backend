@@ -13,10 +13,11 @@
 
 package org.okstar.platform.system.account.mapper;
 
+import jakarta.enterprise.context.ApplicationScoped;
 import org.okstar.platform.common.datasource.OkRepository;
 import org.okstar.platform.system.account.domain.SysAccountPassword;
 
-import javax.enterprise.context.ApplicationScoped;
+
 
 
 /**

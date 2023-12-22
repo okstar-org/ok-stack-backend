@@ -13,6 +13,7 @@
 
 package org.okstar.platform.system.settings.resource;
 
+import jakarta.inject.Inject;
 import org.okstar.platform.common.core.web.bean.Res;
 import org.okstar.platform.system.account.domain.SysAccount;
 import org.okstar.platform.system.dto.SysLanguage;
@@ -21,7 +22,6 @@ import org.okstar.platform.system.settings.domain.SysSetGlobal;
 import org.okstar.platform.system.settings.domain.SysSetPersonal;
 import org.okstar.platform.system.settings.service.SysBasicService;
 
-import javax.inject.Inject;
 import javax.ws.rs.GET;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;

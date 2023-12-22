@@ -13,11 +13,11 @@
 
 package org.okstar.platform.system.account.domain;
 
+import jakarta.persistence.Entity;
 import lombok.Data;
 import org.okstar.platform.system.domain.BaseEntity;
 
-import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
+
 
 /**
  * 用户密码(修改历史)
@@ -29,8 +29,8 @@ public class SysAccountPassword extends BaseEntity {
     /**
      * 绑定到帐号
      */
-    @ManyToOne
-    SysAccount account;
+//    @ManyToOne
+    Long accountId;
 
     /**
      * 密码

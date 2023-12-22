@@ -37,12 +37,6 @@
         </dependency>
 
         <dependency>
-            <groupId>io.quarkus</groupId>
-            <artifactId>quarkus-jdbc-mariadb</artifactId>
-        </dependency>
-
-
-        <dependency>
             <groupId>org.okstar.platform</groupId>
             <artifactId>module-system-api</artifactId>
             <version>${revision}</version>
@@ -52,7 +46,6 @@
             <groupId>org.okstar.platform</groupId>
             <artifactId>common-security</artifactId>
             <version>${revision}</version>
-
         </dependency>
 
         <dependency>
@@ -60,6 +53,7 @@
             <artifactId>common-cache</artifactId>
             <version>${revision}</version>
         </dependency>
+
         <dependency>
             <groupId>org.okstar.platform</groupId>
             <artifactId>common-log</artifactId>
@@ -78,7 +72,11 @@
             <version>${revision}</version>
         </dependency>
 
-
+        <dependency>
+            <groupId>org.ow2.asm</groupId>
+            <artifactId>asm</artifactId>
+            <version>9.5</version>
+        </dependency>
 
     </dependencies>
 

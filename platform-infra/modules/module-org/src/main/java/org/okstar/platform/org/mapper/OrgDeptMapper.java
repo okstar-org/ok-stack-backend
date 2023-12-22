@@ -15,15 +15,16 @@ package org.okstar.platform.org.mapper;
 
 
 import io.quarkus.hibernate.orm.panache.PanacheRepository;
+import jakarta.enterprise.context.ApplicationScoped;
 import org.okstar.platform.org.domain.OrgDept;
 
-import javax.inject.Singleton;
+
 
 
 /**
  * 部门管理 数据层
  */
-@Singleton
+@ApplicationScoped
 public class OrgDeptMapper implements PanacheRepository<OrgDept> {
 
 }

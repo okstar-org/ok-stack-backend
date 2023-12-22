@@ -14,7 +14,9 @@
 package org.okstar.platform.org.resource;
 
 import io.quarkus.logging.Log;
+import jakarta.inject.Inject;
 import org.eclipse.microprofile.rest.client.inject.RestClient;
+import org.okstar.platform.common.core.utils.OkAssert;
 import org.okstar.platform.common.core.web.bean.Req;
 import org.okstar.platform.common.core.web.bean.Res;
 import org.okstar.platform.common.resource.OkCommonResource;
@@ -34,9 +36,7 @@ import org.okstar.platform.org.staff.service.OrgStaffService;
 import org.okstar.platform.system.dto.SysProfileDTO;
 import org.okstar.platform.system.rpc.SysAccountRpc;
 import org.okstar.platform.system.rpc.SysProfileRpc;
-import org.springframework.util.Assert;
 
-import javax.inject.Inject;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import java.util.List;
@@ -91,7 +91,7 @@ public class OrgResource extends OkCommonResource {
         Log.infof("findByUsername:%s=>%s", account0);
 
         var staff = staffService.getByAccountId(account0.getId());
-        Assert.isTrue(staff.isPresent(), "Staff is not exist");
+        OkAssert.isTrue(staff.isPresent(), "Staff is not exist");
 
         Log.infof("getByAccountId:%s=>%s", staff);
 

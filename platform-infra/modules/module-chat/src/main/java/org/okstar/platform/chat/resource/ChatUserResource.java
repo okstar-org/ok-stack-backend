@@ -13,6 +13,7 @@
 
 package org.okstar.platform.chat.resource;
 
+import jakarta.inject.Inject;
 import org.igniterealtime.restclient.entity.RosterItemEntity;
 import org.igniterealtime.restclient.entity.UserEntities;
 import org.okstar.platform.chat.ChatUtils;
@@ -23,7 +24,6 @@ import org.okstar.platform.chat.openfire.OpenfireManager;
 import org.okstar.platform.common.core.web.bean.Req;
 import org.okstar.platform.common.core.web.bean.Res;
 
-import javax.inject.Inject;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;

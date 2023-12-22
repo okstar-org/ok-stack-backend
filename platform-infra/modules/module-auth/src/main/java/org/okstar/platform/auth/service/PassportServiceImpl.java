@@ -14,6 +14,8 @@
 package org.okstar.platform.auth.service;
 
 import io.quarkus.logging.Log;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
 import org.eclipse.microprofile.rest.client.inject.RestClient;
 import org.okstar.platform.auth.backend.AuthzClientManager;
@@ -21,6 +23,7 @@ import org.okstar.platform.auth.backend.BackUser;
 import org.okstar.platform.auth.backend.BackUserManager;
 import org.okstar.platform.common.core.defined.AccountDefines;
 import org.okstar.platform.common.core.exception.OkRuntimeException;
+import org.okstar.platform.common.core.utils.OkAssert;
 import org.okstar.platform.common.rpc.RpcAssert;
 import org.okstar.platform.common.rpc.RpcResult;
 import org.okstar.platform.org.dto.OrgStaffFragment;
@@ -31,10 +34,7 @@ import org.okstar.platform.system.sign.SignInResult;
 import org.okstar.platform.system.sign.SignUpForm;
 import org.okstar.platform.system.sign.SignUpResult;
 import org.okstar.platform.system.vo.SysAccount0;
-import org.springframework.util.Assert;
 
-import javax.enterprise.context.ApplicationScoped;
-import javax.inject.Inject;
 import java.util.Optional;
 
 import static org.okstar.platform.common.core.defined.AccountDefines.BindType.email;
@@ -44,15 +44,12 @@ import static org.okstar.platform.common.core.defined.AccountDefines.BindType.ph
 @ApplicationScoped
 public class PassportServiceImpl implements PassportService {
 
-
     @Inject
     @RestClient
     SysAccountRpc sysAccountRpc;
-
     @Inject
     @RestClient
     OrgStaffRpc orgStaffRpc;
-
     @Inject
     BackUserManager backUserManager;
     @Inject
@@ -105,12 +102,12 @@ public class PassportServiceImpl implements PassportService {
         //删除认证信息
         boolean backUser = backUserManager.deleteUser(account0.getUsername());
         Log.infof("Sign down auth account:%s=>%s", accountId, backUser);
-        Assert.isTrue(backUser, "Sign down auth account failed");
+        OkAssert.isTrue(backUser, "Sign down auth account failed");
 
         //删除系统帐号
         Boolean aTrue = RpcAssert.isTrue(sysAccountRpc.signDown(accountId));
         Log.infof("Sign down system account:%s=>%s", accountId, aTrue);
-        Assert.isTrue(aTrue, "Delete system account failed");
+        OkAssert.isTrue(aTrue, "Delete system account failed");
     }
 
     @Override

@@ -13,13 +13,13 @@
 
 package org.okstar.platform.open.resource;
 
+import jakarta.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
 import org.eclipse.microprofile.rest.client.inject.RestClient;
 import org.okstar.platform.auth.rpc.PassportRpc;
 import org.okstar.platform.common.core.web.bean.Res;
 import org.okstar.platform.system.vo.SysAccount0;
 
-import javax.inject.Inject;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;

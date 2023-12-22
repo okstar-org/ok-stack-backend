@@ -13,12 +13,12 @@
 
 package org.okstar.platform.org.staff.resource;
 
+import jakarta.inject.Inject;
 import org.okstar.platform.common.core.web.bean.Req;
 import org.okstar.platform.common.core.web.bean.Res;
 import org.okstar.platform.org.domain.OrgPost;
 import org.okstar.platform.org.service.OrgPostService;
 
-import javax.inject.Inject;
 import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;

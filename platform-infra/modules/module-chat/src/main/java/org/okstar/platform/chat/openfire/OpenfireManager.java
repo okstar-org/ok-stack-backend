@@ -16,6 +16,8 @@ package org.okstar.platform.chat.openfire;
 import io.quarkus.arc.Arc;
 import io.quarkus.logging.Log;
 import io.quarkus.runtime.StartupEvent;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.enterprise.event.Observes;
 import lombok.Getter;
 import org.igniterealtime.restclient.RestApiClient;
 import org.igniterealtime.restclient.entity.*;
@@ -26,8 +28,6 @@ import org.okstar.platform.chat.beans.ChatGroup;
 import org.okstar.platform.chat.beans.ChatParticipant;
 import org.okstar.platform.chat.beans.ChatRoom;
 
-import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.event.Observes;
 import javax.ws.rs.core.Response;
 import java.util.HashMap;
 import java.util.List;

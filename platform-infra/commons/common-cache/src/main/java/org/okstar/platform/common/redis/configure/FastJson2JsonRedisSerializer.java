@@ -60,7 +60,7 @@
 //
 //    public void setObjectMapper(ObjectMapper objectMapper)
 //    {
-//        Assert.notNull(objectMapper, "'objectMapper' must not be null");
+//        OkAssert.notNull(objectMapper, "'objectMapper' must not be null");
 //        this.objectMapper = objectMapper;
 //    }
 //

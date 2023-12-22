@@ -14,8 +14,8 @@
 package org.okstar.platform.auth.keycloak;
 
 import io.quarkus.keycloak.admin.client.common.KeycloakAdminClientConfig;
+import jakarta.inject.Inject;
 
-import javax.inject.Inject;
 
 /**
  * KC管理接口

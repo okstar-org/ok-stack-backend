@@ -13,10 +13,10 @@
 
 package org.okstar.platform.system.domain;
 
+import jakarta.persistence.MappedSuperclass;
 import lombok.Data;
 import org.okstar.platform.common.datasource.domain.OkEntity;
 
-import javax.persistence.MappedSuperclass;
 
 /**
  * Entity基类

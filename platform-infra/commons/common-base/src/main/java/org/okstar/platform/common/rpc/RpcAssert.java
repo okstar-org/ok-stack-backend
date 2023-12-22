@@ -13,7 +13,7 @@
 
 package org.okstar.platform.common.rpc;
 
-import org.springframework.util.Assert;
+import org.wildfly.common.Assert;
 
 /**
  * Rpc断言处理工具
@@ -27,7 +27,10 @@ public class RpcAssert {
      * @param <T>
      */
     public static <T> T isTrue(RpcResult<T> result){
-        Assert.isTrue(result.isSuccess(), result.getMsg());
+        Assert.assertNotNull(result);
+        if(!result.isSuccess()){
+            throw new RuntimeException(result.getMsg());
+        }
         return result.getData();
     }
 }

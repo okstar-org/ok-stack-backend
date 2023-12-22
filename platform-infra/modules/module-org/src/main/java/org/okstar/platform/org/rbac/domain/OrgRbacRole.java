@@ -13,11 +13,10 @@
 
 package org.okstar.platform.org.rbac.domain;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
 import lombok.Data;
 import org.okstar.platform.org.domain.BaseEntity;
-
-import javax.persistence.Entity;
-import javax.persistence.Table;
 
 /**
  * RBAC-Role

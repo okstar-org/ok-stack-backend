@@ -15,9 +15,10 @@ package org.okstar.platform.org.mapper;
 
 
 import io.quarkus.hibernate.orm.panache.PanacheRepository;
+import jakarta.enterprise.context.ApplicationScoped;
 import org.okstar.platform.org.rbac.domain.OrgRbacUserRole;
 
-import javax.enterprise.context.ApplicationScoped;
+
 
 /**
  * 用户与角色关联表

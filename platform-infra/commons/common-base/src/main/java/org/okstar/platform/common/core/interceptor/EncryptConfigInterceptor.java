@@ -13,19 +13,15 @@
 
 package org.okstar.platform.common.core.interceptor;
 
-import io.quarkus.arc.Priority;
 import io.smallrye.config.ConfigSourceInterceptor;
 import io.smallrye.config.ConfigSourceInterceptorContext;
 import io.smallrye.config.ConfigValue;
-import io.smallrye.config.Priorities;
 import org.okstar.platform.common.security.AesEncryptUtil;
 
 /**
  * 参考：
  * http://www.kailing.pub/article/index/arcid/289.html
  */
-
-@Priority(value = Priorities.PLATFORM)//value 值越低优先级越高
 public class EncryptConfigInterceptor implements ConfigSourceInterceptor {
 
 

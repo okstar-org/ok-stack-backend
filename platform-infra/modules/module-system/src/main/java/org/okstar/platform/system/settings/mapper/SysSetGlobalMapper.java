@@ -13,10 +13,9 @@
 
 package org.okstar.platform.system.settings.mapper;
 
+import jakarta.enterprise.context.ApplicationScoped;
 import org.okstar.platform.common.datasource.OkRepository;
 import org.okstar.platform.system.settings.domain.SysSetGlobal;
-
-import javax.enterprise.context.ApplicationScoped;
 
 @ApplicationScoped
 public class SysSetGlobalMapper implements OkRepository<SysSetGlobal> {

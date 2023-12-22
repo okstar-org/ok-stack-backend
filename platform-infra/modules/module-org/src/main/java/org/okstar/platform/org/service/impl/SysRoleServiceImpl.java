@@ -14,14 +14,14 @@
 package org.okstar.platform.org.service.impl;
 
 import io.quarkus.panache.common.Page;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
 import org.okstar.platform.common.core.web.page.OkPageResult;
 import org.okstar.platform.common.core.web.page.OkPageable;
 import org.okstar.platform.org.mapper.SysRoleMapper;
 import org.okstar.platform.org.rbac.domain.OrgRbacRole;
 import org.okstar.platform.org.service.SysRoleService;
 
-import javax.enterprise.context.ApplicationScoped;
-import javax.inject.Inject;
 import java.util.List;
 
 /**

@@ -13,6 +13,8 @@
 
 package org.okstar.platform.system.rpc.impl;
 
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
 import org.okstar.platform.common.core.defined.AccountDefines;
 import org.okstar.platform.common.core.utils.bean.OkBeanUtils;
 import org.okstar.platform.common.rpc.RpcResult;
@@ -23,8 +25,7 @@ import org.okstar.platform.system.sign.SignUpForm;
 import org.okstar.platform.system.sign.SignUpResult;
 import org.okstar.platform.system.vo.SysAccount0;
 
-import javax.enterprise.context.ApplicationScoped;
-import javax.inject.Inject;
+
 
 @ApplicationScoped
 public class SysAccountRpcImpl implements SysAccountRpc {

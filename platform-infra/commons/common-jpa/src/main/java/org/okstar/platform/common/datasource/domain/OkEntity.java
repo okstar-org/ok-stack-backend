@@ -14,14 +14,14 @@
 package org.okstar.platform.common.datasource.domain;
 
 import io.quarkus.hibernate.orm.panache.PanacheEntity;
+import jakarta.persistence.MappedSuperclass;
 import lombok.Data;
 
-import javax.persistence.MappedSuperclass;
 import java.util.Date;
 
 @Data
 @MappedSuperclass
-public class OkEntity extends PanacheEntity {
+public class  OkEntity extends PanacheEntity {
     /**
      * 创建者
      */

@@ -13,11 +13,11 @@
 
 package org.okstar.platform.chat.resource;
 
+import jakarta.inject.Inject;
 import org.okstar.platform.chat.beans.ChatGroup;
 import org.okstar.platform.chat.openfire.OpenfireManager;
 import org.okstar.platform.common.core.web.bean.Res;
 
-import javax.inject.Inject;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import java.util.List;

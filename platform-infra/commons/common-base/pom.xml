@@ -26,6 +26,23 @@
     <artifactId>common-base</artifactId>
 
     <dependencies>
+        <dependency>
+            <groupId>javax.ws.rs</groupId>
+            <artifactId>javax.ws.rs-api</artifactId>
+            <version>2.1</version>
+        </dependency>
+
+        <dependency>
+            <groupId>jakarta.persistence</groupId>
+            <artifactId>jakarta.persistence-api</artifactId>
+            <version>3.1.0</version>
+        </dependency>
+
+        <dependency>
+            <groupId>javax.validation</groupId>
+            <artifactId>validation-api</artifactId>
+            <version>2.0.1.Final</version>
+        </dependency>
 
         <dependency>
             <groupId>org.apache.commons</groupId>
@@ -98,6 +115,7 @@
             <artifactId>libphonenumber</artifactId>
             <version>8.11.1</version>
         </dependency>
+
     </dependencies>
 
 </project>

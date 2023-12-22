@@ -16,7 +16,7 @@ package org.okstar.platform.org.domain;
 import lombok.Data;
 import org.okstar.platform.common.datasource.domain.OkEntity;
 
-import javax.persistence.MappedSuperclass;
+import jakarta.persistence.MappedSuperclass;
 
 /**
  * Entity基类

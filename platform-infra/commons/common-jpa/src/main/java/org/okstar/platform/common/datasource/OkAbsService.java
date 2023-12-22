@@ -13,11 +13,12 @@
 
 package org.okstar.platform.common.datasource;
 
+import jakarta.inject.Inject;
+import jakarta.transaction.Transactional;
 import org.eclipse.microprofile.context.ManagedExecutor;
 import org.eclipse.microprofile.context.ThreadContext;
 
-import javax.inject.Inject;
-import javax.transaction.Transactional;
+
 
 @Transactional
 public abstract class OkAbsService {

@@ -15,16 +15,14 @@ package org.okstar.platform.common.datasource;
 
 import io.agroal.api.AgroalDataSource;
 import io.agroal.api.AgroalDataSourceMetrics;
+import jakarta.inject.Inject;
 import org.eclipse.microprofile.health.HealthCheck;
 import org.eclipse.microprofile.health.HealthCheckResponse;
 import org.eclipse.microprofile.health.HealthCheckResponseBuilder;
 import org.eclipse.microprofile.health.Readiness;
 
-import javax.enterprise.context.ApplicationScoped;
-import javax.inject.Inject;
 
 @Readiness
-@ApplicationScoped
 public class DataSourceHealthCheck implements HealthCheck {
     @Inject
     AgroalDataSource agroalDataSource;

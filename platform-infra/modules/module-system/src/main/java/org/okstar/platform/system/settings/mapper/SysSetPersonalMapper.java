@@ -13,10 +13,10 @@
 
 package org.okstar.platform.system.settings.mapper;
 
+import jakarta.enterprise.context.ApplicationScoped;
 import org.okstar.platform.common.datasource.OkRepository;
 import org.okstar.platform.system.settings.domain.SysSetPersonal;
 
-import javax.enterprise.context.ApplicationScoped;
 
 @ApplicationScoped
 public class SysSetPersonalMapper implements OkRepository<SysSetPersonal> {

@@ -13,13 +13,13 @@
 
 package org.okstar.platform.system.account.domain;
 
+import jakarta.persistence.Entity;
 import lombok.Data;
 import org.okstar.platform.common.core.defined.AccountDefines;
 import org.okstar.platform.common.datasource.domain.OkEntity;
 
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 
 /**
  * 用户绑定

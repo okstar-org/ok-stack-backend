@@ -14,6 +14,7 @@
 package org.okstar.platform.system.account.resource;
 
 import io.quarkus.security.Authenticated;
+import jakarta.inject.Inject;
 import org.okstar.platform.common.core.defined.AccountDefines;
 import org.okstar.platform.common.core.web.bean.Req;
 import org.okstar.platform.common.core.web.bean.Res;
@@ -21,7 +22,6 @@ import org.okstar.platform.common.resource.OkCommonResource;
 import org.okstar.platform.system.account.domain.SysAccount;
 import org.okstar.platform.system.account.service.SysAccountService;
 
-import javax.inject.Inject;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;

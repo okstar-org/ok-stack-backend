@@ -15,9 +15,10 @@ package org.okstar.platform.org.staff.mapper;
 
 
 import io.quarkus.hibernate.orm.panache.PanacheRepository;
+import jakarta.enterprise.context.ApplicationScoped;
 import org.okstar.platform.org.domain.OrgStaff;
 
-import javax.enterprise.context.ApplicationScoped;
+
 
 
 /**

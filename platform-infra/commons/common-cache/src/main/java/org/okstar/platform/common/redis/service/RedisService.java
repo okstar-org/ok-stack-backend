@@ -16,9 +16,9 @@ package org.okstar.platform.common.redis.service;
 import io.quarkus.arc.impl.Sets;
 import io.quarkus.redis.datasource.RedisDataSource;
 import io.quarkus.redis.datasource.value.ValueCommands;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
 
-import javax.inject.Inject;
-import javax.inject.Singleton;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 
@@ -27,7 +27,7 @@ import java.util.concurrent.TimeUnit;
  * 
  * 
  **/
-@Singleton
+@ApplicationScoped
 public class RedisService
 {
 //    @Inject

@@ -13,14 +13,13 @@
 
 package org.okstar.platform.system.account.domain;
 
+import jakarta.persistence.Embedded;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
+import jakarta.persistence.UniqueConstraint;
 import lombok.Data;
 import org.okstar.platform.system.account.vo.SignInAttached;
 import org.okstar.platform.system.domain.BaseEntity;
-
-import javax.persistence.Embedded;
-import javax.persistence.Entity;
-import javax.persistence.Table;
-import javax.persistence.UniqueConstraint;
 
 /**
  * 当前在线会话

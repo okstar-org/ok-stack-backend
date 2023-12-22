@@ -32,6 +32,7 @@
             <artifactId>common-base</artifactId>
             <version>${revision}</version>
         </dependency>
+
         <dependency>
             <groupId>org.okstar.platform</groupId>
             <artifactId>common-security</artifactId>

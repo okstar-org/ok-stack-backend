@@ -16,6 +16,8 @@ package org.okstar.platform.auth.keycloak;
 import io.quarkus.logging.Log;
 import io.quarkus.runtime.StartupEvent;
 import io.smallrye.common.constraint.Assert;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.enterprise.event.Observes;
 import org.jboss.resteasy.client.jaxrs.internal.ResteasyClientBuilderImpl;
 import org.keycloak.admin.client.Keycloak;
 import org.keycloak.admin.client.resource.RealmResource;
@@ -27,8 +29,6 @@ import org.okstar.platform.auth.backend.BackUser;
 import org.okstar.platform.auth.backend.BackUserManager;
 import org.okstar.platform.common.core.exception.OkRuntimeException;
 
-import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.event.Observes;
 import javax.ws.rs.core.Response;
 import java.util.List;
 import java.util.Optional;
@@ -90,7 +90,7 @@ public class KeycloakUserManagerImpl extends KeycloakManagerImpl implements Back
         Log.infof("Add user:%s", user.getUsername());
         UsersResource usersResource = usersResource();
         try {
-            Response response = usersResource.create(toRepresent(user));
+            var response = usersResource.create(toRepresent(user));
             Log.infof("statusCode=>%s", response.getStatus());
             Assert.assertTrue(response.getStatus() == Response.Status.CREATED.getStatusCode());
         } catch (Exception e) {
@@ -119,7 +119,7 @@ public class KeycloakUserManagerImpl extends KeycloakManagerImpl implements Back
             return true;
         }
         UsersResource usersResource = usersResource();
-        Response response = usersResource.delete(backUser.get().getId());
+        var response = usersResource.delete(backUser.get().getId());
         Log.infof("Delete user:%s=>", username, response.getStatus());
         return response.getStatus() == Response.Status.NO_CONTENT.getStatusCode();
     }

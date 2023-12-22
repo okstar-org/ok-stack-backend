@@ -13,13 +13,14 @@
 
 package org.okstar.platform.org.staff.resource;
 
+import jakarta.inject.Inject;
 import org.okstar.platform.common.core.web.bean.Req;
 import org.okstar.platform.common.core.web.bean.Res;
+import org.okstar.platform.common.resource.OkCommonResource;
 import org.okstar.platform.org.domain.OrgStaff;
 import org.okstar.platform.org.staff.service.OrgStaffService;
 import org.okstar.platform.org.vo.OrgStaffReq;
 
-import javax.inject.Inject;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -27,7 +28,7 @@ import javax.ws.rs.PathParam;
 import java.util.List;
 
 @Path("staff")
-public class OrgStaffResource {
+public class OrgStaffResource extends OkCommonResource {
 
     @Inject
     OrgStaffService orgStaffService;

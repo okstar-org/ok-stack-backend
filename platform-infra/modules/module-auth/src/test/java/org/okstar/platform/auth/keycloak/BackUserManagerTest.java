@@ -15,11 +15,11 @@ package org.okstar.platform.auth.keycloak;
 
 import io.quarkus.logging.Log;
 import io.quarkus.test.junit.QuarkusTest;
+import jakarta.inject.Inject;
 import org.junit.jupiter.api.Test;
-import org.okstar.platform.auth.backend.BackUser;
 import org.okstar.platform.auth.backend.BackUserManager;
 
-import javax.inject.Inject;
+
 
 @QuarkusTest
 class BackUserManagerTest {

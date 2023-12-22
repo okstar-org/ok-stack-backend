@@ -13,19 +13,18 @@
 
 package org.okstar.platform.system.settings.service;
 
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
+import jakarta.transaction.Transactional;
 import org.okstar.platform.common.core.defined.AccountDefines;
 import org.okstar.platform.common.core.web.page.OkPageResult;
 import org.okstar.platform.common.core.web.page.OkPageable;
 import org.okstar.platform.system.account.domain.SysAccount;
 import org.okstar.platform.system.settings.domain.SysSetGlobal;
 import org.okstar.platform.system.settings.domain.SysSetPersonal;
-import org.okstar.platform.system.settings.domain.SysSetPersonal_;
 import org.okstar.platform.system.settings.mapper.SysSetGlobalMapper;
 import org.okstar.platform.system.settings.mapper.SysSetPersonalMapper;
 
-import javax.enterprise.context.ApplicationScoped;
-import javax.inject.Inject;
-import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 
@@ -86,7 +85,7 @@ public class SysBasicServiceImpl implements SysBasicService {
 
     @Override
     public synchronized SysSetPersonal findDefaultPersonal(SysAccount account) {
-        Optional<SysSetPersonal> first = personalMapper.find(SysSetPersonal_.ACCOUNT_ID + " = ?1", account.id)
+        Optional<SysSetPersonal> first = personalMapper.find("accountId", account.id)
                 .stream().findFirst();
         if (first.isPresent()) return first.get();
 

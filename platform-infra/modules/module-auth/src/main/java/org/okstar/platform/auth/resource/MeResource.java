@@ -14,6 +14,7 @@
 package org.okstar.platform.auth.resource;
 
 import io.quarkus.logging.Log;
+import jakarta.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
 import org.eclipse.microprofile.jwt.JsonWebToken;
 import org.eclipse.microprofile.rest.client.inject.RestClient;
@@ -23,7 +24,6 @@ import org.okstar.platform.common.rpc.RpcAssert;
 import org.okstar.platform.system.rpc.SysAccountRpc;
 import org.okstar.platform.system.vo.SysAccount0;
 
-import javax.inject.Inject;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 

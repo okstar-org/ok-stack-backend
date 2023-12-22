@@ -17,12 +17,13 @@ import io.netty.handler.codec.http.HttpResponseStatus;
 import io.quarkus.logging.Log;
 import io.quarkus.vertx.web.RouteFilter;
 import io.vertx.ext.web.RoutingContext;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
 import org.eclipse.microprofile.jwt.JsonWebToken;
 import org.okstar.platform.common.core.defined.SystemDefines;
 import org.okstar.platform.common.core.utils.OkStringUtil;
 
-import javax.enterprise.context.ApplicationScoped;
-import javax.inject.Inject;
+
 
 @ApplicationScoped
 public class TokenFilters {
@@ -37,17 +38,16 @@ public class TokenFilters {
 
         String username = jwt.getName();
         if (uri.contains("/passport") || uri.contains("/rpc")||uri.contains("/_well-known")) {
+            Log.infof("bypass the uri.");
             rc.next();
             return;
         }
+
         if (OkStringUtil.isEmpty(username)) {
             rc.fail(HttpResponseStatus.FORBIDDEN.code());
             return;
         }
         Log.infof("username:%s", username);
-
-
-
         rc.put(SystemDefines.Header_X_OK_username, username);
         rc.next();
     }

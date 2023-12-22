@@ -19,9 +19,9 @@ import io.quarkus.logging.Log;
 import io.vertx.core.http.HttpServerRequest;
 import io.vertx.core.http.HttpServerResponse;
 import io.vertx.ext.web.RoutingContext;
+import jakarta.inject.Inject;
 import org.okstar.platform.common.core.defined.SystemDefines;
 
-import javax.inject.Inject;
 import javax.ws.rs.core.Context;
 import java.io.IOException;
 import java.io.InputStream;
@@ -29,14 +29,13 @@ import java.io.InputStream;
 public class OkCommonResource {
 
     public static final String GIT_PROPERTIES = "/git.properties";
+
     @Context
     protected HttpServerRequest req;
     @Context
     protected HttpServerResponse res;
-
     @Inject
     protected RoutingContext rc;
-
     @Inject
     ObjectMapper objectMapper;
 

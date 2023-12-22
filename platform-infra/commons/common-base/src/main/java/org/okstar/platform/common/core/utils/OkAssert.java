@@ -11,18 +11,22 @@
  * /
  */
 
-package org.okstar.platform.org.mapper;
+package org.okstar.platform.common.core.utils;
 
+public class OkAssert {
+    public static void hasText(String input, String msg) {
+        if(OkStringUtil.isEmpty(input)){
+            throw new IllegalArgumentException(msg);
+        }
+    }
 
-import io.quarkus.hibernate.orm.panache.PanacheRepository;
-import jakarta.enterprise.context.ApplicationScoped;
-import org.okstar.platform.org.domain.OrgStaffPost;
+    public static void notNull(Object input, String msg) {
+        if(input==null)
+            throw new IllegalArgumentException(msg);
+    }
 
-
-/**
- * 人员与岗位关联
- */
-@ApplicationScoped
-public class OrgStaffPostMapper implements PanacheRepository<OrgStaffPost> {
-
+    public static void isTrue(boolean input, String msg) {
+        if(!input)
+            throw new IllegalArgumentException(msg);
+    }
 }

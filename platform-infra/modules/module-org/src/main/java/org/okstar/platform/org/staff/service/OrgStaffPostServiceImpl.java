@@ -15,10 +15,15 @@ package org.okstar.platform.org.staff.service;
 
 import io.quarkus.logging.Log;
 import io.quarkus.panache.common.Page;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
+import jakarta.transaction.Transactional;
 import org.eclipse.microprofile.rest.client.inject.RestClient;
+import org.locationtech.jts.util.Assert;
 import org.okstar.platform.auth.rpc.PassportRpc;
 import org.okstar.platform.common.core.defined.AccountDefines;
 import org.okstar.platform.common.core.defined.JobDefines;
+import org.okstar.platform.common.core.utils.OkAssert;
 import org.okstar.platform.common.core.utils.OkDateUtils;
 import org.okstar.platform.common.core.web.page.OkPageResult;
 import org.okstar.platform.common.core.web.page.OkPageable;
@@ -33,11 +38,7 @@ import org.okstar.platform.system.rpc.SysAccountRpc;
 import org.okstar.platform.system.sign.SignUpForm;
 import org.okstar.platform.system.sign.SignUpResult;
 import org.okstar.platform.system.vo.SysAccount0;
-import org.springframework.util.Assert;
 
-import javax.enterprise.context.ApplicationScoped;
-import javax.inject.Inject;
-import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Set;
 import java.util.SortedSet;
@@ -115,10 +116,10 @@ public class OrgStaffPostServiceImpl implements OrgStaffPostService {
 
     @Override
     public synchronized boolean leave(Long staffId) {
-        Assert.isTrue(staffId != null && staffId > 0, "staffId is invalid");
+        OkAssert.isTrue(staffId != null && staffId > 0, "staffId is invalid");
 
         OrgStaff staff = staffService.get(staffId);
-        Assert.notNull(staff, "staff is null");
+        OkAssert.notNull(staff, "staff is null");
 
         //设置离职状态
         staff.setPostStatus(JobDefines.PostStatus.left);
@@ -165,7 +166,7 @@ public class OrgStaffPostServiceImpl implements OrgStaffPostService {
         Assert.isTrue(postIds != null && !postIds.isEmpty(), "postIds is invalid");
 
         OrgStaff staff = staffService.get(staffId);
-        Assert.notNull(staff, "staff is null");
+        OkAssert.notNull(staff, "staff is null");
 
         //设置入职状态
         staff.setPostStatus(JobDefines.PostStatus.employed);

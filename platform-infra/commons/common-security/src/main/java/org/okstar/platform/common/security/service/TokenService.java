@@ -15,6 +15,7 @@ package org.okstar.platform.common.security.service;
 
 import io.smallrye.common.constraint.Assert;
 import io.vertx.core.http.HttpServerRequest;
+import jakarta.enterprise.context.ApplicationScoped;
 import org.okstar.platform.common.core.constant.CacheConstants;
 import org.okstar.platform.common.core.constant.Constants;
 import org.okstar.platform.common.core.constant.SecurityConstants;
@@ -25,7 +26,6 @@ import org.okstar.platform.common.redis.service.RedisService;
 import org.okstar.platform.common.security.domain.LoginUser;
 import org.okstar.platform.common.security.utils.SecurityUtils;
 
-import javax.inject.Singleton;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -35,7 +35,7 @@ import java.util.concurrent.TimeUnit;
 /**
  * token验证处理
  */
-@Singleton
+@ApplicationScoped
 public class TokenService {
 
     //	@Value("${tokenVerifier.url:}")

@@ -1,11 +1,11 @@
 package org.okstar.platform.org.rbac.service.impl;
 
 import io.quarkus.hibernate.orm.panache.PanacheRepositoryBase;
-import io.quarkus.panache.common.Parameters;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
 import org.eclipse.microprofile.rest.client.inject.RestClient;
 import org.okstar.platform.common.core.utils.bean.OkBeanUtils;
 import org.okstar.platform.common.rpc.RpcResult;
-import org.okstar.platform.org.rbac.domain.OrgRbacRole;
 import org.okstar.platform.org.rbac.domain.OrgRbacUser;
 import org.okstar.platform.org.rbac.domain.OrgRbacUserRole;
 import org.okstar.platform.org.rbac.mapper.OrgRbacUserMapper;
@@ -15,9 +15,6 @@ import org.okstar.platform.org.rbac.service.OrgRbacUserService;
 import org.okstar.platform.system.rpc.SysAccountRpc;
 import org.okstar.platform.system.vo.SysAccount0;
 
-import javax.enterprise.context.ApplicationScoped;
-import javax.inject.Inject;
-import javax.persistence.TypedQuery;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -37,7 +34,7 @@ public class OrgRbacUserServiceImpl implements OrgRbacUserService, PanacheReposi
 
     @Override
     public List<OrgRbacUserResponseVo> queryUserList(Long roleId) {
-        TypedQuery<OrgRbacUserRole> query = getEntityManager().createQuery("SELECT ur.* FROM OrgRbacUserRole ur WHERE ur.role.id = :roleId", OrgRbacUserRole.class);
+        var query = getEntityManager().createQuery("SELECT ur.* FROM OrgRbacUserRole ur WHERE ur.role.id = :roleId", OrgRbacUserRole.class);
         query.setParameter("roleId", roleId);
         return query.getResultList().stream().map(orgRbacUserRole -> {
             OrgRbacUser user = orgRbacUserRole.getUser();

@@ -13,18 +13,18 @@
 
 package org.okstar.platform.system.account.service;
 
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
+import jakarta.transaction.Transactional;
 import org.okstar.platform.common.core.defined.AccountDefines;
+import org.okstar.platform.common.core.utils.OkAssert;
 import org.okstar.platform.common.core.web.page.OkPageResult;
 import org.okstar.platform.common.core.web.page.OkPageable;
 import org.okstar.platform.system.account.domain.SysAccount;
 import org.okstar.platform.system.account.domain.SysAccountBind;
 import org.okstar.platform.system.account.domain.SysProfile;
 import org.okstar.platform.system.account.mapper.SysProfileMapper;
-import org.springframework.util.Assert;
 
-import javax.enterprise.context.ApplicationScoped;
-import javax.inject.Inject;
-import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 
@@ -87,14 +87,14 @@ public class SysProfileServiceImpl implements SysProfileService {
     @Override
     public SysProfile loadByUsername(String username) {
         SysAccount account = accountService.loadByUsername(username);
-        Assert.notNull(account, "Invalid username");
+        OkAssert.notNull(account, "Invalid username");
         return getProfile(account);
     }
 
     @Override
     public SysProfile loadByAccount(Long accountId) {
         SysAccount account = accountService.get(accountId);
-        Assert.notNull(account, "Invalid id");
+        OkAssert.notNull(account, "Invalid id");
         return getProfile(account);
     }
 
@@ -103,7 +103,6 @@ public class SysProfileServiceImpl implements SysProfileService {
         if (first.isEmpty()) {
             SysProfile profile = new SysProfile();
             profile.setAccountId(account.id);
-
             List<SysAccountBind> binds = accountService.listBind(account.id);
             binds.forEach(bind -> {
                 if (bind.getBindType() == AccountDefines.BindType.email) {

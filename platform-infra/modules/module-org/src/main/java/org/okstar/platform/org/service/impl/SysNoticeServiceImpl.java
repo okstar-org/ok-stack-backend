@@ -14,11 +14,11 @@
 package org.okstar.platform.org.service.impl;
 
 
+import jakarta.enterprise.context.ApplicationScoped;
 import org.okstar.platform.org.domain.SysNotice;
 import org.okstar.platform.org.mapper.SysNoticeMapper;
 import org.okstar.platform.org.service.ISysNoticeService;
 
-import javax.enterprise.context.ApplicationScoped;
 import java.util.List;
 
 /**

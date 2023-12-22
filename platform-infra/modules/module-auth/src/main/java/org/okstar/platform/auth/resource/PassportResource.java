@@ -13,22 +13,22 @@
 
 package org.okstar.platform.auth.resource;
 
+import io.quarkus.logging.Log;
 import io.quarkus.oidc.client.Tokens;
-import lombok.extern.slf4j.Slf4j;
+import io.smallrye.common.annotation.Blocking;
+import jakarta.inject.Inject;
 import org.okstar.platform.auth.service.PassportService;
 import org.okstar.platform.common.core.web.bean.Req;
 import org.okstar.platform.common.core.web.bean.Res;
 import org.okstar.platform.common.resource.OkCommonResource;
 import org.okstar.platform.system.sign.*;
 
-import javax.inject.Inject;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 
 /**
  * 通行
  */
-@Slf4j
 @Path("passport")
 public class PassportResource extends OkCommonResource {
 
@@ -41,18 +41,19 @@ public class PassportResource extends OkCommonResource {
     @POST
     @Path("signUp")
     public Res<SignUpResult> signUp(SignUpForm signUpForm) {
-        log.info("signUp:{}", signUpForm);
+        Log.infof("signUp:%s", signUpForm);
         var resultDto = passportService.signUp(signUpForm);
-        log.info("resultDto=>{}", resultDto);
+        Log.infof("resultDto:%s", resultDto);
         return Res.ok(signUpForm, resultDto);
     }
 
     @POST
     @Path("signIn")
+    @Blocking
     public Res<SignInResult> signIn(SignInForm signInForm) {
-        log.info("signIn:{}", signInForm);
+        Log.infof("signIn:%s", signInForm);
         var resultDto = passportService.signIn(signInForm);
-        log.info("resultDto=>{}", resultDto);
+        Log.infof("resultDto=>%s", resultDto);
         return Res.ok(signInForm, resultDto);
     }
 
@@ -75,7 +76,7 @@ public class PassportResource extends OkCommonResource {
                 .refresh(refreshForm.getRefresh())
                 .build();
 
-        log.info("result:{}", result);
+        Log.infof("result:%s", result);
         return Res.ok(refreshForm, result);
     }
 }

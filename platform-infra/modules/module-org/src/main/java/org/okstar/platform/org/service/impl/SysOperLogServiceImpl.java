@@ -14,11 +14,11 @@
 package org.okstar.platform.org.service.impl;
 
 
+import jakarta.enterprise.context.ApplicationScoped;
 import org.okstar.platform.org.domain.SysOperLog;
 import org.okstar.platform.org.mapper.SysOperLogMapper;
 import org.okstar.platform.org.service.ISysOperLogService;
 
-import javax.enterprise.context.ApplicationScoped;
 import java.util.List;
 
 /**

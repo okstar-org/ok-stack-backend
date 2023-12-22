@@ -14,12 +14,14 @@
 package org.okstar.platform.system.account.service;
 
 
+import jakarta.enterprise.context.ApplicationScoped;
+import org.okstar.platform.common.core.utils.OkAssert;
 import org.okstar.platform.org.vo.LoginJwtUser;
 import org.okstar.platform.system.account.domain.SysAccountOnline;
 import org.okstar.platform.system.account.vo.SignInAttached;
-import org.springframework.util.Assert;
 
-import javax.enterprise.context.ApplicationScoped;
+
+
 
 
 /**
@@ -81,7 +83,7 @@ public class SysAccountOnlineServiceImpl implements ISysAccountOnlineService
      */
     public SysAccountOnline makeSaveOnline(LoginJwtUser jwtUser, SignInAttached signInAttached)
     {
-        Assert.notNull(jwtUser, "参数异常！");
+        OkAssert.notNull(jwtUser, "参数异常！");
 
         SysAccountOnline SysAccountOnline = new SysAccountOnline();
         SysAccountOnline.setSessionId(jwtUser.getToken());

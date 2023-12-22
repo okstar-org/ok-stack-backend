@@ -16,14 +16,13 @@ package org.okstar.platform.system.mapper;
 import io.quarkus.hibernate.orm.panache.PanacheRepository;
 import org.okstar.platform.system.domain.SysMenu;
 
-import javax.inject.Singleton;
+
 
 /**
  * 菜单表 数据层
  * 
  * 
  */
-@Singleton
 public class SysMenuMapper implements PanacheRepository<SysMenu>
 {
 

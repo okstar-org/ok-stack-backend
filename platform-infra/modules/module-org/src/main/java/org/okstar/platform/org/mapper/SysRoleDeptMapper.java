@@ -13,9 +13,10 @@
 
 package org.okstar.platform.org.mapper;
 
+import jakarta.enterprise.context.ApplicationScoped;
 import org.okstar.platform.org.domain.SysRoleDept;
 
-import javax.inject.Singleton;
+
 import java.util.List;
 
 /**
@@ -23,8 +24,7 @@ import java.util.List;
  * 
  *
  */
-@Singleton
-
+@ApplicationScoped
 public interface SysRoleDeptMapper
 {
     /**

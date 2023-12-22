@@ -14,8 +14,8 @@
 package org.okstar.platform.org.service;
 
 import io.vertx.core.http.HttpServerRequest;
+import jakarta.enterprise.context.RequestScoped;
 
-import javax.enterprise.context.RequestScoped;
 import javax.ws.rs.core.Context;
 
 @RequestScoped

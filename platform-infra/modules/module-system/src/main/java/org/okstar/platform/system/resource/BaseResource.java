@@ -13,11 +13,12 @@
 
 package org.okstar.platform.system.resource;
 
+import jakarta.inject.Inject;
 import org.okstar.platform.common.resource.OkCommonResource;
 import org.okstar.platform.system.account.domain.SysAccount;
 import org.okstar.platform.system.account.service.SysAccountService;
 
-import javax.inject.Inject;
+
 
 public class BaseResource extends OkCommonResource {
 

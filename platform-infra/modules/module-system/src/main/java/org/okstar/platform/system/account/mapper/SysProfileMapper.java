@@ -14,9 +14,10 @@
 package org.okstar.platform.system.account.mapper;
 
 import io.quarkus.hibernate.orm.panache.PanacheRepository;
+import jakarta.enterprise.context.ApplicationScoped;
 import org.okstar.platform.system.account.domain.SysProfile;
 
-import javax.enterprise.context.ApplicationScoped;
+
 
 
 /**

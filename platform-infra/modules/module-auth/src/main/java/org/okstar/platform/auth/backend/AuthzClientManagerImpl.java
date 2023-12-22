@@ -17,13 +17,13 @@ import io.quarkus.logging.Log;
 import io.quarkus.oidc.client.OidcClient;
 import io.quarkus.oidc.client.Tokens;
 import io.smallrye.mutiny.Uni;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
 import org.keycloak.authorization.client.AuthzClient;
 import org.keycloak.representations.idm.authorization.AuthorizationRequest;
+import org.okstar.platform.common.core.utils.OkAssert;
 import org.okstar.platform.system.sign.SignInResult;
-import org.springframework.util.Assert;
 
-import javax.enterprise.context.ApplicationScoped;
-import javax.inject.Inject;
 import java.util.concurrent.ExecutionException;
 
 @ApplicationScoped
@@ -36,8 +36,8 @@ class AuthzClientManagerImpl implements  AuthzClientManager {
 
     @Override
     public SignInResult authorization(String username, String password){
-        Assert.hasText(username,"username is empty");
-        Assert.hasText(password, "password is empty");
+        OkAssert.hasText(username,"username is empty");
+        OkAssert.hasText(password, "password is empty");
         AuthorizationRequest request = new AuthorizationRequest();
         var response = authzClient.authorization(username.toLowerCase(), password).authorize(request);
         return SignInResult.builder()

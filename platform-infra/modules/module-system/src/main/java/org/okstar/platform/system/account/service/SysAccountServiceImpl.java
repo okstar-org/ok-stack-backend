@@ -18,11 +18,15 @@ import com.google.i18n.phonenumbers.PhoneNumberUtil;
 import com.google.i18n.phonenumbers.Phonenumber;
 import io.quarkus.logging.Log;
 import io.quarkus.panache.common.Page;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
+import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.okstar.platform.common.core.defined.AccountDefines;
 import org.okstar.platform.common.core.exception.OkRuntimeException;
 import org.okstar.platform.common.core.exception.user.OkUserException;
+import org.okstar.platform.common.core.utils.OkAssert;
 import org.okstar.platform.common.core.utils.OkDateUtils;
 import org.okstar.platform.common.core.utils.OkPhoneUtils;
 import org.okstar.platform.common.core.web.page.OkPageResult;
@@ -37,11 +41,9 @@ import org.okstar.platform.system.account.mapper.SysAccountMapper;
 import org.okstar.platform.system.account.mapper.SysAccountPasswordMapper;
 import org.okstar.platform.system.sign.SignUpForm;
 import org.okstar.platform.system.sign.SignUpResult;
-import org.springframework.util.Assert;
 
-import javax.inject.Inject;
-import javax.inject.Singleton;
-import javax.transaction.Transactional;
+
+
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
@@ -53,7 +55,7 @@ import static com.google.i18n.phonenumbers.PhoneNumberUtil.PhoneNumberFormat.INT
  * 用户 业务层处理
  */
 @Slf4j
-@Singleton
+@ApplicationScoped
 @Transactional
 public class SysAccountServiceImpl extends OkAbsService implements SysAccountService {
 
@@ -67,7 +69,7 @@ public class SysAccountServiceImpl extends OkAbsService implements SysAccountSer
 
     @Override
     public Optional<SysAccountPassword> lastPassword(Long accountId) {
-        return sysAccountPasswordMapper.find("account.id = ?1", accountId)//
+        return sysAccountPasswordMapper.find("accountId = ?1", accountId)//
                 .stream().max(Comparator.comparing(OkEntity::getCreateAt));
     }
 
@@ -121,10 +123,10 @@ public class SysAccountServiceImpl extends OkAbsService implements SysAccountSer
     public SignUpResult signUp(SignUpForm signUpForm) {
         Log.infof("signUp:%s", signUpForm);
 
-        Assert.hasText(signUpForm.getIso(), "iso is empty");
-        Assert.hasText(signUpForm.getPassword(), "password is empty");
-        Assert.notNull(signUpForm.getAccountType(), "accountType is empty");
-        Assert.notNull(signUpForm.getAccount(), "account is empty");
+        OkAssert.hasText(signUpForm.getIso(), "iso is empty");
+        OkAssert.hasText(signUpForm.getPassword(), "password is empty");
+        OkAssert.notNull(signUpForm.getAccountType(), "accountType is empty");
+        OkAssert.notNull(signUpForm.getAccount(), "account is empty");
 
         if (signUpForm.getAccountType() == AccountDefines.BindType.phone) {
             signUpForm.setAccount(OkPhoneUtils.canonical(signUpForm.getAccount(), signUpForm.getIso()));
@@ -151,8 +153,7 @@ public class SysAccountServiceImpl extends OkAbsService implements SysAccountSer
         );
 
         sysAccountMapper.persist(sysAccount);
-        Log.infof("User have been saved successfully.=>%s",
-                sysAccount.getUsername(), sysAccount);
+        Log.infof("User have been saved successfully.=>%s", sysAccount.getUsername());
 
         SysAccountBind bind = new SysAccountBind();
         bind.setAccountId(sysAccount.id);
@@ -172,11 +173,11 @@ public class SysAccountServiceImpl extends OkAbsService implements SysAccountSer
         }
         sysAccountBindMapper.persist(bind);
 
-        /**
-         * 保存密码
+        /*
+          保存密码
          */
         SysAccountPassword pwd = new SysAccountPassword();
-        pwd.setAccount(sysAccount);
+        pwd.setAccountId(sysAccount.id);
         pwd.setCreateAt(sysAccount.getCreateAt());
         pwd.setPassword(signUpForm.getPassword());
         sysAccountPasswordMapper.persist(pwd);
@@ -197,11 +198,11 @@ public class SysAccountServiceImpl extends OkAbsService implements SysAccountSer
         }
 
         //删除关联信息 AccountBind
-        Long delete = sysAccountBindMapper.delete("account.id", accountId);
+        Long delete = sysAccountBindMapper.delete("accountId", accountId);
         Log.debugf("AccountBind is deleted by accountId:%s=>%s", accountId, delete);
 
         //删除关联信息 AccountPassword
-        Long delete1 = sysAccountPasswordMapper.delete("account.id", accountId);
+        Long delete1 = sysAccountPasswordMapper.delete("accountId", accountId);
         Log.debugf("AccountPassword is deleted by accountId:%s=>%s", accountId, delete1);
 
         //删除帐号
@@ -249,6 +250,6 @@ public class SysAccountServiceImpl extends OkAbsService implements SysAccountSer
 
     @Override
     public List<SysAccountBind> listBind(Long id) {
-        return sysAccountBindMapper.find("account.id", id).list();
+        return sysAccountBindMapper.find("accountId", id).list();
     }
 }

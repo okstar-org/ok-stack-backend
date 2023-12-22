@@ -13,13 +13,12 @@
 
 package org.okstar.platform.system.account.domain;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
+import jakarta.persistence.UniqueConstraint;
 import lombok.Data;
 import org.okstar.platform.common.core.defined.AccountDefines;
 import org.okstar.platform.system.domain.BaseEntity;
-
-import javax.persistence.Entity;
-import javax.persistence.Table;
-import javax.persistence.UniqueConstraint;
 
 /**
  * 帐号实体

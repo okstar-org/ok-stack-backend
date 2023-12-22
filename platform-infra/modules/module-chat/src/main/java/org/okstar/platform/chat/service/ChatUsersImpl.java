@@ -13,9 +13,9 @@
 
 package org.okstar.platform.chat.service;
 
+import jakarta.enterprise.context.ApplicationScoped;
 import org.igniterealtime.restclient.entity.UserEntity;
 
-import javax.enterprise.context.ApplicationScoped;
 import java.util.List;
 
 @ApplicationScoped

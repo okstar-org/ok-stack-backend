@@ -30,10 +30,17 @@ services:
       - KC_DB=mariadb
       - KC_DB_URL=jdbc:mariadb://db/keycloak?autoReconnect=true&useUnicode=true&characterEncoding=utf8
       - KC_DB_USERNAME=root
-      - KC_DB_PASSWORD=okstar
-      - KC_HOSTNAME=localhost
+      - KC_DB_PASSWORD={password}
+      - KC_HOSTNAME_URL=https://kc.okstar.org.cn
+      - KC_HOSTNAME_ADMIN_URL=https://kc.okstar.org.cn
       - KEYCLOAK_ADMIN=admin
       - KEYCLOAK_ADMIN_PASSWORD=okstar
+      - KEYCLOAK_SAME_SITE_COOKIES=true
+      - KC_PROXY_ADDRESS_FORWARDING=true
+      - KC_PROXY=edge
+      - KC_HTTP_ENABLED=true
+      - KC_HTTPS_PORT=443
+      - KC_HOSTNAME_STRICT_BACKCHANNEL=true
     volumes:
       - /etc/timezone:/etc/timezone
       - /etc/localtime:/etc/localtime

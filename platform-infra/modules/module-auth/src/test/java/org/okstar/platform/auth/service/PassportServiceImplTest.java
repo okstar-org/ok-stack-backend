@@ -15,13 +15,14 @@ package org.okstar.platform.auth.service;
 
 import io.quarkus.logging.Log;
 import io.smallrye.common.constraint.Assert;
+import jakarta.inject.Inject;
 import org.junit.jupiter.api.Order;
 import org.okstar.platform.common.core.defined.AccountDefines;
 import org.okstar.platform.common.core.utils.IdUtils;
 import org.okstar.platform.system.sign.SignUpForm;
 import org.okstar.platform.system.sign.SignUpResult;
 
-import javax.inject.Inject;
+
 
 //@QuarkusTest
 class PassportServiceImplTest {

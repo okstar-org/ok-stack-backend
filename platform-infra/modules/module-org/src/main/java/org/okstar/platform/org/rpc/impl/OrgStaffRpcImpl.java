@@ -13,14 +13,16 @@
 
 package org.okstar.platform.org.rpc.impl;
 
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
 import org.okstar.platform.common.rpc.RpcResult;
 import org.okstar.platform.org.dto.OrgStaffFragment;
 import org.okstar.platform.org.rpc.OrgStaffRpc;
 import org.okstar.platform.org.staff.service.OrgStaffService;
 import org.okstar.platform.org.vo.OrgStaffReq;
 
-import javax.enterprise.context.ApplicationScoped;
-import javax.inject.Inject;
+
+
 
 @ApplicationScoped
 public class OrgStaffRpcImpl implements OrgStaffRpc {

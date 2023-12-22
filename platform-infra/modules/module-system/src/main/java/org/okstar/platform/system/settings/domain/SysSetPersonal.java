@@ -13,10 +13,11 @@
 
 package org.okstar.platform.system.settings.domain;
 
+import jakarta.persistence.Entity;
 import lombok.Data;
 import org.okstar.platform.system.domain.BaseEntity;
 
-import javax.persistence.Entity;
+
 
 /**
  * 系统管理-基础设置-个人设置

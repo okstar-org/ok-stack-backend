@@ -14,7 +14,12 @@
 package org.okstar.platform.org.staff.service;
 
 import io.quarkus.panache.common.Page;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
+import jakarta.transaction.Transactional;
+import org.locationtech.jts.util.Assert;
 import org.okstar.platform.common.core.defined.JobDefines;
+import org.okstar.platform.common.core.utils.OkAssert;
 import org.okstar.platform.common.core.utils.OkDateUtils;
 import org.okstar.platform.common.core.utils.OkStringUtil;
 import org.okstar.platform.common.core.web.page.OkPageResult;
@@ -26,11 +31,7 @@ import org.okstar.platform.org.dto.OrgStaffFragment;
 import org.okstar.platform.org.service.OrgPostService;
 import org.okstar.platform.org.staff.mapper.OrgStaffMapper;
 import org.okstar.platform.org.vo.OrgStaffReq;
-import org.springframework.util.Assert;
 
-import javax.enterprise.context.ApplicationScoped;
-import javax.inject.Inject;
-import javax.transaction.Transactional;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
@@ -142,10 +143,10 @@ public class OrgStaffServiceImpl implements OrgStaffService {
 
     @Override
     public boolean add(OrgStaffReq req) {
-        Assert.notNull(req, "参数异常！");
+        OkAssert.notNull(req, "参数异常！");
 
         OrgStaffFragment fragment = req.getFragment();
-        Assert.notNull(fragment, "参数异常！");
+        OkAssert.notNull(fragment, "参数异常！");
 
 
         Long id = req.getId();

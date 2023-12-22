@@ -14,6 +14,7 @@
 package org.okstar.platform.org.service.impl;
 
 
+import jakarta.enterprise.context.ApplicationScoped;
 import org.okstar.platform.common.core.constant.Constants;
 import org.okstar.platform.common.core.constant.UserConstants;
 import org.okstar.platform.common.core.exception.CustomException;
@@ -22,7 +23,6 @@ import org.okstar.platform.org.domain.SysConfig;
 import org.okstar.platform.org.mapper.SysConfigMapper;
 import org.okstar.platform.org.service.ISysConfigService;
 
-import javax.enterprise.context.ApplicationScoped;
 import java.util.List;
 import java.util.Objects;
 

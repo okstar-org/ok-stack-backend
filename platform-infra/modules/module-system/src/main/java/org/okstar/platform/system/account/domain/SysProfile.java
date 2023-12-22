@@ -13,11 +13,11 @@
 
 package org.okstar.platform.system.account.domain;
 
+import jakarta.persistence.*;
 import lombok.Data;
 import org.okstar.platform.common.core.defined.UserDefines;
 import org.okstar.platform.system.domain.BaseEntity;
 
-import javax.persistence.*;
 import java.util.Date;
 
 @Data

@@ -14,13 +14,13 @@
 package org.okstar.platform.org.service;
 
 import io.quarkus.panache.common.Page;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
 import org.okstar.platform.common.core.web.page.OkPageResult;
 import org.okstar.platform.common.core.web.page.OkPageable;
 import org.okstar.platform.org.domain.OrgDept;
 import org.okstar.platform.org.mapper.OrgDeptMapper;
 
-import javax.enterprise.context.ApplicationScoped;
-import javax.inject.Inject;
 import java.util.List;
 
 /**
