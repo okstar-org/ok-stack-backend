@@ -13,6 +13,7 @@
 
 package org.okstar.platform.org.domain;
 
+
 import jakarta.persistence.*;
 import lombok.Data;
 import org.okstar.platform.common.core.defined.JobDefines;

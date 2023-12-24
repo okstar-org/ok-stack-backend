@@ -15,8 +15,8 @@ package org.okstar.platform.common.resource;
 
 import com.fasterxml.jackson.databind.JsonNode;
 
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
+import jakarta.ws.rs.GET;
+import jakarta.ws.rs.Path;
 
 @Path("_well-known")
 public class OkWellKnownResource extends OkCommonResource {

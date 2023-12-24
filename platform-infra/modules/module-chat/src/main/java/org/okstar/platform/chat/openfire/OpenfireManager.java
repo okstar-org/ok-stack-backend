@@ -28,7 +28,6 @@ import org.okstar.platform.chat.beans.ChatGroup;
 import org.okstar.platform.chat.beans.ChatParticipant;
 import org.okstar.platform.chat.beans.ChatRoom;
 
-import javax.ws.rs.core.Response;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -48,7 +47,7 @@ public class OpenfireManager extends Thread {
         setDaemon(true);
         setName("OpenfireManager");
 
-        // Shared secret key
+        // TODO 固定地址
         AuthenticationToken token = new AuthenticationToken(authSecretKey);
         restApiClient = new RestApiClient(
                 "http://meet.chuanshaninfo.com",
@@ -122,7 +121,7 @@ public class OpenfireManager extends Thread {
 
     public boolean updateRoom(ChatRoom room) {
         MUCRoomEntity entity = ChatUtils.convertRoom(room);
-        Response response = restApiClient.updateChatRoom(entity);
+        var response = restApiClient.updateChatRoom(entity);
         return response.getStatus() == 200;
     }
 
@@ -136,7 +135,7 @@ public class OpenfireManager extends Thread {
 
     public boolean updateGroup(ChatGroup room) {
         GroupEntity entity = ChatUtils.convertGroup(room);
-        Response response = restApiClient.updateGroup(entity);
+        var response = restApiClient.updateGroup(entity);
         return response.getStatus() == 200;
     }
 

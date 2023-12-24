@@ -13,6 +13,7 @@
 
 package org.okstar.platform.org.dto;
 
+import jakarta.persistence.Embeddable;
 import lombok.Data;
 import org.okstar.platform.common.core.defined.UserDefines;
 import org.okstar.platform.common.core.utils.OkStringUtil;
@@ -23,6 +24,7 @@ import java.util.Date;
  * 人员片段
  */
 @Data
+@Embeddable
 public class OrgStaffFragment {
     /**
      * 编号

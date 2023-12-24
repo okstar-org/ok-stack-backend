@@ -37,8 +37,8 @@ import org.okstar.platform.system.dto.SysProfileDTO;
 import org.okstar.platform.system.rpc.SysAccountRpc;
 import org.okstar.platform.system.rpc.SysProfileRpc;
 
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
+import jakarta.ws.rs.GET;
+import jakarta.ws.rs.Path;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;

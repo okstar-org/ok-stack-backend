@@ -24,8 +24,8 @@ import org.okstar.platform.common.rpc.RpcAssert;
 import org.okstar.platform.system.rpc.SysAccountRpc;
 import org.okstar.platform.system.vo.SysAccount0;
 
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
+import jakarta.ws.rs.GET;
+import jakarta.ws.rs.Path;
 
 @Slf4j
 @Path("me")

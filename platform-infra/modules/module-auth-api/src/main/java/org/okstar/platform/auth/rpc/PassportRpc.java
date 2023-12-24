@@ -19,7 +19,7 @@ import org.okstar.platform.system.sign.SignUpForm;
 import org.okstar.platform.system.sign.SignUpResult;
 import org.okstar.platform.system.vo.SysAccount0;
 
-import javax.ws.rs.*;
+import jakarta.ws.rs.*;
 
 @Path("rpc/PassportRpc")
 @RegisterRestClient

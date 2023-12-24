@@ -29,7 +29,7 @@ import org.okstar.platform.auth.backend.BackUser;
 import org.okstar.platform.auth.backend.BackUserManager;
 import org.okstar.platform.common.core.exception.OkRuntimeException;
 
-import javax.ws.rs.core.Response;
+import jakarta.ws.rs.core.Response;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;

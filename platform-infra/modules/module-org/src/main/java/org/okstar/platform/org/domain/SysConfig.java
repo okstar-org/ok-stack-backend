@@ -15,8 +15,8 @@ package org.okstar.platform.org.domain;
 
 
 
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Size;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 
 /**
  * 参数配置表 sys_config

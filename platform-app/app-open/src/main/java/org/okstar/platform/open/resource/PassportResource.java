@@ -20,9 +20,9 @@ import org.okstar.platform.auth.rpc.PassportRpc;
 import org.okstar.platform.common.core.web.bean.Res;
 import org.okstar.platform.system.vo.SysAccount0;
 
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
+import jakarta.ws.rs.GET;
+import jakarta.ws.rs.Path;
+import jakarta.ws.rs.PathParam;
 
 /**
  * 通行

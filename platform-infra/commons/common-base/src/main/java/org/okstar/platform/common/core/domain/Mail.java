@@ -14,9 +14,9 @@
 package org.okstar.platform.common.core.domain;
 
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
 
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Pattern;
 import java.io.Serializable;
 
 /*mq业务实体层*/

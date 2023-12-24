@@ -13,7 +13,7 @@
 
 package org.okstar.platform.common.core.web.domain;
 
-import javax.ws.rs.core.Response;
+import jakarta.ws.rs.core.Response;
 import java.util.HashMap;
 
 /**

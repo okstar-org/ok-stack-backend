@@ -19,8 +19,8 @@ import org.okstar.platform.common.core.web.bean.Res;
 import org.okstar.platform.org.domain.OrgStaff;
 import org.okstar.platform.org.staff.service.OrgStaffService;
 
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
+import jakarta.ws.rs.GET;
+import jakarta.ws.rs.Path;
 import java.util.List;
 
 /**

@@ -22,7 +22,7 @@ import io.vertx.ext.web.RoutingContext;
 import jakarta.inject.Inject;
 import org.okstar.platform.common.core.defined.SystemDefines;
 
-import javax.ws.rs.core.Context;
+import jakarta.ws.rs.core.Context;
 import java.io.IOException;
 import java.io.InputStream;
 

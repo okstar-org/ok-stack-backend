@@ -23,8 +23,8 @@ import org.okstar.platform.common.core.web.bean.Res;
 import org.okstar.platform.common.resource.OkCommonResource;
 import org.okstar.platform.system.sign.*;
 
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
+import jakarta.ws.rs.POST;
+import jakarta.ws.rs.Path;
 
 /**
  * 通行

@@ -17,8 +17,8 @@ import org.eclipse.microprofile.rest.client.inject.RegisterRestClient;
 import org.okstar.platform.common.rpc.RpcResult;
 import org.okstar.platform.org.dto.OrgStaffFragment;
 
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
+import jakarta.ws.rs.POST;
+import jakarta.ws.rs.Path;
 
 @Path("rpc/OrgStaffRpc")
 @RegisterRestClient

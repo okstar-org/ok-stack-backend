@@ -17,9 +17,9 @@ package org.okstar.platform.system.rpc;
 import org.eclipse.microprofile.rest.client.inject.RegisterRestClient;
 import org.okstar.platform.system.dto.SysProfileDTO;
 
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
+import jakarta.ws.rs.GET;
+import jakarta.ws.rs.Path;
+import jakarta.ws.rs.PathParam;
 
 @RegisterRestClient
 @Path("rpc/SysProfileRpc")
