@@ -24,17 +24,8 @@
     <modelVersion>4.0.0</modelVersion>
     
     <artifactId>common-cache</artifactId>
-	
-    <description>
-        platform-common-redis缓存服务
-    </description>
 
     <dependencies>
-
-<!--        <dependency>-->
-<!--            <groupId>org.springframework.data</groupId>-->
-<!--            <artifactId>spring-data-redis</artifactId>-->
-<!--        </dependency>-->
 
         <dependency>
             <groupId>io.quarkus</groupId>

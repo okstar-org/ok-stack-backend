@@ -22,12 +22,8 @@
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
-    
-    <artifactId>common-security</artifactId>
 
-    <description>
-        platform-common-security安全模块
-    </description>
+    <artifactId>common-security</artifactId>
 
     <dependencies>
 
@@ -50,24 +46,18 @@
         </dependency>
 
         <dependency>
-            <groupId>jakarta.platform</groupId>
-            <artifactId>jakarta.jakartaee-api</artifactId>
-            <version>10.0.0</version>
+            <groupId>io.quarkus</groupId>
+            <artifactId>quarkus-reactive-routes</artifactId>
         </dependency>
 
         <dependency>
             <groupId>io.quarkus</groupId>
-            <artifactId>quarkus-reactive-routes</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>io.quarkus</groupId>
             <artifactId>quarkus-smallrye-jwt</artifactId>
         </dependency>
+
         <dependency>
             <groupId>io.quarkus</groupId>
             <artifactId>quarkus-smallrye-jwt-build</artifactId>
         </dependency>
     </dependencies>
-
-
 </project>

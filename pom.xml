@@ -33,16 +33,18 @@
 
         <revision>1.0-SNAPSHOT</revision>
 
-        <compiler-plugin.version>3.10.1</compiler-plugin.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
         <skipITs>true</skipITs>
-        <surefire-plugin.version>3.0.0-M7</surefire-plugin.version>
+
+        <compiler-plugin.version>3.11.0</compiler-plugin.version>
+        <surefire-plugin.version>3.1.2</surefire-plugin.version>
+        <resources-plugin.version>3.3.1</resources-plugin.version>
 
         <quarkus.platform.artifact-id>quarkus-bom</quarkus.platform.artifact-id>
         <quarkus.platform.group-id>io.quarkus.platform</quarkus.platform.group-id>
-        <quarkus.platform.version>3.5.3</quarkus.platform.version>
+        <quarkus.platform.version>3.6.4</quarkus.platform.version>
 
         <maven.compiler.release>17</maven.compiler.release>
         <maven.compiler.source>17</maven.compiler.source>
@@ -128,6 +130,27 @@
         </dependency>
 
 
+
+
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>org.aspectj</groupId>-->
+<!--            <artifactId>aspectjweaver</artifactId>-->
+<!--        </dependency>-->
+
+        <!--        <dependency>-->
+        <!--            <groupId>org.springframework</groupId>-->
+        <!--            <artifactId>spring-core</artifactId>-->
+        <!--            <version>5.3.24</version>-->
+        <!--        </dependency>-->
+        <dependency>
+            <groupId>jakarta.enterprise</groupId>
+            <artifactId>jakarta.enterprise.cdi-api</artifactId>
+        </dependency>
+
         <dependency>
             <groupId>io.quarkus</groupId>
             <artifactId>quarkus-smallrye-openapi</artifactId>
@@ -141,31 +164,6 @@
         <dependency>
             <groupId>io.quarkus</groupId>
             <artifactId>quarkus-jackson</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-        </dependency>
-<!--        <dependency>-->
-<!--            <groupId>org.aspectj</groupId>-->
-<!--            <artifactId>aspectjweaver</artifactId>-->
-<!--        </dependency>-->
-
-<!--        <dependency>-->
-<!--            <groupId>jakarta.validation</groupId>-->
-<!--            <artifactId>jakarta.validation-api</artifactId>-->
-<!--        </dependency>-->
-
-<!--        <dependency>-->
-<!--            <groupId>jakarta.inject</groupId>-->
-<!--            <artifactId>jakarta.inject-api</artifactId>-->
-<!--        </dependency>-->
-
-        <dependency>
-            <groupId>jakarta.platform</groupId>
-            <artifactId>jakarta.jakartaee-api</artifactId>
-            <version>10.0.0</version>
         </dependency>
 
         <dependency>
@@ -188,22 +186,11 @@
             <artifactId>commons-beanutils</artifactId>
         </dependency>
 
-<!--        <dependency>-->
-<!--            <groupId>org.springframework</groupId>-->
-<!--            <artifactId>spring-core</artifactId>-->
-<!--            <version>5.3.24</version>-->
-<!--        </dependency>-->
 
     </dependencies>
 
     <dependencyManagement>
         <dependencies>
-            <dependency>
-                <groupId>jakarta.mail</groupId>
-                <artifactId>jakarta.mail-api</artifactId>
-                <version>2.1.2</version>
-            </dependency>
-
             <dependency>
                 <groupId>org.projectlombok</groupId>
                 <artifactId>lombok</artifactId>
@@ -221,6 +208,12 @@
                 <version>${quarkus.platform.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>org.json</groupId>
+                <artifactId>json</artifactId>
+                <version>20230618</version>
             </dependency>
 
             <dependency>
@@ -269,6 +262,12 @@
                 <groupId>org.apache.commons</groupId>
                 <artifactId>commons-pool2</artifactId>
                 <version>2.9.0</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.googlecode.libphonenumber</groupId>
+                <artifactId>libphonenumber</artifactId>
+                <version>8.13.12</version>
             </dependency>
 
             <dependency>
@@ -349,7 +348,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-resources-plugin</artifactId>
-                <version>3.3.1</version>
+                <version>${resources-plugin.version}</version>
                 <executions>
                     <execution>
                         <id>copy-resources</id>
@@ -375,17 +374,30 @@
             <plugin>
                 <groupId>io.quarkus.platform</groupId>
                 <artifactId>quarkus-maven-plugin</artifactId>
-                <version>2.16.1.Final</version>
+                <version>${quarkus.platform.version}</version>
                 <extensions>true</extensions>
                 <executions>
                     <execution>
                         <goals>
                             <goal>build</goal>
-                            <goal>generate-code</goal>
-                            <goal>generate-code-tests</goal>
+<!--                            <goal>generate-code</goal>-->
+<!--                            <goal>generate-code-tests</goal>-->
                         </goals>
                     </execution>
                 </executions>
+            </plugin>
+            <plugin>
+                <groupId>io.quarkus</groupId>
+                <artifactId>quarkus-extension-maven-plugin</artifactId>
+                <configuration>
+                    <parentFirstArtifacts>
+                        <parentFirstArtifact>io.quarkus:quarkus-bootstrap-core</parentFirstArtifact>
+                        <parentFirstArtifact>io.quarkus:quarkus-development-mode-spi</parentFirstArtifact>
+                        <parentFirstArtifact>org.jboss.logmanager:jboss-logmanager</parentFirstArtifact>
+                        <parentFirstArtifact>org.jboss.logging:jboss-logging</parentFirstArtifact>
+                        <parentFirstArtifact>org.ow2.asm:asm</parentFirstArtifact>
+                    </parentFirstArtifacts>
+                </configuration>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -445,8 +457,8 @@
     </repositories>
     <pluginRepositories>
         <pluginRepository>
-            <id>aliyun-repos</id>
-            <url>https://maven.aliyun.com/repository/public</url>
+            <id>repo1</id>
+            <url>https://repo1.maven.org/maven2</url>
             <releases>
                 <enabled>true</enabled>
             </releases>

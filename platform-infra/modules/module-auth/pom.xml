@@ -24,8 +24,6 @@
 
     <artifactId>module-auth</artifactId>
 
-    <description>负责认证授权等功能</description>
-
     <dependencies>
         <dependency>
             <groupId>org.okstar.platform</groupId>

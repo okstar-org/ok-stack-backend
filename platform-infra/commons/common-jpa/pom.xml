@@ -23,19 +23,17 @@
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
-
     <artifactId>common-jpa</artifactId>
-
 
     <dependencies>
         <dependency>
-            <groupId>io.quarkus</groupId>
-            <artifactId>quarkus-jdbc-h2</artifactId>
+            <groupId>org.mariadb.jdbc</groupId>
+            <artifactId>mariadb-java-client</artifactId>
         </dependency>
 
         <dependency>
-            <groupId>org.mariadb.jdbc</groupId>
-            <artifactId>mariadb-java-client</artifactId>
+            <groupId>io.quarkus</groupId>
+            <artifactId>quarkus-jdbc-h2</artifactId>
         </dependency>
 
         <dependency>
@@ -60,17 +58,10 @@
         </dependency>
 
         <dependency>
-            <groupId>javax.persistence</groupId>
-            <artifactId>javax.persistence-api</artifactId>
-            <version>2.2</version>
-        </dependency>
-
-        <dependency>
             <groupId>org.okstar.platform</groupId>
             <artifactId>common-base</artifactId>
             <version>${revision}</version>
         </dependency>
-
 
     </dependencies>
 </project>

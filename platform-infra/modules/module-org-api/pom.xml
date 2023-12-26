@@ -36,15 +36,21 @@
             <artifactId>common-base</artifactId>
             <version>${revision}</version>
         </dependency>
+
         <dependency>
             <groupId>org.eclipse.microprofile.rest.client</groupId>
             <artifactId>microprofile-rest-client-api</artifactId>
         </dependency>
+
         <dependency>
             <groupId>org.okstar.platform</groupId>
             <artifactId>module-system-api</artifactId>
-            <version>1.0-SNAPSHOT</version>
-            <scope>compile</scope>
+            <version>${revision}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>jakarta.persistence</groupId>
+            <artifactId>jakarta.persistence-api</artifactId>
         </dependency>
     </dependencies>
 

@@ -21,6 +21,10 @@
          <relativePath>../pom.xml</relativePath>
     </parent>
     <modelVersion>4.0.0</modelVersion>
+
+    <packaging>pom</packaging>
+    <artifactId>commons</artifactId>
+
     <modules>
         <module>common-log</module>
         <module>common-base</module>
@@ -30,11 +34,6 @@
         <module>common-text</module>
     </modules>
 
-    <artifactId>commons</artifactId>
-    <packaging>pom</packaging>
 
-    <description>
-	    platform-common 通用模块
-    </description>
 
 </project>

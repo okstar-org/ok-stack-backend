@@ -30,13 +30,13 @@
         <maven.compiler.target>17</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
+
     <dependencies>
         <dependency>
-            <groupId>org.okstar.platform</groupId>
-            <artifactId>common-jpa</artifactId>
-            <version>${revision}</version>
-            <scope>compile</scope>
+            <groupId>jakarta.persistence</groupId>
+            <artifactId>jakarta.persistence-api</artifactId>
         </dependency>
+
     </dependencies>
 
 </project>

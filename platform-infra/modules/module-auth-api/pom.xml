@@ -20,23 +20,17 @@
         <groupId>org.okstar.platform</groupId>
         <artifactId>modules</artifactId>
         <version>${revision}</version>
+        <relativePath>../pom.xml</relativePath>
     </parent>
 
     <groupId>org.okstar.platform.auth</groupId>
     <artifactId>module-auth-api</artifactId>
-
-    <properties>
-        <maven.compiler.source>17</maven.compiler.source>
-        <maven.compiler.target>17</maven.compiler.target>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    </properties>
 
     <dependencies>
         <dependency>
             <groupId>org.okstar.platform</groupId>
             <artifactId>module-system-api</artifactId>
             <version>${revision}</version>
-            <scope>compile</scope>
         </dependency>
     </dependencies>
 
