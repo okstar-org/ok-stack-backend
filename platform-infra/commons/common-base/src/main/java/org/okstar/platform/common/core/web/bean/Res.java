@@ -15,6 +15,7 @@ package org.okstar.platform.common.core.web.bean;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import org.okstar.platform.common.core.utils.OkDateUtils;
 
@@ -98,8 +99,9 @@ import java.util.Optional;
  * 505	HTTP Version not supported	服务器不支持请求的HTTP协议的版本，无法完成处理
  */
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
+@EqualsAndHashCode(callSuper = true)
 public class Res<T> extends DTO {
 
     private static final int OK = 0;

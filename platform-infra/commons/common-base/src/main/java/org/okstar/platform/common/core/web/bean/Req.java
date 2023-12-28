@@ -14,12 +14,14 @@
 package org.okstar.platform.common.core.web.bean;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import org.okstar.platform.common.core.utils.OkDateUtils;
 
 /**
  * 请求实体
  */
 @Data
+@EqualsAndHashCode(callSuper = true)
 public class Req extends VO {
     //请求时间戳
     protected Long ts = OkDateUtils.getTime();
