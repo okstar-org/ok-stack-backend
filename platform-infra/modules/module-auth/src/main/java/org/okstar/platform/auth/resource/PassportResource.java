@@ -50,7 +50,7 @@ public class PassportResource extends OkCommonResource {
     public Res<SignInResult> signIn(SignInForm signInForm) {
         Log.infof("signIn:%s", signInForm);
         var resultDto = passportService.signIn(signInForm);
-        Log.infof("accessToken=>%s", resultDto.getToken());
+        Log.infof("signIn=>%s", resultDto);
         return Res.ok(signInForm, resultDto);
     }
 
@@ -69,19 +69,12 @@ public class PassportResource extends OkCommonResource {
 
     @POST
     @Path("refresh")
-    public Res<RefreshResult> refresh(RefreshForm refreshForm) {
+    public Res<SignInResult> refresh(RefreshForm refreshForm) {
         Log.infof("current accessToken:%s", refreshForm.getAccessToken());
 
         SignInResult result0 = passportService.refresh(refreshForm.getRefreshToken());
-        Log.infof("refresh accessToken=>%s", result0.getToken());
+        Log.infof("refresh accessToken=>%s", result0.getAccessToken());
 
-        RefreshResult result = RefreshResult.builder()
-                .accessToken(result0.getToken())
-                .refreshToken(result0.getRefresh_token())
-                .exp(result0.getExpires_in())
-                .refresh(true)
-                .build();
-
-        return Res.ok(refreshForm, result);
+        return Res.ok(refreshForm, result0);
     }
 }

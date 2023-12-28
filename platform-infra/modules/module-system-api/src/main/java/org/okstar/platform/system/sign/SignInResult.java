@@ -30,10 +30,20 @@ import lombok.Data;
 @Data
 @Builder
 public class SignInResult {
-    private String token;
-    private String token_type;
-    private Long expires_in;
-    private String refresh_token;
-    private Long refresh_expires_in;
+    //tokenType："Bearer"
+    protected String tokenType;
+    protected String accessToken;
+    /**
+     * 过期时间：
+     * 以秒为单位或描述的时间跨度字符串表示。
+     * 如：60，”2 days”，”10h”，”7d”
+     */
+    private Long expiresIn;
+
+    //refresh
+    private String refreshToken;
+    private Long refreshExpiresIn;
+
+    //session
     private String session_state;
 }

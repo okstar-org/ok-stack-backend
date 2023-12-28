@@ -22,12 +22,13 @@ import jakarta.inject.Inject;
 import org.keycloak.authorization.client.AuthzClient;
 import org.keycloak.representations.idm.authorization.AuthorizationRequest;
 import org.okstar.platform.common.core.utils.OkAssert;
+import org.okstar.platform.common.core.utils.OkDateUtils;
 import org.okstar.platform.system.sign.SignInResult;
 
 import java.util.concurrent.ExecutionException;
 
 @ApplicationScoped
-class AuthzClientManagerImpl implements  AuthzClientManager {
+class AuthzClientManagerImpl implements AuthzClientManager {
     @Inject
     AuthzClient authzClient;
 
@@ -35,18 +36,18 @@ class AuthzClientManagerImpl implements  AuthzClientManager {
     OidcClient oidcClient;
 
     @Override
-    public SignInResult authorization(String username, String password){
-        OkAssert.hasText(username,"username is empty");
+    public SignInResult authorization(String username, String password) {
+        OkAssert.hasText(username, "username is empty");
         OkAssert.hasText(password, "password is empty");
         AuthorizationRequest request = new AuthorizationRequest();
         var response = authzClient.authorization(username.toLowerCase(), password).authorize(request);
         return SignInResult.builder()
                 .session_state(response.getSessionState())
-                .token(response.getToken())
-                .token_type(response.getTokenType())
-                .expires_in(response.getExpiresIn())
-                .refresh_token(response.getRefreshToken())
-                .refresh_expires_in(response.getRefreshExpiresIn())
+                .accessToken(response.getToken())
+                .tokenType(response.getTokenType())
+                .expiresIn(response.getExpiresIn())
+                .refreshToken(response.getRefreshToken())
+                .refreshExpiresIn(response.getRefreshExpiresIn())
                 .build();
     }
 
@@ -55,10 +56,12 @@ class AuthzClientManagerImpl implements  AuthzClientManager {
         Uni<Tokens> uni = oidcClient.refreshTokens(refreshToken);
         try {
             Tokens tokens = uni.subscribeAsCompletionStage().get();
+            long expiresIn = (tokens.getAccessTokenExpiresAt() * 1000 - OkDateUtils.getTime()) / 1000;
             return SignInResult.builder()
-                    .token(tokens.getAccessToken())
-                    .expires_in(tokens.getAccessTokenExpiresAt())
-                    .refresh_token(tokens.getRefreshToken())
+                    .accessToken(tokens.getAccessToken())
+                    .expiresIn(expiresIn)
+                    .refreshToken(tokens.getRefreshToken())
+                    .refreshExpiresIn(tokens.getRefreshTokenTimeSkew())
                     .build();
         } catch (InterruptedException | ExecutionException e) {
             throw new RuntimeException(e);
