@@ -43,10 +43,10 @@ class AuthzClientManagerImpl implements  AuthzClientManager {
         return SignInResult.builder()
                 .session_state(response.getSessionState())
                 .token(response.getToken())
+                .token_type(response.getTokenType())
                 .expires_in(response.getExpiresIn())
                 .refresh_token(response.getRefreshToken())
                 .refresh_expires_in(response.getRefreshExpiresIn())
-                .token_type(response.getTokenType())
                 .build();
     }
 
@@ -68,6 +68,14 @@ class AuthzClientManagerImpl implements  AuthzClientManager {
     @Override
     public void revoke(String accessToken) {
         Log.infof("Revoke access token:%s", accessToken);
-        oidcClient.revokeAccessToken(accessToken);
+        Uni<Boolean> uni = oidcClient.revokeAccessToken(accessToken);
+        try {
+            Boolean aBoolean = uni.subscribe().asCompletionStage().get();
+            Log.infof("revoke:%s=>%s", accessToken, aBoolean);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        } catch (ExecutionException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

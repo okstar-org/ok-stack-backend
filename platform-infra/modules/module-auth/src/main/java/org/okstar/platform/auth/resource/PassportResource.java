@@ -14,17 +14,16 @@
 package org.okstar.platform.auth.resource;
 
 import io.quarkus.logging.Log;
-import io.quarkus.oidc.client.Tokens;
 import io.smallrye.common.annotation.Blocking;
 import jakarta.inject.Inject;
+import jakarta.ws.rs.HeaderParam;
+import jakarta.ws.rs.POST;
+import jakarta.ws.rs.Path;
 import org.okstar.platform.auth.service.PassportService;
 import org.okstar.platform.common.core.web.bean.Req;
 import org.okstar.platform.common.core.web.bean.Res;
 import org.okstar.platform.common.resource.OkCommonResource;
 import org.okstar.platform.system.sign.*;
-
-import jakarta.ws.rs.POST;
-import jakarta.ws.rs.Path;
 
 /**
  * 通行
@@ -32,8 +31,6 @@ import jakarta.ws.rs.Path;
 @Path("passport")
 public class PassportResource extends OkCommonResource {
 
-    @Inject
-    Tokens tokens;
 
     @Inject
     PassportService passportService;
@@ -43,7 +40,7 @@ public class PassportResource extends OkCommonResource {
     public Res<SignUpResult> signUp(SignUpForm signUpForm) {
         Log.infof("signUp:%s", signUpForm);
         var resultDto = passportService.signUp(signUpForm);
-        Log.infof("resultDto:%s", resultDto);
+        Log.infof("resultDto=>%s", resultDto);
         return Res.ok(signUpForm, resultDto);
     }
 
@@ -53,14 +50,19 @@ public class PassportResource extends OkCommonResource {
     public Res<SignInResult> signIn(SignInForm signInForm) {
         Log.infof("signIn:%s", signInForm);
         var resultDto = passportService.signIn(signInForm);
-        Log.infof("resultDto=>%s", resultDto);
+        Log.infof("accessToken=>%s", resultDto.getToken());
         return Res.ok(signInForm, resultDto);
     }
 
     @POST
     @Path("signOut")
-    public Res<Boolean> signOut() {
-        String accessToken = tokens.getAccessToken();
+    public Res<Boolean> signOut(@HeaderParam("Authorization")String accessToken) {
+        Log.infof("signOut...");
+
+        String username = getUsername();
+        Log.infof("username:%s", username);
+
+        Log.infof("accessToken=>%s", accessToken);
         passportService.signOut(accessToken);
         return Res.ok(Req.empty(), true);
     }
@@ -68,15 +70,18 @@ public class PassportResource extends OkCommonResource {
     @POST
     @Path("refresh")
     public Res<RefreshResult> refresh(RefreshForm refreshForm) {
+        Log.infof("current accessToken:%s", refreshForm.getAccessToken());
+
+        SignInResult result0 = passportService.refresh(refreshForm.getRefreshToken());
+        Log.infof("refresh accessToken=>%s", result0.getToken());
 
         RefreshResult result = RefreshResult.builder()
-                .accessToken(tokens.getAccessToken())
-                .exp(tokens.getAccessTokenExpiresAt())
-                .refreshToken(tokens.getRefreshToken())
-                .refresh(refreshForm.getRefresh())
+                .accessToken(result0.getToken())
+                .refreshToken(result0.getRefresh_token())
+                .exp(result0.getExpires_in())
+                .refresh(true)
                 .build();
 
-        Log.infof("result:%s", result);
         return Res.ok(refreshForm, result);
     }
 }
