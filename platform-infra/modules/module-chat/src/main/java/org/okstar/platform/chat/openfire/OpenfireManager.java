@@ -28,6 +28,7 @@ import org.okstar.platform.chat.beans.ChatGroup;
 import org.okstar.platform.chat.beans.ChatParticipant;
 import org.okstar.platform.chat.beans.ChatRoom;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -114,7 +115,7 @@ public class OpenfireManager extends Thread {
 
     public List<ChatParticipant> findParticipantsByName(String username) {
         ParticipantEntities participants = restApiClient.getChatRoomParticipants(username);
-        return participants.getParticipants().stream().map(e->
+        return participants.getParticipants().stream().map(e ->
                 ChatUtils.convertParticipant(e)
         ).toList();
     }
@@ -127,9 +128,12 @@ public class OpenfireManager extends Thread {
 
     public List<ChatGroup> listGroups() {
         var groups = restApiClient.getGroups();
-        return groups.getGroups().stream().map(e->
-                ChatUtils.convertGroup(e)
-        ).toList();
+
+        List<GroupEntity> list = groups.getGroups();
+        if (list == null)
+            return Collections.emptyList();
+
+        return list.stream().map(ChatUtils::convertGroup).toList();
     }
 
 

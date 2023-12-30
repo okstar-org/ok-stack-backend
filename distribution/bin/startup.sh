@@ -26,6 +26,7 @@ do
     echo "The $item is starting."
     nohup java -jar $BASE_DIR/infra/$item/quarkus-run.jar &> $BASE_DIR/logs/$item.out &
     echo "The $item is startup successfully=> [PID=$!, CODE=$?]"
+    sleep 2
 done
 
 APPS=("app-open")

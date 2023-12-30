@@ -76,7 +76,7 @@
                 <quarkus.datasource.password>root</quarkus.datasource.password>
                 <quarkus.datasource.jdbc.url>jdbc:mariadb://localhost:3309</quarkus.datasource.jdbc.url>
                 <quarkus.datasource.jdbc.driver>org.mariadb.jdbc.Driver</quarkus.datasource.jdbc.driver>
-                <quarkus.hibernate-orm.dialect>org.hibernate.dialect.MariaDB106Dialect</quarkus.hibernate-orm.dialect>
+                <quarkus.hibernate-orm.dialect>org.hibernate.dialect.MariaDBDialect</quarkus.hibernate-orm.dialect>
             </properties>
         </profile>
 
@@ -95,7 +95,7 @@
                 <quarkus.datasource.jdbc.url>jdbc:mariadb://chuanshaninfo.com:3307</quarkus.datasource.jdbc.url>
                 <quarkus.datasource.jdbc.args>autoReconnect=true&amp;connectTimeout=5000&amp;socketTimeout=60000</quarkus.datasource.jdbc.args>
                 <quarkus.datasource.jdbc.driver>org.mariadb.jdbc.Driver</quarkus.datasource.jdbc.driver>
-                <quarkus.hibernate-orm.dialect>org.hibernate.dialect.MariaDB106Dialect</quarkus.hibernate-orm.dialect>
+                <quarkus.hibernate-orm.dialect>org.hibernate.dialect.MariaDBDialect</quarkus.hibernate-orm.dialect>
                 <quarkus.keycloak.admin-client.server-url>https://kc.okstar.org.cn</quarkus.keycloak.admin-client.server-url>
                 <quarkus.oidc.auth-server-url>https://kc.okstar.org.cn/realms/okstar</quarkus.oidc.auth-server-url>
                 <quarkus.oidc.credentials.secret>paYHiWpp0vV2jkIhz6EWLPw0HI5yv2XM</quarkus.oidc.credentials.secret>
@@ -129,27 +129,21 @@
             <scope>test</scope>
         </dependency>
 
-
-
-
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
         </dependency>
-<!--        <dependency>-->
-<!--            <groupId>org.aspectj</groupId>-->
-<!--            <artifactId>aspectjweaver</artifactId>-->
-<!--        </dependency>-->
 
-        <!--        <dependency>-->
-        <!--            <groupId>org.springframework</groupId>-->
-        <!--            <artifactId>spring-core</artifactId>-->
-        <!--            <version>5.3.24</version>-->
-        <!--        </dependency>-->
         <dependency>
             <groupId>jakarta.enterprise</groupId>
             <artifactId>jakarta.enterprise.cdi-api</artifactId>
         </dependency>
+
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+        </dependency>
+
 
         <dependency>
             <groupId>io.quarkus</groupId>
@@ -171,10 +165,6 @@
             <artifactId>quarkus-config-yaml</artifactId>
         </dependency>
 
-        <dependency>
-            <groupId>com.google.guava</groupId>
-            <artifactId>guava</artifactId>
-        </dependency>
 
         <dependency>
             <groupId>io.quarkus</groupId>
@@ -372,34 +362,6 @@
                 </executions>
             </plugin>
             <plugin>
-                <groupId>io.quarkus.platform</groupId>
-                <artifactId>quarkus-maven-plugin</artifactId>
-                <version>${quarkus.platform.version}</version>
-                <extensions>true</extensions>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>build</goal>
-<!--                            <goal>generate-code</goal>-->
-<!--                            <goal>generate-code-tests</goal>-->
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
-                <groupId>io.quarkus</groupId>
-                <artifactId>quarkus-extension-maven-plugin</artifactId>
-                <configuration>
-                    <parentFirstArtifacts>
-                        <parentFirstArtifact>io.quarkus:quarkus-bootstrap-core</parentFirstArtifact>
-                        <parentFirstArtifact>io.quarkus:quarkus-development-mode-spi</parentFirstArtifact>
-                        <parentFirstArtifact>org.jboss.logmanager:jboss-logmanager</parentFirstArtifact>
-                        <parentFirstArtifact>org.jboss.logging:jboss-logging</parentFirstArtifact>
-                        <parentFirstArtifact>org.ow2.asm:asm</parentFirstArtifact>
-                    </parentFirstArtifacts>
-                </configuration>
-            </plugin>
-            <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>${compiler-plugin.version}</version>
@@ -440,6 +402,34 @@
                     </execution>
                 </executions>
             </plugin>
+
+            <plugin>
+                <groupId>io.quarkus.platform</groupId>
+                <artifactId>quarkus-maven-plugin</artifactId>
+                <version>${quarkus.platform.version}</version>
+                <extensions>true</extensions>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>build</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>io.quarkus</groupId>
+                <artifactId>quarkus-extension-maven-plugin</artifactId>
+                <configuration>
+                    <parentFirstArtifacts>
+                        <parentFirstArtifact>io.quarkus:quarkus-bootstrap-core</parentFirstArtifact>
+                        <parentFirstArtifact>io.quarkus:quarkus-development-mode-spi</parentFirstArtifact>
+                        <parentFirstArtifact>org.jboss.logmanager:jboss-logmanager</parentFirstArtifact>
+                        <parentFirstArtifact>org.jboss.logging:jboss-logging</parentFirstArtifact>
+                        <parentFirstArtifact>org.ow2.asm:asm</parentFirstArtifact>
+                    </parentFirstArtifacts>
+                </configuration>
+            </plugin>
+
         </plugins>
     </build>
     <!-- 配置阿里云仓库 -->

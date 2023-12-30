@@ -27,10 +27,6 @@
     <groupId>org.okstar.platform.app</groupId>
     <artifactId>platform-app</artifactId>
 
-    <properties>
-
-    </properties>
-
     <modules>
         <module>app-open</module>
         <module>app-okmsg</module>
