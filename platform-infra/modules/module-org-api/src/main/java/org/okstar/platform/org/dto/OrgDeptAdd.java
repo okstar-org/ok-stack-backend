@@ -11,28 +11,32 @@
  * /
  */
 
-package org.okstar.platform.org.service;
+package org.okstar.platform.org.dto;
+
+import lombok.Data;
+
+@Data
+public class OrgDeptAdd {
+    /**
+     * 编号
+     */
+    private String no;
+
+    /**
+     * 名称
+     */
+    private String name;
 
 
-import org.okstar.platform.common.datasource.OkService;
-import org.okstar.platform.org.domain.OrgDept;
-import org.okstar.platform.org.dto.OrgDeptAdd;
+    /**
+     * 父部门ID
+     */
+    private Long parentId;
 
-import java.util.List;
+    /**
+     * 组织ID
+     */
+    private Long orgId;
 
-/**
- * 部门管理 服务层
- * 
- *
- */
-public interface OrgDeptService extends OkService<OrgDept, Long>
-{
-
-    void add(Long createBy, OrgDeptAdd add);
-
-    List<OrgDept> children(Long parentId);
-
-    List<OrgDept> getByOrgId(Long orgId);
-
-
+    private Integer level;
 }

@@ -16,9 +16,12 @@ package org.okstar.platform.org.service;
 import io.quarkus.panache.common.Page;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
+import jakarta.transaction.Transactional;
+import org.okstar.platform.common.core.utils.OkDateUtils;
 import org.okstar.platform.common.core.web.page.OkPageResult;
 import org.okstar.platform.common.core.web.page.OkPageable;
 import org.okstar.platform.org.domain.OrgDept;
+import org.okstar.platform.org.dto.OrgDeptAdd;
 import org.okstar.platform.org.mapper.OrgDeptMapper;
 
 import java.util.List;
@@ -26,14 +29,29 @@ import java.util.List;
 /**
  * 部门管理 服务实现
  */
+@Transactional
 @ApplicationScoped
 public class OrgDeptServiceImpl implements OrgDeptService {
     @Inject
     OrgDeptMapper orgDeptMapper;
 
+
     @Override
-    public void save(OrgDept sysDept) {
-        orgDeptMapper.persist(sysDept);
+    public void add(Long createBy, OrgDeptAdd add) {
+        OrgDept orgDept = new OrgDept();
+        orgDept.setNo(add.getNo());
+        orgDept.setName(add.getName());
+        orgDept.setOrgId(add.getOrgId());
+        orgDept.setParentId(add.getParentId());
+        orgDept.setLevel(add.getLevel());
+        orgDept.setCreateBy(createBy);
+        orgDept.setCreateAt(OkDateUtils.now());
+        save(orgDept);
+    }
+
+    @Override
+    public void save(OrgDept dept) {
+        orgDeptMapper.persist(dept);
     }
 
     @Override

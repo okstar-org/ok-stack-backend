@@ -14,32 +14,59 @@
 package org.okstar.platform.org.resource;
 
 import jakarta.inject.Inject;
+import jakarta.ws.rs.GET;
+import jakarta.ws.rs.POST;
+import jakarta.ws.rs.Path;
+import jakarta.ws.rs.PathParam;
+import org.eclipse.microprofile.rest.client.inject.RestClient;
 import org.okstar.platform.common.core.utils.OkAssert;
 import org.okstar.platform.common.core.web.bean.Req;
 import org.okstar.platform.common.core.web.bean.Res;
+import org.okstar.platform.common.resource.OkCommonResource;
+import org.okstar.platform.common.rpc.RpcAssert;
 import org.okstar.platform.org.domain.Org;
 import org.okstar.platform.org.domain.OrgDept;
+import org.okstar.platform.org.dto.OrgDeptAdd;
 import org.okstar.platform.org.service.OrgDeptService;
 import org.okstar.platform.org.service.OrgService;
+import org.okstar.platform.system.rpc.SysAccountRpc;
 
-import jakarta.ws.rs.GET;
-import jakarta.ws.rs.Path;
-import jakarta.ws.rs.PathParam;
 import java.util.List;
 import java.util.Optional;
 
 @Path("dept")
-public class OrgDeptResource {
+public class OrgDeptResource extends OkCommonResource {
     @Inject
     OrgDeptService deptService;
     @Inject
     OrgService orgService;
+    @Inject
+    @RestClient
+    SysAccountRpc sysAccountRpc;
 
+    @POST
+    @Path("add/{parentId}")
+    public Res<List<OrgDept>> add(@PathParam("parentId") Long parentId, OrgDeptAdd add) {
+
+        var parent = deptService.get(parentId);
+        OkAssert.isTrue(parent != null, "参数异常！");
+
+        Optional<Org> current = orgService.current();
+
+        String username = getUsername();
+        var account0 = RpcAssert.isTrue(sysAccountRpc.findByUsername(username));
+        add.setOrgId(current.get().id);
+        add.setParentId(parentId);
+        add.setLevel(parent.getLevel()+1);
+        deptService.add(account0.getId(), add);
+
+        return Res.ok(Req.empty());
+    }
 
 
     @GET
     @Path("children")
-    public Res<List<OrgDept>> childrenByOrg() {
+    public Res<List<OrgDept>> orgChildren() {
         Optional<Org> current = orgService.current();
         OkAssert.isTrue(current.isPresent(), "未初始化组织！");
         List<OrgDept> list = deptService.getByOrgId(current.get().id);
