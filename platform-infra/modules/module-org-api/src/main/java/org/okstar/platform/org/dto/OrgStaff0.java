@@ -18,12 +18,18 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * 组织成员
+ */
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class Staff0 {
+public class OrgStaff0 {
     private String no;
+    private String name;
     private String phone;
     private String email;
+    private String username;
+
 }

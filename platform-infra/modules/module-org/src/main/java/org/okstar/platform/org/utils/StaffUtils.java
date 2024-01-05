@@ -11,27 +11,19 @@
  * /
  */
 
-package org.okstar.platform.org.dto;
+package org.okstar.platform.org.utils;
 
-import lombok.Data;
-import org.okstar.platform.common.core.web.bean.DTO;
+import org.okstar.platform.org.domain.OrgStaff;
+import org.okstar.platform.org.dto.OrgStaff0;
 
-import java.util.List;
+public class StaffUtils {
 
-/**
- * 我的组织信息
- */
-
-@Data
-public class MyOrgInfo extends DTO {
-
-    /**
-     * 人员编号
-     */
-    private OrgStaff0 staff;
-
-    private Org0 org;
-
-    private List<MyPostInfo> postInfo;
+    public static OrgStaff0 toStaff0(OrgStaff staff) {
+        return OrgStaff0.builder()
+                .no(staff.getFragment().getNo())
+                .phone(staff.getFragment().getPhone())
+                .email(staff.getFragment().getEmail())
+                .build();
+    }
 
 }

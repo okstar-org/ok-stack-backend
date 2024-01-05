@@ -24,7 +24,6 @@ import org.okstar.platform.common.core.defined.SystemDefines;
 import org.okstar.platform.common.core.utils.OkStringUtil;
 
 
-
 @ApplicationScoped
 public class TokenFilters {
 
@@ -37,7 +36,7 @@ public class TokenFilters {
         Log.infof("uri=%s", uri);
 
         String username = jwt.getName();
-        if (uri.contains("/passport") || uri.contains("/rpc")||uri.contains("/_well-known")) {
+        if (uri.contains("/passport") || uri.contains("/rpc") || uri.contains("/_well-known") || uri.contains("/staff")) {
             Log.infof("bypass the uri.");
             rc.next();
             return;

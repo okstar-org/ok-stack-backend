@@ -32,6 +32,11 @@
             <artifactId>module-auth-api</artifactId>
             <version>${revision}</version>
         </dependency>
+        <dependency>
+            <groupId>org.okstar.platform</groupId>
+            <artifactId>module-org-api</artifactId>
+            <version>${revision}</version>
+        </dependency>
     </dependencies>
 
 </project>

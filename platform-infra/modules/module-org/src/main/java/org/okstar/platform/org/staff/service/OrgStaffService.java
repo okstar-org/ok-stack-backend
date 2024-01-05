@@ -16,6 +16,7 @@ package org.okstar.platform.org.staff.service;
 
 import org.okstar.platform.common.datasource.OkService;
 import org.okstar.platform.org.domain.OrgStaff;
+import org.okstar.platform.org.dto.OrgStaff0;
 import org.okstar.platform.org.vo.OrgStaffReq;
 
 import java.util.List;
@@ -51,4 +52,6 @@ public interface OrgStaffService extends OkService<OrgStaff, Long> {
     void setAccountId(Long id, Long accountId);
 
     Optional<OrgStaff> getByAccountId(Long id);
+
+    List<OrgStaff0> search(String query);
 }

@@ -11,29 +11,33 @@
  * /
  */
 
-package org.okstar.platform.org.rpc;
+package org.okstar.platform.open.resource;
 
+import jakarta.inject.Inject;
 import jakarta.ws.rs.GET;
-import jakarta.ws.rs.QueryParam;
-import org.eclipse.microprofile.rest.client.inject.RegisterRestClient;
-import org.okstar.platform.common.rpc.RpcResult;
-import org.okstar.platform.org.dto.OrgStaff0;
-import org.okstar.platform.org.dto.OrgStaffFragment;
-
-import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
+import jakarta.ws.rs.QueryParam;
+import lombok.extern.slf4j.Slf4j;
+import org.eclipse.microprofile.rest.client.inject.RestClient;
+import org.okstar.platform.common.core.web.bean.Res;
+import org.okstar.platform.common.rpc.RpcAssert;
+import org.okstar.platform.org.dto.OrgStaff0;
+import org.okstar.platform.org.rpc.OrgStaffRpc;
 
 import java.util.List;
 
-@Path("rpc/OrgStaffRpc")
-@RegisterRestClient
-public interface OrgStaffRpc {
+@Slf4j
+@Path("staff")
+public class StaffResource {
 
-    @POST
-    @Path("add")
-    RpcResult<Boolean> add(OrgStaffFragment staffFragment);
+    @Inject
+    @RestClient
+    OrgStaffRpc staffRpc;
 
     @GET
     @Path("search")
-    RpcResult<List<OrgStaff0>> search(@QueryParam("q") String query);
+    public Res<List<OrgStaff0>> search(@QueryParam("q") String query) {
+        var list = RpcAssert.isTrue(staffRpc.search(query));
+        return Res.ok(list);
+    }
 }

@@ -13,6 +13,7 @@
 
 package org.okstar.platform.org.staff.service;
 
+import io.quarkus.hibernate.orm.panache.PanacheQuery;
 import io.quarkus.panache.common.Page;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
@@ -27,15 +28,14 @@ import org.okstar.platform.common.core.web.page.OkPageable;
 import org.okstar.platform.org.domain.OrgPost;
 import org.okstar.platform.org.domain.OrgStaff;
 import org.okstar.platform.org.domain.OrgStaffPost;
+import org.okstar.platform.org.dto.OrgStaff0;
 import org.okstar.platform.org.dto.OrgStaffFragment;
 import org.okstar.platform.org.service.OrgPostService;
 import org.okstar.platform.org.staff.mapper.OrgStaffMapper;
+import org.okstar.platform.org.utils.StaffUtils;
 import org.okstar.platform.org.vo.OrgStaffReq;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 
@@ -183,6 +183,37 @@ public class OrgStaffServiceImpl implements OrgStaffService {
     @Override
     public Optional<OrgStaff> getByAccountId(Long id) {
         return orgStaffMapper.find("accountId", id).stream().findFirst();
+    }
+
+    @Override
+    public List<OrgStaff0> search(String query) {
+        /**
+         * SELECT * from org_staff WHERE post_status = 'employed'
+         * AND
+         * (NAME LIKE '%杰%' OR phone LIKE '%1024%' OR email LIKE '%8810@qq.com%')
+         */
+        if (OkStringUtil.isEmpty(query))
+            return List.of();
+
+//        String k = OkStringUtil.wrap(query, "%");
+
+
+        PanacheQuery<OrgStaff> panacheQuery = orgStaffMapper.findAll();
+/**
+ .find(
+ "fragment.postStatus = ?1 AND " +
+ "(fragment.name LIKE ?2 " +
+ "OR fragment.phone LIKE ?3 " +
+ "OR fragment.email LIKE ?4)",    //
+ JobDefines.PostStatus.employed,
+ k, k, k
+ );
+ * 在如上代码查询出现如下bug:
+ org.hibernate.query.sqm.InterpretationException: Error interpreting query [FROM org.okstar.platform.org.domain.OrgStaff WHERE fragment.postStatus = ?1 AND (fragment.name LIKE ?2 OR fragment.phone LIKE ?3 OR fragment.email LIKE ?4)]; this may indicate a semantic (user query) problem or a bug in the parser [FROM org.okstar.platform.org.domain.OrgStaff WHERE fragment.postStatus = ?1 AND (fragment.name LIKE ?2 OR fragment.phone LIKE ?3 OR fragment.email LIKE ?4)]
+ *
+ */
+
+        return panacheQuery.stream().map(StaffUtils::toStaff0).collect(Collectors.toList());
     }
 
     private Optional<OrgStaff> findByNo(String no) {

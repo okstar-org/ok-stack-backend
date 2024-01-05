@@ -16,12 +16,13 @@ package org.okstar.platform.org.rpc.impl;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import org.okstar.platform.common.rpc.RpcResult;
+import org.okstar.platform.org.dto.OrgStaff0;
 import org.okstar.platform.org.dto.OrgStaffFragment;
 import org.okstar.platform.org.rpc.OrgStaffRpc;
 import org.okstar.platform.org.staff.service.OrgStaffService;
 import org.okstar.platform.org.vo.OrgStaffReq;
 
-
+import java.util.List;
 
 
 @ApplicationScoped
@@ -37,6 +38,18 @@ public class OrgStaffRpcImpl implements OrgStaffRpc {
             req.setFragment(staffFragment);
             boolean added = orgStaffService.add(req);
             return RpcResult.success(added);
+        } catch (Exception e) {
+            return RpcResult.failed(e);
+        }
+    }
+
+    @Override
+    public RpcResult<List<OrgStaff0>> search(String query) {
+        try {
+
+            List<OrgStaff0> list = orgStaffService.search(query);
+            return RpcResult.success(list);
+
         } catch (Exception e) {
             return RpcResult.failed(e);
         }

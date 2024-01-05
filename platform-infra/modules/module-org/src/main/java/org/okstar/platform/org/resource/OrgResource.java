@@ -27,7 +27,7 @@ import org.okstar.platform.org.domain.OrgPost;
 import org.okstar.platform.org.dto.MyOrgInfo;
 import org.okstar.platform.org.dto.MyPostInfo;
 import org.okstar.platform.org.dto.Org0;
-import org.okstar.platform.org.dto.Staff0;
+import org.okstar.platform.org.dto.OrgStaff0;
 import org.okstar.platform.org.service.OrgDeptService;
 import org.okstar.platform.org.service.OrgPostService;
 import org.okstar.platform.org.service.OrgService;
@@ -121,10 +121,12 @@ public class OrgResource extends OkCommonResource {
                 .build());
 
         SysProfileDTO profile = sysProfileRpc.getByAccount(account0.getId());
-        info.setStaff(Staff0.builder()
+        info.setStaff(OrgStaff0.builder()
                 .no(staff.get().getFragment().getNo())
-                .phone(profile.getPhone()).email(profile.getEmail())
+                .phone(profile.getPhone())
+                .email(profile.getEmail())
                 .build());
+
         info.setPostInfo(infos);
         return Res.ok(info);
     }
