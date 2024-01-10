@@ -13,11 +13,11 @@
 
 package org.okstar.platform.org.rbac.domain;
 
-import io.quarkus.hibernate.orm.panache.PanacheEntity;
 import jakarta.persistence.Entity;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.Data;
+import org.okstar.platform.common.datasource.domain.OkEntity;
 
 /**
  * 用户和角色关联 sys_user_role
@@ -27,7 +27,7 @@ import lombok.Data;
 @Data
 @Table
 @Entity
-public class OrgRbacUserRole extends PanacheEntity
+public class OrgRbacUserRole extends OkEntity
 {
     /** 用户 */
     @ManyToOne

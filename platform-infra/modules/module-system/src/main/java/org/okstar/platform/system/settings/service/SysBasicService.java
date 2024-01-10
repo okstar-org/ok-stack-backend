@@ -22,7 +22,7 @@ import org.okstar.platform.system.settings.domain.SysSetPersonal;
 /**
  *
  */
-public interface SysBasicService extends OkService<SysSetGlobal, Long>
+public interface SysBasicService extends OkService<SysSetGlobal>
 {
     SysSetGlobal findDefaultGlobal();
 

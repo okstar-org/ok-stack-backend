@@ -17,7 +17,7 @@ package org.okstar.platform.system.account.service;
 import org.okstar.platform.common.datasource.OkService;
 import org.okstar.platform.system.account.domain.SysProfile;
 
-public interface SysProfileService extends OkService<SysProfile, Long> {
+public interface SysProfileService extends OkService<SysProfile> {
 
     SysProfile loadByUsername(String username);
 

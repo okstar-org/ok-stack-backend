@@ -28,7 +28,7 @@ import java.util.Optional;
 /**
  * 用户业务层
  */
-public interface SysAccountService extends OkService<SysAccount, Long> {
+public interface SysAccountService extends OkService<SysAccount> {
 
 
     SysAccount findByBind(String iso, AccountDefines.BindType bindType, String bindValue);

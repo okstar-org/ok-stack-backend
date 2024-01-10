@@ -25,7 +25,7 @@ import java.util.Optional;
 /**
  * 部门管理 服务层
  */
-public interface OrgStaffService extends OkService<OrgStaff, Long> {
+public interface OrgStaffService extends OkService<OrgStaff> {
 
     List<OrgStaff> children(Long parentId);
 

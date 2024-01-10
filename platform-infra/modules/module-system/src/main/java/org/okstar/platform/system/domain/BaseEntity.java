@@ -20,12 +20,9 @@ import org.okstar.platform.common.datasource.domain.OkEntity;
 
 /**
  * Entity基类
- * 
- * 
  */
 @Data
 @MappedSuperclass
-public class BaseEntity extends OkEntity
-{
+public class BaseEntity extends OkEntity {
 
 }

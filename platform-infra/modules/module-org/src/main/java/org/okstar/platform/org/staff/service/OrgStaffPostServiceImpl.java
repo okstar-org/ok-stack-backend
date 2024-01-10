@@ -79,7 +79,7 @@ public class OrgStaffPostServiceImpl implements OrgStaffPostService {
     @Override
     public OkPageResult<OrgStaffPost> findPage(OkPageable pageable) {
         var all = orgStaffPostMapper.findAll();
-        var query = all.page(Page.of(pageable.getPageNumber(), pageable.getPageSize()));
+        var query = all.page(Page.of(pageable.getPageIndex(), pageable.getPageSize()));
         return OkPageResult.build(
                 query.list(),
                 query.count(),

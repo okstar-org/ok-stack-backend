@@ -235,7 +235,7 @@ public class SysAccountServiceImpl extends OkAbsService implements SysAccountSer
     @Override
     public OkPageResult<SysAccount> findPage(OkPageable pageable) {
         var all = sysAccountMapper.findAll();
-        var query = all.page(Page.of(pageable.getPageNumber(), pageable.getPageSize()));
+        var query = all.page(Page.of(pageable.getPageIndex(), pageable.getPageSize()));
         return OkPageResult.build(
                 query.list(),
                 query.count(),

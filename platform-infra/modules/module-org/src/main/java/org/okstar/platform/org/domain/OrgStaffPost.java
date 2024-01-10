@@ -13,10 +13,10 @@
 
 package org.okstar.platform.org.domain;
 
-import io.quarkus.hibernate.orm.panache.PanacheEntity;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 import lombok.Data;
+import org.okstar.platform.common.datasource.domain.OkEntity;
 
 /**
  * 人员和岗位关联
@@ -24,7 +24,7 @@ import lombok.Data;
 @Data
 @Table
 @Entity
-public class OrgStaffPost extends PanacheEntity {
+public class OrgStaffPost extends OkEntity {
 
     /**
      * 人员

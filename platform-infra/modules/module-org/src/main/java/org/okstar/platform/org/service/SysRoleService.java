@@ -22,7 +22,7 @@ import org.okstar.platform.org.rbac.domain.OrgRbacRole;
  * 
  * 
  */
-public interface SysRoleService extends OkService<OrgRbacRole, Long>
+public interface SysRoleService extends OkService<OrgRbacRole>
 {
 
 

@@ -46,7 +46,7 @@ public class SysMenuServiceImpl implements SysMenuService {
     @Override
     public OkPageResult<SysMenu> findPage(OkPageable pageable) {
         var all = sysMenuMapper.findAll();
-        var query = all.page(Page.of(pageable.getPageNumber(), pageable.getPageSize()));
+        var query = all.page(Page.of(pageable.getPageIndex(), pageable.getPageSize()));
         return OkPageResult.build(
                 query.list(),
                 query.count(),

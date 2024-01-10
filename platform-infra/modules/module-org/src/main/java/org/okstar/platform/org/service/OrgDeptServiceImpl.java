@@ -62,7 +62,7 @@ public class OrgDeptServiceImpl implements OrgDeptService {
     @Override
     public OkPageResult<OrgDept> findPage(OkPageable pageable) {
         var all = orgDeptMapper.findAll();
-        var query = all.page(Page.of(pageable.getPageNumber(), pageable.getPageSize()));
+        var query = all.page(Page.of(pageable.getPageIndex(), pageable.getPageSize()));
         return OkPageResult.build(
                 query.list(),
                 query.count(),

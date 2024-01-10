@@ -19,7 +19,7 @@ import org.okstar.platform.org.domain.Org;
 
 import java.util.Optional;
 
-public interface OrgService extends OkService<Org, Long>
+public interface OrgService extends OkService<Org>
 {
 
     Optional<Org> current();

@@ -22,3 +22,4 @@ public class AppOpenApplication {
         Quarkus.run(args);
     }
 }
+

@@ -21,8 +21,10 @@ public class StaffUtils {
     public static OrgStaff0 toStaff0(OrgStaff staff) {
         return OrgStaff0.builder()
                 .no(staff.getFragment().getNo())
+                .name(staff.getFragment().getName())
                 .phone(staff.getFragment().getPhone())
                 .email(staff.getFragment().getEmail())
+                .accountId(staff.getAccountId())
                 .build();
     }
 

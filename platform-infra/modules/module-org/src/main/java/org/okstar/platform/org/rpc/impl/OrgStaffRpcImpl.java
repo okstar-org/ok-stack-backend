@@ -46,10 +46,8 @@ public class OrgStaffRpcImpl implements OrgStaffRpc {
     @Override
     public RpcResult<List<OrgStaff0>> search(String query) {
         try {
-
             List<OrgStaff0> list = orgStaffService.search(query);
             return RpcResult.success(list);
-
         } catch (Exception e) {
             return RpcResult.failed(e);
         }

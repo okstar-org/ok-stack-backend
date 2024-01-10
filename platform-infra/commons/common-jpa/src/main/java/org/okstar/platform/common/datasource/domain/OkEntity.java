@@ -21,7 +21,7 @@ import java.util.Date;
 
 @Data
 @MappedSuperclass
-public class  OkEntity extends PanacheEntity {
+public class OkEntity extends PanacheEntity {
     /**
      * 创建者
      */

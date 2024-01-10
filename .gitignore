@@ -7,4 +7,7 @@ target
 .db
 logs
 
+thirdparty
+
 .rsync.sh
+

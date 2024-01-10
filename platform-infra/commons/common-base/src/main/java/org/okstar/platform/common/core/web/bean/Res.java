@@ -156,6 +156,10 @@ public class Res<T> extends DTO {
         return build(null, null, CREATED, msg);
     }
 
+    public static <T> Res<T> error() {
+        return build(Req.empty(), null, ERROR, null);
+    }
+
     /**
      * 内部服务器错误，使用500返回码
      *

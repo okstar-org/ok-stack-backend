@@ -60,7 +60,7 @@ public class OrgPostServiceImpl implements OrgPostService {
     @Override
     public OkPageResult<OrgPost> findPage(OkPageable pageable) {
         var all = orgPostMapper.findAll();
-        var query = all.page(Page.of(pageable.getPageNumber(), pageable.getPageSize()));
+        var query = all.page(Page.of(pageable.getPageIndex(), pageable.getPageSize()));
         return OkPageResult.build(
                 query.list(),
                 query.count(),

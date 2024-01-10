@@ -31,5 +31,5 @@ public class OrgStaff0 {
     private String phone;
     private String email;
     private String username;
-
+    private Long accountId;
 }

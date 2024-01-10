@@ -46,7 +46,7 @@ public class SysRoleServiceImpl implements SysRoleService {
     @Override
     public OkPageResult<OrgRbacRole> findPage(OkPageable pageable) {
         var all = roleMapper.findAll();
-        var query = all.page(Page.of(pageable.getPageNumber(), pageable.getPageSize()));
+        var query = all.page(Page.of(pageable.getPageIndex(), pageable.getPageSize()));
         return OkPageResult.build(
                 query.list(),
                 query.count(),

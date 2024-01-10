@@ -24,7 +24,7 @@ import java.util.List;
  * 
  * 
  */
-public interface OrgPostService extends OkService<OrgPost, Long>
+public interface OrgPostService extends OkService<OrgPost>
 {
 
     List<OrgPost> findByDept(Long deptId);

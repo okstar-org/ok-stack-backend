@@ -73,7 +73,7 @@ public class OrgStaffServiceImpl implements OrgStaffService {
     @Override
     public OkPageResult<OrgStaff> findPage(OkPageable pageable) {
         var all = orgStaffMapper.findAll();
-        var query = all.page(Page.of(pageable.getPageNumber(), pageable.getPageSize()));
+        var query = all.page(Page.of(pageable.getPageIndex(), pageable.getPageSize()));
         return OkPageResult.build(
                 query.list(),
                 query.count(),
@@ -192,13 +192,9 @@ public class OrgStaffServiceImpl implements OrgStaffService {
          * AND
          * (NAME LIKE '%杰%' OR phone LIKE '%1024%' OR email LIKE '%8810@qq.com%')
          */
-        if (OkStringUtil.isEmpty(query))
-            return List.of();
 
 //        String k = OkStringUtil.wrap(query, "%");
-
-
-        PanacheQuery<OrgStaff> panacheQuery = orgStaffMapper.findAll();
+        PanacheQuery<OrgStaff> panacheQuery = orgStaffMapper.find("accountId IS NOT null");
 /**
  .find(
  "fragment.postStatus = ?1 AND " +

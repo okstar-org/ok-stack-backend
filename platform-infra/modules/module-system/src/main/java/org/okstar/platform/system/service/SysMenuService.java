@@ -22,7 +22,7 @@ import org.okstar.platform.system.domain.SysMenu;
  * 
  *
  */
-public interface SysMenuService extends OkService<SysMenu, Long>
+public interface SysMenuService extends OkService<SysMenu>
 {
 
 

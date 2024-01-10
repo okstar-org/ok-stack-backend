@@ -25,7 +25,7 @@ import java.util.List;
  * 
  *
  */
-public interface OrgDeptService extends OkService<OrgDept, Long>
+public interface OrgDeptService extends OkService<OrgDept>
 {
 
     void add(Long createBy, OrgDeptAdd add);

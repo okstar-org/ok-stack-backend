@@ -13,12 +13,30 @@
 
 package org.okstar.platform.common.datasource;
 
+import org.okstar.platform.common.core.utils.OkDateUtils;
+import org.okstar.platform.common.core.utils.bean.OkBeanUtils;
 import org.okstar.platform.common.core.web.page.OkPageResult;
 import org.okstar.platform.common.core.web.page.OkPageable;
+import org.okstar.platform.common.datasource.domain.OkEntity;
 
 import java.util.List;
 
-public interface OkService <T, ID> {
+public interface OkService <T extends OkEntity> {
+
+    default void update(T t, Long updateBy){
+        T exist = get(t.id);
+        OkBeanUtils.copyPropertiesTo(t, exist);
+        exist.setUpdateAt(OkDateUtils.now());
+        exist.setUpdateBy(updateBy);
+        save(exist);
+    }
+
+    default void create(T t, Long createBy){
+        t.id = null;
+        t.setCreateAt(OkDateUtils.now());
+        t.setUpdateBy(createBy);
+        save(t);
+    }
 
     void save(T t);
 
@@ -26,9 +44,9 @@ public interface OkService <T, ID> {
 
     OkPageResult<T> findPage( OkPageable page);
 
-    T get(ID id);
+    T get(Long id);
 
-    void deleteById(ID id);
+    void deleteById(Long id);
 
     void delete(T t);
 }

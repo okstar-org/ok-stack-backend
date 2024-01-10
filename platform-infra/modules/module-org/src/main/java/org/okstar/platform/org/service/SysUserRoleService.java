@@ -22,7 +22,7 @@ import org.okstar.platform.org.rbac.domain.OrgRbacUserRole;
  * 
  *
  */
-public interface SysUserRoleService extends OkService<OrgRbacUserRole, Long>
+public interface SysUserRoleService extends OkService<OrgRbacUserRole>
 {
     long countByRoleId(Long roleId);
 

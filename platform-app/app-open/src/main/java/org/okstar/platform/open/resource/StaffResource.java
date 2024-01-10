@@ -23,6 +23,8 @@ import org.okstar.platform.common.core.web.bean.Res;
 import org.okstar.platform.common.rpc.RpcAssert;
 import org.okstar.platform.org.dto.OrgStaff0;
 import org.okstar.platform.org.rpc.OrgStaffRpc;
+import org.okstar.platform.system.rpc.SysAccountRpc;
+import org.okstar.platform.system.vo.SysAccount0;
 
 import java.util.List;
 
@@ -32,12 +34,22 @@ public class StaffResource {
 
     @Inject
     @RestClient
-    OrgStaffRpc staffRpc;
+    OrgStaffRpc orgStaffRpc;
+
+    @Inject
+    @RestClient
+    SysAccountRpc sysAccountRpc;
 
     @GET
     @Path("search")
     public Res<List<OrgStaff0>> search(@QueryParam("q") String query) {
-        var list = RpcAssert.isTrue(staffRpc.search(query));
+        var list = RpcAssert.isTrue(orgStaffRpc.search(query));
+        list.forEach(e -> {
+            if (e.getAccountId() != null) {
+                SysAccount0 account0 = RpcAssert.isTrue(sysAccountRpc.findById(e.getAccountId()));
+                e.setUsername(account0.getUsername());
+            }
+        });
         return Res.ok(list);
     }
 }

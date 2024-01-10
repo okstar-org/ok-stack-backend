@@ -24,7 +24,7 @@ import java.util.SortedSet;
 /**
  * 人员与岗位关联
  */
-public interface OrgStaffPostService extends OkService<OrgStaffPost, Long> {
+public interface OrgStaffPostService extends OkService<OrgStaffPost> {
 
 
     List<OrgStaffPost> findByPostIds(Set<Long> posIds);

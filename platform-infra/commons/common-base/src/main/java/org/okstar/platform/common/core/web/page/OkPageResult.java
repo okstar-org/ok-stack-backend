@@ -32,6 +32,9 @@ public class OkPageResult<T> implements Serializable {
      */
     long totalCount;
 
+    /**
+     * 总页数
+     */
     long pageCount;
 
     /**

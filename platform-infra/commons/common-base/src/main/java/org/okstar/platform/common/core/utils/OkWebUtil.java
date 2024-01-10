@@ -74,4 +74,17 @@ public class OkWebUtil {
 
         return null;
     }
+
+    /**
+     * Adjust URL.
+     *
+     * @param url the url
+     * @return the string
+     */
+    private String fixHttpURL(String url) {
+        if (!url.startsWith("http")) {
+            url = "http://" + url;
+        }
+        return url;
+    }
 }

@@ -22,7 +22,7 @@ import org.okstar.platform.org.domain.SysLogininfor;
  * 
  *
  */
-public interface ISysLogininforService extends OkService<SysLogininfor, Long>
+public interface ISysLogininforService extends OkService<SysLogininfor>
 {
 
 }
