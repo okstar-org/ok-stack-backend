@@ -1,3 +1,7 @@
 [submodule "thirdparty/REST-Api-Client"]
 	path = thirdparty/REST-API-Client
 	url = https://gitee.com/okstar-org/ok-openfire-REST-API-Client.git
+
+[submodule "thirdparty/OkCloud-Api-Client"]
+	path = thirdparty/OkCloud-API-Client
+	url = https://gitee.com/okstar-org/ok-cloud-API-Client.git

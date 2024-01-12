@@ -7,7 +7,7 @@ target
 .db
 logs
 
-thirdparty
+thirdparty/REST-API-Client
 
 .rsync.sh
 
