@@ -62,4 +62,9 @@ public class Org extends BaseEntity
      * 当前组织
      */
     private Boolean current;
+
+    /**
+     * 认证号
+     */
+    private String cert;
 }

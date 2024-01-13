@@ -96,4 +96,9 @@ public class SysAccountRpcImpl implements SysAccountRpc {
         OkBeanUtils.copyPropertiesTo(account, dto);
         return RpcResult.<SysAccount0>builder().data(dto).success(true).build();
     }
+
+    @Override
+    public void setCert(Long id, String cert) {
+        userService.setCert(id, cert);
+    }
 }

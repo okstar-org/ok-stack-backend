@@ -47,4 +47,6 @@ public interface SysAccountService extends OkService<SysAccount> {
     SysAccount loadByUsername(String username);
 
     List<SysAccountBind> listBind(Long id);
+
+    void setCert(Long id, String cert);
 }

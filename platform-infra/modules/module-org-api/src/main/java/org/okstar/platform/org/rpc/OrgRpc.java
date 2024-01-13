@@ -11,19 +11,20 @@
  * /
  */
 
-package org.okstar.platform.org.service;
+package org.okstar.platform.org.rpc;
+
+import jakarta.ws.rs.GET;
+import jakarta.ws.rs.Path;
+import org.eclipse.microprofile.rest.client.inject.RegisterRestClient;
+import org.okstar.platform.common.rpc.RpcResult;
+import org.okstar.platform.org.dto.Org0;
+
+@Path("rpc/OrgRpc")
+@RegisterRestClient
+public interface OrgRpc {
 
 
-import org.okstar.platform.common.datasource.OkService;
-import org.okstar.platform.org.domain.Org;
-
-import java.util.Optional;
-
-public interface OrgService extends OkService<Org>
-{
-    Optional<Org> current();
-
-    void setDefault();
-
-    void setCert(Long id, String cert);
+    @GET
+    @Path("current")
+    RpcResult<Org0> current();
 }

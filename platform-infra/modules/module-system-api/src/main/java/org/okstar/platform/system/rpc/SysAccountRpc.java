@@ -41,16 +41,20 @@ public interface SysAccountRpc {
 
     @GET
     @Path("findByBind")
-    RpcResult<SysAccount0> findByBind(@QueryParam("iso")String iso,
+    RpcResult<SysAccount0> findByBind(@QueryParam("iso") String iso,
                                       @QueryParam("type") AccountDefines.BindType type,
                                       @QueryParam("bindValue") String bindValue);
 
     @GET
     @Path("findByUsername")
     RpcResult<SysAccount0> findByUsername(@QueryParam("username") String username);
+
     @GET
     @Path("findById")
     RpcResult<SysAccount0> findById(@QueryParam("id") Long id);
 
 
+    @POST
+    @Path("setCert/{id}")
+    void setCert(@PathParam("id") Long id, String cert);
 }

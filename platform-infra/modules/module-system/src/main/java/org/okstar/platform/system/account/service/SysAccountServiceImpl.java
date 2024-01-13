@@ -21,7 +21,6 @@ import io.quarkus.panache.common.Page;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
-import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.okstar.platform.common.core.defined.AccountDefines;
 import org.okstar.platform.common.core.exception.OkRuntimeException;
@@ -42,8 +41,6 @@ import org.okstar.platform.system.account.mapper.SysAccountPasswordMapper;
 import org.okstar.platform.system.sign.SignUpForm;
 import org.okstar.platform.system.sign.SignUpResult;
 
-
-
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
@@ -54,9 +51,8 @@ import static com.google.i18n.phonenumbers.PhoneNumberUtil.PhoneNumberFormat.INT
 /**
  * 用户 业务层处理
  */
-@Slf4j
-@ApplicationScoped
 @Transactional
+@ApplicationScoped
 public class SysAccountServiceImpl extends OkAbsService implements SysAccountService {
 
     @Inject
@@ -251,5 +247,11 @@ public class SysAccountServiceImpl extends OkAbsService implements SysAccountSer
     @Override
     public List<SysAccountBind> listBind(Long id) {
         return sysAccountBindMapper.find("accountId", id).list();
+    }
+
+    @Override
+    public void setCert(Long id, String cert) {
+        SysAccount account = get(id);
+        account.setCert(cert);
     }
 }

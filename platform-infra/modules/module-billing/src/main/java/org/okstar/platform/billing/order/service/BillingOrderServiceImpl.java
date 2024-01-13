@@ -39,10 +39,13 @@ public class BillingOrderServiceImpl implements BillingOrderService {
     BillingOrderMapper orderMapper;
 
     OkCloudApiClient client;
+
+
     public BillingOrderServiceImpl(){
         client = new OkCloudApiClient("http://localhost:1024/open/stack",
                 new AuthenticationToken("okstar", "okstar.123#"));
     }
+
     @Override
     public void save(BillingOrder billingOrder) {
         orderMapper.persist(billingOrder);

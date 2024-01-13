@@ -27,4 +27,5 @@ public class Org0 {
     private String url;
     private String avatar;
     private String location;
+    private String cert;
 }

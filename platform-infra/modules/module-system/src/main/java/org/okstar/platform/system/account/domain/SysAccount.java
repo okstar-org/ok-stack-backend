@@ -64,4 +64,6 @@ public class SysAccount extends BaseEntity {
      */
     private Boolean disabled;
 
+
+    private String cert;
 }

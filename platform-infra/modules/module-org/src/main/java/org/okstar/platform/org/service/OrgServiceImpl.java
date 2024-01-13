@@ -88,4 +88,10 @@ public class OrgServiceImpl implements OrgService {
             save(org);
         }
     }
+
+    @Override
+    public void setCert(Long id, String cert) {
+        Org org = get(id);
+        org.setCert(cert);
+    }
 }
