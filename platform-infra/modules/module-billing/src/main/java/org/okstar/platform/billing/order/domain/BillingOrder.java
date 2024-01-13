@@ -53,6 +53,6 @@ public class BillingOrder extends OkEntity {
     private Date paymentAt;
 
     /** 供应商 */
-    private String providerId;
+    private String providerName;
 
 }
