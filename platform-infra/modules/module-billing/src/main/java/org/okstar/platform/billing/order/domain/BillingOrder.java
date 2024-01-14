@@ -16,6 +16,7 @@ package org.okstar.platform.billing.order.domain;
 import jakarta.persistence.Entity;
 import lombok.Data;
 import org.okstar.cloud.defines.PayDefines;
+import org.okstar.platform.common.datasource.SyncEntity;
 import org.okstar.platform.common.datasource.domain.OkEntity;
 
 import java.math.BigDecimal;
@@ -23,7 +24,12 @@ import java.util.Date;
 
 @Data
 @Entity
-public class BillingOrder extends OkEntity {
+public class BillingOrder extends OkEntity implements SyncEntity {
+
+    /**
+     * 同步字段
+     */
+    private Boolean sync;
 
     /** 订单编号(与云端一致) */
     private String no;
@@ -46,6 +52,8 @@ public class BillingOrder extends OkEntity {
     /** 到期时间 */
     private Date expire;
 
+    private Boolean isExpired;
+
     /** 支付方式名称 */
     private String paymentName;
 
@@ -55,4 +63,13 @@ public class BillingOrder extends OkEntity {
     /** 供应商 */
     private String providerName;
 
+    /**
+     * 开始时间
+     */
+    private Date periodBegin;
+
+    /**
+     * 结束时间
+     */
+    private Date periodEnd;
 }

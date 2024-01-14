@@ -27,11 +27,15 @@
     <description>OkStack-Platform::infra::modules</description>
 
     <dependencies>
-
         <dependency>
             <groupId>org.okstar.platform</groupId>
             <artifactId>common-security</artifactId>
             <version>${revision}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>io.quarkus</groupId>
+            <artifactId>quarkus-scheduler</artifactId>
         </dependency>
 
         <dependency>
