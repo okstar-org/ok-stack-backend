@@ -19,6 +19,7 @@ import jakarta.ws.rs.GET;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.PathParam;
+import org.okstar.cloud.entity.OrderResultEntity;
 import org.okstar.platform.billing.order.domain.BillingOrder;
 import org.okstar.platform.billing.order.service.BillingOrderService;
 import org.okstar.platform.billing.resource.BillingBaseResource;
@@ -34,6 +35,33 @@ public class BillingOrderResource extends BillingBaseResource {
     @Inject
     BillingOrderService orderService;
 
+    /**
+     * 创建订单
+     * @return
+     */
+    @POST
+    @Path("create")
+    public Res<OrderResultEntity> create(Long planId) {
+        var order = orderService.createOrder(planId, loadUserId());
+        return Res.ok(order);
+    }
+    /**
+     * 关闭订单
+     * @return
+     */
+    @POST
+    @Path("close")
+    public Res<Boolean> close(String no) {
+        boolean closeOrder = orderService.closeOrder(no, loadUserId());
+        return Res.ok(closeOrder);
+    }
+
+
+    /**
+     * 列表查询
+     * @param pageable
+     * @return
+     */
     @POST
     @Path("page")
     public Res<OkPageResult<BillingOrder>> page(OkPageable pageable) {
@@ -41,6 +69,11 @@ public class BillingOrderResource extends BillingBaseResource {
         return Res.ok(result);
     }
 
+    /**
+     * 订单明细
+     * @param id
+     * @return
+     */
     @GET
     @Path("/detail/{id}")
     public Res<BillingOrder> detail(@PathParam("id") Long id) {

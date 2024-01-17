@@ -21,13 +21,11 @@ import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 import org.okstar.cloud.OkCloudApiClient;
 import org.okstar.cloud.channel.OrderChannel;
-import org.okstar.cloud.defines.PayDefines;
 import org.okstar.cloud.entity.AuthenticationToken;
 import org.okstar.cloud.entity.OrderResultEntity;
 import org.okstar.cloud.entity.PayOrderEntity;
 import org.okstar.platform.billing.order.domain.BillingOrder;
 import org.okstar.platform.billing.order.mapper.BillingOrderMapper;
-import org.okstar.platform.common.core.utils.OkAssert;
 import org.okstar.platform.common.core.utils.bean.OkBeanUtils;
 import org.okstar.platform.common.core.web.page.OkPageResult;
 import org.okstar.platform.common.core.web.page.OkPageable;
@@ -111,6 +109,14 @@ public class BillingOrderServiceImpl implements BillingOrderService {
         Log.infof("保存订单：%s", result);
         BillingOrder order = new BillingOrder();
         OkBeanUtils.copyPropertiesTo(result.getOrder(), order);
+
+        /**
+         * 该3项字段通过同步更新
+         */
+        order.setIsExpired(null);
+        order.setOrderStatus(null);
+        order.setPaymentStatus(null);
+
         create(order, createBy);
     }
 
@@ -123,12 +129,8 @@ public class BillingOrderServiceImpl implements BillingOrderService {
     }
 
     @Override
-    public void closeOrder(String no, Long createBy) {
+    public boolean closeOrder(String no, Long createBy) {
         OrderChannel orderChannel = client.getOrderChannel();
-        boolean close = orderChannel.close(no);
-        OkAssert.isTrue(close, "订单关闭异常");
-        orderMapper.findByNo(no).ifPresent(o -> {
-            o.setOrderStatus(PayDefines.OrderStatus.cancelled);
-        });
+        return orderChannel.close(no);
     }
 }

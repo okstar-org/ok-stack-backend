@@ -31,4 +31,6 @@ public interface PassportService {
     void signOut(String accessToken);
 
     SysAccount0 getAccount(String account);
+
+    void updatePassword(PasswordUpdateForm updateForm);
 }

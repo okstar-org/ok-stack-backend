@@ -22,6 +22,6 @@ public interface BillingOrderService extends OkService<BillingOrder> {
 
     OrderResultEntity createOrder(Long planId, Long createBy);
 
-    void closeOrder(String no, Long createBy);
+    boolean closeOrder(String no, Long createBy);
 
 }

@@ -21,6 +21,8 @@ import java.util.Optional;
  * 后端认证用户管理接口
  */
 public interface BackUserManager {
+    void resetPassword(String username, String password);
+
     List<BackUser> users();
 
     Optional<BackUser> getUser(String username);

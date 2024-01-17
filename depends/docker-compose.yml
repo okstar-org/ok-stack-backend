@@ -56,6 +56,8 @@ services:
   openfire:
     image: okstar-openfire:v4.7
     container_name: "openfire"
+    volumes:
+      - /usr/local/openfire/logs:/usr/local/openfire/logs
     ports:
       - 3478:3478
       - 3479:3479

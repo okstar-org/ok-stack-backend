@@ -46,7 +46,6 @@ public class PassportResource extends OkCommonResource {
 
     @POST
     @Path("signIn")
-    @Blocking
     public Res<SignInResult> signIn(SignInForm signInForm) {
         Log.infof("signIn:%s", signInForm);
         var resultDto = passportService.signIn(signInForm);

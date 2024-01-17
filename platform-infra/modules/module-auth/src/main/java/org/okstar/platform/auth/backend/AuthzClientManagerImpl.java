@@ -20,7 +20,9 @@ import io.smallrye.mutiny.Uni;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import org.keycloak.authorization.client.AuthzClient;
+import org.keycloak.authorization.client.util.HttpResponseException;
 import org.keycloak.representations.idm.authorization.AuthorizationRequest;
+import org.okstar.platform.common.core.exception.OkRuntimeException;
 import org.okstar.platform.common.core.utils.OkAssert;
 import org.okstar.platform.common.core.utils.OkDateUtils;
 import org.okstar.platform.system.sign.SignInResult;
@@ -40,15 +42,26 @@ class AuthzClientManagerImpl implements AuthzClientManager {
         OkAssert.hasText(username, "username is empty");
         OkAssert.hasText(password, "password is empty");
         AuthorizationRequest request = new AuthorizationRequest();
-        var response = authzClient.authorization(username.toLowerCase(), password).authorize(request);
-        return SignInResult.builder()
-                .session_state(response.getSessionState())
-                .accessToken(response.getToken())
-                .tokenType(response.getTokenType())
-                .expiresIn(response.getExpiresIn())
-                .refreshToken(response.getRefreshToken())
-                .refreshExpiresIn(response.getRefreshExpiresIn())
-                .build();
+        try {
+            var response = authzClient.authorization(username.toLowerCase(), password).authorize(request);
+            return SignInResult.builder()
+                    .session_state(response.getSessionState())
+                    .accessToken(response.getToken())
+                    .tokenType(response.getTokenType())
+                    .expiresIn(response.getExpiresIn())
+                    .refreshToken(response.getRefreshToken())
+                    .refreshExpiresIn(response.getRefreshExpiresIn())
+                    .build();
+        } catch (Exception e) {
+            Log.warnf(e, "认证异常:%s", e.getCause().getMessage());
+            if (e.getCause() instanceof HttpResponseException) {
+                int statusCode = ((HttpResponseException) e.getCause()).getStatusCode();
+                if (statusCode == 401) {
+                    throw new OkRuntimeException("认证异常，帐号或密码不正确！");
+                }
+            }
+            throw new OkRuntimeException("认证异常，请稍后再试！");
+        }
     }
 
     @Override

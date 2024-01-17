@@ -11,8 +11,14 @@
  * /
  */
 
-package org.okstar.platform.auth.keycloak;
+package org.okstar.platform.system.sign;
 
-public interface KeycloakManager {
+import lombok.Data;
+import org.okstar.platform.common.core.web.bean.Req;
 
+@Data
+public class PasswordUpdateForm extends Req {
+    private String username;
+    private String newPassword;
+    private String confirmPassword;
 }

@@ -13,11 +13,13 @@
 
 package org.okstar.platform.auth.keycloak;
 
+import io.quarkus.keycloak.admin.client.common.KeycloakAdminClientConfig;
 import io.quarkus.logging.Log;
 import io.quarkus.runtime.StartupEvent;
 import io.smallrye.common.constraint.Assert;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.event.Observes;
+import jakarta.inject.Inject;
 import org.jboss.resteasy.client.jaxrs.internal.ResteasyClientBuilderImpl;
 import org.keycloak.admin.client.Keycloak;
 import org.keycloak.admin.client.resource.RealmResource;
@@ -30,20 +32,32 @@ import org.okstar.platform.auth.backend.BackUserManager;
 import org.okstar.platform.common.core.exception.OkRuntimeException;
 
 import jakarta.ws.rs.core.Response;
+import org.okstar.platform.common.core.utils.OkAssert;
+
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
 @ApplicationScoped
-public class KeycloakUserManagerImpl extends KeycloakManagerImpl implements BackUserManager {
+public class KeycloakUserManager implements BackUserManager {
     public static final String OKSTAR_REALM = "okstar";
+
+    /**
+     * KC管理接口
+     * 文档： https://quarkus.io/guides/security-keycloak-admin-client
+     * https://www.keycloak.org/docs/latest/server_development/#admin-rest-api
+     */
+    @Inject
+    KeycloakAdminClientConfig config;
 
     Keycloak keycloak;
 
     void startup(@Observes StartupEvent event) {
-        // # https://quarkus.io/guides/security-keycloak-admin-client
-        String realm = "master";
+        /**
+         * TODO 读取配置文件
+         */
 //        String grantType = "PASSWORD";
+        String realm = "master";
         String clientId = "admin-cli";
         String username = "admin";
         String password = "okstar";
@@ -68,11 +82,24 @@ public class KeycloakUserManagerImpl extends KeycloakManagerImpl implements Back
         return realm.users();
     }
 
+    /**
+     * 重置密码:
+     * https://www.keycloak.org/docs/latest/server_development/#modifying-forgot-passwordcredential-flow
+     * @param username
+     * @param password
+     */
+    @Override
+    public void resetPassword(String username, String password) {
+        Log.infof("Reset password for user:%s", username);
+        UsersResource usersResource = usersResource();
+        setPassword(usersResource, username, password);
+    }
+
     @Override
     public List<BackUser> users() {
         UsersResource usersResource = usersResource();
         return usersResource.list().stream()//
-                .map(KeycloakUserManagerImpl::toBackend)//
+                .map(KeycloakUserManager::toBackend)//
                 .collect(Collectors.toList());
     }
 
@@ -81,7 +108,7 @@ public class KeycloakUserManagerImpl extends KeycloakManagerImpl implements Back
         Log.infof("getUser:%s", username);
         UsersResource usersResource = usersResource();
         List<UserRepresentation> list = usersResource.search(username);
-        return list.stream().map(KeycloakUserManagerImpl::toBackend).toList().stream().findFirst();
+        return list.stream().map(KeycloakUserManager::toBackend).toList().stream().findFirst();
     }
 
 
@@ -98,14 +125,13 @@ public class KeycloakUserManagerImpl extends KeycloakManagerImpl implements Back
         }
 
         var u = usersResource.search(user.getUsername()).stream().peek(userRepresentation -> {
-            Log.infof("Find auth system user:%s=>%s", user.getUsername(), userRepresentation.getId());
             CredentialRepresentation cr = new CredentialRepresentation();
             cr.setUserLabel("My password");
             cr.setType("password");
             cr.setValue(user.getPassword());
             UserResource userResource = usersResource.get(userRepresentation.getId());
             userResource.resetPassword(cr);
-        }).findFirst().map(KeycloakUserManagerImpl::toBackend).orElse(null);
+        }).findFirst().map(KeycloakUserManager::toBackend).orElse(null);
         Log.debugf("User is:%s", u);
         return u;
     }
@@ -122,6 +148,20 @@ public class KeycloakUserManagerImpl extends KeycloakManagerImpl implements Back
         var response = usersResource.delete(backUser.get().getId());
         Log.infof("Delete user:%s=>", username, response.getStatus());
         return response.getStatus() == Response.Status.NO_CONTENT.getStatusCode();
+    }
+
+    private void setPassword(UsersResource usersResource, String username, String password) {
+        List<UserRepresentation> list = usersResource.search(username);
+        OkAssert.isTrue(!list.isEmpty(), "帐号不正确！");
+
+        list.forEach(userRepresentation -> {
+            CredentialRepresentation cr = new CredentialRepresentation();
+            cr.setUserLabel("My password");
+            cr.setType("password");
+            cr.setValue(password);
+            UserResource userResource = usersResource.get(userRepresentation.getId());
+            userResource.resetPassword(cr);
+        });
     }
 
     private UserRepresentation toRepresent(BackUser user) {

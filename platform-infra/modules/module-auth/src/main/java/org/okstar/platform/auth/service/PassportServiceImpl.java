@@ -29,12 +29,10 @@ import org.okstar.platform.common.rpc.RpcResult;
 import org.okstar.platform.org.dto.OrgStaffFragment;
 import org.okstar.platform.org.rpc.OrgStaffRpc;
 import org.okstar.platform.system.rpc.SysAccountRpc;
-import org.okstar.platform.system.sign.SignInForm;
-import org.okstar.platform.system.sign.SignInResult;
-import org.okstar.platform.system.sign.SignUpForm;
-import org.okstar.platform.system.sign.SignUpResult;
+import org.okstar.platform.system.sign.*;
 import org.okstar.platform.system.vo.SysAccount0;
 
+import java.util.Objects;
 import java.util.Optional;
 
 import static org.okstar.platform.common.core.defined.AccountDefines.BindType.email;
@@ -152,13 +150,20 @@ public class PassportServiceImpl implements PassportService {
     public SysAccount0 getAccount(String account) {
         //判断帐号类型
         AccountDefines.BindType bindType = account.indexOf("@") > 0 ? email : phone;  //
-
         SysAccount0 account0 = RpcAssert.isTrue(sysAccountRpc.findByBind(AccountDefines.DefaultISO, bindType, account));
         if (account0 == null) {
             throw new OkRuntimeException("Account is not exist");
         }
 
         return account0;
+    }
+
+    @Override
+    public void updatePassword(PasswordUpdateForm updateForm) {
+        OkAssert.hasText(updateForm.getUsername(), "用户名不能为空！");
+        OkAssert.hasText(updateForm.getNewPassword(), "新密码不能为空！");
+        OkAssert.isTrue(Objects.equals(updateForm.getNewPassword(), updateForm.getConfirmPassword()), "确认密码不正确！");
+        backUserManager.resetPassword(updateForm.getUsername(), updateForm.getNewPassword());
     }
 
 
