@@ -11,28 +11,31 @@
  * /
  */
 
-package org.okstar.platform.auth.service;
+package org.okstar.platform.system.sign;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import org.okstar.platform.common.core.defined.AccountDefines;
+import org.okstar.platform.common.core.web.bean.Req;
 
-import org.okstar.platform.system.sign.*;
-import org.okstar.platform.system.vo.SysAccount0;
+/**
+ * 注册实体
+ */
+@Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+public class ForgotForm extends Req {
 
+    //帐号类型
+    AccountDefines.BindType accountType;
 
-public interface PassportService {
+    //国家代号
+    String iso;
 
-    SignUpResult signUp(SignUpForm signUpForm);
+    //手机号或者邮箱
+    String account;
 
-    void signDown(Long accountId);
-
-    SignInResult signIn(SignInForm signInForm);
-
-    SignInResult refresh(String refreshToken);
-
-    void signOut(String accessToken);
-
-    SysAccount0 getAccount(String account);
-
-    void updatePassword(PasswordUpdateForm updateForm);
-
-    void forgot(ForgotForm form);
 }

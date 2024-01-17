@@ -166,5 +166,14 @@ public class PassportServiceImpl implements PassportService {
         backUserManager.resetPassword(updateForm.getUsername(), updateForm.getNewPassword());
     }
 
+    @Override
+    public void forgot(ForgotForm form) {
+        OkAssert.notNull(form.getAccountType(), "帐号类型不能为空！");
+        OkAssert.hasText(form.getAccount(), "帐号不能为空！");
+        SysAccount0 account = getAccount(form.getAccount());
+        OkAssert.notNull(account, "帐号不存在！");
+        backUserManager.forgot(account.getUsername());
+    }
+
 
 }

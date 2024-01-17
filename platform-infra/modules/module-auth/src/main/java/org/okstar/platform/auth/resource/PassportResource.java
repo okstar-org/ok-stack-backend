@@ -14,7 +14,6 @@
 package org.okstar.platform.auth.resource;
 
 import io.quarkus.logging.Log;
-import io.smallrye.common.annotation.Blocking;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.HeaderParam;
 import jakarta.ws.rs.POST;
@@ -76,4 +75,22 @@ public class PassportResource extends OkCommonResource {
 
         return Res.ok(refreshForm, result0);
     }
+
+
+
+
+    /**
+     * 忘记密码
+     *
+     * @param username
+     * @return
+     */
+    @POST
+    @Path("forgot")
+    public Res<Boolean> forgot(ForgotForm form) {
+        Log.infof("forgot:%s", form);
+        passportService.forgot(form);
+        return Res.ok(true);
+    }
+
 }

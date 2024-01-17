@@ -20,6 +20,7 @@ import io.smallrye.common.constraint.Assert;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.event.Observes;
 import jakarta.inject.Inject;
+import jakarta.ws.rs.core.Response;
 import org.jboss.resteasy.client.jaxrs.internal.ResteasyClientBuilderImpl;
 import org.keycloak.admin.client.Keycloak;
 import org.keycloak.admin.client.resource.RealmResource;
@@ -30,8 +31,6 @@ import org.keycloak.representations.idm.UserRepresentation;
 import org.okstar.platform.auth.backend.BackUser;
 import org.okstar.platform.auth.backend.BackUserManager;
 import org.okstar.platform.common.core.exception.OkRuntimeException;
-
-import jakarta.ws.rs.core.Response;
 import org.okstar.platform.common.core.utils.OkAssert;
 
 import java.util.List;
@@ -85,6 +84,7 @@ public class KeycloakUserManager implements BackUserManager {
     /**
      * 重置密码:
      * https://www.keycloak.org/docs/latest/server_development/#modifying-forgot-passwordcredential-flow
+     *
      * @param username
      * @param password
      */
@@ -93,6 +93,22 @@ public class KeycloakUserManager implements BackUserManager {
         Log.infof("Reset password for user:%s", username);
         UsersResource usersResource = usersResource();
         setPassword(usersResource, username, password);
+    }
+
+    @Override
+    public void forgot(String username) {
+        UsersResource usersResource = usersResource();
+        List<UserRepresentation> list = usersResource.search(username);
+        OkAssert.isTrue(!list.isEmpty(), "用户不存在！");
+        try {
+            for (UserRepresentation user : list) {
+                UserResource userResource = usersResource.get(user.getId());
+                userResource.resetPasswordEmail();
+            }
+        } catch (Exception e) {
+            Log.errorf(e, "发送重置密码异常！");
+            throw new OkRuntimeException("服务器异常！");
+        }
     }
 
     @Override
@@ -153,7 +169,6 @@ public class KeycloakUserManager implements BackUserManager {
     private void setPassword(UsersResource usersResource, String username, String password) {
         List<UserRepresentation> list = usersResource.search(username);
         OkAssert.isTrue(!list.isEmpty(), "帐号不正确！");
-
         list.forEach(userRepresentation -> {
             CredentialRepresentation cr = new CredentialRepresentation();
             cr.setUserLabel("My password");

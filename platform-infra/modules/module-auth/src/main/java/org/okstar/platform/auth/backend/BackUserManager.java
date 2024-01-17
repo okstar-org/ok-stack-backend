@@ -42,4 +42,6 @@ public interface BackUserManager {
      * @return
      */
     boolean deleteUser(String username);
+
+    void forgot(String username);
 }

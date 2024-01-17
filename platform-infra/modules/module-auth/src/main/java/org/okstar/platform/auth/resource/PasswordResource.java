@@ -47,4 +47,5 @@ public class PasswordResource extends OkCommonResource {
         return Res.ok(true);
     }
 
+
 }
