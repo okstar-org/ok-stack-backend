@@ -106,7 +106,7 @@ public class KeycloakUserManager implements BackUserManager {
                 userResource.resetPasswordEmail();
             }
         } catch (Exception e) {
-            Log.errorf(e, "发送重置密码异常！");
+            Log.errorf(e, "重置密码异常！");
             throw new OkRuntimeException("服务器异常！");
         }
     }
