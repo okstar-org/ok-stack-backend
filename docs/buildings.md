@@ -83,6 +83,18 @@ Periodic changed users sync :On
 Changed users sync period   :86400
 ```
 - 点击`Save`保存
+### Keycloak 配置邮箱（可选）
+> 在找回密码使用该配置，分两步完成
+#### 第一步
+- 1，选择Realm`master`
+- 2，点击菜单`Users`
+- 3，点击菜单`admin`
+- 4，选择`Details`-》`Email`输入邮箱发送地址即可。
+#### 第二步
+- 1，选择Realm`okstar`
+- 2，点击菜单`Realm settings`
+- 3，选择tab`Email`
+- 4，输入邮箱相关信息即可。
 
 ### 配置启动Openfire服务器
 > 打开服务器地址：`http://localhost:9090/`
