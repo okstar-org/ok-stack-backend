@@ -17,10 +17,13 @@ import io.quarkus.keycloak.admin.client.common.KeycloakAdminClientConfig;
 import io.quarkus.logging.Log;
 import io.quarkus.runtime.StartupEvent;
 import io.smallrye.common.constraint.Assert;
+import io.vertx.core.json.JsonObject;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.event.Observes;
 import jakarta.inject.Inject;
+import jakarta.ws.rs.BadRequestException;
 import jakarta.ws.rs.core.Response;
+import org.jboss.resteasy.client.exception.ResteasyBadRequestException;
 import org.jboss.resteasy.client.jaxrs.internal.ResteasyClientBuilderImpl;
 import org.keycloak.admin.client.Keycloak;
 import org.keycloak.admin.client.resource.RealmResource;
@@ -107,6 +110,11 @@ public class KeycloakUserManager implements BackUserManager {
             }
         } catch (Exception e) {
             Log.errorf(e, "重置密码异常！");
+            if (e instanceof ResteasyBadRequestException) {
+                BadRequestException unwrap = ((ResteasyBadRequestException) e).unwrap();
+                var entity = unwrap.getResponse().readEntity(JsonObject.class);
+                throw new OkRuntimeException(entity.getString("errorMessage"));
+            }
             throw new OkRuntimeException("服务器异常！");
         }
     }
