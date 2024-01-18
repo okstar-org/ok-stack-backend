@@ -19,7 +19,7 @@ depends$ docker-compose up -d
 ### 配置Keycloak服务
 - 登录地址：`http://localhost:8043/admin/`
 - 输入帐号：admin,okstar登录
-- 到左上角，选择 `okstar` ream (如果没有则增加okstar，按如下配置，保存即可)
+- 到左上角，选择 `okstar` realm (如果没有则增加okstar，按如下配置，保存即可)
 - 创建Client `okstack`
 ```text
 ======>General Settings<=========
