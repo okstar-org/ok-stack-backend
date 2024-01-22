@@ -1,12 +1,38 @@
-# 构建文档（Docker篇）
+# 构建文档
+## 必备依赖
+- Java 17 (选择GraalVM CE 22.0.0.2)
+- Maven 3.6.x
 
-## 部署Openfire
+> 支持两种构建方式
+- 依赖本地环境（Docker）
+- 依赖社区环境（社区已经搭建了完整测试依赖）
+
+
+## 获取源码与子项目
+```shell
+git clone https://gitee.com/okstar-org/ok-stack-backend.git
+cd ok-stack-backend
+# 更新子项目
+git submodule update --init --recursive
+```
+
+## 依赖社区环境
+- Maven 构建时使用 `dev-okstar` profile，如下：
+```shell
+# 依赖社区依赖服务
+mvn clean compile -P dev-okstar
+```
+
+## 依赖本地（依赖Docker）
+> 按照如下步骤完成。
+
+### 部署 Openfire
 - Clone Openfire 项目，执行：`git clone -b 4.7 https://gitee.com/okstar-org/ok-openfire`
 - 进入目录，执行：`cd ok-openfire`
 - 构建项目, 执行：`./build/docker/buildWithDocker.sh`
 - 构建Docker镜像，执行： `docker build . -t okstar-openfire:v4.7`
 
-## 启动Docker依赖服务
+### 启动 Docker 依赖服务
 ```shell
 # 进入到依赖目录
 cd depends
@@ -15,8 +41,7 @@ cd depends
 depends$ docker-compose up -d
 ```
 
-## 配置依赖服务
-### 配置Keycloak服务
+### 配置 KeyCloak 服务
 - 登录地址：`http://localhost:8043/admin/`
 - 输入帐号：admin,okstar登录
 - 到左上角，选择 `okstar` realm (如果没有则增加okstar，按如下配置，保存即可)
@@ -83,6 +108,7 @@ Periodic changed users sync :On
 Changed users sync period   :86400
 ```
 - 点击`Save`保存
+
 ### Keycloak 配置邮箱（可选）
 > 在找回密码使用该配置，分两步完成
 #### 第一步
@@ -118,26 +144,11 @@ Changed users sync period   :86400
   - 输入管理员`okstar`和密码`okstar`。
   - 点击登录
 
-
-## 构建OkStack后端服务
-- 获取源码
+### 构建项目
+- Maven 构建时使用 `dev-okstar` profile，如下：
 ```shell
-git clone https://gitee.com/okstar-org/ok-stack-backend.git
-cd ok-stack-backend
-# 更新子项目
-git submodule update --init --recursive
-```
-
-- 构建项目
-> Profile说明与选择
-> - <空> 本地测试，使用h2内存数据库
-> - dev 本地测试，使用本地数据库
-> - dev-okstar 社区测试，使用在线的社区数据库
-```shell
-# 依赖本地Docker服务
-mvn clean compile -P dev
-# 依赖在线服务
-mvn clean compile -P dev-star
+# 依赖社区依赖服务
+mvn clean compile -P dev-okstar
 ```
 
 # 测试
