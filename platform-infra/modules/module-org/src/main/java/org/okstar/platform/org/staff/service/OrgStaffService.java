@@ -14,6 +14,8 @@
 package org.okstar.platform.org.staff.service;
 
 
+import org.okstar.platform.common.core.web.page.OkPageResult;
+import org.okstar.platform.common.core.web.page.OkPageable;
 import org.okstar.platform.common.datasource.OkService;
 import org.okstar.platform.org.domain.OrgStaff;
 import org.okstar.platform.org.dto.OrgStaff0;
@@ -31,9 +33,10 @@ public interface OrgStaffService extends OkService<OrgStaff> {
 
     /**
      * 查找[待入职]人员
+     *
      * @return
      */
-    List<OrgStaff> findPendings();
+    OkPageResult<OrgStaff> findPendings(OkPageable pageable);
 
     /**
      * 查找[已离职]人员

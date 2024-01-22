@@ -35,7 +35,10 @@ import org.okstar.platform.org.staff.mapper.OrgStaffMapper;
 import org.okstar.platform.org.utils.StaffUtils;
 import org.okstar.platform.org.vo.OrgStaffReq;
 
-import java.util.*;
+import java.util.Collections;
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 
@@ -127,13 +130,16 @@ public class OrgStaffServiceImpl implements OrgStaffService {
             });
         }
         return list;
-
     }
 
 
     @Override
-    public List<OrgStaff> findPendings() {
-        return orgStaffMapper.list("postStatus = ?1", JobDefines.PostStatus.pending);
+    public OkPageResult<OrgStaff> findPendings(OkPageable page) {
+        var paged = orgStaffMapper
+                .find("postStatus",
+                        JobDefines.PostStatus.pending)
+                .page(page.getPageIndex(), page.getPageSize());
+        return OkPageResult.build(paged.list(), paged.count(), paged.pageCount());
     }
 
     @Override
