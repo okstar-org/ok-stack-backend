@@ -26,6 +26,12 @@
             <directory>../platform-infra/modules/module-chat/target/quarkus-app</directory>
             <outputDirectory>./infra/module-chat</outputDirectory>
         </fileSet>
+
+        <fileSet>
+            <directory>../platform-infra/modules/module-billing/target/quarkus-app</directory>
+            <outputDirectory>./infra/module-billing</outputDirectory>
+        </fileSet>
+
         <fileSet>
             <directory>../platform-app/app-open/target/quarkus-app</directory>
             <outputDirectory>./app/app-open</outputDirectory>
