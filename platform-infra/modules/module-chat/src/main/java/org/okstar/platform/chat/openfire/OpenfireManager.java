@@ -115,6 +115,8 @@ public class OpenfireManager extends Thread {
 
     public List<ChatParticipant> findParticipantsByName(String username) {
         ParticipantEntities participants = restApiClient.getChatRoomParticipants(username);
+        if (participants == null || participants.getParticipants() == null)
+            return Collections.emptyList();
         return participants.getParticipants().stream().map(e ->
                 ChatUtils.convertParticipant(e)
         ).toList();
