@@ -40,9 +40,10 @@ public interface OrgStaffService extends OkService<OrgStaff> {
 
     /**
      * 查找[已离职]人员
+     *
      * @return
      */
-    List<OrgStaff> findLefts();
+    OkPageResult<OrgStaff> findLefts(OkPageable page);
 
     /**
      * 添加员工，进入[待入职]模块

@@ -136,15 +136,18 @@ public class OrgStaffServiceImpl implements OrgStaffService {
     @Override
     public OkPageResult<OrgStaff> findPendings(OkPageable page) {
         var paged = orgStaffMapper
-                .find("postStatus",
-                        JobDefines.PostStatus.pending)
+                .find("postStatus", JobDefines.PostStatus.pending)
                 .page(page.getPageIndex(), page.getPageSize());
         return OkPageResult.build(paged.list(), paged.count(), paged.pageCount());
     }
 
     @Override
-    public List<OrgStaff> findLefts() {
-        return orgStaffMapper.list("postStatus = ?1", JobDefines.PostStatus.left);
+    public OkPageResult<OrgStaff> findLefts(OkPageable page) {
+        var paged = orgStaffMapper
+                .find("postStatus", JobDefines.PostStatus.left)
+                .page(page.getPageIndex(), page.getPageSize());
+        return OkPageResult.build(paged.list(), paged.count(), paged.pageCount());
+
     }
 
     @Override
