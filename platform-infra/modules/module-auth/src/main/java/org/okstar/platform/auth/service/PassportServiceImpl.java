@@ -55,34 +55,34 @@ public class PassportServiceImpl implements PassportService {
 
 
     @Override
-    public synchronized SignUpResult signUp(SignUpForm signUpForm) {
-        log.info("signUp:{}", signUpForm);
+    public synchronized SignUpResult signUp(SignUpForm form) {
+        log.info("signUp:{}", form);
 
         //初始化系统帐号
-        SignUpResult signUpResult = RpcAssert.isTrue(sysAccountRpc.signUp(signUpForm));
-        Log.infof("保存到系统帐号=>%s", signUpResult.getUsername());
+        SignUpResult signUpResult = RpcAssert.isTrue(sysAccountRpc.signUp(form));
+        Log.infof("signUp=>%s", signUpResult.getUsername());
 
         OrgStaffFragment staff = new OrgStaffFragment();
-        staff.setName(signUpForm.getName());
-        staff.setFirstName(signUpForm.getFirstName());
-        staff.setLastName(signUpForm.getLastName());
-        staff.setIso(signUpForm.getIso());
-        switch (signUpForm.getAccountType()) {
-            case email -> staff.setEmail(signUpForm.getAccount());
-            case phone -> staff.setPhone(signUpForm.getAccount());
+        staff.setName(form.getName());
+        staff.setFirstName(form.getFirstName());
+        staff.setLastName(form.getLastName());
+        staff.setIso(form.getIso());
+        switch (form.getAccountType()) {
+            case email -> staff.setEmail(form.getAccount());
+            case phone -> staff.setPhone(form.getAccount());
         }
         var added = RpcAssert.isTrue(orgStaffRpc.add(staff));
         Log.infof("保存到人员帐号=>%s", added);
 
         BackUser user = BackUser.builder()
                 .username(signUpResult.getUsername())
-                .firstName(signUpForm.getFirstName())
-                .lastName(signUpForm.getLastName())
-                .password(signUpForm.getPassword())
+                .firstName(form.getFirstName())
+                .lastName(form.getLastName())
+                .password(form.getPassword())
                 .build();
 
-        if (signUpForm.getAccountType() == email) {
-            user.setEmail(signUpForm.getAccount());
+        if (form.getAccountType() == email) {
+            user.setEmail(form.getAccount());
         }
 
 

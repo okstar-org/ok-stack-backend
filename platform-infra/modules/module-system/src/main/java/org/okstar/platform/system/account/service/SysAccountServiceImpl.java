@@ -27,6 +27,7 @@ import org.okstar.platform.common.core.exception.OkRuntimeException;
 import org.okstar.platform.common.core.exception.user.OkUserException;
 import org.okstar.platform.common.core.utils.OkAssert;
 import org.okstar.platform.common.core.utils.OkDateUtils;
+import org.okstar.platform.common.core.utils.OkMailUtil;
 import org.okstar.platform.common.core.utils.OkPhoneUtils;
 import org.okstar.platform.common.core.web.page.OkPageResult;
 import org.okstar.platform.common.core.web.page.OkPageable;
@@ -125,7 +126,10 @@ public class SysAccountServiceImpl extends OkAbsService implements SysAccountSer
         OkAssert.notNull(signUpForm.getAccount(), "account is empty");
 
         if (signUpForm.getAccountType() == AccountDefines.BindType.phone) {
+            //格式化手机号
             signUpForm.setAccount(OkPhoneUtils.canonical(signUpForm.getAccount(), signUpForm.getIso()));
+        } else if (signUpForm.getAccountType() == AccountDefines.BindType.email) {
+            OkAssert.isTrue(OkMailUtil.isValidEmail(signUpForm.getAccount()), "邮箱号格式不正确！");
         }
 
         long existed = sysAccountBindMapper.count("bindType = ?1 and bindValue = ?2",
