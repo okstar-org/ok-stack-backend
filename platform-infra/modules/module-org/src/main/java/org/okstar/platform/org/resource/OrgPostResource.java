@@ -31,7 +31,7 @@ import java.util.List;
 @Path("post")
 public class OrgPostResource {
     @Inject
-    OrgPostService orgPostService;
+    OrgPostService postService;
 
     @Inject
     OrgStaffService orgStaffService;
@@ -40,7 +40,7 @@ public class OrgPostResource {
     @GET
     @Path("findByDept/{deptId}")
     public Res<List<OrgPost>> findByDept(@PathParam("deptId") Long deptId) {
-        List<OrgPost> list = orgPostService.findByDept(deptId);
+        List<OrgPost> list = postService.findByDept(deptId);
         list.stream().filter(e-> OkStringUtil.isNotEmpty(e.getAssignFor())).forEach(post -> {
             OrgStaff staff = (orgStaffService.get(Long.valueOf(post.getAssignFor())));
             if (staff != null) {
@@ -53,9 +53,14 @@ public class OrgPostResource {
     @POST
     @Path("save")
     public Res<List<OrgPost>> save(OrgPost post) {
-        orgPostService.save(post);
+        postService.save(post);
         return Res.ok(null);
     }
 
-
+    @GET
+    @Path("count")
+    public Res<Long> count() {
+        var count = postService.getCount();
+        return Res.ok(count);
+    }
 }

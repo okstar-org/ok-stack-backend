@@ -80,5 +80,10 @@ public class OrgDeptResource extends OkCommonResource {
         return Res.ok(Req.empty(), list);
     }
 
-
+    @GET
+    @Path("count")
+    public Res<Long> count() {
+        var count = deptService.getCount();
+        return Res.ok(count);
+    }
 }

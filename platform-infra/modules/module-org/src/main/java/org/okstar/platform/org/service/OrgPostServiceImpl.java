@@ -33,33 +33,33 @@ import java.util.List;
 @ApplicationScoped
 public class OrgPostServiceImpl implements OrgPostService {
     @Inject
-    OrgPostMapper orgPostMapper;
+    OrgPostMapper postMapper;
 
     @Override
     public void save(OrgPost orgPost) {
         if (orgPost.id != null && orgPost.id > 0) {
-            OrgPost post = orgPostMapper.findById(orgPost.id);
+            OrgPost post = postMapper.findById(orgPost.id);
             post.setName(orgPost.getName());
             post.setNo(orgPost.getNo());
             post.setDescr(orgPost.getDescr());
             post.setRecruit(orgPost.getRecruit());
             post.setUpdateAt(OkDateUtils.now());
-            orgPostMapper.persist(post);
+            postMapper.persist(post);
         } else {
             Assert.isTrue(orgPost.getDeptId() != null && orgPost.getDeptId() > 0, "请选择部门");
             orgPost.setCreateAt(OkDateUtils.now());
-            orgPostMapper.persist(orgPost);
+            postMapper.persist(orgPost);
         }
     }
 
     @Override
     public List<OrgPost> findAll() {
-        return orgPostMapper.findAll().stream().toList();
+        return postMapper.findAll().stream().toList();
     }
 
     @Override
     public OkPageResult<OrgPost> findPage(OkPageable pageable) {
-        var all = orgPostMapper.findAll();
+        var all = postMapper.findAll();
         var query = all.page(Page.of(pageable.getPageIndex(), pageable.getPageSize()));
         return OkPageResult.build(
                 query.list(),
@@ -69,26 +69,31 @@ public class OrgPostServiceImpl implements OrgPostService {
 
     @Override
     public OrgPost get(Long id) {
-        return orgPostMapper.findById(id);
+        return postMapper.findById(id);
     }
 
     @Override
     public void deleteById(Long id) {
-        orgPostMapper.deleteById(id);
+        postMapper.deleteById(id);
     }
 
     @Override
     public void delete(OrgPost orgPost) {
-        orgPostMapper.delete(orgPost);
+        postMapper.delete(orgPost);
     }
 
     @Override
     public List<OrgPost> findByDept(Long deptId) {
-        return orgPostMapper.find("deptId", deptId).stream().toList();
+        return postMapper.find("deptId", deptId).stream().toList();
     }
 
     @Override
     public List<OrgPost> findAssignAble(Boolean assignment, boolean disabled) {
-        return orgPostMapper.find((assignment ? " " : "assignFor is null and") + "  disabled = ?1", disabled).list();
+        return postMapper.find((assignment ? " " : "assignFor is null and") + "  disabled = ?1", disabled).list();
+    }
+
+    @Override
+    public long getCount() {
+        return postMapper.count("disabled", false);
     }
 }

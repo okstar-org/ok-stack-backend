@@ -93,5 +93,10 @@ public class OrgDeptServiceImpl implements OrgDeptService {
         return orgDeptMapper.list("parentId = ?1 and orgId = ?2", 0L, orgId).stream().toList();
     }
 
+    @Override
+    public long getCount() {
+        return orgDeptMapper.count("disabled", false);
+    }
+
 
 }

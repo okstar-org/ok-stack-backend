@@ -221,9 +221,12 @@ public class OrgStaffServiceImpl implements OrgStaffService {
         return panacheQuery.stream().map(StaffUtils::toStaff0).collect(Collectors.toList());
     }
 
+    @Override
+    public long getCount() {
+        return orgStaffMapper.count("disabled", false);
+    }
+
     private Optional<OrgStaff> findByNo(String no) {
         return orgStaffMapper.find("no", no).stream().findFirst();
     }
-
-
 }

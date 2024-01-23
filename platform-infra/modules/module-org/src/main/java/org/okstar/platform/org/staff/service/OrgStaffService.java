@@ -58,4 +58,6 @@ public interface OrgStaffService extends OkService<OrgStaff> {
     Optional<OrgStaff> getByAccountId(Long id);
 
     List<OrgStaff0> search(String query);
+
+    long getCount();
 }

@@ -14,17 +14,16 @@
 package org.okstar.platform.org.staff.resource;
 
 import jakarta.inject.Inject;
-import org.okstar.platform.common.core.web.bean.Req;
+import jakarta.ws.rs.GET;
+import jakarta.ws.rs.POST;
+import jakarta.ws.rs.Path;
+import jakarta.ws.rs.PathParam;
 import org.okstar.platform.common.core.web.bean.Res;
 import org.okstar.platform.common.resource.OkCommonResource;
 import org.okstar.platform.org.domain.OrgStaff;
 import org.okstar.platform.org.staff.service.OrgStaffService;
 import org.okstar.platform.org.vo.OrgStaffReq;
 
-import jakarta.ws.rs.GET;
-import jakarta.ws.rs.POST;
-import jakarta.ws.rs.Path;
-import jakarta.ws.rs.PathParam;
 import java.util.List;
 
 @Path("staff")
@@ -37,13 +36,20 @@ public class OrgStaffResource extends OkCommonResource {
     @Path("findByDept/{deptId}")
     public Res<List<OrgStaff>> findByDeptId(@PathParam("deptId") Long deptId) {
         List<OrgStaff> list = orgStaffService.children(deptId);
-        return Res.ok(Req.empty(), list);
+        return Res.ok(list);
     }
 
     @POST
     @Path("save")
     public Res<Boolean> save(OrgStaffReq req) {
         var added = orgStaffService.add(req);
-        return Res.ok(Req.empty(), added);
+        return Res.ok(added);
+    }
+
+    @GET
+    @Path("count")
+    public Res<Long> count() {
+        var count = orgStaffService.getCount();
+        return Res.ok(count);
     }
 }

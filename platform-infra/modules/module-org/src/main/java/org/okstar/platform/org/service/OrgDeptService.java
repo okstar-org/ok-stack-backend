@@ -35,4 +35,6 @@ public interface OrgDeptService extends OkService<OrgDept>
     List<OrgDept> getByOrgId(Long orgId);
 
 
+    long getCount();
+
 }
