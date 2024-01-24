@@ -18,9 +18,24 @@ git submodule update --init --recursive
 
 ## 依赖社区环境
 - Maven 构建时使用 `dev-okstar` profile，如下：
+> 编译
 ```shell
 # 依赖社区依赖服务
 mvn clean compile -P dev-okstar
+```
+
+> 打包
+```shell
+# 输出目录 distribution/target/okstack-platform-assembly.zip
+mvn package -P dev-okstar -Dmaven.test.skip 
+```
+
+> 运行项目
+```shell
+# 进入项目目录
+cd distribution/target/okstack-platform-assembly/okstack-platform
+# 启动项目
+./bin/startup.sh 
 ```
 
 ## 依赖本地（依赖Docker）
