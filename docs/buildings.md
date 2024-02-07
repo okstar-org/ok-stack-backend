@@ -35,6 +35,7 @@ mvn package -P dev-okstar -Dmaven.test.skip
 # 进入项目目录
 cd distribution/target/okstack-platform-assembly/okstack-platform
 # 启动项目
+chmod a+x ./bin/*.sh
 ./bin/startup.sh 
 ```
 
