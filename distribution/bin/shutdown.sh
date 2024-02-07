@@ -9,6 +9,6 @@ if [ -z "$pid" ] ; then
 fi
 
 for p in ${pid[@]} ; do
-    kill ${p}
+    kill -9 ${p}
     echo "Send kill signal to ${p}"
 done
