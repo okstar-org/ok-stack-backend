@@ -14,16 +14,24 @@
 package org.okstar.platform.common.resource;
 
 import com.fasterxml.jackson.databind.JsonNode;
-
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;
 
-@Path("_well-known")
+@Path(".well-known")
 public class OkWellKnownResource extends OkCommonResource {
 
     @GET
-    @Path("git")
-    public JsonNode get() {
+    @Path("git.json")
+    public JsonNode git() {
         return gitVersion();
+    }
+
+    @GET
+    @Path("meet.json")
+    public JsonNode xmpp() {
+        ObjectNode node = objectMapper.createObjectNode();
+        node.put("host", "meet.chuanshaninfo.com");
+        return node;
     }
 }

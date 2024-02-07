@@ -45,10 +45,7 @@ public class OkCommonResource {
 
     protected JsonNode gitVersion() {
         try (InputStream stream = getClass().getResourceAsStream(GIT_PROPERTIES)) {
-
             return objectMapper.readTree(stream);
-
-
         } catch (IOException e) {
             Log.warnf(e, "Read git: %s", GIT_PROPERTIES);
             return null;

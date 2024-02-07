@@ -52,9 +52,9 @@ public class OrgPostResource {
 
     @POST
     @Path("save")
-    public Res<List<OrgPost>> save(OrgPost post) {
+    public Res<Boolean> save(OrgPost post) {
         postService.save(post);
-        return Res.ok(null);
+        return Res.ok(true);
     }
 
     @GET

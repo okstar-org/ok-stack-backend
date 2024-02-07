@@ -18,6 +18,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.eclipse.microprofile.rest.client.inject.RestClient;
 import org.okstar.platform.auth.rpc.PassportRpc;
 import org.okstar.platform.common.core.web.bean.Res;
+import org.okstar.platform.common.rpc.RpcAssert;
 import org.okstar.platform.system.vo.SysAccount0;
 
 import jakarta.ws.rs.GET;
@@ -38,8 +39,7 @@ public class PassportResource {
     @GET
     @Path("account/{account}")
     public Res<SysAccount0> getAccount(@PathParam("account") String account) {
-        var resultDto = passportRpc.getAccount(account);
-        log.info("resultDto=>{}", resultDto);
-        return Res.ok(resultDto.getData());
+        var sysAccount0 = RpcAssert.isTrue(passportRpc.getAccount(account));
+        return Res.ok(sysAccount0);
     }
 }
