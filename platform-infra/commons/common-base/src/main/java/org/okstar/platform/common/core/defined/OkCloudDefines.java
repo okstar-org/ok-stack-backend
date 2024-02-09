@@ -11,18 +11,10 @@
  * /
  */
 
-package org.okstar.platform.common.core.exception;
+package org.okstar.platform.common.core.defined;
 
-/**
- * 权限异常
- * 
- *
- */
-public class PreAuthorizeException extends RuntimeException
-{
-    private static final long serialVersionUID = 1L;
-
-    public PreAuthorizeException()
-    {
-    }
+public interface OkCloudDefines {
+    String OK_CLOUD_API="https://cloud.okstar.org.cn/api/open/stack";
+    String OK_CLOUD_USERNAME="okstar";
+    String OK_CLOUD_PASSWORD="okstar.123#";
 }

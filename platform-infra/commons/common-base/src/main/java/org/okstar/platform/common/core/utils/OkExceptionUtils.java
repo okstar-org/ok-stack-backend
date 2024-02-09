@@ -23,7 +23,7 @@ import java.io.StringWriter;
  *
  * 
  */
-public class ExceptionUtil
+public class OkExceptionUtils extends ExceptionUtils
 {
     /**
      * 获取exception的详细错误信息。
@@ -36,7 +36,7 @@ public class ExceptionUtil
         return str;
     }
 
-    public static String getRootErrorMessage(Exception e)
+    public static String getRootMessage(Exception e)
     {
         Throwable root = ExceptionUtils.getRootCause(e);
         root = (root == null ? e : root);

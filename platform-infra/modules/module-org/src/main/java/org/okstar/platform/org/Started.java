@@ -22,6 +22,7 @@ import org.okstar.cloud.OkCloudApiClient;
 import org.okstar.cloud.channel.FederalChannel;
 import org.okstar.cloud.entity.AuthenticationToken;
 import org.okstar.cloud.entity.FederalStateEntity;
+import org.okstar.platform.common.core.defined.OkCloudDefines;
 import org.okstar.platform.org.domain.Org;
 import org.okstar.platform.org.service.OrgService;
 
@@ -41,8 +42,8 @@ public class Started {
     ExecutorService executorService;
 
     public Started() {
-        client = new OkCloudApiClient("http://localhost:1024/open/stack",
-                new AuthenticationToken("okstar", "okstar.123#"));
+        client = new OkCloudApiClient(OkCloudDefines.OK_CLOUD_API,
+                new AuthenticationToken(OkCloudDefines.OK_CLOUD_USERNAME, OkCloudDefines.OK_CLOUD_PASSWORD));
     }
 
 

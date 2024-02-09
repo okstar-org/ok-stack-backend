@@ -24,6 +24,7 @@ import org.okstar.cloud.OkCloudApiClient;
 import org.okstar.cloud.channel.FederalChannel;
 import org.okstar.cloud.entity.AuthenticationToken;
 import org.okstar.cloud.entity.FederalCitizenEntity;
+import org.okstar.platform.common.core.defined.OkCloudDefines;
 import org.okstar.platform.common.core.web.bean.Req;
 import org.okstar.platform.common.core.web.bean.Res;
 import org.okstar.platform.common.rpc.RpcAssert;
@@ -52,8 +53,8 @@ public class MeResource {
     OkCloudApiClient client;
 
     public MeResource() {
-        client = new OkCloudApiClient("http://localhost:1024/open/stack",
-                new AuthenticationToken("okstar", "okstar.123#"));
+        client = new OkCloudApiClient(OkCloudDefines.OK_CLOUD_API,
+                new AuthenticationToken(OkCloudDefines.OK_CLOUD_USERNAME, OkCloudDefines.OK_CLOUD_PASSWORD));
     }
 
 

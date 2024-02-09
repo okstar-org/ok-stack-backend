@@ -26,6 +26,7 @@ import org.okstar.cloud.entity.OrderResultEntity;
 import org.okstar.cloud.entity.PayOrderEntity;
 import org.okstar.platform.billing.order.domain.BillingOrder;
 import org.okstar.platform.billing.order.mapper.BillingOrderMapper;
+import org.okstar.platform.common.core.defined.OkCloudDefines;
 import org.okstar.platform.common.core.utils.bean.OkBeanUtils;
 import org.okstar.platform.common.core.web.page.OkPageResult;
 import org.okstar.platform.common.core.web.page.OkPageable;
@@ -42,8 +43,8 @@ public class BillingOrderServiceImpl implements BillingOrderService {
 
 
     public BillingOrderServiceImpl() {
-        client = new OkCloudApiClient("http://localhost:1024/open/stack",
-                new AuthenticationToken("okstar", "okstar.123#"));
+        client = new OkCloudApiClient(OkCloudDefines.OK_CLOUD_API,
+                new AuthenticationToken(OkCloudDefines.OK_CLOUD_USERNAME, OkCloudDefines.OK_CLOUD_PASSWORD));
     }
 
     @Scheduled(every = "1m")

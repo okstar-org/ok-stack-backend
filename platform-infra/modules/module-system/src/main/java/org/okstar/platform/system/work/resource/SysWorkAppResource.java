@@ -23,6 +23,7 @@ import org.okstar.cloud.entity.AppDetailEntity;
 import org.okstar.cloud.entity.AppEntities;
 import org.okstar.cloud.entity.AppEntity;
 import org.okstar.cloud.entity.AuthenticationToken;
+import org.okstar.platform.common.core.defined.OkCloudDefines;
 import org.okstar.platform.common.core.web.bean.Res;
 import org.okstar.platform.common.core.web.page.OkPageable;
 import org.okstar.platform.common.resource.OkCommonResource;
@@ -34,8 +35,8 @@ public class SysWorkAppResource extends OkCommonResource {
     OkCloudApiClient client;
 
     public SysWorkAppResource() {
-        client = new OkCloudApiClient("http://localhost:1024/open/stack",
-                new AuthenticationToken("okstar", "okstar.123#"));
+        client = new OkCloudApiClient(OkCloudDefines.OK_CLOUD_API,
+                new AuthenticationToken(OkCloudDefines.OK_CLOUD_USERNAME, OkCloudDefines.OK_CLOUD_PASSWORD));
     }
 
     @POST
