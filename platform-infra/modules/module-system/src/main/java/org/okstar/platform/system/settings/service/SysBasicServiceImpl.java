@@ -17,6 +17,8 @@ import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 import org.okstar.platform.common.core.defined.AccountDefines;
+import org.okstar.platform.common.core.utils.OkAssert;
+import org.okstar.platform.common.core.utils.OkStringUtil;
 import org.okstar.platform.common.core.web.page.OkPageResult;
 import org.okstar.platform.common.core.web.page.OkPageable;
 import org.okstar.platform.system.account.domain.SysAccount;
@@ -39,10 +41,21 @@ public class SysBasicServiceImpl implements SysBasicService {
 
 
     @Override
-    public synchronized void save(SysSetGlobal basic) {
-        SysSetGlobal global = get(basic.id);
-        global.setGlobalEnable(basic.isGlobalEnable());
-        global.setVerifyAccount(basic.isVerifyAccount());
+    public synchronized void save(SysSetGlobal setGlobal) {
+        OkAssert.notNull(setGlobal, "id is null");
+
+        if (OkStringUtil.isBlank(setGlobal.getXmppHost())) {
+            setGlobal.setXmppHost(null);
+        }
+
+        if (setGlobal.getXmppHost() != null) {
+            OkAssert.isTrue(OkStringUtil.isValidHostAddr(setGlobal.getXmppHost(), false), "IM服务器地址格式不正确！");
+        }
+
+        SysSetGlobal global = get(setGlobal.id);
+        global.setGlobalEnable(setGlobal.isGlobalEnable());
+        global.setVerifyAccount(setGlobal.isVerifyAccount());
+        global.setXmppHost(setGlobal.getXmppHost());
         globalMapper.persist(global);
     }
 

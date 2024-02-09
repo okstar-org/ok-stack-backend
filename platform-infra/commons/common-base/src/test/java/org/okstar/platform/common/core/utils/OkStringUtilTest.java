@@ -31,4 +31,15 @@ class OkStringUtilTest {
         Assert.assertTrue("Gates".equals(OkStringUtil.combinePeopleName("en", "", "Gates")));
         Assert.assertTrue("Bill Gates".equals(OkStringUtil.combinePeopleName("en", "Bill", "Gates")));
     }
+
+
+    @Test
+    void checkHostAddr(){
+       Assert.assertTrue(OkStringUtil.isValidHostAddr("okstar.org", false));
+       Assert.assertTrue(OkStringUtil.isValidHostAddr("okstar.org.cn", false));
+       Assert.assertTrue(OkStringUtil.isValidHostAddr("meet.chuanshaninf.com", false));
+       Assert.assertTrue(OkStringUtil.isValidHostAddr("meet.chuanshaninf.com.cn", false));
+       Assert.assertTrue(OkStringUtil.isValidHostAddr("117.111.111.1", false));
+       Assert.assertTrue(OkStringUtil.isValidHostAddr("xx.w", false));
+    }
 }

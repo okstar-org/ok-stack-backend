@@ -15,7 +15,11 @@ package org.okstar.platform.common.core.utils;
 
 import org.okstar.platform.common.core.constant.Constants;
 
+import java.net.Inet4Address;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.Objects;
+import java.util.regex.Pattern;
 
 /**
  * 字符串工具类
@@ -50,6 +54,29 @@ public class OkStringUtil extends org.apache.commons.lang3.StringUtils {
      */
     public static boolean isHttp(String link) {
         return OkStringUtil.startsWithAny(link, Constants.HTTP, Constants.HTTPS);
+    }
+
+    /**
+     * 验证是否为主机地址,域名或者IPv4地址
+     *
+     * @param input
+     * @param dns   DNS校验
+     * @return
+     */
+    public static boolean isValidHostAddr(String input, boolean dns) {
+        Pattern pattern = Pattern.compile("^(\\w+.)+(\\w+)$");
+        boolean reg = pattern.matcher(input).matches();
+        if (!reg)
+            return false;
+        if (dns) {
+            try {
+                InetAddress address = Inet4Address.getByName(input);
+                return address != null;
+            } catch (UnknownHostException e) {
+                return false;
+            }
+        }
+        return true;
     }
 
     /**

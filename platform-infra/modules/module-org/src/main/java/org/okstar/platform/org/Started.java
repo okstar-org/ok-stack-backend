@@ -25,6 +25,7 @@ import org.okstar.cloud.entity.FederalStateEntity;
 import org.okstar.platform.org.domain.Org;
 import org.okstar.platform.org.service.OrgService;
 
+import java.io.IOException;
 import java.util.Optional;
 import java.util.concurrent.ExecutorService;
 
@@ -35,6 +36,7 @@ public class Started {
 
     @Inject
     OrgService orgService;
+
     @Inject
     ExecutorService executorService;
 
@@ -57,13 +59,16 @@ public class Started {
             ex.setNo(o.getNo());
 
             FederalChannel channel = client.getFederalChannel();
-            String cert = channel.ping(ex);
-            Log.infof("Org cert=>%s", cert);
-            if (cert != null) {
-                orgService.setCert(o.id, cert);
+            String cert = null;
+            try {
+                cert = channel.ping(ex);
+                Log.infof("Org cert=>%s", cert);
+                if (cert != null) {
+                    orgService.setCert(o.id, cert);
+                }
+            } catch (IOException e) {
+                Log.warnf(e.getMessage());
             }
         });
     }
-
-
 }

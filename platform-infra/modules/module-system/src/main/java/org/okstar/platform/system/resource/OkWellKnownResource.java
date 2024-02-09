@@ -11,18 +11,32 @@
  * /
  */
 
-package org.okstar.platform.common.resource;
+package org.okstar.platform.system.resource;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
+import jakarta.inject.Inject;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;
+import org.okstar.platform.common.resource.OkCommonResource;
+import org.okstar.platform.system.settings.domain.SysSetGlobal;
+import org.okstar.platform.system.settings.service.SysBasicService;
 
 @Path(".well-known")
 public class OkWellKnownResource extends OkCommonResource {
 
+    @Inject
+    SysBasicService sysBasicService;
+
     @GET
-    @Path("git.json")
-    public JsonNode git() {
-        return gitVersion();
+    @Path("meet.json")
+    public JsonNode meet() {
+        ObjectNode node = objectMapper.createObjectNode();
+
+        SysSetGlobal global = sysBasicService.findDefaultGlobal();
+        //xmpp
+        node.put("xmppHost", global.getXmppHost());
+
+        return node;
     }
 }

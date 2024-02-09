@@ -18,15 +18,13 @@ import lombok.Data;
 import org.okstar.platform.system.domain.BaseEntity;
 
 
-
-
 /**
  * 系统管理-基础设置-全局设置
- *
  */
 @Data
 @Entity
 public class SysSetGlobal extends BaseEntity {
     boolean globalEnable;
     boolean verifyAccount;
+    String xmppHost;
 }

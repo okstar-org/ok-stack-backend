@@ -23,6 +23,7 @@ import jakarta.inject.Inject;
 import org.okstar.platform.common.core.defined.SystemDefines;
 
 import jakarta.ws.rs.core.Context;
+
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -37,7 +38,7 @@ public class OkCommonResource {
     @Inject
     protected RoutingContext rc;
     @Inject
-    ObjectMapper objectMapper;
+    protected ObjectMapper objectMapper;
 
     protected String getUsername() {
         return rc.get(SystemDefines.Header_X_OK_username);
