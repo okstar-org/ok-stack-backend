@@ -14,16 +14,15 @@
 package org.okstar.platform.open.resource;
 
 import jakarta.inject.Inject;
-import lombok.extern.slf4j.Slf4j;
-import org.eclipse.microprofile.rest.client.inject.RestClient;
-import org.okstar.platform.auth.rpc.PassportRpc;
-import org.okstar.platform.common.core.web.bean.Res;
-import org.okstar.platform.common.rpc.RpcAssert;
-import org.okstar.platform.system.vo.SysAccount0;
-
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.PathParam;
+import lombok.extern.slf4j.Slf4j;
+import org.eclipse.microprofile.rest.client.inject.RestClient;
+import org.okstar.platform.common.core.web.bean.Res;
+import org.okstar.platform.common.rpc.RpcAssert;
+import org.okstar.platform.system.rpc.SysAccountRpc;
+import org.okstar.platform.system.vo.SysAccount0;
 
 /**
  * 通行
@@ -34,12 +33,12 @@ public class PassportResource {
 
     @Inject
     @RestClient
-    PassportRpc passportRpc;
+    SysAccountRpc sysAccountRpc;
 
     @GET
     @Path("account/{account}")
     public Res<SysAccount0> getAccount(@PathParam("account") String account) {
-        var sysAccount0 = RpcAssert.isTrue(passportRpc.getAccount(account));
+        var sysAccount0 = RpcAssert.isTrue(sysAccountRpc.findByAccount(account));
         return Res.ok(sysAccount0);
     }
 }

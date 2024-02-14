@@ -16,7 +16,9 @@ package org.okstar.platform.system.rpc.impl;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import org.okstar.platform.common.core.defined.AccountDefines;
+import org.okstar.platform.common.core.exception.OkRuntimeException;
 import org.okstar.platform.common.core.utils.bean.OkBeanUtils;
+import org.okstar.platform.common.rpc.RpcAssert;
 import org.okstar.platform.common.rpc.RpcResult;
 import org.okstar.platform.system.account.domain.SysAccount;
 import org.okstar.platform.system.account.service.SysAccountService;
@@ -25,6 +27,8 @@ import org.okstar.platform.system.sign.SignUpForm;
 import org.okstar.platform.system.sign.SignUpResult;
 import org.okstar.platform.system.vo.SysAccount0;
 
+import static org.okstar.platform.common.core.defined.AccountDefines.BindType.email;
+import static org.okstar.platform.common.core.defined.AccountDefines.BindType.phone;
 
 
 @ApplicationScoped
@@ -94,7 +98,17 @@ public class SysAccountRpcImpl implements SysAccountRpc {
         SysAccount account = userService.get(id);
         SysAccount0 dto = new SysAccount0();
         OkBeanUtils.copyPropertiesTo(account, dto);
-        return RpcResult.<SysAccount0>builder().data(dto).success(true).build();
+        return RpcResult.success(dto);
+    }
+
+    @Override
+    public RpcResult<SysAccount0> findByAccount(String account) {
+        AccountDefines.BindType bindType = account.indexOf("@") > 0 ? email : phone;  //
+        SysAccount0 account0 = RpcAssert.isTrue(findByBind(AccountDefines.DefaultISO, bindType, account));
+        if (account0 == null) {
+            throw new OkRuntimeException("Account is not exist");
+        }
+        return RpcResult.success(account0);
     }
 
     @Override

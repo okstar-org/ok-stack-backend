@@ -43,7 +43,7 @@ public class BillingOrderServiceImpl implements BillingOrderService {
 
 
     public BillingOrderServiceImpl() {
-        client = new OkCloudApiClient(OkCloudDefines.OK_CLOUD_API,
+        client = new OkCloudApiClient(OkCloudDefines.OK_CLOUD_API_STACK,
                 new AuthenticationToken(OkCloudDefines.OK_CLOUD_USERNAME, OkCloudDefines.OK_CLOUD_PASSWORD));
     }
 
@@ -125,6 +125,7 @@ public class BillingOrderServiceImpl implements BillingOrderService {
     public OrderResultEntity createOrder(Long planId, Long createBy) {
         OrderChannel orderChannel = client.getOrderChannel();
         OrderResultEntity result = orderChannel.create(planId);
+        result.setUrl(OkCloudDefines.OK_CLOUD_API+result.getUrl());
         saveResult(result, createBy);
         return result;
     }

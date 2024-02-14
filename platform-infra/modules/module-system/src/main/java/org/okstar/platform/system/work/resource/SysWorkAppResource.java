@@ -35,7 +35,7 @@ public class SysWorkAppResource extends OkCommonResource {
     OkCloudApiClient client;
 
     public SysWorkAppResource() {
-        client = new OkCloudApiClient(OkCloudDefines.OK_CLOUD_API,
+        client = new OkCloudApiClient(OkCloudDefines.OK_CLOUD_API_STACK,
                 new AuthenticationToken(OkCloudDefines.OK_CLOUD_USERNAME, OkCloudDefines.OK_CLOUD_PASSWORD));
     }
 
