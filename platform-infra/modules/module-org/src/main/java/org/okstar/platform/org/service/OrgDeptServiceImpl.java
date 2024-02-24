@@ -17,6 +17,7 @@ import io.quarkus.panache.common.Page;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
+import org.okstar.platform.common.core.utils.OkAssert;
 import org.okstar.platform.common.core.utils.OkDateUtils;
 import org.okstar.platform.common.core.web.page.OkPageResult;
 import org.okstar.platform.common.core.web.page.OkPageable;
@@ -76,6 +77,8 @@ public class OrgDeptServiceImpl implements OrgDeptService {
 
     @Override
     public void deleteById(Long id) {
+        List<OrgDept> depts = children(id);
+        OkAssert.isTrue(depts.isEmpty(), "存在下级，无法删除！");
         orgDeptMapper.deleteById(id);
     }
 

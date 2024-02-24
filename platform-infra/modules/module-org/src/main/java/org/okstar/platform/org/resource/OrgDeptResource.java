@@ -14,10 +14,7 @@
 package org.okstar.platform.org.resource;
 
 import jakarta.inject.Inject;
-import jakarta.ws.rs.GET;
-import jakarta.ws.rs.POST;
-import jakarta.ws.rs.Path;
-import jakarta.ws.rs.PathParam;
+import jakarta.ws.rs.*;
 import org.eclipse.microprofile.rest.client.inject.RestClient;
 import org.okstar.platform.common.core.utils.OkAssert;
 import org.okstar.platform.common.core.web.bean.Req;
@@ -85,5 +82,12 @@ public class OrgDeptResource extends OkCommonResource {
     public Res<Long> count() {
         var count = deptService.getCount();
         return Res.ok(count);
+    }
+
+    @DELETE
+    @Path("deleteById/{id}")
+    public Res<Boolean> deleteById(@PathParam("id") Long id) {
+        deptService.deleteById(id);
+        return Res.ok(true);
     }
 }
