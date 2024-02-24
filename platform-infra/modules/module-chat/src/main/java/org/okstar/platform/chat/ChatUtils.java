@@ -70,6 +70,8 @@ public class ChatUtils {
         MUCRoomEntity entity = new MUCRoomEntity();
         entity.setRoomName(room.getRoomName());
         entity.setNaturalName(room.getNaturalName());
+        entity.setSubject(room.getSubject());
+        entity.setDescription(room.getDescription());
         entity.setPassword(room.getPassword());
         entity.setCanChangeNickname(room.isCanChangeNickname());
         entity.setCanOccupantsChangeSubject(room.isCanOccupantsChangeSubject());
