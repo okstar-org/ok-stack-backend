@@ -15,55 +15,71 @@ package org.okstar.platform.org.resource;
 
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
-import org.eclipse.microprofile.rest.client.inject.RestClient;
 import org.okstar.platform.common.core.utils.OkAssert;
 import org.okstar.platform.common.core.web.bean.Req;
 import org.okstar.platform.common.core.web.bean.Res;
-import org.okstar.platform.common.resource.OkCommonResource;
-import org.okstar.platform.common.rpc.RpcAssert;
 import org.okstar.platform.org.domain.Org;
 import org.okstar.platform.org.domain.OrgDept;
 import org.okstar.platform.org.dto.OrgDeptAdd;
 import org.okstar.platform.org.service.OrgDeptService;
 import org.okstar.platform.org.service.OrgService;
-import org.okstar.platform.system.rpc.SysAccountRpc;
+import org.okstar.platform.system.vo.SysAccount0;
 
 import java.util.List;
 import java.util.Optional;
 
 @Path("dept")
-public class OrgDeptResource extends OkCommonResource {
+public class OrgDeptResource extends BaseResource {
     @Inject
     OrgDeptService deptService;
     @Inject
     OrgService orgService;
-    @Inject
-    @RestClient
-    SysAccountRpc sysAccountRpc;
 
     @POST
-    @Path("add/{parentId}")
-    public Res<List<OrgDept>> add(@PathParam("parentId") Long parentId, OrgDeptAdd add) {
+    @Path("{parentId}")
+    public Res<Long> create(@PathParam("parentId") Long parentId, OrgDeptAdd add) {
+
+        OkAssert.isTrue(parentId != null, "参数异常！");
 
         var parent = deptService.get(parentId);
         OkAssert.isTrue(parent != null, "参数异常！");
 
-        Optional<Org> current = orgService.current();
+        Optional<Org> org = orgService.current();
+        OkAssert.isTrue(org.isPresent(), "未初始化组织！");
 
-        String username = getUsername();
-        var account0 = RpcAssert.isTrue(sysAccountRpc.findByUsername(username));
-        add.setOrgId(current.get().id);
-        add.setParentId(parentId);
-        add.setLevel(parent.getLevel()+1);
-        deptService.add(account0.getId(), add);
+        var account0 = self();
+        OrgDept t = new OrgDept();
+        t.setName(add.getName());
+        t.setNo(add.getNo());
+        t.setParentId(parentId);
+        t.setOrgId(org.get().id);
+        //级别+1
+        t.setLevel(parent.getLevel() + 1);
 
-        return Res.ok(Req.empty());
+        deptService.create(t, account0.getId());
+
+        return Res.ok(t.id);
     }
 
+    @PUT
+    @Path("{id}")
+    public Res<Boolean> update(@PathParam("id") Long id, OrgDeptAdd add) {
+
+        var dept = deptService.get(id);
+        OkAssert.isTrue(dept != null, "参数异常！");
+
+        dept.setNo(add.getNo());
+        dept.setName(add.getName());
+
+        SysAccount0 account0 = self();
+        deptService.update(dept, account0.getId());
+
+        return Res.ok(true);
+    }
 
     @GET
     @Path("children")
-    public Res<List<OrgDept>> orgChildren() {
+    public Res<List<OrgDept>> children() {
         Optional<Org> current = orgService.current();
         OkAssert.isTrue(current.isPresent(), "未初始化组织！");
         List<OrgDept> list = deptService.getByOrgId(current.get().id);
@@ -82,6 +98,13 @@ public class OrgDeptResource extends OkCommonResource {
     public Res<Long> count() {
         var count = deptService.getCount();
         return Res.ok(count);
+    }
+
+    @GET
+    @Path("findById/{id}")
+    public Res<OrgDept> findById(@PathParam("id") Long id) {
+        var dept = deptService.get(id);
+        return Res.ok(dept);
     }
 
     @DELETE

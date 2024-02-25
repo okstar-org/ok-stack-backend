@@ -38,19 +38,6 @@ public class OrgDeptServiceImpl implements OrgDeptService {
 
 
     @Override
-    public void add(Long createBy, OrgDeptAdd add) {
-        OrgDept orgDept = new OrgDept();
-        orgDept.setNo(add.getNo());
-        orgDept.setName(add.getName());
-        orgDept.setOrgId(add.getOrgId());
-        orgDept.setParentId(add.getParentId());
-        orgDept.setLevel(add.getLevel());
-        orgDept.setCreateBy(createBy);
-        orgDept.setCreateAt(OkDateUtils.now());
-        save(orgDept);
-    }
-
-    @Override
     public void save(OrgDept dept) {
         orgDeptMapper.persist(dept);
     }

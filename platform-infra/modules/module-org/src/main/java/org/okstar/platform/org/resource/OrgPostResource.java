@@ -14,6 +14,7 @@
 package org.okstar.platform.org.resource;
 
 import jakarta.inject.Inject;
+import jakarta.ws.rs.*;
 import org.okstar.platform.common.core.utils.OkStringUtil;
 import org.okstar.platform.common.core.web.bean.Req;
 import org.okstar.platform.common.core.web.bean.Res;
@@ -22,10 +23,6 @@ import org.okstar.platform.org.domain.OrgStaff;
 import org.okstar.platform.org.service.OrgPostService;
 import org.okstar.platform.org.staff.service.OrgStaffService;
 
-import jakarta.ws.rs.GET;
-import jakarta.ws.rs.POST;
-import jakarta.ws.rs.Path;
-import jakarta.ws.rs.PathParam;
 import java.util.List;
 
 @Path("post")
@@ -54,6 +51,13 @@ public class OrgPostResource {
     @Path("save")
     public Res<Boolean> save(OrgPost post) {
         postService.save(post);
+        return Res.ok(true);
+    }
+
+    @DELETE
+    @Path("deleteById/{id}")
+    public Res<Boolean> deleteById(@PathParam("id") Long id) {
+        postService.deleteById(id);
         return Res.ok(true);
     }
 

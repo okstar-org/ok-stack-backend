@@ -33,10 +33,5 @@ public class OrgDeptAdd {
      */
     private Long parentId;
 
-    /**
-     * 组织ID
-     */
-    private Long orgId;
 
-    private Integer level;
 }

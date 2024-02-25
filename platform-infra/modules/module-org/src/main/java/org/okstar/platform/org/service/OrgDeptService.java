@@ -16,7 +16,6 @@ package org.okstar.platform.org.service;
 
 import org.okstar.platform.common.datasource.OkService;
 import org.okstar.platform.org.domain.OrgDept;
-import org.okstar.platform.org.dto.OrgDeptAdd;
 
 import java.util.List;
 
@@ -28,12 +27,9 @@ import java.util.List;
 public interface OrgDeptService extends OkService<OrgDept>
 {
 
-    void add(Long createBy, OrgDeptAdd add);
-
     List<OrgDept> children(Long parentId);
 
     List<OrgDept> getByOrgId(Long orgId);
-
 
     long getCount();
 
