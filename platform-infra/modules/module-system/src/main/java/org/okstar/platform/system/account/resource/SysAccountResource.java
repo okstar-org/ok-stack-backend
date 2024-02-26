@@ -54,8 +54,8 @@ public class SysAccountResource extends OkCommonResource {
                                    @QueryParam("iso") String iso) {
 
         var account = sysAccountService.findByBind(
-                Optional.ofNullable(iso).orElse(AccountDefines.DefaultISO),
                 bindType,
+                Optional.ofNullable(iso).orElse(AccountDefines.DefaultISO),
                 value);
 
         return account == null ? Res.error(Req.empty()) : Res.ok(Req.empty(), account.getUsername());

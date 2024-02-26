@@ -94,12 +94,13 @@ public class SysAccountServiceImpl extends OkAbsService implements SysAccountSer
      * @return
      */
     @Override
-    public SysAccount findByBind(String iso, AccountDefines.BindType type, String value) {
-        Log.infof("findByBind iso:%s type:%s value:%s", iso, type, value);
+    public SysAccount findByBind(AccountDefines.BindType type,String iso, String value) {
+        Log.infof("findByBind type:%s value:%s", type, value);
 
         String bindValue = value;
         if (type == AccountDefines.BindType.phone) {
             bindValue = OkPhoneUtils.canonical(value, iso);
+            Log.infof("bindValue=%S", bindValue);
         }
 
         List<SysAccountBind> list = sysAccountBindMapper.list(

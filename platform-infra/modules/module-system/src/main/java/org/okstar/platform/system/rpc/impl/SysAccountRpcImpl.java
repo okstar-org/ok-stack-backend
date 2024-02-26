@@ -68,9 +68,9 @@ public class SysAccountRpcImpl implements SysAccountRpc {
     }
 
     @Override
-    public RpcResult<SysAccount0> findByBind(String iso, AccountDefines.BindType type, String bindValue) {
+    public RpcResult<SysAccount0> findByBind( AccountDefines.BindType type, String iso, String bindValue) {
         try {
-            var sysUser = userService.findByBind(iso, type, bindValue);
+            var sysUser = userService.findByBind(type, iso, bindValue);
             if (sysUser == null)
                 return RpcResult.<SysAccount0>builder().success(true).build();
 
@@ -80,6 +80,11 @@ public class SysAccountRpcImpl implements SysAccountRpc {
         } catch (Exception e) {
             return RpcResult.<SysAccount0>builder().success(false).msg(e.getMessage()).build();
         }
+    }
+
+    @Override
+    public RpcResult<SysAccount0> findByEmail(AccountDefines.BindType type, String email) {
+        return findByBind(type,null, email);
     }
 
     @Override
@@ -104,7 +109,7 @@ public class SysAccountRpcImpl implements SysAccountRpc {
     @Override
     public RpcResult<SysAccount0> findByAccount(String account) {
         AccountDefines.BindType bindType = account.indexOf("@") > 0 ? email : phone;  //
-        SysAccount0 account0 = RpcAssert.isTrue(findByBind(AccountDefines.DefaultISO, bindType, account));
+        SysAccount0 account0 = RpcAssert.isTrue(findByBind( bindType, AccountDefines.DefaultISO, account));
         if (account0 == null) {
             throw new OkRuntimeException("Account is not exist");
         }

@@ -15,6 +15,7 @@ package org.okstar.platform.org.staff.service;
 
 import io.quarkus.hibernate.orm.panache.PanacheQuery;
 import io.quarkus.panache.common.Page;
+import io.quarkus.panache.common.Sort;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
@@ -33,6 +34,7 @@ import org.okstar.platform.org.dto.OrgStaffFragment;
 import org.okstar.platform.org.service.OrgPostService;
 import org.okstar.platform.org.staff.mapper.OrgStaffMapper;
 import org.okstar.platform.org.utils.StaffUtils;
+import org.okstar.platform.org.vo.OrgStaffFind;
 import org.okstar.platform.org.vo.OrgStaffReq;
 
 import java.util.Collections;
@@ -75,7 +77,27 @@ public class OrgStaffServiceImpl implements OrgStaffService {
 
     @Override
     public OkPageResult<OrgStaff> findPage(OkPageable pageable) {
-        var all = orgStaffMapper.findAll();
+        OrgStaffFind find = (OrgStaffFind)pageable;
+
+
+        var posIds = orgPostService.findByDept(find.getDeptId())//
+                .stream().map(p -> p.id)//
+                .collect(Collectors.toSet());
+        if (posIds.isEmpty()) {
+            return OkPageResult.build(Collections.emptyList(), 0, 0);
+        }
+
+        //获取与岗位关联的人员
+        List<OrgStaffPost> staffPosts = orgStaffPostService.findByPostIds(posIds);
+        List<Long> staffIds = staffPosts
+                .stream()//
+                .map(OrgStaffPost::getStaffId)//
+                .toList();
+        if (staffIds.isEmpty()) {
+            return OkPageResult.build(Collections.emptyList(), 0, 0);
+        }
+
+        var all = orgStaffMapper.find("id in ?1", staffIds);
         var query = all.page(Page.of(pageable.getPageIndex(), pageable.getPageSize()));
         return OkPageResult.build(
                 query.list(),
@@ -110,7 +132,6 @@ public class OrgStaffServiceImpl implements OrgStaffService {
 
         //获取与岗位关联的人员
         List<OrgStaffPost> staffPosts = orgStaffPostService.findByPostIds(posIds);
-
         List<Long> staffIds = staffPosts
                 .stream()//
                 .map(OrgStaffPost::getStaffId)//
@@ -136,7 +157,9 @@ public class OrgStaffServiceImpl implements OrgStaffService {
     @Override
     public OkPageResult<OrgStaff> findPendings(OkPageable page) {
         var paged = orgStaffMapper
-                .find("postStatus", JobDefines.PostStatus.pending)
+                .find("postStatus",
+                        Sort.descending("createAt"),
+                        JobDefines.PostStatus.pending)
                 .page(page.getPageIndex(), page.getPageSize());
         return OkPageResult.build(paged.list(), paged.count(), paged.pageCount());
     }

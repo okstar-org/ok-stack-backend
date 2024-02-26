@@ -143,11 +143,11 @@ public class OrgStaffPostServiceImpl implements OrgStaffPostService {
         /**
          * 注销其帐号
          */
-        String phone = staff.getFragment().getPhone();
+        AccountDefines.BindType emailType= AccountDefines.BindType.email;
         RpcResult<SysAccount0> bind = sysAccountRpc.findByBind(
+                emailType,
                 AccountDefines.DefaultISO,
-                AccountDefines.BindType.phone,
-                phone);
+                staff.getFragment().getEmail());
 
         SysAccount0 account0 = RpcAssert.isTrue(bind);
         if (account0 != null) {
@@ -161,9 +161,10 @@ public class OrgStaffPostServiceImpl implements OrgStaffPostService {
 
     @Override
     public synchronized boolean join(Long staffId, SortedSet<Long> postIds) {
+        Log.infof("join staffId:%s postIds:%s", staffId, postIds);
 
-        Assert.isTrue(staffId != null && staffId > 0, "staffId is invalid");
-        Assert.isTrue(postIds != null && !postIds.isEmpty(), "postIds is invalid");
+        Assert.isTrue(staffId != null && staffId > 0, "参数异常！");
+        Assert.isTrue(postIds != null && !postIds.isEmpty(), "参数异常！");
 
         OrgStaff staff = staffService.get(staffId);
         OkAssert.notNull(staff, "staff is null");
@@ -200,13 +201,14 @@ public class OrgStaffPostServiceImpl implements OrgStaffPostService {
 
 
         /**
-         * 注册其帐号
+         * 注册其帐号(邮箱号)
          */
-        String phone = staff.getFragment().getPhone();
+        AccountDefines.BindType emailType= AccountDefines.BindType.email;
+        String email = staff.getFragment().getEmail();
         RpcResult<SysAccount0> bind = sysAccountRpc.findByBind(
+                emailType,
                 AccountDefines.DefaultISO,
-                AccountDefines.BindType.phone,
-                phone);
+                email);
 
         SysAccount0 account0 = RpcAssert.isTrue(bind);
         if (account0 == null) {
@@ -214,10 +216,9 @@ public class OrgStaffPostServiceImpl implements OrgStaffPostService {
             form.setPassword(AccountDefines.DefaultPWD);
             form.setIso(AccountDefines.DefaultISO);
 
-            //设置为手机号为帐号
-            form.setAccount(phone);
-            form.setAccountType(AccountDefines.BindType.phone);
-
+            //设置邮箱为帐号
+            form.setAccount(email);
+            form.setAccountType(emailType);
             form.setFirstName(staff.getFragment().getFirstName());
             form.setLastName(staff.getFragment().getLastName());
 

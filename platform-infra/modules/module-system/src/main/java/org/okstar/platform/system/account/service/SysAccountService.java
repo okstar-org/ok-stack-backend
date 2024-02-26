@@ -31,7 +31,7 @@ import java.util.Optional;
 public interface SysAccountService extends OkService<SysAccount> {
 
 
-    SysAccount findByBind(String iso, AccountDefines.BindType bindType, String bindValue);
+    SysAccount findByBind( AccountDefines.BindType bindType, String iso, String bindValue);
 
     SignUpResult signUp(SignUpForm signUpForm);
 

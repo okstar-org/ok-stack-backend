@@ -28,4 +28,10 @@ public class OrgStaffFind extends OkPageable {
      * 岗位状态
      */
     JobDefines.PostStatus postStatus;
+
+    /**
+     * 部门ID
+     */
+    Long deptId;
+
 }

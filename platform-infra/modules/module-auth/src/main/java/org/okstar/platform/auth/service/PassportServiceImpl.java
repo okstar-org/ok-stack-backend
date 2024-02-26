@@ -150,11 +150,10 @@ public class PassportServiceImpl implements PassportService {
     public SysAccount0 getAccount(String account) {
         //判断帐号类型
         AccountDefines.BindType bindType = account.indexOf("@") > 0 ? email : phone;  //
-        SysAccount0 account0 = RpcAssert.isTrue(sysAccountRpc.findByBind(AccountDefines.DefaultISO, bindType, account));
+        SysAccount0 account0 = RpcAssert.isTrue(sysAccountRpc.findByBind(bindType, AccountDefines.DefaultISO, account));
         if (account0 == null) {
             throw new OkRuntimeException("Account is not exist");
         }
-
         return account0;
     }
 

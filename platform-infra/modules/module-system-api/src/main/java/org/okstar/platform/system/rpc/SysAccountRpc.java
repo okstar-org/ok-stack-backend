@@ -41,9 +41,14 @@ public interface SysAccountRpc {
 
     @GET
     @Path("findByBind")
-    RpcResult<SysAccount0> findByBind(@QueryParam("iso") String iso,
-                                      @QueryParam("type") AccountDefines.BindType type,
+    RpcResult<SysAccount0> findByBind(@QueryParam("type") AccountDefines.BindType type,
+                                      @QueryParam("iso") String iso,
                                       @QueryParam("bindValue") String bindValue);
+
+    @GET
+    @Path("findByEmail")
+    RpcResult<SysAccount0> findByEmail(@QueryParam("type") AccountDefines.BindType type,
+                                      @QueryParam("email") String email);
 
     @GET
     @Path("findByUsername")
