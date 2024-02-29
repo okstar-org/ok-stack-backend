@@ -382,11 +382,7 @@
                     <systemPropertyVariables>
                         <java.util.logging.manager>org.jboss.logmanager.LogManager</java.util.logging.manager>
                         <maven.home>${maven.home}</maven.home>
-                        <java.library.path>${basedir}/lib:${java.library.path}</java.library.path>
                     </systemPropertyVariables>
-                    <systemProperties>
-                        <java.library.path>${basedir}/lib:${java.library.path}</java.library.path>
-                    </systemProperties>
                 </configuration>
             </plugin>
             <plugin>
