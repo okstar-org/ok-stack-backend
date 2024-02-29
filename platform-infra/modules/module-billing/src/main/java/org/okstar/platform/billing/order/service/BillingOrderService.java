@@ -17,7 +17,11 @@ import org.okstar.cloud.entity.OrderResultEntity;
 import org.okstar.platform.billing.order.domain.BillingOrder;
 import org.okstar.platform.common.datasource.OkService;
 
+import java.util.stream.Stream;
+
 public interface BillingOrderService extends OkService<BillingOrder> {
+    Stream<BillingOrder> notSyncList();
+
     void saveResult(OrderResultEntity result, Long createBy);
 
     OrderResultEntity createOrder(Long planId, Long createBy);

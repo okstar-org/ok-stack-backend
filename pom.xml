@@ -93,10 +93,12 @@
                 <quarkus.datasource.username>okstar</quarkus.datasource.username>
                 <quarkus.datasource.password>Encrypt=>YOzFYCG4evdiWnDP8vGdLw==</quarkus.datasource.password>
                 <quarkus.datasource.jdbc.url>jdbc:mariadb://chuanshaninfo.com:3307</quarkus.datasource.jdbc.url>
-                <quarkus.datasource.jdbc.args>autoReconnect=true&amp;connectTimeout=5000&amp;socketTimeout=60000</quarkus.datasource.jdbc.args>
+                <quarkus.datasource.jdbc.args>autoReconnect=true&amp;connectTimeout=5000&amp;socketTimeout=60000
+                </quarkus.datasource.jdbc.args>
                 <quarkus.datasource.jdbc.driver>org.mariadb.jdbc.Driver</quarkus.datasource.jdbc.driver>
                 <quarkus.hibernate-orm.dialect>org.hibernate.dialect.MariaDBDialect</quarkus.hibernate-orm.dialect>
-                <quarkus.keycloak.admin-client.server-url>https://kc.okstar.org.cn</quarkus.keycloak.admin-client.server-url>
+                <quarkus.keycloak.admin-client.server-url>https://kc.okstar.org.cn
+                </quarkus.keycloak.admin-client.server-url>
                 <quarkus.oidc.auth-server-url>https://kc.okstar.org.cn/realms/okstar</quarkus.oidc.auth-server-url>
                 <quarkus.oidc.credentials.secret>paYHiWpp0vV2jkIhz6EWLPw0HI5yv2XM</quarkus.oidc.credentials.secret>
             </properties>
@@ -273,7 +275,6 @@
             </dependency>
 
 
-
         </dependencies>
     </dependencyManagement>
 
@@ -324,7 +325,8 @@
                     <!-- 生成git属性文件，默认false：不生成 -->
                     <generateGitPropertiesFile>true</generateGitPropertiesFile>
                     <!-- 生成git属性文件路径及文件名，默认${project.build.outputDirectory}/git.properties -->
-                    <generateGitPropertiesFilename>${project.build.outputDirectory}/git.properties</generateGitPropertiesFilename>
+                    <generateGitPropertiesFilename>${project.build.outputDirectory}/git.properties
+                    </generateGitPropertiesFilename>
                     <!-- 生成git属性文件格式，默认值properties -->
                     <format>json</format>
                     <!-- 配置git-describe命令 -->
@@ -347,7 +349,8 @@
                             <goal>copy-resources</goal>
                         </goals>
                         <configuration>
-                            <outputDirectory>${project.build.directory}/${project.build.finalName}/META-INF</outputDirectory>
+                            <outputDirectory>${project.build.directory}/${project.build.finalName}/META-INF
+                            </outputDirectory>
                             <resources>
                                 <resource>
                                     <directory>src/main/resources/META-INF</directory>
@@ -379,7 +382,11 @@
                     <systemPropertyVariables>
                         <java.util.logging.manager>org.jboss.logmanager.LogManager</java.util.logging.manager>
                         <maven.home>${maven.home}</maven.home>
+                        <java.library.path>${basedir}/lib:${java.library.path}</java.library.path>
                     </systemPropertyVariables>
+                    <systemProperties>
+                        <java.library.path>${basedir}/lib:${java.library.path}</java.library.path>
+                    </systemProperties>
                 </configuration>
             </plugin>
             <plugin>
@@ -415,6 +422,7 @@
                         </goals>
                     </execution>
                 </executions>
+
             </plugin>
             <plugin>
                 <groupId>io.quarkus</groupId>
@@ -429,14 +437,35 @@
                     </parentFirstArtifacts>
                 </configuration>
             </plugin>
-
         </plugins>
     </build>
+
     <!-- 配置阿里云仓库 -->
     <repositories>
+
         <repository>
-            <id>aliyun-repos</id>
-            <url>https://maven.aliyun.com/repository/public</url>
+            <id>Liferay Public Repository</id>
+            <url>https://repository.liferay.com/nexus/content/repositories/public/</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </repository>
+        <repository>
+            <id>Typesafe Repository</id>
+            <url>https://repo.typesafe.com/typesafe/maven-releases/</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </repository>
+        <repository>
+            <id>repo1</id>
+            <url>https://repo1.maven.org/maven2</url>
             <releases>
                 <enabled>true</enabled>
             </releases>

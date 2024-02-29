@@ -27,4 +27,5 @@ public class SysSetGlobal extends BaseEntity {
     boolean globalEnable;
     boolean verifyAccount;
     String xmppHost;
+    String stackUrl;
 }

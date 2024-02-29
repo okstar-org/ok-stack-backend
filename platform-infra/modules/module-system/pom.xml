@@ -69,11 +69,6 @@
         </dependency>
 
         <dependency>
-            <groupId>org.ow2.asm</groupId>
-            <artifactId>asm</artifactId>
-            <version>9.5</version>
-        </dependency>
-        <dependency>
             <groupId>org.okstar.platform</groupId>
             <artifactId>OkCloud-API-Client</artifactId>
             <version>${revision}</version>

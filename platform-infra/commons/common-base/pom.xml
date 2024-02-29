@@ -27,12 +27,6 @@
 
     <dependencies>
 
-        <dependency>
-            <groupId>org.ow2.asm</groupId>
-            <artifactId>asm</artifactId>
-            <version>9.5</version>
-        </dependency>
-
         <!-- Apache Commons -->
         <dependency>
             <groupId>org.apache.commons</groupId>
@@ -93,6 +87,20 @@
             <groupId>com.googlecode.libphonenumber</groupId>
             <artifactId>libphonenumber</artifactId>
         </dependency>
+
+        <dependency>
+            <groupId>org.hyperic</groupId>
+            <artifactId>sigar</artifactId>
+            <version>1.6.4</version>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.littleshoot/stun-client -->
+        <dependency>
+            <groupId>org.littleshoot</groupId>
+            <artifactId>stun-client</artifactId>
+            <version>1.0.3</version>
+        </dependency>
+
 
     </dependencies>
 

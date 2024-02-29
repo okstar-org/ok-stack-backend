@@ -11,29 +11,22 @@
  * /
  */
 
-package org.okstar.platform.system.dto;
+package org.okstar.platform.system.rpc;
 
-import lombok.Data;
-import org.okstar.platform.common.core.web.bean.DTO;
+import jakarta.ws.rs.GET;
+import jakarta.ws.rs.Path;
+import org.eclipse.microprofile.rest.client.inject.RegisterRestClient;
+import org.okstar.platform.system.dto.SysSetGlobalDTO;
 
-/**
- * 全局设置
- */
-@Data
-public class SysSetGlobalDTO extends DTO {
 
-    boolean globalEnable;
-
-    boolean verifyAccount;
+@Path("rpc/SysSettingsRpc")
+@RegisterRestClient
+public interface SysSettingsRpc {
 
     /**
-     * xmpp地址
+     * 获取全局配置
      */
-    private String xmppHost;
-
-    /**
-     * Stack Url地址
-     */
-    private String stackUrl;
-
+    @GET
+    @Path("getGlobal")
+    SysSetGlobalDTO getGlobal();
 }

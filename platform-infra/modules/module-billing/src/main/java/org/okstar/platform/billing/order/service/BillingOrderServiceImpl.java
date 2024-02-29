@@ -15,7 +15,6 @@ package org.okstar.platform.billing.order.service;
 
 import io.quarkus.logging.Log;
 import io.quarkus.panache.common.Sort;
-import io.quarkus.scheduler.Scheduled;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
@@ -23,7 +22,6 @@ import org.okstar.cloud.OkCloudApiClient;
 import org.okstar.cloud.channel.OrderChannel;
 import org.okstar.cloud.entity.AuthenticationToken;
 import org.okstar.cloud.entity.OrderResultEntity;
-import org.okstar.cloud.entity.PayOrderEntity;
 import org.okstar.platform.billing.order.domain.BillingOrder;
 import org.okstar.platform.billing.order.mapper.BillingOrderMapper;
 import org.okstar.platform.common.core.defined.OkCloudDefines;
@@ -32,6 +30,7 @@ import org.okstar.platform.common.core.web.page.OkPageResult;
 import org.okstar.platform.common.core.web.page.OkPageable;
 
 import java.util.List;
+import java.util.stream.Stream;
 
 @Transactional
 @ApplicationScoped
@@ -47,26 +46,13 @@ public class BillingOrderServiceImpl implements BillingOrderService {
                 new AuthenticationToken(OkCloudDefines.OK_CLOUD_USERNAME, OkCloudDefines.OK_CLOUD_PASSWORD));
     }
 
-    @Scheduled(every = "1m")
-    public void orderTask() {
+    @Override
+    public Stream<BillingOrder> notSyncList() {
         /**
          * 查询未同步的订单
          */
         var list = orderMapper.find("sync is null or sync = false").list();
-        list.stream().filter(e -> e.getNo() != null).forEach(bo -> {
-            /**
-             * 从云端获取订单状态
-             */
-            PayOrderEntity order = client.getOrderChannel().get(bo.getNo());
-            if (order != null && order.getPaymentStatus() != null) {
-                //避免空对象的情况
-                bo.setPaymentStatus(order.getPaymentStatus());
-                bo.setOrderStatus(order.getOrderStatus());
-                bo.setIsExpired(order.getIsExpired());
-                //同步标志设置成功
-                bo.setSync(true);
-            }
-        });
+        return list.stream().filter(e -> e.getNo() != null);
     }
 
     @Override

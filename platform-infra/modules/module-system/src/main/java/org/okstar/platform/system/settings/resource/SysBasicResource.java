@@ -55,6 +55,9 @@ public class SysBasicResource extends BaseResource {
     @PUT
     @Path("global")
     public void updateGlobal(SysSetGlobal global) {
+        /**
+         * 保存设置
+         */
         service.save(global);
     }
 

@@ -14,21 +14,24 @@
 package org.okstar.platform.org;
 
 import io.quarkus.logging.Log;
-import io.quarkus.runtime.StartupEvent;
+import io.quarkus.scheduler.Scheduled;
 import jakarta.enterprise.context.ApplicationScoped;
-import jakarta.enterprise.event.Observes;
 import jakarta.inject.Inject;
+import org.eclipse.microprofile.rest.client.inject.RestClient;
 import org.okstar.cloud.OkCloudApiClient;
 import org.okstar.cloud.channel.FederalChannel;
 import org.okstar.cloud.entity.AuthenticationToken;
 import org.okstar.cloud.entity.FederalStateEntity;
 import org.okstar.platform.common.core.defined.OkCloudDefines;
+import org.okstar.platform.common.core.utils.OkStringUtil;
+import org.okstar.platform.common.os.HostInfo;
+import org.okstar.platform.common.os.HostUtils;
 import org.okstar.platform.org.domain.Org;
 import org.okstar.platform.org.service.OrgService;
+import org.okstar.platform.system.dto.SysSetGlobalDTO;
+import org.okstar.platform.system.rpc.SysSettingsRpc;
 
-import java.io.IOException;
 import java.util.Optional;
-import java.util.concurrent.ExecutorService;
 
 @ApplicationScoped
 public class Started {
@@ -39,7 +42,9 @@ public class Started {
     OrgService orgService;
 
     @Inject
-    ExecutorService executorService;
+    @RestClient
+    SysSettingsRpc settingsRpc;
+
 
     public Started() {
         client = new OkCloudApiClient(OkCloudDefines.OK_CLOUD_API_STACK,
@@ -47,29 +52,56 @@ public class Started {
     }
 
 
-    void init(@Observes StartupEvent e) {
-        executorService.execute(this::setCert);
+    @Scheduled(every = "1m")
+    public void pingTask() {
+        try {
+            doPing();
+        } catch (Throwable e) {
+
+        }
     }
 
-    private void setCert() {
+    public void doPing() {
         Optional<Org> current = orgService.current();
-        current.ifPresent(o -> {
+        if (current.isEmpty()) {
+            return;
+        }
 
-            FederalStateEntity ex = new FederalStateEntity();
-            ex.setName(o.getName());
-            ex.setNo(o.getNo());
 
+        Org o = current.get();
+        /**
+         * 获取全局配置
+         */
+        SysSetGlobalDTO global = settingsRpc.getGlobal();
+        if (global == null) {
+            return;
+        }
+        if (OkStringUtil.isEmpty(global.getStackUrl()) || OkStringUtil.isEmpty(global.getXmppHost())) {
+            return;
+        }
+
+        FederalStateEntity ex = new FederalStateEntity();
+        ex.setNo(o.getNo());
+        ex.setName(o.getName());
+        ex.setStackUrl(global.getStackUrl());
+        ex.setXmppHost(global.getXmppHost());
+
+        HostInfo info = HostUtils.getHostInfo();
+        ex.setPublicIp(info.getPublicIp());
+        ex.setHostName(info.getHostName());
+        ex.setPublicIp(info.getPublicIp());
+        ex.setFqdn(info.getFqdn());
+
+        try {
+            //获取提交通道
             FederalChannel channel = client.getFederalChannel();
-            String cert = null;
-            try {
-                cert = channel.ping(ex);
-                Log.infof("Org cert=>%s", cert);
-                if (cert != null) {
-                    orgService.setCert(o.id, cert);
-                }
-            } catch (IOException e) {
-                Log.warnf(e.getMessage());
+            String cert = channel.ping(ex);
+            Log.infof("Org cert=>%s", cert);
+            if (cert != null) {
+                orgService.setCert(o.id, cert);
             }
-        });
+        } catch (Exception e) {
+            Log.warnf(e.getMessage());
+        }
     }
 }
