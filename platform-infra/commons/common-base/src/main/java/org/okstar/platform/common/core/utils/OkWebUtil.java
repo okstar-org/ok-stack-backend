@@ -16,28 +16,45 @@ package org.okstar.platform.common.core.utils;
 import io.vertx.core.http.Cookie;
 import io.vertx.core.http.HttpServerRequest;
 import lombok.SneakyThrows;
-import org.apache.commons.httpclient.DefaultHttpMethodRetryHandler;
-import org.apache.commons.httpclient.HttpClient;
-import org.apache.commons.httpclient.HttpStatus;
-import org.apache.commons.httpclient.methods.GetMethod;
-import org.apache.commons.httpclient.params.HttpConnectionManagerParams;
-import org.apache.commons.httpclient.params.HttpMethodParams;
+import org.apache.http.Header;
+import org.apache.http.HttpResponse;
+import org.apache.http.HttpStatus;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.config.RequestConfig;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
+import org.apache.http.message.BasicHeader;
+import org.apache.http.util.EntityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.List;
 
 
 public class OkWebUtil {
     private static final Logger logger = LoggerFactory.getLogger(OkWebUtil.class);
 
     private static HttpClient buildHttpClient() {
-        //设置参数
-        HttpClient client = new HttpClient();
-        // 使用系统提供的默认的恢复策略
-        HttpConnectionManagerParams managerParams = client.getHttpConnectionManager().getParams();
-        // 设置连接的超时时间
-        managerParams.setConnectionTimeout(3 * 60 * 1000);
-        // 设置读取数据的超时时间
-        managerParams.setSoTimeout(5 * 60 * 1000);
+
+        //  创建请求配置信息
+        RequestConfig requestConfig = RequestConfig.custom()
+                // 设置连接超时时间
+                .setConnectTimeout(3000)
+                // 设置响应超时时间
+                .setSocketTimeout(3000)
+                // 设置从连接池获取链接的超时时间
+                .setConnectionRequestTimeout(3000)
+                .build();
+
+        List<Header> headers = new java.util.ArrayList<>();
+        headers.add(new BasicHeader("user-agent", "curl/7.81.0"));
+
+        CloseableHttpClient client = HttpClients.custom()
+                .setDefaultHeaders(headers)   // 设置默认请求头
+                .setDefaultRequestConfig(requestConfig) // 设置默认配置
+                .build();
+
         return client;
     }
 
@@ -56,14 +73,11 @@ public class OkWebUtil {
         HttpClient client = buildHttpClient();
 
         // 创建GET方法的实例
-        GetMethod method = new GetMethod(url);
+        HttpGet method = new HttpGet(url);
         try {
-            method.setRequestHeader("user-agent", "curl/7.81.0");
-            method.getParams().setParameter(HttpMethodParams.RETRY_HANDLER, new DefaultHttpMethodRetryHandler());
-            // 执行getMethod
-            client.executeMethod(method);
-            if (method.getStatusCode() == HttpStatus.SC_OK || method.getStatusCode() == HttpStatus.SC_CREATED) {
-                return method.getResponseBodyAsString();
+            HttpResponse response = client.execute(method);
+            if (response.getStatusLine().getStatusCode() == HttpStatus.SC_OK || response.getStatusLine().getStatusCode() == HttpStatus.SC_CREATED) {
+                return EntityUtils.toString(response.getEntity());
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -78,39 +92,18 @@ public class OkWebUtil {
             return null;
         }
 
-        String ip = null;
+        String ip = request.getHeader("X-Forwarded-For");
+        if (ip != null) {
+            if (!ip.contains(",")) {
+                return ip;
 
-        // X-Forwarded-For：Squid 服务代理
-        String ipAddresses = request.getHeader("X-Forwarded-For");
-        if (ipAddresses == null || ipAddresses.length() == 0 || "unknown".equalsIgnoreCase(ipAddresses)) {
-            // Proxy-Client-IP：apache 服务代理
-            ipAddresses = request.getHeader("Proxy-Client-IP");
-        }
-        if (ipAddresses == null || ipAddresses.length() == 0 || "unknown".equalsIgnoreCase(ipAddresses)) {
-            // WL-Proxy-Client-IP：weblogic 服务代理
-            ipAddresses = request.getHeader("WL-Proxy-Client-IP");
-        }
-        if (ipAddresses == null || ipAddresses.length() == 0 || "unknown".equalsIgnoreCase(ipAddresses)) {
-            // HTTP_CLIENT_IP：有些代理服务器
-            ipAddresses = request.getHeader("HTTP_CLIENT_IP");
-        }
-        if (ipAddresses == null || ipAddresses.length() == 0 || "unknown".equalsIgnoreCase(ipAddresses)) {
-            // X-Real-IP：nginx服务代理
-            ipAddresses = request.getHeader("X-Real-IP");
+            }
+            String[] ips = ip.split(",");
+            return ips[ips.length-1];
         }
 
-        // 有些网络通过多层代理，那么获取到的ip就会有多个，一般都是通过逗号（,）分割开来，并且第一个ip为客户端的真实IP
-        if (ipAddresses != null && ipAddresses.length() != 0) {
-            ip = ipAddresses.split(",")[0];
-        }
-
-        // 还是不能获取到，最后再通过request.getRemoteAddr();获取
-        if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ipAddresses)) {
-            ip = request.remoteAddress().hostAddress();
-        }
-        return ip.equals("0:0:0:0:0:0:0:1") ? "127.0.0.1" : ip;
+        return null;
     }
-
 
     public static String getValue(HttpServerRequest request, String name) {
         String param = request.getParam(name);

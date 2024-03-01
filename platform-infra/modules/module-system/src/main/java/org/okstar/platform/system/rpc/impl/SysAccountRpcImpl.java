@@ -21,11 +21,15 @@ import org.okstar.platform.common.core.utils.bean.OkBeanUtils;
 import org.okstar.platform.common.rpc.RpcAssert;
 import org.okstar.platform.common.rpc.RpcResult;
 import org.okstar.platform.system.account.domain.SysAccount;
+import org.okstar.platform.system.account.domain.SysAccountBind;
 import org.okstar.platform.system.account.service.SysAccountService;
+import org.okstar.platform.system.dto.SysAccountBindDTO;
 import org.okstar.platform.system.rpc.SysAccountRpc;
 import org.okstar.platform.system.sign.SignUpForm;
 import org.okstar.platform.system.sign.SignUpResult;
 import org.okstar.platform.system.vo.SysAccount0;
+
+import java.util.List;
 
 import static org.okstar.platform.common.core.defined.AccountDefines.BindType.email;
 import static org.okstar.platform.common.core.defined.AccountDefines.BindType.phone;
@@ -119,5 +123,16 @@ public class SysAccountRpcImpl implements SysAccountRpc {
     @Override
     public void setCert(Long id, String cert) {
         userService.setCert(id, cert);
+    }
+
+    @Override
+    public RpcResult<List<SysAccountBindDTO>> getBinds(Long id) {
+        List<SysAccountBind> binds = userService.listBind(id);
+        List<SysAccountBindDTO> list = binds.stream().map(e -> {
+            SysAccountBindDTO dto = new SysAccountBindDTO();
+            OkBeanUtils.copyPropertiesTo(e, dto);
+            return dto;
+        }).toList();
+        return RpcResult.success(list);
     }
 }

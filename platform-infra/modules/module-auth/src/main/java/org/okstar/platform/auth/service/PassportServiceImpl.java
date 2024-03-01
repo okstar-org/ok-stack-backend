@@ -24,6 +24,7 @@ import org.okstar.platform.auth.backend.BackUserManager;
 import org.okstar.platform.common.core.defined.AccountDefines;
 import org.okstar.platform.common.core.exception.OkRuntimeException;
 import org.okstar.platform.common.core.utils.OkAssert;
+import org.okstar.platform.common.core.utils.OkStringUtil;
 import org.okstar.platform.common.rpc.RpcAssert;
 import org.okstar.platform.common.rpc.RpcResult;
 import org.okstar.platform.org.dto.OrgStaffFragment;
@@ -124,6 +125,7 @@ public class PassportServiceImpl implements PassportService {
         if (backUser.isEmpty()) {
             RpcResult<String> lastedPassword = sysAccountRpc.lastPassword(account0.getId());
             String pwd = RpcAssert.isTrue(lastedPassword);
+            OkAssert.isTrue(OkStringUtil.equals(pwd, signInForm.getPassword()), "密码不正确！");
 
             BackUser addUser = new BackUser();
             addUser.setId(String.valueOf(account0.getId()));

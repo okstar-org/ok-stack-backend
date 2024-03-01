@@ -13,14 +13,16 @@
 
 package org.okstar.platform.system.rpc;
 
+import jakarta.ws.rs.*;
 import org.eclipse.microprofile.rest.client.inject.RegisterRestClient;
 import org.okstar.platform.common.core.defined.AccountDefines;
 import org.okstar.platform.common.rpc.RpcResult;
+import org.okstar.platform.system.dto.SysAccountBindDTO;
 import org.okstar.platform.system.sign.SignUpForm;
 import org.okstar.platform.system.sign.SignUpResult;
 import org.okstar.platform.system.vo.SysAccount0;
 
-import jakarta.ws.rs.*;
+import java.util.List;
 
 
 @Path("rpc/SysAccountRpc")
@@ -55,14 +57,18 @@ public interface SysAccountRpc {
     RpcResult<SysAccount0> findByUsername(@QueryParam("username") String username);
 
     @GET
-    @Path("findById")
-    RpcResult<SysAccount0> findById(@QueryParam("id") Long id);
+    @Path("findById/{id}")
+    RpcResult<SysAccount0> findById(@PathParam("id") Long id);
 
     @GET
-    @Path("findByAccount")
-    RpcResult<SysAccount0> findByAccount(@QueryParam("account") String account);
+    @Path("findByAccount/{account}")
+    RpcResult<SysAccount0> findByAccount(@PathParam("account") String account);
 
     @POST
     @Path("setCert/{id}")
     void setCert(@PathParam("id") Long id, String cert);
+
+    @GET
+    @Path("getBinds/{id}")
+    RpcResult<List<SysAccountBindDTO>> getBinds(@PathParam("id") Long id);
 }
