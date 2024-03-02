@@ -109,6 +109,5 @@
   - 中国：**[木兰公共许可证, 第2版](https://opensource.org/license/mulanpsl-2-0/)**
 
 2.付费得到商业授权（试行）
-  - [OKEDU软件合作伙伴合同-个人版](https://www.kdocs.cn/l/cgdtyImooeol)
-  - OKEDU软件合作伙伴合同-团队版(计划中)
-  - OKEDU软件合作伙伴合同-企业版(计划中)
+- [OKEDU软件合作伙伴合同-个人版](https://www.kdocs.cn/l/cgdtyImooeol)
+- [企业版软件授权，请移步👉 chuanshaninfo.com](https://www.chuanshaninfo.com/)

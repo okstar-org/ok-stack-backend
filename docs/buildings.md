@@ -3,21 +3,18 @@
 - Java 17 (选择　GraalVM CE 22.0.0.2)
 - 最新　Maven
 - 最新　Docker
-
+- Linux服务器(X86)一台
+- 准备子域名 meet.{your_domain}
 
 ## 获取源码与子项目
 ```shell
-git clone https://gitee.com/okstar-org/ok-stack-backend.git
+git clone https://{gitee|github}.com/okstar-org/ok-stack-backend.git
 cd ok-stack-backend
 # 更新子项目
 git submodule update --init --recursive
 ```
 
-## 构建依赖环境
-> 所需服务如下：
-- 聊天服务器：Openfire
-- 认证服务器：KeyClock
-
+## 准备依赖环境
 > 请参考如下步骤完成：
 ### 部署 Openfire
 - Clone Openfire 项目，执行：`git clone -b 4.7 https://gitee.com/okstar-org/ok-openfire`
@@ -25,16 +22,15 @@ git submodule update --init --recursive
 - 构建项目, 执行：`./build/docker/buildWithDocker.sh`
 - 构建Docker镜像，执行： `docker build . -t okstar-openfire:v4.7`
 
-### 启动 Docker 依赖服务
+### 启动依赖服务
 ```shell
 # 进入到依赖目录
 cd depends
-
 # 启动依赖服务
 depends$ docker-compose up -d
 ```
 
-### 配置 KeyCloak 服务
+## 配置 KeyCloak 服务
 - 登录地址：`http://localhost:8043/admin/`
 - 输入帐号：admin,okstar登录
 - 到左上角，选择 `okstar` realm (如果没有则增加okstar，按如下配置，保存即可)
@@ -115,7 +111,7 @@ Changed users sync period   :86400
 - 3，选择tab`Email`
 - 4，输入邮箱相关信息即可。
 
-### 配置启动Openfire服务器
+## 配置启动 Openfire 服务器
 > 打开服务器地址：`http://localhost:9090/`
 - 第一步，选择合适的语言
 - 第二步，服务器设置不用修改
@@ -166,3 +162,11 @@ cd okstack-platform-assembly/okstack-platform
 # 停止项目
 ./bin/shutdown.sh
 ```
+
+# 配置前端
+到此后端构建已经全部完成具备运行条件，接下来就是配置前端项目`OkStack-UI`。
+> gitee：https://gitee.com/okstar-org/ok-stack-ui
+> github：https://gitee.com/okstar-org/ok-stack-ui
+
+# 配置项目
+请按照构建文档完成前端部署，下一步则请参考[配置文档](./configurations.md)配置项目。
