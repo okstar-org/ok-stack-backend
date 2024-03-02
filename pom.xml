@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-  ~ /** Copyright (c) 2022 船山科技 chuanshantech.com
+  ~ /** Copyright (c) 2022 船山信息 chuanshaninfo.com
   ~ OkStack is licensed under Mulan PubL v2.
   ~ You can use this software according to the terms and conditions of the Mulan
   ~ PubL v2. You may obtain a copy of Mulan PubL v2 at:
@@ -93,8 +93,7 @@
                 <quarkus.datasource.username>okstar</quarkus.datasource.username>
                 <quarkus.datasource.password>Encrypt=>YOzFYCG4evdiWnDP8vGdLw==</quarkus.datasource.password>
                 <quarkus.datasource.jdbc.url>jdbc:mariadb://chuanshaninfo.com:3307</quarkus.datasource.jdbc.url>
-                <quarkus.datasource.jdbc.args>autoReconnect=true&amp;connectTimeout=5000&amp;socketTimeout=60000
-                </quarkus.datasource.jdbc.args>
+                <quarkus.datasource.jdbc.args>autoReconnect=true&amp;connectTimeout=60000&amp;socketTimeout=50000</quarkus.datasource.jdbc.args>
                 <quarkus.datasource.jdbc.driver>org.mariadb.jdbc.Driver</quarkus.datasource.jdbc.driver>
                 <quarkus.hibernate-orm.dialect>org.hibernate.dialect.MariaDBDialect</quarkus.hibernate-orm.dialect>
                 <quarkus.keycloak.admin-client.server-url>https://kc.okstar.org.cn

@@ -4,11 +4,10 @@
     <includeBaseDirectory>true</includeBaseDirectory>
     <formats>
         <format>dir</format>
-<!--        <format>tar.gz</format>-->
         <format>zip</format>
+        <format>tar.gz</format>
     </formats>
     <fileSets>
-
         <fileSet>
             <directory>../platform-infra/modules/module-system/target/quarkus-app</directory>
             <outputDirectory>./infra/module-system</outputDirectory>

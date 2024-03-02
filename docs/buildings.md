@@ -1,11 +1,8 @@
 # 构建文档
 ## 必备依赖
-- Java 17 (选择GraalVM CE 22.0.0.2)
-- Maven 3.6.x
-
-> 支持两种构建方式
-- 依赖本地环境（Docker）
-- 依赖社区环境（社区已经搭建了完整测试依赖）
+- Java 17 (选择　GraalVM CE 22.0.0.2)
+- 最新　Maven
+- 最新　Docker
 
 
 ## 获取源码与子项目
@@ -16,32 +13,12 @@ cd ok-stack-backend
 git submodule update --init --recursive
 ```
 
-## 依赖社区环境
-- Maven 构建时使用 `dev-okstar` profile，如下：
-> 编译
-```shell
-# 依赖社区依赖服务
-mvn clean compile -P dev-okstar
-```
+## 构建依赖环境
+> 所需服务如下：
+- 聊天服务器：Openfire
+- 认证服务器：KeyClock
 
-> 打包
-```shell
-# 输出目录 distribution/target/okstack-platform-assembly.zip
-mvn package -P dev-okstar -Dmaven.test.skip 
-```
-
-> 运行项目
-```shell
-# 进入项目目录
-cd distribution/target/okstack-platform-assembly/okstack-platform
-# 启动项目
-chmod a+x ./bin/*.sh
-./bin/startup.sh 
-```
-
-## 依赖本地（依赖Docker）
-> 按照如下步骤完成。
-
+> 请参考如下步骤完成：
 ### 部署 Openfire
 - Clone Openfire 项目，执行：`git clone -b 4.7 https://gitee.com/okstar-org/ok-openfire`
 - 进入目录，执行：`cd ok-openfire`
@@ -161,70 +138,31 @@ Changed users sync period   :86400
   - 点击登录
 
 ### 构建项目
-- Maven 构建时使用 `dev-okstar` profile，如下：
+- 配置根目录下`pom.xml`文件，在profiles增加自己的profile配置且设置 profile id
+- 执行打包，命令如下：
 ```shell
-# 依赖社区依赖服务
-mvn clean compile -P dev-okstar
+mvn clean package -P {profileId} -Dmaven.test.skip #最好忽略测试
 ```
-
-# 测试
-## 启动依赖服务
-分别启动如下两个服务
-- ModuleOrgApplication
-- ModuleSystemApplication
-
-## 创建新帐号
-- 执行如下单元测试即可。
+- 输出目标执行程序
+> 执行构建打包命令后，输出3种格式的可执行项目，根据需要自己选择即可。
 ```shell
-org.okstar.platform.auth.service.PassportServiceImplTest.signUp
+ls distribution/target
+okstack-platform-assembly           #解压目录
+okstack-platform-assembly.tar.gz    #tar.gz格式(unix/linux)
+okstack-platform-assembly.zip       #zip格式(windows)
 ```
-- 通过日志，查找用户名
+- 准备运行环境
+> 首次执行启动前将｀libsigar-amd64-linux-1.6.4.so｀拷贝到系统lib目录｀/usr/lib/｀下。
 ```shell
-# 找到如下日志(用户名：B5Ev0cK4i2Lq，你们可能不一样)
-2023-10-15 15:32:16,260 INFO  [org.oks.pla.aut.ser.PassportServiceImplTest] (main) result=>SignUpResultDto(userId=7, username=B5Ev0cK4i2Lq)
+sudo cp platform-infra/commons/common-base/src/main/resources/lib/libsigar-amd64-linux-1.6.4.so /usr/lib/
 ```
 
-## 测试接口
-> 通过如上步骤：用户: B5Ev0cK4i2Lq 密码: okstar
-- 打开Swagger接口测试页面 `http://localhost:9000/q/swagger-ui/`
-- 找到接口`/user/findAll`输入用户名和密码执行，得到如下则后端配置完全成功！
-```text
-{
-  "ts": null,
-  "code": 200,
-  "data": [
-    {
-      "id": 1,
-      "disabled": true,
-      "username": "B5Ev0cK4i2Lq",
-      "firstName": "Ok",
-      "lastName": "Star",
-      ...
-    },
-  ],
-  "msg": null,
-  "extra": {}
-}
+- 运行项目
+```shell
+# 到项目目录下
+cd okstack-platform-assembly/okstack-platform
+# 启动项目
+./bin/startup.sh
+# 停止项目
+./bin/shutdown.sh
 ```
-> 通过上述流程就确认服务搭建通过！
-
-# 接口访问
-
-## 注册
-- 打开Swagger接口测试页面 `http://localhost:9000/q/swagger-ui/`
-- 调用方法 `/password/signUp`,输入信息如下：
-```text
-{
-  "ts": 0,
-  "iso": "CN",
-  "accountType": "phone",
-  "account": "<手机号>",
-  "password": "<password>",
-  "firstName": "<firstName>",
-  "lastName": "<lastName>"
-}
-```
-- 返回成功即注册成功。
-
-## 查询全部用户（测试）
-https://localhost/api/infra/org/user/findAll
