@@ -14,44 +14,25 @@
 package org.okstar.platform.system.dto;
 
 import lombok.Data;
-import org.okstar.platform.common.core.web.bean.DTO;
+import lombok.ToString;
 
-/**
- * 全局设置
- */
 @Data
-public class SysSetGlobalDTO extends DTO {
-
-    boolean globalEnable;
-
-    boolean verifyAccount;
-
+@ToString
+public class SysSetXmppDTO {
     /**
      * xmpp地址
      */
-    private String xmppHost;
+    private String host;
 
     /**
      * xmpp服务器管理端口
      */
-    private int xmppAdminPort;
+    private int adminPort;
 
     /**
      * xmpp服务器API SecretKey
      */
-    private String xmppApiSecretKey;
+    private String apiSecretKey;
 
-    /**
-     * Stack Url地址
-     */
-    private String stackUrl;
-
-    public SysSetXmppDTO extraXmpp(){
-        SysSetXmppDTO n = new SysSetXmppDTO();
-        n.setHost(xmppHost);
-        n.setAdminPort(xmppAdminPort);
-        n.setApiSecretKey(xmppApiSecretKey);
-        return n;
-    }
 
 }

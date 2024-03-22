@@ -13,12 +13,10 @@
 
 package org.okstar.platform.chat.openfire;
 
-import io.quarkus.arc.Arc;
 import io.quarkus.logging.Log;
-import io.quarkus.runtime.StartupEvent;
 import jakarta.enterprise.context.ApplicationScoped;
-import jakarta.enterprise.event.Observes;
-import lombok.Getter;
+import jakarta.inject.Inject;
+import org.eclipse.microprofile.rest.client.inject.RestClient;
 import org.igniterealtime.restclient.RestApiClient;
 import org.igniterealtime.restclient.entity.*;
 import org.igniterealtime.restclient.enums.SupportedMediaType;
@@ -27,69 +25,94 @@ import org.okstar.platform.chat.beans.ChatGeneral;
 import org.okstar.platform.chat.beans.ChatGroup;
 import org.okstar.platform.chat.beans.ChatParticipant;
 import org.okstar.platform.chat.beans.ChatRoom;
+import org.okstar.platform.common.core.utils.OkStringUtil;
+import org.okstar.platform.system.dto.SysSetGlobalDTO;
+import org.okstar.platform.system.dto.SysSetXmppDTO;
+import org.okstar.platform.system.rpc.SysSettingsRpc;
 
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ExecutorService;
 import java.util.stream.Collectors;
 
-@Getter
 @ApplicationScoped
-public class OpenfireManager extends Thread {
-    //    @ConfigProperty(name = "chat.auth.secret-key")
-    private String authSecretKey = "JxHQUSsqDLJbArL7";
+public class OpenfireManager implements XmppClient {
 
     private RestApiClient restApiClient;
+    private SysSetXmppDTO xmppConf;
 
+    @Inject
+    @RestClient
+    SysSettingsRpc settingsRpc;
 
-    public void init(@Observes StartupEvent e) {
-        setDaemon(true);
-        setName("OpenfireManager");
+    public RestApiClient ensure() {
+        SysSetGlobalDTO global = settingsRpc.getGlobal();
+        if (global == null) {
+            Log.warnf("Can not find global settings!");
+            return null;
+        }
 
-        // TODO 固定地址
-        AuthenticationToken token = new AuthenticationToken(authSecretKey);
+        SysSetXmppDTO xmpp = global.extraXmpp();
+        if (OkStringUtil.isEmpty(xmpp.getHost())) {
+            Log.warnf("Unable to find xmpp host!");
+            return null;
+        }
+
+        if (restApiClient != null && xmpp.equals(xmppConf)) {
+            return restApiClient;
+        }
+
+        int xmppAdminPort = xmpp.getAdminPort();
+        if (xmppAdminPort == 0) {
+            Log.warnf("Unable to find xmpp admin port!");
+            return null;
+        }
+
+        String secretKey = xmpp.getApiSecretKey();
+        if (OkStringUtil.isEmpty(secretKey)) {
+            Log.warnf("Unable to find xmpp api secret key!");
+            return null;
+        }
+
+        AuthenticationToken token = new AuthenticationToken(secretKey);
         restApiClient = new RestApiClient(
-                "http://meet.chuanshaninfo.com",
-                9090, //
+                "http://" + xmpp.getHost(), xmppAdminPort, //
                 token, SupportedMediaType.JSON);
 
-        ExecutorService executorService = Arc.container().getExecutorService();
-        executorService.submit(this);
+        xmppConf = xmpp;
+        return restApiClient;
     }
 
     @Override
-    public void run() {
-
-
-    }
-
     public UserEntities users() {
-        UserEntities users = restApiClient.getUsers();
+        UserEntities users = ensure().getUsers();
         Log.infof("users:%s", users);
         return users;
     }
 
+    @Override
     public UserEntity findUserByUsername(String username) {
         Log.infof("findUserByUsername:%s", username);
-        UserEntity user = restApiClient.getUser(username);
+        UserEntity user = ensure().getUser(username);
         Log.infof("user:%s", user);
         return user;
     }
 
+    @Override
     public RosterEntities findRosterByUsername(String username) {
         Log.infof("findRosterByUsername:%s", username);
-        RosterEntities rosterEntities = restApiClient.getRoster(username);
+        RosterEntities rosterEntities = ensure().getRoster(username);
         Log.infof("rosterEntities:%s", rosterEntities.getRosterItem());
         return rosterEntities;
     }
 
+    @Override
     public ChatGeneral findChatGeneralByUsername(String username) {
-
-        RosterEntities roster = restApiClient.getRoster(username);
-        UserGroupsEntity groups = restApiClient.getUserGroups(username);
-        MessageArchiveEntities archive = restApiClient.getMessageArchive(username + "@meet.chuanshaninfo.com");
+        RestApiClient ensure = ensure();
+        RosterEntities roster = ensure.getRoster(username);
+        UserGroupsEntity groups = ensure.getUserGroups(username);
+        MessageArchiveEntities archive = ensure.getMessageArchive(username);
 
         return ChatGeneral.builder()//
                 .groups(groups.getGroupNames() == null ? 0 : groups.getGroupNames().size())
@@ -98,23 +121,25 @@ public class OpenfireManager extends Thread {
                 .build();
     }
 
-
+    @Override
     public List<ChatRoom> listRooms() {
         Map<String, String> q = new HashMap<>();
         q.put("type", "all");
-        var rooms = restApiClient.getChatRooms(q);
+        var rooms = ensure().getChatRooms(q);
         return rooms.getChatRooms().stream()        //
                 .map(r -> ChatUtils.convertRoom(r)) //
                 .collect(Collectors.toList());
     }
 
+    @Override
     public ChatRoom findRoomByName(String username) {
-        MUCRoomEntity room = restApiClient.getChatRoom(username);
+        MUCRoomEntity room = ensure().getChatRoom(username);
         return ChatUtils.convertRoom(room);
     }
 
+    @Override
     public List<ChatParticipant> findParticipantsByName(String username) {
-        ParticipantEntities participants = restApiClient.getChatRoomParticipants(username);
+        ParticipantEntities participants = ensure().getChatRoomParticipants(username);
         if (participants == null || participants.getParticipants() == null)
             return Collections.emptyList();
         return participants.getParticipants().stream().map(e ->
@@ -122,26 +147,26 @@ public class OpenfireManager extends Thread {
         ).toList();
     }
 
+    @Override
     public boolean updateRoom(ChatRoom room) {
         MUCRoomEntity entity = ChatUtils.convertRoom(room);
-        var response = restApiClient.updateChatRoom(entity);
+        var response = ensure().updateChatRoom(entity);
         return response.getStatus() == 200;
     }
 
+    @Override
     public List<ChatGroup> listGroups() {
-        var groups = restApiClient.getGroups();
-
+        var groups = ensure().getGroups();
         List<GroupEntity> list = groups.getGroups();
         if (list == null)
             return Collections.emptyList();
-
         return list.stream().map(ChatUtils::convertGroup).toList();
     }
 
-
+    @Override
     public boolean updateGroup(ChatGroup room) {
         GroupEntity entity = ChatUtils.convertGroup(room);
-        var response = restApiClient.updateGroup(entity);
+        var response = ensure().updateGroup(entity);
         return response.getStatus() == 200;
     }
 

@@ -49,13 +49,17 @@ public class SysBasicServiceImpl implements SysBasicService {
         }
 
         if (setGlobal.getXmppHost() != null) {
-            OkAssert.isTrue(OkStringUtil.isValidHostAddr(setGlobal.getXmppHost(), false), "IM服务器地址格式不正确！");
+            OkAssert.isTrue(OkStringUtil.isValidHostAddr(setGlobal.getXmppHost(), false), "IM服务器地址格式非法！");
         }
+
+        OkAssert.isTrue(setGlobal.getXmppAdminPort() >0 && setGlobal.getXmppAdminPort()<65536, "IM 服务器管理 端非法！");
 
         SysSetGlobal global = get(setGlobal.id);
         global.setGlobalEnable(setGlobal.isGlobalEnable());
         global.setVerifyAccount(setGlobal.isVerifyAccount());
         global.setXmppHost(setGlobal.getXmppHost());
+        global.setXmppAdminPort(setGlobal.getXmppAdminPort());
+        global.setXmppApiSecretKey(setGlobal.getXmppApiSecretKey());
         globalMapper.persist(global);
     }
 

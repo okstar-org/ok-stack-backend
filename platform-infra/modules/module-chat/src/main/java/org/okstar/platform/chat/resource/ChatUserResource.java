@@ -14,19 +14,19 @@
 package org.okstar.platform.chat.resource;
 
 import jakarta.inject.Inject;
+import jakarta.ws.rs.GET;
+import jakarta.ws.rs.Path;
+import jakarta.ws.rs.PathParam;
 import org.igniterealtime.restclient.entity.RosterItemEntity;
 import org.igniterealtime.restclient.entity.UserEntities;
 import org.okstar.platform.chat.ChatUtils;
 import org.okstar.platform.chat.beans.ChatGeneral;
 import org.okstar.platform.chat.beans.ChatRosterItem;
 import org.okstar.platform.chat.beans.ChatUser;
-import org.okstar.platform.chat.openfire.OpenfireManager;
+import org.okstar.platform.chat.openfire.XmppClient;
 import org.okstar.platform.common.core.web.bean.Req;
 import org.okstar.platform.common.core.web.bean.Res;
 
-import jakarta.ws.rs.GET;
-import jakarta.ws.rs.Path;
-import jakarta.ws.rs.PathParam;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -34,34 +34,39 @@ import java.util.stream.Collectors;
 public class ChatUserResource {
 
     @Inject
-    OpenfireManager openfireManager;
+    XmppClient xmppClient;
 
     @GET
     @Path("findAll")
     public Res<List<ChatUser>> findAll() {
-        UserEntities users = openfireManager.users();
+        UserEntities users = xmppClient.users();
         return Res.ok(ChatUtils.convertUsers(users));
     }
 
     @GET
     @Path("findByUsername/{username}")
     public Res<ChatUser> findByUsername(@PathParam("username") String username) {
-        var user = openfireManager.findUserByUsername(username);
+        var user = xmppClient.findUserByUsername(username);
         return Res.ok(Req.empty(), ChatUtils.convertUser(user));
     }
 
 
+    /**
+     *
+     * @param username@host
+     * @return
+     */
     @GET
     @Path("findGeneralByUsername/{username}")
     public Res<ChatGeneral> findGeneralByUsername(@PathParam("username") String username) {
-        var user = openfireManager.findChatGeneralByUsername(username);
+        var user = xmppClient.findChatGeneralByUsername(username);
         return Res.ok(Req.empty(), (user));
     }
 
     @GET
     @Path("findRosterByUsername/{username}")
     public Res<List<ChatRosterItem>> findRosterByUsername(@PathParam("username") String username) {
-        var roster = openfireManager.findRosterByUsername(username);
+        var roster = xmppClient.findRosterByUsername(username);
         List<RosterItemEntity> entities = roster.getRosterItem();
         if (entities == null) {
             return Res.ok(Req.empty());
