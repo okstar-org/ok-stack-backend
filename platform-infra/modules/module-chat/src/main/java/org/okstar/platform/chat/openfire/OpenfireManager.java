@@ -44,7 +44,7 @@ public class OpenfireManager implements XmppClient {
 
     @Inject
     @RestClient
-    SysSettingsRpc settingsRpc;
+     SysSettingsRpc settingsRpc;
 
     public RestApiClient ensure() {
         SysSetGlobalDTO global = settingsRpc.getGlobal();

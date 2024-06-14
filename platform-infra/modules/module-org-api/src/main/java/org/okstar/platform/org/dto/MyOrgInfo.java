@@ -14,24 +14,37 @@
 package org.okstar.platform.org.dto;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import org.okstar.platform.common.core.web.bean.DTO;
+import org.okstar.platform.system.vo.SysAccount0;
 
 import java.util.List;
 
 /**
  * 我的组织信息
  */
-
 @Data
+@EqualsAndHashCode(callSuper = true)
 public class MyOrgInfo extends DTO {
 
     /**
-     * 人员编号
+     * 帐号信息
+     */
+    private SysAccount0 account;
+
+    /**
+     * 组织信息
+     */
+    private Org0 org;
+
+    /**
+     * 员工信息
      */
     private OrgStaff0 staff;
 
-    private Org0 org;
-
+    /**
+     * 岗位信息
+     */
     private List<MyPostInfo> postInfo;
 
 }

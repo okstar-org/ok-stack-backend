@@ -45,17 +45,24 @@
             <artifactId>common-jpa</artifactId>
             <version>${revision}</version>
         </dependency>
+        <dependency>
+            <groupId>org.okstar.platform</groupId>
+            <artifactId>module-system-api</artifactId>
+            <version>${revision}</version>
+        </dependency>
 
         <dependency>
             <groupId>org.okstar.platform</groupId>
             <artifactId>module-org-api</artifactId>
             <version>${revision}</version>
         </dependency>
+
         <dependency>
             <groupId>org.okstar.platform.auth</groupId>
             <artifactId>module-auth-api</artifactId>
             <version>${revision}</version>
         </dependency>
+
         <dependency>
             <groupId>org.okstar.platform</groupId>
             <artifactId>OkCloud-API-Client</artifactId>

@@ -89,7 +89,7 @@ public class OrgPostServiceImpl implements OrgPostService {
 
     @Override
     public List<OrgPost> findAssignAble(Boolean assignment, boolean disabled) {
-        return postMapper.find((assignment ? " " : "assignFor is null and") + "  disabled = ?1", disabled).list();
+        return postMapper.find("disabled = ?1", disabled).list();
     }
 
     @Override

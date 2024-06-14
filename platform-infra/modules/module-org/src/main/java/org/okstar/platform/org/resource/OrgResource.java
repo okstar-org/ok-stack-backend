@@ -36,6 +36,7 @@ import org.okstar.platform.system.dto.SysAccountBindDTO;
 import org.okstar.platform.system.dto.SysProfileDTO;
 import org.okstar.platform.system.rpc.SysAccountRpc;
 import org.okstar.platform.system.rpc.SysProfileRpc;
+import org.okstar.platform.system.vo.SysAccount0;
 
 import java.util.List;
 import java.util.Optional;
@@ -85,8 +86,8 @@ public class OrgResource extends OkCommonResource {
         String username = getUsername();
         Log.infof("username=> %s", username);
 
-        var account0 = RpcAssert.isTrue(sysAccountRpc.findByUsername(username));
-        Log.infof("findByUsername=> %s", account0);
+        SysAccount0 account0 = RpcAssert.isTrue(sysAccountRpc.findByUsername(username));
+        Log.infof("SysAccount0=> %s", account0);
 
         var staffOptional = staffService.getByAccountId(account0.getId());
         var orgStaff = staffOptional.orElseGet(() -> {
@@ -112,6 +113,8 @@ public class OrgResource extends OkCommonResource {
 
 
         MyOrgInfo info = new MyOrgInfo();
+        info.setAccount(account0);
+
         info.setOrg(Org0.builder()
                 .name(org.getName())
                 .url(org.getUrl())

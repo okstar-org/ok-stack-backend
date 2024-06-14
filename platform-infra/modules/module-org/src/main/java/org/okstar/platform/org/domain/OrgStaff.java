@@ -53,7 +53,9 @@ public class OrgStaff extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private JobDefines.PostStatus postStatus;
 
-
+    /**
+     * 岗位列表
+     */
     @Transient
     private List<String> postNames = new LinkedList<>();
 

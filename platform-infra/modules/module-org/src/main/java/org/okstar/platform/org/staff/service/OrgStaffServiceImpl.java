@@ -77,7 +77,7 @@ public class OrgStaffServiceImpl implements OrgStaffService {
 
     @Override
     public OkPageResult<OrgStaff> findPage(OkPageable pageable) {
-        OrgStaffFind find = (OrgStaffFind)pageable;
+        OrgStaffFind find = (OrgStaffFind) pageable;
 
 
         var posIds = orgPostService.findByDept(find.getDeptId())//
@@ -219,29 +219,16 @@ public class OrgStaffServiceImpl implements OrgStaffService {
 
     @Override
     public List<OrgStaff0> search(String query) {
-        /**
-         * SELECT * from org_staff WHERE post_status = 'employed'
-         * AND
-         * (NAME LIKE '%杰%' OR phone LIKE '%1024%' OR email LIKE '%8810@qq.com%')
-         */
-
-//        String k = OkStringUtil.wrap(query, "%");
         PanacheQuery<OrgStaff> panacheQuery = orgStaffMapper.find("accountId IS NOT null");
-/**
- .find(
- "fragment.postStatus = ?1 AND " +
- "(fragment.name LIKE ?2 " +
- "OR fragment.phone LIKE ?3 " +
- "OR fragment.email LIKE ?4)",    //
- JobDefines.PostStatus.employed,
- k, k, k
- );
- * 在如上代码查询出现如下bug:
- org.hibernate.query.sqm.InterpretationException: Error interpreting query [FROM org.okstar.platform.org.domain.OrgStaff WHERE fragment.postStatus = ?1 AND (fragment.name LIKE ?2 OR fragment.phone LIKE ?3 OR fragment.email LIKE ?4)]; this may indicate a semantic (user query) problem or a bug in the parser [FROM org.okstar.platform.org.domain.OrgStaff WHERE fragment.postStatus = ?1 AND (fragment.name LIKE ?2 OR fragment.phone LIKE ?3 OR fragment.email LIKE ?4)]
- *
- */
-
-        return panacheQuery.stream().map(StaffUtils::toStaff0).collect(Collectors.toList());
+        return panacheQuery.stream().map(s -> {
+            //获取岗位
+            var posts = orgStaffPostService.findByStaffId(s.id).stream()
+                    .map(p -> orgPostService.get(p.getPostId()))
+                    .filter(Objects::nonNull)
+                    .map(OrgPost::getName).toList();
+            s.setPostNames(posts);
+            return s;
+        }).map(StaffUtils::toStaff0).collect(Collectors.toList());
     }
 
     @Override

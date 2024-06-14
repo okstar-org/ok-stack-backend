@@ -15,6 +15,7 @@ package org.okstar.platform.system.vo;
 
 import lombok.Data;
 import org.okstar.platform.common.core.defined.AccountDefines;
+import org.okstar.platform.common.core.utils.OkStringUtil;
 import org.okstar.platform.common.core.web.bean.DTO;
 
 import java.util.Optional;
@@ -25,7 +26,11 @@ import java.util.Optional;
 @Data
 public class SysAccount0 extends DTO {
     private Long id;
+    //国家
     private String iso;
+    //语言
+    private String lang;
+
     private String username;
     private String nickname;
     private String firstName;
@@ -49,7 +54,26 @@ public class SysAccount0 extends DTO {
         return Optional.ofNullable(lastName).orElse("");
     }
 
-    public String getName(){
-        return Optional.ofNullable(nickname).orElse(username);
+    /**
+     * 个人真实名称
+     */
+    public String getPersonalName() {
+        return OkStringUtil.combinePeopleName(lang, firstName, lastName);
+    }
+
+    /**
+     * 用户显示名称
+     */
+    public String getDisplayName() {
+        if (OkStringUtil.isNoneBlank(nickname)) {
+            //昵称
+            return nickname;
+        }
+        //真实名称
+        var personalName = getPersonalName();
+        if (OkStringUtil.isNoneBlank(personalName)) {
+            return personalName;
+        }
+        return username;
     }
 }

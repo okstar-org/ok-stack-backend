@@ -32,4 +32,6 @@ public class OrgStaff0 {
     private String email;
     private String username;
     private Long accountId;
+    //所在岗位
+    private String posts;
 }

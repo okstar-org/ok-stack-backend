@@ -25,6 +25,7 @@ import org.okstar.platform.common.core.defined.AccountDefines;
 import org.okstar.platform.common.core.defined.JobDefines;
 import org.okstar.platform.common.core.utils.OkAssert;
 import org.okstar.platform.common.core.utils.OkDateUtils;
+import org.okstar.platform.common.core.utils.OkStringUtil;
 import org.okstar.platform.common.core.web.page.OkPageResult;
 import org.okstar.platform.common.core.web.page.OkPageable;
 import org.okstar.platform.common.rpc.RpcAssert;
@@ -203,8 +204,10 @@ public class OrgStaffPostServiceImpl implements OrgStaffPostService {
         /**
          * 注册其帐号(邮箱号)
          */
-        AccountDefines.BindType emailType= AccountDefines.BindType.email;
+        AccountDefines.BindType emailType = AccountDefines.BindType.email;
         String email = staff.getFragment().getEmail();
+        Assert.isTrue(OkStringUtil.isNoneBlank(email), "email is invalid!");
+
         RpcResult<SysAccount0> bind = sysAccountRpc.findByBind(
                 emailType,
                 AccountDefines.DefaultISO,
@@ -222,7 +225,7 @@ public class OrgStaffPostServiceImpl implements OrgStaffPostService {
             form.setFirstName(staff.getFragment().getFirstName());
             form.setLastName(staff.getFragment().getLastName());
 
-            Log.debugf("注册帐号:%s", form);
+            Log.infof("注册帐号:%s", form);
             var result = passportRpc.signUp(form);
             SignUpResult upResult = RpcAssert.isTrue(result);
             Log.infof("signUp=>{userId: %s, username: %s}", upResult.getUserId(), upResult.getUsername());
