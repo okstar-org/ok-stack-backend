@@ -67,6 +67,29 @@ cd okstack-platform-assembly/okstack-platform
 # 停止项目
 ./bin/shutdown.sh
 ```
+- systemd 管理
+需要手动将 `BASE_DIR` 改为存放 **okstack-platform-assembly** 的路径
+注意：如果有严格权限管理的话，User 指定为所属用户，如 root
+
+```bash
+# 安装 ok-stack-backend.service
+$ sudo install -Dm0644 ok-stack-backend.service -t /etc/systemd/system/
+
+# 重新加载 systemd 配置
+$ sudo systemctl daemon-reload
+
+# 设置 ok-stack-backend.service 开机自启动并启动
+$ sudo systemctl enable --now ok-stack-backend.service
+
+# 查看 ok-stack-backend.service 服务状态
+$ sudo systemctl status ok-stack-backend.service
+
+# 停止 ok-stack-backend.service 服务
+$ sudo systemctl stop ok-stack-backend.service
+
+# 禁用 ok-stack-backend.service 开机自启
+$ sudo systemctl disable ok-stack-backend.service
+```
 
 # 配置前端
 到此后端构建已经全部完成具备运行条件，接下来就是配置前端项目`OkStack-UI`。

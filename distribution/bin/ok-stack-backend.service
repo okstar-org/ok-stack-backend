@@ -1,0 +1,27 @@
+# Change BASE_DIR to the path where okstack-platform-assembly is stored.
+# sudo install -Dm0644 ok-stack-backend.service -t /etc/systemd/system/
+# sudo systemctl daemon-reload
+# sudo systemctl enable --now ok-stack-backend.service
+# sudo systemctl status ok-stack-backend.service
+# sudo systemctl stop ok-stack-backend.service
+# sudo systemctl disable ok-stack-backend.service
+# Note: If you have strict privilege management, User is specified as the user to whom you belong, such as root.
+
+[Unit]
+Description=OkStack-Platform Application Service
+After=network.target
+
+[Service]
+Type=simple
+#User=your_username
+Environment=BASE_DIR=/path/to/your/base/dir
+Environment=JAVA_OPTS=-server -Xmx128m
+ExecStartPre=/bin/bash -c '[ -d $BASE_DIR/logs ] || mkdir -p $BASE_DIR/logs'
+ExecStartPre=/bin/bash -c 'pid=$(pgrep -f "quarkus-run.jar"); if [ -n "$pid" ]; then echo "Is running."; exit 1; fi'
+ExecStart=/bin/bash -c 'for item in module-system module-org module-auth module-chat module-billing; do echo "The $item is starting."; nohup java $JAVA_OPTS -jar $BASE_DIR/infra/$item/quarkus-run.jar &> $BASE_DIR/logs/$item.out & sleep 8; done; for item in app-open; do echo "The $item is starting."; nohup java $JAVA_OPTS -jar $BASE_DIR/app/$item/quarkus-run.jar &> $BASE_DIR/logs/$item.out & done'
+ExecStop=/bin/bash -c 'pkill -f quarkus-run.jar'
+
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target
