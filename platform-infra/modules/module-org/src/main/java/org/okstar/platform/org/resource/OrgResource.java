@@ -96,7 +96,7 @@ public class OrgResource extends OkCommonResource {
 
             OrgStaffFragment f = new OrgStaffFragment();
             f.setIso(account0.getIso());
-            f.setName(account0.getName());
+            f.setName(account0.getDisplayName());
             f.setFirstName(account0.getFirstName());
             f.setLastName(account0.getLastName());
             List<SysAccountBindDTO> bindDTOS = RpcAssert.isTrue(sysAccountRpc.getBinds(account0.getId()));

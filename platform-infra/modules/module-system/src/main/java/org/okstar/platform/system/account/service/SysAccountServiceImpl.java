@@ -185,7 +185,7 @@ public class SysAccountServiceImpl extends OkAbsService implements SysAccountSer
 
         return SignUpResult.builder()
                 .username(sysAccount.getUsername())
-                .userId(sysAccount.id)
+                .accountId(sysAccount.id)
                 .build();
     }
 

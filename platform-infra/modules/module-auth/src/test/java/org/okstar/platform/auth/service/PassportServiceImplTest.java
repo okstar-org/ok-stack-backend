@@ -28,6 +28,7 @@ import org.okstar.platform.system.sign.SignUpResult;
 class PassportServiceImplTest {
 
     public static final String STRING = "okstar";
+
     @Inject
     PassportService passportService;
 

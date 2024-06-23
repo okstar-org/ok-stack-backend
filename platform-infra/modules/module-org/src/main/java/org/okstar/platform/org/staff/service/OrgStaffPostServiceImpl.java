@@ -228,9 +228,9 @@ public class OrgStaffPostServiceImpl implements OrgStaffPostService {
             Log.infof("注册帐号:%s", form);
             var result = passportRpc.signUp(form);
             SignUpResult upResult = RpcAssert.isTrue(result);
-            Log.infof("signUp=>{userId: %s, username: %s}", upResult.getUserId(), upResult.getUsername());
+            Log.infof("signUp=>{accountId: %s, username: %s}", upResult.getAccountId(), upResult.getUsername());
 
-            staffService.setAccountId(staff.id, upResult.getUserId());
+            staffService.setAccountId(staff.id, upResult.getAccountId());
         }
         return true;
     }

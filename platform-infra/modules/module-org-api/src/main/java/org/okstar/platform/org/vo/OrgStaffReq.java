@@ -27,6 +27,9 @@ public class OrgStaffReq extends Req {
 
     private Long id;
 
+
+    private Long accountId;
+
     /**
      * 员工信息
      */

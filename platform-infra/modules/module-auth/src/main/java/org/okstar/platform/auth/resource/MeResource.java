@@ -82,7 +82,7 @@ public class MeResource {
         FederalChannel channel = client.getFederalChannel();
         FederalCitizenEntity ex = new FederalCitizenEntity();
         ex.setAccountId(String.valueOf(account0.getId()));
-        ex.setName(account0.getName());
+        ex.setName(account0.getDisplayName());
         ex.setStateCert(org0.getCert());
 
         String cert = channel.registerCitizen(ex);

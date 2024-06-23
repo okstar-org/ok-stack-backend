@@ -13,18 +13,16 @@
 
 package org.okstar.platform.system.sign;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.okstar.platform.common.core.web.bean.DTO;
 
+@EqualsAndHashCode(callSuper = true)
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class SignUpResult extends DTO {
-    private Long userId;
+    private Long accountId;
     private String username;
 
 }

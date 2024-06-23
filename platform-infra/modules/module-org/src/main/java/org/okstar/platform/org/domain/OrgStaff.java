@@ -16,6 +16,7 @@ package org.okstar.platform.org.domain;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import org.okstar.platform.common.core.defined.JobDefines;
 import org.okstar.platform.org.dto.OrgStaffFragment;
 
@@ -27,11 +28,14 @@ import java.util.List;
 /**
  * 组织-人员
  */
+@EqualsAndHashCode(callSuper = true)
 @Data
 @Table
 @Entity
 public class OrgStaff extends BaseEntity {
-
+    /**
+     * 帐号ID
+     */
     private Long accountId;
 
     @Embedded

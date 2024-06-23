@@ -16,8 +16,6 @@ package org.okstar.platform.org.utils;
 import org.okstar.platform.org.domain.OrgStaff;
 import org.okstar.platform.org.dto.OrgStaff0;
 
-import java.util.stream.Collectors;
-
 public class StaffUtils {
 
     public static OrgStaff0 toStaff0(OrgStaff staff) {

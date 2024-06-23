@@ -1,10 +1,23 @@
 # 构建文档
 ## 必备依赖
-- Java 17 (选择　GraalVM CE 22.0.0.2)
-- 最新　Maven
-- 最新　Docker
 - Linux服务器(X86)一台
 - 准备子域名 meet.{your_domain}
+- Java 17 (选择　GraalVM CE 22.0.0.2)
+- 最新　Maven 
+### 安装最新Docker
+```shell
+sudo snap install docker
+sudo apt install docker-compose
+```
+
+
+### 部署Openfire（OkStar修改版）
+> 官方的存在一些 bug，请使用社区的分支。
+- Clone Openfire 项目，执行：`git clone -b 4.7 https://gitee.com/okstar-org/ok-openfire`
+- 进入目录，执行：`cd ok-openfire`
+- 构建项目, 执行：`./build/docker/buildWithDocker.sh`
+- 构建Docker镜像，执行： `docker build . -t okstar-openfire:v4.7`
+
 
 ## 获取源码与子项目
 ```shell
@@ -16,12 +29,6 @@ git submodule update --init --recursive
 
 ## 准备依赖环境
 > 请参考如下步骤完成：
-### 部署 Openfire
-> 官方的存在一些 bug，请使用社区的分支。
-- Clone Openfire 项目，执行：`git clone -b 4.7 https://gitee.com/okstar-org/ok-openfire`
-- 进入目录，执行：`cd ok-openfire`
-- 构建项目, 执行：`./build/docker/buildWithDocker.sh`
-- 构建Docker镜像，执行： `docker build . -t okstar-openfire:v4.7`
 
 ### 启动依赖服务
 ```shell

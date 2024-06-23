@@ -32,10 +32,11 @@ public class OrgStaffRpcImpl implements OrgStaffRpc {
     OrgStaffService orgStaffService;
 
     @Override
-    public RpcResult<Boolean> add(OrgStaffFragment staffFragment) {
+    public RpcResult<Boolean> add(Long accountId, OrgStaffFragment staffFragment) {
         try {
             OrgStaffReq req = new OrgStaffReq();
             req.setFragment(staffFragment);
+            req.setAccountId(accountId);
             boolean added = orgStaffService.add(req);
             return RpcResult.success(added);
         } catch (Exception e) {

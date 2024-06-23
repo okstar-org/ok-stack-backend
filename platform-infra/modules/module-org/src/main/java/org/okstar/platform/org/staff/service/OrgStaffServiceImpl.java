@@ -14,6 +14,7 @@
 package org.okstar.platform.org.staff.service;
 
 import io.quarkus.hibernate.orm.panache.PanacheQuery;
+import io.quarkus.logging.Log;
 import io.quarkus.panache.common.Page;
 import io.quarkus.panache.common.Sort;
 import jakarta.enterprise.context.ApplicationScoped;
@@ -176,6 +177,7 @@ public class OrgStaffServiceImpl implements OrgStaffService {
     @Override
     public boolean add(OrgStaffReq req) {
         OkAssert.notNull(req, "参数异常！");
+        Log.infof("req:%s", req);
 
         OrgStaffFragment fragment = req.getFragment();
         OkAssert.notNull(fragment, "参数异常！");
@@ -199,7 +201,10 @@ public class OrgStaffServiceImpl implements OrgStaffService {
             entity.setJoinedDate(OkDateUtils.now());
             entity.setPostStatus(JobDefines.PostStatus.pending);
         }
+
         entity.setFragment(req.getFragment());
+        entity.setAccountId(req.getAccountId());
+
         save(entity);
         return true;
     }
@@ -220,14 +225,13 @@ public class OrgStaffServiceImpl implements OrgStaffService {
     @Override
     public List<OrgStaff0> search(String query) {
         PanacheQuery<OrgStaff> panacheQuery = orgStaffMapper.find("accountId IS NOT null");
-        return panacheQuery.stream().map(s -> {
+        return panacheQuery.stream().peek(s -> {
             //获取岗位
             var posts = orgStaffPostService.findByStaffId(s.id).stream()
                     .map(p -> orgPostService.get(p.getPostId()))
                     .filter(Objects::nonNull)
                     .map(OrgPost::getName).toList();
             s.setPostNames(posts);
-            return s;
         }).map(StaffUtils::toStaff0).collect(Collectors.toList());
     }
 

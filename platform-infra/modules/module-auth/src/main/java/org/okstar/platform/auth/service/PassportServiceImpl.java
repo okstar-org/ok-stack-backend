@@ -61,18 +61,21 @@ public class PassportServiceImpl implements PassportService {
 
         //初始化系统帐号
         SignUpResult signUpResult = RpcAssert.isTrue(sysAccountRpc.signUp(form));
-        Log.infof("signUp=>%s", signUpResult.getUsername());
+        Log.infof("signUp=>%s", signUpResult);
 
         OrgStaffFragment staff = new OrgStaffFragment();
         staff.setName(form.getName());
         staff.setFirstName(form.getFirstName());
         staff.setLastName(form.getLastName());
         staff.setIso(form.getIso());
+
+
         switch (form.getAccountType()) {
             case email -> staff.setEmail(form.getAccount());
             case phone -> staff.setPhone(form.getAccount());
         }
-        var added = RpcAssert.isTrue(orgStaffRpc.add(staff));
+
+        var added = RpcAssert.isTrue(orgStaffRpc.add(signUpResult.getAccountId(), staff));
         Log.infof("保存到人员帐号=>%s", added);
 
         BackUser user = BackUser.builder()

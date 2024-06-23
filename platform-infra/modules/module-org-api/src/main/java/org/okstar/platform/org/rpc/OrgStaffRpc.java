@@ -13,15 +13,11 @@
 
 package org.okstar.platform.org.rpc;
 
-import jakarta.ws.rs.GET;
-import jakarta.ws.rs.QueryParam;
+import jakarta.ws.rs.*;
 import org.eclipse.microprofile.rest.client.inject.RegisterRestClient;
 import org.okstar.platform.common.rpc.RpcResult;
 import org.okstar.platform.org.dto.OrgStaff0;
 import org.okstar.platform.org.dto.OrgStaffFragment;
-
-import jakarta.ws.rs.POST;
-import jakarta.ws.rs.Path;
 
 import java.util.List;
 
@@ -30,8 +26,8 @@ import java.util.List;
 public interface OrgStaffRpc {
 
     @POST
-    @Path("add")
-    RpcResult<Boolean> add(OrgStaffFragment staffFragment);
+    @Path("add/{accountId}")
+    RpcResult<Boolean> add(@PathParam("accountId") Long accountId, OrgStaffFragment staffFragment);
 
     @GET
     @Path("search")
