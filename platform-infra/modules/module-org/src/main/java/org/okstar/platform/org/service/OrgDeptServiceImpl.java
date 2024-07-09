@@ -18,12 +18,11 @@ import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 import org.okstar.platform.common.core.utils.OkAssert;
-import org.okstar.platform.common.core.utils.OkDateUtils;
 import org.okstar.platform.common.core.web.page.OkPageResult;
 import org.okstar.platform.common.core.web.page.OkPageable;
 import org.okstar.platform.org.domain.OrgDept;
-import org.okstar.platform.org.dto.OrgDeptAdd;
 import org.okstar.platform.org.mapper.OrgDeptMapper;
+import org.okstar.platform.org.mapper.OrgPostMapper;
 
 import java.util.List;
 
@@ -35,6 +34,8 @@ import java.util.List;
 public class OrgDeptServiceImpl implements OrgDeptService {
     @Inject
     OrgDeptMapper orgDeptMapper;
+    @Inject
+    OrgPostMapper orgPostMapper;
 
 
     @Override
@@ -64,8 +65,12 @@ public class OrgDeptServiceImpl implements OrgDeptService {
 
     @Override
     public void deleteById(Long id) {
-        List<OrgDept> depts = children(id);
+        var depts = children(id);
         OkAssert.isTrue(depts.isEmpty(), "存在下级，无法删除！");
+
+        var query = orgPostMapper.find("deptId", id);
+        OkAssert.isTrue(query.count()<1, "存在岗位，无法删除！");
+
         orgDeptMapper.deleteById(id);
     }
 
