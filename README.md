@@ -1,4 +1,4 @@
-<h1 align="center">👑 OkStack-Platform 👑</h1>
+<h1 align="center">👑 OkStack 👑</h1>
 
 <p align="center">
   <img src="https://img.shields.io/badge/build-passing-brightgreen.svg">

@@ -9,7 +9,7 @@
 #See the Mulan PubL v2 for more details.
 #
 
-FROM openjdk:11-jre-slim-bullseye
+FROM openjdk:11-jre
 
 # Install LDAP tools
 ENV DEBIAN_FRONTEND=noninteractive

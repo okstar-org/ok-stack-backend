@@ -1,4 +1,4 @@
-# Change BASE_DIR to the path where okstack-platform-assembly is stored.
+# Change BASE_DIR to the path where ok-stack-assembly is stored.
 # sudo install -Dm0644 ok-stack-backend.service -t /etc/systemd/system/
 # sudo systemctl daemon-reload
 # sudo systemctl enable --now ok-stack-backend.service
@@ -8,7 +8,7 @@
 # Note: If you have strict privilege management, User is specified as the user to whom you belong, such as root.
 
 [Unit]
-Description=OkStack-Platform Application Service
+Description=ok-stack Application Service
 After=network.target
 
 [Service]

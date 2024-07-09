@@ -4,7 +4,7 @@ services:
     image: "mariadb:10.6.15"
     container_name: "db"
     ports:
-      - "3306:3306"
+      - "13306:3306"
     volumes:
       - /etc/timezone:/etc/timezone
       - /etc/localtime:/etc/localtime
@@ -18,9 +18,7 @@ services:
       context: ./apacheds
     container_name: "apacheds"
     ports:
-      - 10389:10389
-  #    volumes:
-  #      - ./apacheds/data:/var/lib/apacheds-2.0.0.AM26
+      - "10389:10389"
 
   keycloak:
     build:
@@ -30,7 +28,7 @@ services:
       - KC_DB=mariadb
       - KC_DB_URL=jdbc:mariadb://db/keycloak?autoReconnect=true&useUnicode=true&characterEncoding=utf8
       - KC_DB_USERNAME=root
-      - KC_DB_PASSWORD={password}
+      - KC_DB_PASSWORD=okstar
       - KC_HOSTNAME_URL=https://kc.okstar.org.cn
       - KC_HOSTNAME_ADMIN_URL=https://kc.okstar.org.cn
       - KEYCLOAK_ADMIN=admin
@@ -39,16 +37,15 @@ services:
       - KC_PROXY_ADDRESS_FORWARDING=true
       - KC_PROXY=edge
       - KC_HTTP_ENABLED=true
-      - KC_HTTPS_PORT=443
+      - KC_HTTP_PORT=8080
+      - KC_HTTPS_PORT=8443
       - KC_HOSTNAME_STRICT_BACKCHANNEL=true
     volumes:
       - /etc/timezone:/etc/timezone
       - /etc/localtime:/etc/localtime
-        #    security_opt:
-      #- seccomp:unconfined
     ports:
-      - 8043:8080
-      - 8443:8443
+      - 18043:8080
+      - 18443:8443
       - 10990:10990
     depends_on:
       - apacheds
@@ -56,8 +53,6 @@ services:
   openfire:
     image: okstar-openfire:v4.7
     container_name: "openfire"
-    volumes:
-      - /usr/local/openfire/logs:/usr/local/openfire/logs
     ports:
       - 3478:3478
       - 3479:3479
@@ -79,7 +74,7 @@ services:
       - apacheds
 
   gateway:
-    image: "flytreeleft/nginx-gateway"
+    image: "nginx"
     container_name: "gateway"
     volumes:
       - /usr/share/zoneinfo:/usr/share/zoneinfo:ro
@@ -87,7 +82,5 @@ services:
       - ./nginx/logs:/var/log/nginx/sites
       - ./nginx/certs:/etc/letsencrypt
       - ./nginx/vhost.d:/etc/nginx/vhost.d
-      - ./nginx/stream.d:/etc/nginx/stream.d
-      - ./nginx/epage.d:/etc/nginx/epage.d
     ports:
-      - 8080:80
+      - 18080:80

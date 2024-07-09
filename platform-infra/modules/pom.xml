@@ -24,8 +24,6 @@
         <module>module-chat-api</module>
     </modules>
 
-    <description>OkStack-Platform::infra::modules</description>
-
     <dependencies>
         <dependency>
             <groupId>org.okstar.platform</groupId>

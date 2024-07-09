@@ -18,7 +18,7 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>org.okstar.platform</groupId>
-        <artifactId>okstack-platform</artifactId>
+        <artifactId>ok-stack</artifactId>
         <version>${revision}</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
@@ -48,7 +48,7 @@
                 </executions>
             </plugin>
         </plugins>
-        <finalName>okstack-platform</finalName>
+        <finalName>ok-stack</finalName>
     </build>
 
 </project>

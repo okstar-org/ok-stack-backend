@@ -18,7 +18,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>org.okstar.platform</groupId>
-    <artifactId>okstack-platform</artifactId>
+    <artifactId>ok-stack</artifactId>
     <version>${revision}</version>
     <packaging>pom</packaging>
 
@@ -44,7 +44,7 @@
 
         <quarkus.platform.artifact-id>quarkus-bom</quarkus.platform.artifact-id>
         <quarkus.platform.group-id>io.quarkus.platform</quarkus.platform.group-id>
-        <quarkus.platform.version>3.6.4</quarkus.platform.version>
+        <quarkus.platform.version>3.6.5</quarkus.platform.version>
 
         <maven.compiler.release>17</maven.compiler.release>
         <maven.compiler.source>17</maven.compiler.source>
@@ -76,8 +76,8 @@
             <properties>
                 <quarkus.datasource.db-kind>mariadb</quarkus.datasource.db-kind>
                 <quarkus.datasource.username>root</quarkus.datasource.username>
-                <quarkus.datasource.password>root</quarkus.datasource.password>
-                <quarkus.datasource.jdbc.url>jdbc:mariadb://localhost:3309</quarkus.datasource.jdbc.url>
+                <quarkus.datasource.password>okstar</quarkus.datasource.password>
+                <quarkus.datasource.jdbc.url>jdbc:mariadb://localhost:13306</quarkus.datasource.jdbc.url>
                 <quarkus.datasource.jdbc.driver>org.mariadb.jdbc.Driver</quarkus.datasource.jdbc.driver>
                 <quarkus.hibernate-orm.dialect>org.hibernate.dialect.MariaDBDialect</quarkus.hibernate-orm.dialect>
             </properties>
@@ -188,13 +188,13 @@
             <dependency>
                 <groupId>org.projectlombok</groupId>
                 <artifactId>lombok</artifactId>
-                <version>1.18.28</version>
+                <version>1.18.30</version>
                 <optional>true</optional>
             </dependency>
             <dependency>
                 <groupId>org.aspectj</groupId>
                 <artifactId>aspectjweaver</artifactId>
-                <version>1.9.7</version>
+                <version>1.9.9.1</version>
             </dependency>
             <dependency>
                 <groupId>${quarkus.platform.group-id}</groupId>
@@ -440,7 +440,16 @@
 
     <!-- 配置阿里云仓库 -->
     <repositories>
-
+        <repository>
+            <id>AliYun Public Repository</id>
+            <url>https://maven.aliyun.com/repository/public/</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </repository>
         <repository>
             <id>Liferay Public Repository</id>
             <url>https://repository.liferay.com/nexus/content/repositories/public/</url>
