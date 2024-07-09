@@ -24,5 +24,6 @@ import org.okstar.platform.common.core.web.bean.DTO;
 public class SignUpResult extends DTO {
     private Long accountId;
     private String username;
-
+    //兼容就协议
+    public Long getUserId(){return accountId;}
 }
