@@ -14,15 +14,15 @@
 package org.okstar.platform.org.staff.resource;
 
 import jakarta.inject.Inject;
-import org.okstar.platform.common.core.web.bean.Req;
-import org.okstar.platform.common.core.web.bean.Res;
-import org.okstar.platform.org.domain.OrgPost;
-import org.okstar.platform.org.service.OrgPostService;
-
 import jakarta.ws.rs.DefaultValue;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.QueryParam;
+import org.okstar.platform.common.core.web.bean.Req;
+import org.okstar.platform.common.core.web.bean.Res;
+import org.okstar.platform.org.dto.OrgPost0;
+import org.okstar.platform.org.service.OrgPostService;
+
 import java.util.List;
 
 @Path("staff/post")
@@ -33,7 +33,7 @@ public class OrgStaffPostResource {
 
     @GET
     @Path("list")
-    public Res<List<OrgPost>> list(@QueryParam( "assignment") @DefaultValue("false") Boolean assignment) {
+    public Res<List<OrgPost0>> list(@QueryParam( "assignment") @DefaultValue("false") Boolean assignment) {
         var list = orgPostService.findAssignAble(assignment, false);
         return Res.ok(Req.empty(), list);
     }

@@ -11,32 +11,38 @@
  * /
  */
 
-package org.okstar.platform.org.service;
+package org.okstar.platform.org.dto;
 
+import lombok.Data;
 
-import org.okstar.platform.common.datasource.OkService;
-import org.okstar.platform.org.domain.OrgPost;
-import org.okstar.platform.org.dto.OrgPost0;
+import java.util.Date;
 
-import java.util.List;
-
-/**
- * 岗位信息 服务层
- * 
- * 
- */
-public interface OrgPostService extends OkService<OrgPost>
-{
-
-    List<OrgPost> findByDept(Long deptId);
+@Data
+public class OrgPost0 {
+    /**
+     * 编号
+     */
+    private String no;
 
     /**
-     * 获取可分配的岗位
-     * @param assignment
-     * @param disabled
-     * @return
+     * 名称
      */
-    List<OrgPost0> findAssignAble(Boolean assignment, boolean disabled);
+    private String name;
 
-    long getCount();
+    /**
+     * 描述
+     */
+    private String descr;
+
+    /**
+     * 部门ID
+     */
+    private Long deptId;
+
+    /**
+     * 部门名称
+     */
+    private String deptName;
+
+    private Date createAt;
 }

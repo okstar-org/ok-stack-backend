@@ -19,9 +19,13 @@ import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 import org.locationtech.jts.util.Assert;
 import org.okstar.platform.common.core.utils.OkDateUtils;
+import org.okstar.platform.common.core.utils.bean.OkBeanUtils;
 import org.okstar.platform.common.core.web.page.OkPageResult;
 import org.okstar.platform.common.core.web.page.OkPageable;
+import org.okstar.platform.org.domain.OrgDept;
 import org.okstar.platform.org.domain.OrgPost;
+import org.okstar.platform.org.dto.OrgPost0;
+import org.okstar.platform.org.mapper.OrgDeptMapper;
 import org.okstar.platform.org.mapper.OrgPostMapper;
 
 import java.util.List;
@@ -34,6 +38,8 @@ import java.util.List;
 public class OrgPostServiceImpl implements OrgPostService {
     @Inject
     OrgPostMapper postMapper;
+    @Inject
+    OrgDeptMapper deptMapper;
 
     @Override
     public void save(OrgPost orgPost) {
@@ -88,8 +94,19 @@ public class OrgPostServiceImpl implements OrgPostService {
     }
 
     @Override
-    public List<OrgPost> findAssignAble(Boolean assignment, boolean disabled) {
-        return postMapper.find("disabled = ?1", disabled).list();
+    public List<OrgPost0> findAssignAble(Boolean assignment, boolean disabled) {
+        List<OrgPost> list = postMapper.find("disabled = ?1", disabled).list();
+        return list.stream().map(p -> {
+            OrgPost0 p0 = new OrgPost0();
+            OkBeanUtils.copyPropertiesTo(p, p0);
+
+            OrgDept dept = deptMapper.findById(p.getDeptId());
+            if (dept != null) {
+                p0.setDeptName(dept.getName());
+            }
+
+            return p0;
+        }).toList();
     }
 
     @Override

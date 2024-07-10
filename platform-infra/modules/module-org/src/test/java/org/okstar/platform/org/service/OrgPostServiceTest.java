@@ -13,30 +13,22 @@
 
 package org.okstar.platform.org.service;
 
-
-import org.okstar.platform.common.datasource.OkService;
-import org.okstar.platform.org.domain.OrgPost;
+import io.quarkus.test.junit.QuarkusTest;
+import jakarta.inject.Inject;
+import org.junit.jupiter.api.Test;
 import org.okstar.platform.org.dto.OrgPost0;
 
 import java.util.List;
 
-/**
- * 岗位信息 服务层
- * 
- * 
- */
-public interface OrgPostService extends OkService<OrgPost>
-{
+@QuarkusTest
+class OrgPostServiceTest {
 
-    List<OrgPost> findByDept(Long deptId);
+    @Inject OrgPostService orgPostService;
 
-    /**
-     * 获取可分配的岗位
-     * @param assignment
-     * @param disabled
-     * @return
-     */
-    List<OrgPost0> findAssignAble(Boolean assignment, boolean disabled);
 
-    long getCount();
+    @Test
+    void findAssignAble() {
+        List<OrgPost0> list = orgPostService.findAssignAble(false, false);
+        list.forEach(orgPost -> System.out.println(orgPost));
+    }
 }
