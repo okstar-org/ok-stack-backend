@@ -19,6 +19,9 @@ import java.util.Date;
 
 @Data
 public class OrgPost0 {
+
+    private Long id;
+
     /**
      * 编号
      */

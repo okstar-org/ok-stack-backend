@@ -18,6 +18,10 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Date;
+import java.util.List;
+import java.util.stream.Collectors;
+
 /**
  * 组织成员
  */
@@ -26,12 +30,19 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class OrgStaff0 {
+    private Long id;
     private String no;
     private String name;
     private String phone;
     private String email;
     private String username;
     private Long accountId;
-    //所在岗位
-    private String posts;
+    private String gender;
+    private Date birthday;
+    private Date joinedDate;
+    private List<OrgPost0> posts;
+
+    public String getPostNames() {
+        return posts == null ? "" : posts.stream().map(OrgPost0::getName).collect(Collectors.joining(","));
+    }
 }

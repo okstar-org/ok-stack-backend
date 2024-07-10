@@ -19,6 +19,7 @@ import org.okstar.platform.common.core.web.page.OkPageable;
 import org.okstar.platform.common.datasource.OkService;
 import org.okstar.platform.org.domain.OrgStaff;
 import org.okstar.platform.org.dto.OrgStaff0;
+import org.okstar.platform.org.vo.OrgStaffFind;
 import org.okstar.platform.org.vo.OrgStaffReq;
 
 import java.util.List;
@@ -37,6 +38,13 @@ public interface OrgStaffService extends OkService<OrgStaff> {
      * @return
      */
     OkPageResult<OrgStaff> findPendings(OkPageable pageable);
+
+    /**
+     * 查找[已入职]人员
+     * @param find
+     * @return
+     */
+    OkPageResult<OrgStaff0>  findEmployees(OrgStaffFind find);
 
     /**
      * 查找[已离职]人员
@@ -60,4 +68,5 @@ public interface OrgStaffService extends OkService<OrgStaff> {
     List<OrgStaff0> search(String query);
 
     long getCount();
+
 }

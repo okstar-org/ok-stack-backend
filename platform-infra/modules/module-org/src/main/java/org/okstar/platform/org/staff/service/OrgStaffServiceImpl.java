@@ -25,16 +25,17 @@ import org.okstar.platform.common.core.defined.JobDefines;
 import org.okstar.platform.common.core.utils.OkAssert;
 import org.okstar.platform.common.core.utils.OkDateUtils;
 import org.okstar.platform.common.core.utils.OkStringUtil;
+import org.okstar.platform.common.core.utils.bean.OkBeanUtils;
 import org.okstar.platform.common.core.web.page.OkPageResult;
 import org.okstar.platform.common.core.web.page.OkPageable;
 import org.okstar.platform.org.domain.OrgPost;
 import org.okstar.platform.org.domain.OrgStaff;
 import org.okstar.platform.org.domain.OrgStaffPost;
+import org.okstar.platform.org.dto.OrgPost0;
 import org.okstar.platform.org.dto.OrgStaff0;
 import org.okstar.platform.org.dto.OrgStaffFragment;
 import org.okstar.platform.org.service.OrgPostService;
 import org.okstar.platform.org.staff.mapper.OrgStaffMapper;
-import org.okstar.platform.org.utils.StaffUtils;
 import org.okstar.platform.org.vo.OrgStaffFind;
 import org.okstar.platform.org.vo.OrgStaffReq;
 
@@ -141,17 +142,7 @@ public class OrgStaffServiceImpl implements OrgStaffService {
             return Collections.emptyList();
         }
 
-
-        List<OrgStaff> list = orgStaffMapper.list("id in ?1", staffIds);
-        for (OrgStaff staff : list) {
-            List<OrgStaffPost> staffPosts1 = orgStaffPostService.findByStaffId(staff.id);
-            staffPosts1.forEach(sp -> {
-                OrgPost post = orgPostService.get(sp.getPostId());
-                staff.getPostNames().add(post.getName());
-                staff.getPostIds().add(post.id);
-            });
-        }
-        return list;
+        return orgStaffMapper.list("id in ?1", staffIds);
     }
 
 
@@ -163,6 +154,60 @@ public class OrgStaffServiceImpl implements OrgStaffService {
                         JobDefines.PostStatus.pending)
                 .page(page.getPageIndex(), page.getPageSize());
         return OkPageResult.build(paged.list(), paged.count(), paged.pageCount());
+    }
+
+    @Override
+    public OkPageResult<OrgStaff0> findEmployees(OrgStaffFind find) {
+
+        //获取部门下面的岗位
+        var posIds = orgPostService.findByDept(find.getDeptId())
+                .stream().map(p -> p.id)//
+                .collect(Collectors.toSet());
+
+        if (posIds.isEmpty()) {
+            return OkPageResult.build(Collections.emptyList(), 0, 0);
+        }
+
+        //获取与岗位关联的人员
+        List<OrgStaffPost> staffPosts = orgStaffPostService.findByPostIds(posIds);
+        List<Long> staffIds = staffPosts
+                .stream()//
+                .map(OrgStaffPost::getStaffId)//
+                .toList();
+        if (staffIds.isEmpty()) {
+            return OkPageResult.build(Collections.emptyList(), 0, 0);
+        }
+
+        PanacheQuery<OrgStaff> pq = orgStaffMapper.find("id in ?1", staffIds)
+                .page(find.getPageIndex(), find.getPageSize());
+        List<OrgStaff0> list = forResult(pq.list());
+        return OkPageResult.build(list, pq.count(), pq.pageCount());
+    }
+
+    @Override
+    public List<OrgStaff0> search(String query) {
+        PanacheQuery<OrgStaff> pq = orgStaffMapper.find("accountId IS NOT null");
+        return forResult(pq.list());
+    }
+
+    private List<OrgStaff0> forResult(List<OrgStaff> pq) {
+       return pq.stream().map(staff -> {
+            OrgStaff0 staff0 = new OrgStaff0();
+
+            OkBeanUtils.copyPropertiesTo(staff, staff0);
+            OkBeanUtils.copyPropertiesTo(staff.getFragment(), staff0);
+
+            List<OrgPost0> posts = orgStaffPostService.findByStaffId(staff.id).stream().map(e->{
+                OrgPost0 p0 = new OrgPost0();
+                OrgPost post = orgPostService.get(e.getPostId());
+                OkBeanUtils.copyPropertiesTo(post, p0);
+                return p0;
+            }).toList();
+
+            staff0.setPosts(posts);
+            return staff0;
+        }).toList();
+
     }
 
     @Override
@@ -222,18 +267,6 @@ public class OrgStaffServiceImpl implements OrgStaffService {
         return orgStaffMapper.find("accountId", id).stream().findFirst();
     }
 
-    @Override
-    public List<OrgStaff0> search(String query) {
-        PanacheQuery<OrgStaff> panacheQuery = orgStaffMapper.find("accountId IS NOT null");
-        return panacheQuery.stream().peek(s -> {
-            //获取岗位
-            var posts = orgStaffPostService.findByStaffId(s.id).stream()
-                    .map(p -> orgPostService.get(p.getPostId()))
-                    .filter(Objects::nonNull)
-                    .map(OrgPost::getName).toList();
-            s.setPostNames(posts);
-        }).map(StaffUtils::toStaff0).collect(Collectors.toList());
-    }
 
     @Override
     public long getCount() {

@@ -39,4 +39,5 @@ public interface OrgPostService extends OkService<OrgPost>
     List<OrgPost0> findAssignAble(Boolean assignment, boolean disabled);
 
     long getCount();
+
 }

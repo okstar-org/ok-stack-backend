@@ -21,8 +21,6 @@ import org.okstar.platform.common.core.defined.JobDefines;
 import org.okstar.platform.org.dto.OrgStaffFragment;
 
 import java.util.Date;
-import java.util.LinkedList;
-import java.util.List;
 
 
 /**
@@ -57,13 +55,5 @@ public class OrgStaff extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private JobDefines.PostStatus postStatus;
 
-    /**
-     * 岗位列表
-     */
-    @Transient
-    private List<String> postNames = new LinkedList<>();
-
-    @Transient
-    private List<Long> postIds = new LinkedList<>();
 
 }

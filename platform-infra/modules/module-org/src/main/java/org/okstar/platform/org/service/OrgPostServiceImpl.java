@@ -13,6 +13,7 @@
 
 package org.okstar.platform.org.service;
 
+import io.quarkus.logging.Log;
 import io.quarkus.panache.common.Page;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
@@ -43,7 +44,14 @@ public class OrgPostServiceImpl implements OrgPostService {
 
     @Override
     public void save(OrgPost orgPost) {
+        Log.debugf("save=%s", orgPost);
+
+        if (orgPost.id == 0) {
+            orgPost.id = null;
+        }
+
         if (orgPost.id != null && orgPost.id > 0) {
+            //update
             OrgPost post = postMapper.findById(orgPost.id);
             post.setName(orgPost.getName());
             post.setNo(orgPost.getNo());
@@ -51,11 +59,13 @@ public class OrgPostServiceImpl implements OrgPostService {
             post.setRecruit(orgPost.getRecruit());
             post.setUpdateAt(OkDateUtils.now());
             postMapper.persist(post);
-        } else {
-            Assert.isTrue(orgPost.getDeptId() != null && orgPost.getDeptId() > 0, "请选择部门");
-            orgPost.setCreateAt(OkDateUtils.now());
-            postMapper.persist(orgPost);
+            return;
         }
+
+        //add
+        Assert.isTrue(orgPost.getDeptId() != null && orgPost.getDeptId() > 0, "请选择部门");
+        orgPost.setCreateAt(OkDateUtils.now());
+        postMapper.persist(orgPost);
     }
 
     @Override
