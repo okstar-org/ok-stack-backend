@@ -16,14 +16,20 @@ package org.okstar.platform.org.service;
 
 import org.okstar.platform.common.datasource.OkService;
 import org.okstar.platform.org.domain.Org;
-
-import java.util.Optional;
+import org.okstar.platform.org.dto.Org0;
 
 public interface OrgService extends OkService<Org>
 {
-    Optional<Org> current();
+    /**
+     * 获取当前组织
+     * 没有则初始化
+     * @return
+     */
+    Org current();
 
-    void setDefault();
+    Org0 current0();
+
+    Org setDefault();
 
     void setCert(Long id, String cert);
 }

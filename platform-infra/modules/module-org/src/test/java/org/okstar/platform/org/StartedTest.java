@@ -11,23 +11,21 @@
  * /
  */
 
-package org.okstar.platform.org.dto;
+package org.okstar.platform.org;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import io.quarkus.test.junit.QuarkusTest;
+import jakarta.inject.Inject;
+import org.junit.jupiter.api.Test;
 
-@Data
-@Builder
-@AllArgsConstructor
-@NoArgsConstructor
-public class Org0 {
-    private Long id;
-    private String no;
-    private String name;
-    private String url;
-    private String avatar;
-    private String location;
-    private String cert;
+import static org.junit.jupiter.api.Assertions.*;
+
+@QuarkusTest
+class StartedTest {
+
+    @Inject Started started;
+
+    @Test
+    void doPing() {
+        started.doPing();
+    }
 }

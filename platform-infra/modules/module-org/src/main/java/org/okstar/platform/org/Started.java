@@ -31,8 +31,6 @@ import org.okstar.platform.org.service.OrgService;
 import org.okstar.platform.system.dto.SysSetGlobalDTO;
 import org.okstar.platform.system.rpc.SysSettingsRpc;
 
-import java.util.Optional;
-
 @ApplicationScoped
 public class Started {
 
@@ -62,13 +60,8 @@ public class Started {
     }
 
     public void doPing() {
-        Optional<Org> current = orgService.current();
-        if (current.isEmpty()) {
-            return;
-        }
+        Org org = orgService.current();
 
-
-        Org o = current.get();
         /**
          * 获取全局配置
          */
@@ -81,16 +74,23 @@ public class Started {
         }
 
         FederalStateEntity ex = new FederalStateEntity();
-        ex.setNo(o.getNo());
-        ex.setName(o.getName());
+        ex.setNo(org.getNo());
+        ex.setName(org.getName());
         ex.setStackUrl(global.getStackUrl());
         ex.setXmppHost(global.getXmppHost());
 
-        HostInfo info = HostUtils.getHostInfo();
-        ex.setPublicIp(info.getPublicIp());
-        ex.setHostName(info.getHostName());
-        ex.setPublicIp(info.getPublicIp());
-        ex.setFqdn(info.getFqdn());
+        HostInfo info = null;
+        try {
+            //获取主机信息
+            info = HostUtils.getHostInfo();
+            ex.setPublicIp(info.getPublicIp());
+            ex.setHostName(info.getHostName());
+            ex.setPublicIp(info.getPublicIp());
+            ex.setFqdn(info.getFqdn());
+        } catch (Throwable e) {
+            Log.warnf("getHostInfo:%s", e.getMessage());
+            return;
+        }
 
         try {
             //获取提交通道
@@ -98,7 +98,7 @@ public class Started {
             String cert = channel.ping(ex);
             Log.infof("Org cert=>%s", cert);
             if (cert != null) {
-                orgService.setCert(o.id, cert);
+                orgService.setCert(org.id, cert);
             }
         } catch (Exception e) {
             Log.warnf(e.getMessage());

@@ -16,14 +16,10 @@ package org.okstar.platform.org.rpc.impl;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
-import org.okstar.platform.common.core.utils.bean.OkBeanUtils;
 import org.okstar.platform.common.rpc.RpcResult;
-import org.okstar.platform.org.domain.Org;
 import org.okstar.platform.org.dto.Org0;
 import org.okstar.platform.org.rpc.OrgRpc;
 import org.okstar.platform.org.service.OrgService;
-
-import java.util.Optional;
 
 @Transactional
 @ApplicationScoped
@@ -34,12 +30,7 @@ public class OrgRpcImpl implements OrgRpc {
 
     @Override
     public RpcResult<Org0> current() {
-        Optional<Org> org = orgService.current();
-        if (org.isEmpty()) {
-            return RpcResult.failed("Not exist");
-        }
-        Org0 o = new Org0();
-        OkBeanUtils.copyPropertiesTo(org.get(), o);
-        return RpcResult.success(o);
+        Org0 org = orgService.current0();
+        return RpcResult.success(org);
     }
 }

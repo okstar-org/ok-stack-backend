@@ -13,30 +13,28 @@
 
 package org.okstar.platform.org.service;
 
-import io.quarkus.runtime.StartupEvent;
 import jakarta.enterprise.context.ApplicationScoped;
-import jakarta.enterprise.event.Observes;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 import org.apache.commons.lang3.BooleanUtils;
 import org.okstar.platform.common.core.utils.OkDateUtils;
+import org.okstar.platform.common.core.utils.bean.OkBeanUtils;
 import org.okstar.platform.common.core.web.page.OkPageResult;
 import org.okstar.platform.common.core.web.page.OkPageable;
 import org.okstar.platform.org.domain.Org;
+import org.okstar.platform.org.dto.Org0;
 import org.okstar.platform.org.mapper.OrgMapper;
 
 import java.util.List;
-import java.util.Optional;
+import java.util.UUID;
 
 @Transactional
 @ApplicationScoped
 public class OrgServiceImpl implements OrgService {
+
     @Inject
     OrgMapper orgMapper;
 
-    void startup(@Observes StartupEvent event) {
-        setDefault();
-    }
 
     @Override
     public void save(Org org) {
@@ -69,24 +67,34 @@ public class OrgServiceImpl implements OrgService {
     }
 
     @Override
-    public Optional<Org> current() {
-        return findAll().stream().filter(o -> BooleanUtils.isTrue(o.getCurrent())).findFirst();
+    public Org current() {
+        List<Org> all = findAll();
+        if (all.isEmpty()) {
+            return setDefault();
+        }
+        return all.stream().filter(o -> BooleanUtils.isTrue(o.getCurrent())).findFirst().get();
     }
 
     @Override
-    public synchronized void setDefault() {
-        Optional<Org> orgs = current();
-        if (orgs.isEmpty()) {
-            Org org = new Org();
-            org.setCurrent(true);
-            org.setName("OkStar开源社区");
-            org.setUrl("okstar.org");
-            org.setNo("1");
-            org.setParentId(0L);
-            org.setCreateBy(1L);
-            org.setCreateAt(OkDateUtils.now());
-            save(org);
-        }
+    public Org0 current0() {
+        Org org = current();
+        Org0 org0 = new Org0();
+        OkBeanUtils.copyPropertiesTo(org, org0);
+        return org0;
+    }
+
+    @Override
+    public Org setDefault() {
+        Org org = new Org();
+        org.setCurrent(true);
+        org.setName("unnamed");
+        org.setUrl("example.org");
+        org.setNo(UUID.randomUUID().toString());
+        org.setParentId(0L);
+        org.setCreateBy(0L);
+        org.setCreateAt(OkDateUtils.now());
+        save(org);
+        return org;
     }
 
     @Override

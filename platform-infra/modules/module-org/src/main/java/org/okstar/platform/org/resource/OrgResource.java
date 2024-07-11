@@ -18,7 +18,6 @@ import jakarta.inject.Inject;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;
 import org.eclipse.microprofile.rest.client.inject.RestClient;
-import org.okstar.platform.common.core.web.bean.Req;
 import org.okstar.platform.common.core.web.bean.Res;
 import org.okstar.platform.common.resource.OkCommonResource;
 import org.okstar.platform.common.rpc.RpcAssert;
@@ -39,7 +38,6 @@ import org.okstar.platform.system.rpc.SysProfileRpc;
 import org.okstar.platform.system.vo.SysAccount0;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
@@ -68,19 +66,14 @@ public class OrgResource extends OkCommonResource {
 
     @GET
     @Path("current")
-    public Res<Optional<Org>> current() {
-        var resultDto = orgService.current();
-        return Res.ok(Req.empty(), resultDto);
+    public Res<Org0> current() {
+        return Res.ok(orgService.current0());
     }
 
     @GET
     @Path("me")
     public Res<MyOrgInfo> me() {
-        Optional<Org> orgOpt = orgService.current();
-        if (orgOpt.isEmpty()) {
-            return Res.error(Req.empty());
-        }
-        Org org = orgOpt.get();
+        Org org = orgService.current();
         Log.infof("org: %s", org.getName());
 
         String username = getUsername();

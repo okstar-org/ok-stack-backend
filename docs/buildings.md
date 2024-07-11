@@ -7,12 +7,12 @@ okstar.org
 ```
 ### 准备开放的端口
 ```shell
-mysql: 13306  
-ldap: 10389
+mysql: 13306
 keycloak:
-- 18043 
+- 18043
 - 18443
 - 10990
+openfire: 9090
 ```
 ### 创建子域名
 - 认证服务：kc.okstar.org 
@@ -65,9 +65,7 @@ docker pull mirror.ccs.tencentyun.com/openjdk:11-jre
 docker build . -t okstar-openfire:v4.7
 ```
 
-
-## 构建项目
-### 下载 OkStack 源码
+## 下载 OkStack 源码
 ```shell
 git clone https://{gitee|github}.com/okstar-org/ok-stack-backend.git
 cd ok-stack-backend
@@ -75,7 +73,7 @@ cd ok-stack-backend
 git submodule update --init --recursive
 ```
 
-### 初始化依赖环境
+## 初始化依赖环境
 ```shell
 # 进入到依赖目录
 cd depends
@@ -103,7 +101,106 @@ docker-compose up -d #docker
 podman-compose up -d #podman
 ```
 
-### 打包项目
+### 配置Keycloak服务
+- 登录：https://localhost:18443/admin/
+- 输入帐号：admin,okstar登录
+- 到左上角，新建 `okstar` ream
+- 创建Client `okstack`
+```text
+======>General Settings<=========
+Client Type *: OpenID Client
+Client ID * : okstack
+Name        : OkStack
+
+======>Capability config<=========
+Client authentication: ON
+Authentication flow: ON [Standard flow]  ON [Direct access grants]
+
+======>Access settings<=========
+Root URL:   http://localhost:9100
+Home URL:   http://localhost:9100/q/swagger-ui/
+Valid redirect URIs: *
+Valid post logout redirect URIs:    http://localhost:9100/q/swagger-ui/
+Admin URL:  http://localhost:9100
+```
+- 第三个Tab [credentials]
+```text
+Client Authenticator：Client Id and Secret 
+Client Secret：点击复制和保存 (保留后续配置到项目) 
+```
+- 点击左下角  `User Federation`，选择增加`LDAP`
+> General options
+```text
+UI display name *   :ldap 
+Vendor *            :Other
+```
+> Connection and authentication settings
+```text
+Connection URL *    :ldap://apacheds:10389
+Connection pooling  :On
+Connection timeout  :10000
+Bind type *         :simple
+Bind DN *           :uid=admin,ou=system
+Bind credentials *  :secret
+
+# 可以点击Test测试是否成功
+```
+> LDAP searching and updating
+```text
+Edit mode *                 :WRITABLE
+Users DN *                  :ou=users,dc=okstar,dc=org
+Username LDAP attribute *   :uid
+RDN LDAP attribute *        :uid
+UUID LDAP attribute *   :entryUUID
+User object classes *   :inetOrgPerson, organizationalPerson
+Search scope        :Subtree
+Read timeout        :10000
+Pagination          :On
+```
+
+> Synchronization settings
+
+```text
+Import users        :On
+Sync Registrations  :On
+Periodic full sync  :On
+Full sync period    :604800
+Periodic changed users sync :On
+Changed users sync period   :86400
+```
+
+- 右下角`Authentication`
+  - 第二个tab`Requried actions`
+  - 关闭`Verify Profile`
+
+- 点击`Save`保存
+至此，Keycloak认证服务器则配置完成
+
+### 配置Openfire服务器
+> 打开服务器地址 http://meet.okstar.org:9090/
+- 第一步，选择合适的语言
+- 第二步，服务器设置
+  - 填入域名: meet.okstar.org
+  - FQDN: meet.okstar.org
+- 第三步，使用标准数据库
+    - 选择MySQL数据库
+    - 修改host和数据库名称其他不变，为：`db:3306/openfire`
+    - 用户名:`root`，密码:`okstar`
+- 第四步，设置LDAP服务器
+    - 目录服务器 (LDAP)
+    - 服务类型，选择“其他”
+    - 设置连接，Protocol:`ldap`	主机:`apacheds`	端口:`10389`
+    - 基础的DN:`ou=users,dc=okstar,dc=org`
+    - 管理员DN:`uid=admin,ou=system`，密码: `secret`，点击测试显示成功即可
+- 第五步，选择LDAP管理员
+    - 第一项，输入`okstar`
+    - 第二项，选择第一个选项：`The value provided above is a LDAP user.`
+    - 第三项，点击`添加`列出用户即可，点击`完成`
+- 第六步，登录到主界面
+    - 输入管理员`okstar`和密码`okstar`。
+    - 点击登录
+
+## 打包项目
 - 配置根目录下`pom.xml`文件，在profiles增加自己的profile配置且设置 profile id
 - 执行打包，命令如下：
 ```shell
@@ -118,13 +215,13 @@ ok-stack-assembly           #解压目录
 ok-stack-assembly.tar.gz    #tar.gz格式(unix/linux)
 ok-stack-assembly.zip       #zip格式(windows)
 ```
-- 准备运行环境
+## 准备运行环境
 > 首次执行启动前将｀libsigar-amd64-linux-1.6.4.so｀拷贝到系统lib目录｀/usr/lib/｀下。
 ```shell
 sudo cp platform-infra/commons/common-base/src/main/resources/lib/libsigar-amd64-linux-1.6.4.so /usr/lib/
 ```
 
-- 运行项目
+## 运行项目
 ```shell
 # 到项目目录下
 cd ok-stack-assembly/ok-stack
@@ -157,8 +254,8 @@ $ sudo systemctl stop ok-stack-backend.service
 $ sudo systemctl disable ok-stack-backend.service
 ```
 
-# 配置前端
-到此后端构建已经全部完成具备运行条件，接下来就是配置前端项目`OkStack-UI`。
+# 部署前端
+到此后端构建已经全部完成具备运行条件，接下来就是部署前端项目`OkStack-UI`，完后再返回本项目，下一步请配置项目。
 > gitee：https://gitee.com/okstar-org/ok-stack-ui
 > github：https://gitee.com/okstar-org/ok-stack-ui
 

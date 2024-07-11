@@ -29,8 +29,8 @@ public class HostUtils {
 
     }
 
-    @SneakyThrows
-    public static HostInfo getHostInfo(){
+
+    public static HostInfo getHostInfo() throws SigarException {
         Sigar sigar = new Sigar();
         NetInfo netInfo = sigar.getNetInfo();
         String publicIp = OkWebUtil.getPublicIp();

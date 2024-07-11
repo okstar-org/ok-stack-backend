@@ -26,7 +26,6 @@ import org.okstar.platform.org.service.OrgService;
 import org.okstar.platform.system.vo.SysAccount0;
 
 import java.util.List;
-import java.util.Optional;
 
 @Path("dept")
 public class OrgDeptResource extends BaseResource {
@@ -44,15 +43,15 @@ public class OrgDeptResource extends BaseResource {
         var parent = deptService.get(parentId);
         OkAssert.isTrue(parent != null, "参数异常！");
 
-        Optional<Org> org = orgService.current();
-        OkAssert.isTrue(org.isPresent(), "未初始化组织！");
+        Org org = orgService.current();
+        OkAssert.isTrue(org != null, "未初始化组织！");
 
         var account0 = self();
         OrgDept t = new OrgDept();
         t.setName(add.getName());
         t.setNo(add.getNo());
         t.setParentId(parentId);
-        t.setOrgId(org.get().id);
+        t.setOrgId(org.id);
         //级别+1
         t.setLevel(parent.getLevel() + 1);
 
@@ -80,9 +79,9 @@ public class OrgDeptResource extends BaseResource {
     @GET
     @Path("children")
     public Res<List<OrgDept>> children() {
-        Optional<Org> current = orgService.current();
-        OkAssert.isTrue(current.isPresent(), "未初始化组织！");
-        List<OrgDept> list = deptService.getByOrgId(current.get().id);
+         Org  current = orgService.current();
+        OkAssert.isTrue(current != null, "未初始化组织！");
+        List<OrgDept> list = deptService.getByOrgId(current.id);
         return Res.ok(Req.empty(), list);
     }
 
