@@ -41,28 +41,28 @@ public class SysBasicServiceImpl implements SysBasicService {
 
 
     @Override
-    public synchronized void save(SysSetGlobal setGlobal) {
-        OkAssert.notNull(setGlobal, "id is null");
+    public synchronized void save(SysSetGlobal newGlobal) {
+        OkAssert.notNull(newGlobal, "id is null");
 
-        if (OkStringUtil.isBlank(setGlobal.getXmppHost())) {
-            setGlobal.setXmppHost(null);
+        if (OkStringUtil.isBlank(newGlobal.getXmppHost())) {
+            newGlobal.setXmppHost(null);
         }
 
-        if (setGlobal.getXmppHost() != null) {
-            OkAssert.isTrue(OkStringUtil.isValidHostAddr(setGlobal.getXmppHost(), false), "IM服务器地址格式非法！");
+        if (newGlobal.getXmppHost() != null) {
+            OkAssert.isTrue(OkStringUtil.isValidHostAddr(newGlobal.getXmppHost(), false), "IM服务器地址格式非法！");
         }
 
-        OkAssert.isTrue(setGlobal.getXmppAdminPort() >0 && setGlobal.getXmppAdminPort()<65536, "IM 服务器管理 端非法！");
+        OkAssert.isTrue(newGlobal.getXmppAdminPort() >0 && newGlobal.getXmppAdminPort()<65536, "IM 服务器管理 端非法！");
 
-        SysSetGlobal global = get(setGlobal.id);
-        global.setGlobalEnable(setGlobal.isGlobalEnable());
-        global.setVerifyAccount(setGlobal.isVerifyAccount());
-        global.setXmppHost(setGlobal.getXmppHost());
-        global.setXmppAdminPort(setGlobal.getXmppAdminPort());
-        global.setXmppApiSecretKey(setGlobal.getXmppApiSecretKey());
-        global.setStackUrl(setGlobal.getStackUrl());
+        SysSetGlobal orgGlobal = get(newGlobal.id);
+        orgGlobal.setGlobalEnable(newGlobal.isGlobalEnable());
+        orgGlobal.setVerifyAccount(newGlobal.isVerifyAccount());
+        orgGlobal.setXmppHost(newGlobal.getXmppHost());
+        orgGlobal.setXmppAdminPort(newGlobal.getXmppAdminPort());
+        orgGlobal.setXmppApiSecretKey(newGlobal.getXmppApiSecretKey());
+        orgGlobal.setStackUrl(newGlobal.getStackUrl());
 
-        globalMapper.persist(global);
+        globalMapper.persist(orgGlobal);
     }
 
     @Override
