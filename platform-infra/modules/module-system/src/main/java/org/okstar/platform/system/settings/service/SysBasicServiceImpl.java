@@ -60,6 +60,8 @@ public class SysBasicServiceImpl implements SysBasicService {
         global.setXmppHost(setGlobal.getXmppHost());
         global.setXmppAdminPort(setGlobal.getXmppAdminPort());
         global.setXmppApiSecretKey(setGlobal.getXmppApiSecretKey());
+        global.setStackUrl(setGlobal.getStackUrl());
+
         globalMapper.persist(global);
     }
 
