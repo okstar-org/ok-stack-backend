@@ -6,7 +6,7 @@ services:
     ports:
       - "13306:3306"
     volumes:
-      - /etc/timezone:/etc/timezone
+#      - /etc/timezone:/etc/timezone
       - /etc/localtime:/etc/localtime
       - ./mariadb/initdb.d:/docker-entrypoint-initdb.d
       - ./mariadb/data:/var/lib/mysql
@@ -41,7 +41,7 @@ services:
       - KC_HTTPS_PORT=8443
       - KC_HOSTNAME_STRICT_BACKCHANNEL=true
     volumes:
-      - /etc/timezone:/etc/timezone
+#      - /etc/timezone:/etc/timezone
       - /etc/localtime:/etc/localtime
     ports:
       - 18043:8080

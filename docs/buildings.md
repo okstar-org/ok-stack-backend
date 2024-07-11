@@ -159,15 +159,15 @@ Pagination          :On
 ```
 
 > Synchronization settings
-
 ```text
 Import users        :On
 Sync Registrations  :On
 Periodic full sync  :On
 Full sync period    :604800
 Periodic changed users sync :On
-Changed users sync period   :86400
+Changed users sync period   :604800
 ```
+点击`保存`完成操作
 
 - 右下角`Authentication`
   - 第二个tab`Requried actions`
@@ -204,7 +204,14 @@ Changed users sync period   :86400
 - 配置根目录下`pom.xml`文件，在profiles增加自己的profile配置且设置 profile id
 - 执行打包，命令如下：
 ```shell
-docker run -it -v=/root/.m2:/root/.m2 -v=.:/work -w /work --name mvn maven mvn clean package -P dev -Dmaven.test.skip 
+
+docker run --rm -it -v=/root/.m2:/root/.m2 -v=.:/work -w /work maven \
+mvn package -Dmaven.test.skip     \
+-Dquarkus.datasource.username=root -Dquarkus.datasource.password=okstar -Dquarkus.datasource.jdbc.url=jdbc:mariadb://localhost:13306  \
+-Dquarkus.oidc.credentials.secret=ClientSecret #配置 keycloak 的客户端密钥 `Client Secret` \
+-Dquarkus.oidc.auth-server-url=https://kc.okstar.org:18443/realms/okstar \
+-Dquarkus.keycloak.admin-client.server-url=https://kc.okstar.org:18443
+
 ```
 
 - 输出目标执行程序

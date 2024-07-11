@@ -17,6 +17,7 @@ import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 import org.apache.commons.lang3.BooleanUtils;
+import org.okstar.platform.common.core.utils.OkAssert;
 import org.okstar.platform.common.core.utils.OkDateUtils;
 import org.okstar.platform.common.core.utils.bean.OkBeanUtils;
 import org.okstar.platform.common.core.web.page.OkPageResult;
@@ -101,5 +102,16 @@ public class OrgServiceImpl implements OrgService {
     public void setCert(Long id, String cert) {
         Org org = get(id);
         org.setCert(cert);
+    }
+
+    @Override
+    public Boolean save(Org0 org0) {
+        OkAssert.isTrue(org0 != null && org0.getId() != null, "Invalid parameter!");
+        Org org = get(org0.getId());
+        org.setName(org0.getName());
+        org.setUrl(org0.getUrl());
+        org.setLocation(org0.getLocation());
+        org.setAvatar(org0.getAvatar());
+        return true;
     }
 }

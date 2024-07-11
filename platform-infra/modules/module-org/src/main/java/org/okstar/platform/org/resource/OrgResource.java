@@ -16,6 +16,7 @@ package org.okstar.platform.org.resource;
 import io.quarkus.logging.Log;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.GET;
+import jakarta.ws.rs.PUT;
 import jakarta.ws.rs.Path;
 import org.eclipse.microprofile.rest.client.inject.RestClient;
 import org.okstar.platform.common.core.web.bean.Res;
@@ -68,6 +69,12 @@ public class OrgResource extends OkCommonResource {
     @Path("current")
     public Res<Org0> current() {
         return Res.ok(orgService.current0());
+    }
+
+    @PUT
+    @Path("save")
+    public Res<Boolean> save(Org0 org0){
+        return Res.ok(orgService.save(org0));
     }
 
     @GET

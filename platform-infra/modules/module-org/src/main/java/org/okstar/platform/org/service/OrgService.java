@@ -32,4 +32,6 @@ public interface OrgService extends OkService<Org>
     Org setDefault();
 
     void setCert(Long id, String cert);
+
+    Boolean save(Org0 org0);
 }
