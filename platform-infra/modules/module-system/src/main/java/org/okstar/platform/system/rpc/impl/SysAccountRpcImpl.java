@@ -18,7 +18,6 @@ import jakarta.inject.Inject;
 import org.okstar.platform.common.core.defined.AccountDefines;
 import org.okstar.platform.common.core.exception.OkRuntimeException;
 import org.okstar.platform.common.core.utils.bean.OkBeanUtils;
-import org.okstar.platform.common.rpc.RpcAssert;
 import org.okstar.platform.common.rpc.RpcResult;
 import org.okstar.platform.system.account.domain.SysAccount;
 import org.okstar.platform.system.account.domain.SysAccountBind;
@@ -31,19 +30,16 @@ import org.okstar.platform.system.vo.SysAccount0;
 
 import java.util.List;
 
-import static org.okstar.platform.common.core.defined.AccountDefines.BindType.email;
-import static org.okstar.platform.common.core.defined.AccountDefines.BindType.phone;
-
 
 @ApplicationScoped
 public class SysAccountRpcImpl implements SysAccountRpc {
 
     @Inject
-    SysAccountService userService;
+    SysAccountService accountService;
 
     @Override
     public RpcResult<String> lastPassword(Long accountId) {
-        var resultDto = userService.lastPassword(accountId);
+        var resultDto = accountService.lastPassword(accountId);
         if (resultDto.isEmpty()) {
             return RpcResult.<String>builder().success(false).build();
         }
@@ -54,7 +50,7 @@ public class SysAccountRpcImpl implements SysAccountRpc {
     @Override
     public RpcResult<SignUpResult> signUp(SignUpForm signUpForm) {
         try {
-            SignUpResult resultDto = userService.signUp(signUpForm);
+            SignUpResult resultDto = accountService.signUp(signUpForm);
             return RpcResult.<SignUpResult>builder().success(true).data(resultDto).build();
         } catch (Exception e) {
             return RpcResult.<SignUpResult>builder().success(false).msg(e.getMessage()).build();
@@ -64,7 +60,7 @@ public class SysAccountRpcImpl implements SysAccountRpc {
     @Override
     public RpcResult<Boolean> signDown(Long accountId) {
         try {
-            userService.signDown(accountId);
+            accountService.signDown(accountId);
             return RpcResult.<Boolean>builder().success(true).data(true).build();
         } catch (Exception e) {
             return RpcResult.<Boolean>builder().success(false).msg(e.getMessage()).build();
@@ -72,14 +68,22 @@ public class SysAccountRpcImpl implements SysAccountRpc {
     }
 
     @Override
-    public RpcResult<SysAccount0> findByBind( AccountDefines.BindType type, String iso, String bindValue) {
+    public RpcResult<SysAccount0> getByAccount(String account) {
+        SysAccount sysAccount = accountService.findByAccount(account);
+        if (sysAccount == null) {
+            throw new OkRuntimeException("Account is not exist");
+        }
+        return RpcResult.success(accountService.toAccount0(sysAccount));
+    }
+
+    @Override
+    public RpcResult<SysAccount0> findByBind(AccountDefines.BindType type, String iso, String bindValue) {
         try {
-            var sysUser = userService.findByBind(type, iso, bindValue);
-            if (sysUser == null)
+            var sysAccount = accountService.findByBind(type, iso, bindValue);
+            if (sysAccount == null)
                 return RpcResult.<SysAccount0>builder().success(true).build();
 
-            SysAccount0 dto = new SysAccount0();
-            OkBeanUtils.copyPropertiesTo(sysUser, dto);
+            SysAccount0 dto = accountService.toAccount0(sysAccount);
             return RpcResult.<SysAccount0>builder().data(dto).success(true).build();
         } catch (Exception e) {
             return RpcResult.<SysAccount0>builder().success(false).msg(e.getMessage()).build();
@@ -93,7 +97,7 @@ public class SysAccountRpcImpl implements SysAccountRpc {
 
     @Override
     public RpcResult<SysAccount0> findByUsername(String username) {
-        var sysUser = userService.findByUsername(username);
+        var sysUser = accountService.findByUsername(username);
         if (sysUser.isEmpty())
             return RpcResult.<SysAccount0>builder().success(true).build();
 
@@ -104,30 +108,21 @@ public class SysAccountRpcImpl implements SysAccountRpc {
 
     @Override
     public RpcResult<SysAccount0> findById(Long id) {
-        SysAccount account = userService.get(id);
+        SysAccount account = accountService.get(id);
         SysAccount0 dto = new SysAccount0();
         OkBeanUtils.copyPropertiesTo(account, dto);
         return RpcResult.success(dto);
     }
 
-    @Override
-    public RpcResult<SysAccount0> findByAccount(String account) {
-        AccountDefines.BindType bindType = account.indexOf("@") > 0 ? email : phone;  //
-        SysAccount0 account0 = RpcAssert.isTrue(findByBind( bindType, AccountDefines.DefaultISO, account));
-        if (account0 == null) {
-            throw new OkRuntimeException("Account is not exist");
-        }
-        return RpcResult.success(account0);
-    }
 
     @Override
     public void setCert(Long id, String cert) {
-        userService.setCert(id, cert);
+        accountService.setCert(id, cert);
     }
 
     @Override
     public RpcResult<List<SysAccountBindDTO>> getBinds(Long id) {
-        List<SysAccountBind> binds = userService.listBind(id);
+        List<SysAccountBind> binds = accountService.listBind(id);
         List<SysAccountBindDTO> list = binds.stream().map(e -> {
             SysAccountBindDTO dto = new SysAccountBindDTO();
             OkBeanUtils.copyPropertiesTo(e, dto);

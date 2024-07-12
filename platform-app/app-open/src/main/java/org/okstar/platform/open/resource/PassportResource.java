@@ -38,7 +38,7 @@ public class PassportResource {
     @GET
     @Path("account/{account}")
     public Res<SysAccount0> getAccount(@PathParam("account") String account) {
-        var sysAccount0 = RpcAssert.isTrue(sysAccountRpc.findByAccount(account));
+        var sysAccount0 = RpcAssert.isTrue(sysAccountRpc.getByAccount(account));
         return Res.ok(sysAccount0);
     }
 }

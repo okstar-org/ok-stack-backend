@@ -25,10 +25,8 @@ import org.apache.commons.lang3.RandomStringUtils;
 import org.okstar.platform.common.core.defined.AccountDefines;
 import org.okstar.platform.common.core.exception.OkRuntimeException;
 import org.okstar.platform.common.core.exception.user.OkUserException;
-import org.okstar.platform.common.core.utils.OkAssert;
-import org.okstar.platform.common.core.utils.OkDateUtils;
-import org.okstar.platform.common.core.utils.OkMailUtil;
-import org.okstar.platform.common.core.utils.OkPhoneUtils;
+import org.okstar.platform.common.core.utils.*;
+import org.okstar.platform.common.core.utils.bean.OkBeanUtils;
 import org.okstar.platform.common.core.web.page.OkPageResult;
 import org.okstar.platform.common.core.web.page.OkPageable;
 import org.okstar.platform.common.datasource.OkAbsService;
@@ -41,12 +39,15 @@ import org.okstar.platform.system.account.mapper.SysAccountMapper;
 import org.okstar.platform.system.account.mapper.SysAccountPasswordMapper;
 import org.okstar.platform.system.sign.SignUpForm;
 import org.okstar.platform.system.sign.SignUpResult;
+import org.okstar.platform.system.vo.SysAccount0;
 
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
 import static com.google.i18n.phonenumbers.PhoneNumberUtil.PhoneNumberFormat.INTERNATIONAL;
+import static org.okstar.platform.common.core.defined.AccountDefines.BindType.email;
+import static org.okstar.platform.common.core.defined.AccountDefines.BindType.phone;
 
 
 /**
@@ -107,7 +108,9 @@ public class SysAccountServiceImpl extends OkAbsService implements SysAccountSer
                 "bindType = ?1 and bindValue = ?2",
                 type,
                 bindValue);
+
         if (list.isEmpty()) {
+            Log.warnf("Unable to find account bind:%s!", value);
             return null;
         }
 
@@ -115,6 +118,25 @@ public class SysAccountServiceImpl extends OkAbsService implements SysAccountSer
         Log.infof("bind=>%s", accountBind);
 
         return get(accountBind.getAccountId());
+    }
+
+    @Override
+    public SysAccount findByAccount(String account) {
+        if (OkStringUtil.isEmpty(account)) {
+            return null;
+        }
+        AccountDefines.BindType bindType = account.indexOf("@") > 0 ? email : phone;  //
+        return findByBind(bindType, AccountDefines.DefaultISO, account);
+    }
+
+    @Override
+    public SysAccount0 toAccount0(SysAccount account) {
+        if (account == null) {
+            return null;
+        }
+        SysAccount0 dto = new SysAccount0();
+        OkBeanUtils.copyPropertiesTo(account, account);
+        return dto;
     }
 
     @Override

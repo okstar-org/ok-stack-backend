@@ -62,7 +62,7 @@ public interface SysAccountRpc {
 
     @GET
     @Path("findByAccount/{account}")
-    RpcResult<SysAccount0> findByAccount(@PathParam("account") String account);
+    RpcResult<SysAccount0> getByAccount(@PathParam("account") String account);
 
     @POST
     @Path("setCert/{id}")
