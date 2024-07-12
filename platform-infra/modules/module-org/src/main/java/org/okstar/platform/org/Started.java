@@ -52,11 +52,7 @@ public class Started {
 
     @Scheduled(every = "1m")
     public void pingTask() {
-        try {
-            doPing();
-        } catch (Throwable e) {
-
-        }
+        doPing();
     }
 
     public void doPing() {
