@@ -33,7 +33,7 @@ jobs:
         with:
           java-version: '17'
           distribution: 'temurin'
-          architecture: ${{ matrix.os }}
+          architecture: ${{ matrix.arch }}
 
       - name: Run the Maven verify phase
         run: mvn --batch-mode --update-snapshots verify
