@@ -34,6 +34,7 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
           architecture: ${{ matrix.arch }}
+          cache: maven
 
       - name: Pull submodules
         run: |
@@ -41,3 +42,15 @@ jobs:
 
       - name: Build with Maven
         run: mvn clean package -Dmaven.test.skip=true
+
+      - name: Upload to release
+        uses: softprops/action-gh-release@v1
+        if: ${{ startsWith(github.ref, 'refs/tags/') }}
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          files: |
+#           for windows
+            distribution/tar/ok-stack-assembly.zip
+#           for linux/unix
+            distribution/tar/ok-stack-assembly.tar.gz
+
