@@ -440,18 +440,18 @@
         </plugins>
     </build>
 
-    <!-- 配置阿里云仓库 -->
     <repositories>
-        <repository>
-            <id>AliYun Public Repository</id>
-            <url>https://maven.aliyun.com/repository/public/</url>
-            <releases>
-                <enabled>true</enabled>
-            </releases>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
-        </repository>
+        <!-- 配置阿里云仓库 -->
+<!--        <repository>-->
+<!--            <id>AliYun Public Repository</id>-->
+<!--            <url>https://maven.aliyun.com/repository/public/</url>-->
+<!--            <releases>-->
+<!--                <enabled>true</enabled>-->
+<!--            </releases>-->
+<!--            <snapshots>-->
+<!--                <enabled>false</enabled>-->
+<!--            </snapshots>-->
+<!--        </repository>-->
         <repository>
             <id>Liferay Public Repository</id>
             <url>https://repository.liferay.com/nexus/content/repositories/public/</url>
