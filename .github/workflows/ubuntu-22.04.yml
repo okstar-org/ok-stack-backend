@@ -35,6 +35,10 @@ jobs:
           distribution: 'temurin'
           architecture: ${{ matrix.arch }}
 
+      - name: Pull submodules
+        run: |
+          git submodule update --remote --init
+
       - name: Run the Maven verify phase
         run: mvn --batch-mode --update-snapshots verify
 
