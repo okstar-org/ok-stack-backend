@@ -68,7 +68,7 @@ public class OrgResource extends OkCommonResource {
     @GET
     @Path("current")
     public Res<Org0> current() {
-        return Res.ok(orgService.current0());
+        return Res.ok(orgService.loadCurrent0());
     }
 
     @PUT
@@ -80,7 +80,7 @@ public class OrgResource extends OkCommonResource {
     @GET
     @Path("me")
     public Res<MyOrgInfo> me() {
-        Org org = orgService.current();
+        Org org = orgService.loadCurrent();
         Log.infof("org: %s", org.getName());
 
         String username = getUsername();

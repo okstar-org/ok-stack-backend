@@ -11,27 +11,9 @@
  * /
  */
 
-package org.okstar.platform.org.service;
+package org.okstar.platform.system.settings.service;
 
-
-import org.okstar.platform.common.datasource.OkService;
-import org.okstar.platform.org.domain.Org;
-import org.okstar.platform.org.dto.Org0;
-
-public interface OrgService extends OkService<Org>
-{
-    /**
-     * 获取当前组织
-     * 没有则初始化
-     * @return
-     */
-    Org loadCurrent();
-
-    Org0 loadCurrent0();
-
-    Org setDefault();
-
-    void setCert(Long id, String cert);
-
-    Boolean save(Org0 org0);
+public interface SysOidcService {
+    void initOidc();
+    void initOidcClient();
 }

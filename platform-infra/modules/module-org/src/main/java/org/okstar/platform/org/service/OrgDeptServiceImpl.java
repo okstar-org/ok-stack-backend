@@ -83,14 +83,33 @@ public class OrgDeptServiceImpl implements OrgDeptService {
     public List<OrgDept> children(Long parentId) {
         return orgDeptMapper.list("parentId", parentId).stream().toList();
     }
+
     @Override
-    public List<OrgDept> getByOrgId(Long orgId) {
+    public List<OrgDept> getRootByOrgId(Long orgId) {
         return orgDeptMapper.list("parentId = ?1 and orgId = ?2", 0L, orgId).stream().toList();
     }
 
     @Override
     public long getCount() {
         return orgDeptMapper.count("disabled", false);
+    }
+
+    @Override
+    public List<OrgDept> loadRootByOrgId(Long orgId) {
+        List<OrgDept> depts = getRootByOrgId(orgId);
+        if (!depts.isEmpty()) {
+            return depts;
+        }
+
+        //初始化默认部门
+        OrgDept root = new OrgDept();
+        root.setOrgId(orgId);
+        root.setParentId(0L);
+        root.setLevel(0);
+        root.setName("默认部门");
+        root.setDisabled(false);
+        save(root);
+        return List.of(root);
     }
 
 

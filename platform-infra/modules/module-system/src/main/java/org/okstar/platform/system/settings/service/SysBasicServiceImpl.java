@@ -39,7 +39,6 @@ public class SysBasicServiceImpl implements SysBasicService {
     @Inject
     SysSetPersonalMapper personalMapper;
 
-
     @Override
     public synchronized void save(SysSetGlobal newGlobal) {
         OkAssert.notNull(newGlobal, "id is null");

@@ -43,7 +43,7 @@ public class OrgDeptResource extends BaseResource {
         var parent = deptService.get(parentId);
         OkAssert.isTrue(parent != null, "参数异常！");
 
-        Org org = orgService.current();
+        Org org = orgService.loadCurrent();
         OkAssert.isTrue(org != null, "未初始化组织！");
 
         var account0 = self();
@@ -79,9 +79,9 @@ public class OrgDeptResource extends BaseResource {
     @GET
     @Path("children")
     public Res<List<OrgDept>> children() {
-         Org  current = orgService.current();
+        Org current = orgService.loadCurrent();
         OkAssert.isTrue(current != null, "未初始化组织！");
-        List<OrgDept> list = deptService.getByOrgId(current.id);
+        List<OrgDept> list = deptService.loadRootByOrgId(current.id);
         return Res.ok(Req.empty(), list);
     }
 

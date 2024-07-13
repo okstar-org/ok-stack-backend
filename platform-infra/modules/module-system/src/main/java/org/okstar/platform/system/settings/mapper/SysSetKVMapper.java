@@ -11,26 +11,13 @@
  * /
  */
 
-package org.okstar.platform.org.rpc.impl;
+package org.okstar.platform.system.settings.mapper;
 
 import jakarta.enterprise.context.ApplicationScoped;
-import jakarta.inject.Inject;
-import jakarta.transaction.Transactional;
-import org.okstar.platform.common.rpc.RpcResult;
-import org.okstar.platform.org.dto.Org0;
-import org.okstar.platform.org.rpc.OrgRpc;
-import org.okstar.platform.org.service.OrgService;
+import org.okstar.platform.common.datasource.OkRepository;
+import org.okstar.platform.system.settings.domain.SysSetKv;
 
-@Transactional
 @ApplicationScoped
-public class OrgRpcImpl implements OrgRpc {
+public class SysSetKVMapper implements OkRepository<SysSetKv> {
 
-    @Inject
-    OrgService orgService;
-
-    @Override
-    public RpcResult<Org0> current() {
-        Org0 org = orgService.loadCurrent0();
-        return RpcResult.success(org);
-    }
 }

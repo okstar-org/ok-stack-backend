@@ -29,7 +29,9 @@ public interface OrgDeptService extends OkService<OrgDept>
 
     List<OrgDept> children(Long parentId);
 
-    List<OrgDept> getByOrgId(Long orgId);
+    List<OrgDept> getRootByOrgId(Long orgId);
+
+    List<OrgDept> loadRootByOrgId(Long orgId);
 
     long getCount();
 

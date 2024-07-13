@@ -56,7 +56,7 @@ public class Started {
     }
 
     public void doPing() {
-        Org org = orgService.current();
+        Org org = orgService.loadCurrent();
 
         /**
          * 获取全局配置

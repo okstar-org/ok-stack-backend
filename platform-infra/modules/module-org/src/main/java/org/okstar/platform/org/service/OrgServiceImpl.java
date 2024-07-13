@@ -68,7 +68,7 @@ public class OrgServiceImpl implements OrgService {
     }
 
     @Override
-    public Org current() {
+    public Org loadCurrent() {
         List<Org> all = findAll();
         if (all.isEmpty()) {
             return setDefault();
@@ -77,8 +77,8 @@ public class OrgServiceImpl implements OrgService {
     }
 
     @Override
-    public Org0 current0() {
-        Org org = current();
+    public Org0 loadCurrent0() {
+        Org org = loadCurrent();
         Org0 org0 = new Org0();
         OkBeanUtils.copyPropertiesTo(org, org0);
         return org0;
@@ -88,7 +88,7 @@ public class OrgServiceImpl implements OrgService {
     public Org setDefault() {
         Org org = new Org();
         org.setCurrent(true);
-        org.setName("unnamed");
+        org.setName("默认组织");
         org.setUrl("example.org");
         org.setNo(UUID.randomUUID().toString());
         org.setParentId(0L);
