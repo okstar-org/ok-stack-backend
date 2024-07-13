@@ -15,6 +15,7 @@ package org.okstar.platform.open.resource;
 
 import jakarta.inject.Inject;
 import jakarta.ws.rs.GET;
+import jakarta.ws.rs.NotFoundException;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.PathParam;
 import lombok.extern.slf4j.Slf4j;
@@ -39,6 +40,10 @@ public class PassportResource {
     @Path("account/{account}")
     public Res<SysAccount0> getAccount(@PathParam("account") String account) {
         var sysAccount0 = RpcAssert.isTrue(sysAccountRpc.getByAccount(account));
+        if (sysAccount0 == null) {
+            //返回404错误
+            throw new NotFoundException();
+        }
         return Res.ok(sysAccount0);
     }
 }

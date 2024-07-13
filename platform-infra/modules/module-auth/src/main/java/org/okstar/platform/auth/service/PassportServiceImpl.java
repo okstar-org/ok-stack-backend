@@ -21,7 +21,6 @@ import org.eclipse.microprofile.rest.client.inject.RestClient;
 import org.okstar.platform.auth.backend.AuthzClientManager;
 import org.okstar.platform.auth.backend.BackUser;
 import org.okstar.platform.auth.backend.BackUserManager;
-import org.okstar.platform.common.core.defined.AccountDefines;
 import org.okstar.platform.common.core.exception.OkRuntimeException;
 import org.okstar.platform.common.core.utils.OkAssert;
 import org.okstar.platform.common.core.utils.OkStringUtil;
@@ -37,7 +36,6 @@ import java.util.Objects;
 import java.util.Optional;
 
 import static org.okstar.platform.common.core.defined.AccountDefines.BindType.email;
-import static org.okstar.platform.common.core.defined.AccountDefines.BindType.phone;
 
 @Slf4j
 @ApplicationScoped
@@ -114,18 +112,20 @@ public class PassportServiceImpl implements PassportService {
 
     @Override
     public SignInResult signIn(SignInForm signInForm) {
+        Log.infof("signIn:%s", signInForm);
         String account = signInForm.getAccount();
-        Log.infof("signIn:%s", account);
 
-        //判断帐号类型
+        //获取帐号
         SysAccount0 account0 = getAccount(account);
-        Log.debugf("Get Account info is:%s", account0);
+        Log.debugf("getAccount=>%s", account0);
+        if (account0 == null) {
+            throw new OkRuntimeException("帐号不存在！");
+        }
 
-        /**
-         * 初始化LDAP用户
-         */
+        //从后端系统获取用户
         Optional<BackUser> backUser = backUserManager.getUser(account0.getUsername());
         if (backUser.isEmpty()) {
+            //不存在则创建
             RpcResult<String> lastedPassword = sysAccountRpc.lastPassword(account0.getId());
             String pwd = RpcAssert.isTrue(lastedPassword);
             OkAssert.isTrue(OkStringUtil.equals(pwd, signInForm.getPassword()), "密码不正确！");
@@ -153,13 +153,7 @@ public class PassportServiceImpl implements PassportService {
 
     @Override
     public SysAccount0 getAccount(String account) {
-        //判断帐号类型
-        AccountDefines.BindType bindType = account.indexOf("@") > 0 ? email : phone;  //
-        SysAccount0 account0 = RpcAssert.isTrue(sysAccountRpc.findByBind(bindType, AccountDefines.DefaultISO, account));
-        if (account0 == null) {
-            throw new OkRuntimeException("Account is not exist");
-        }
-        return account0;
+        return RpcAssert.isTrue(sysAccountRpc.getByAccount(account));
     }
 
     @Override

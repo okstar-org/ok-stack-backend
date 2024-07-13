@@ -135,7 +135,7 @@ public class SysAccountServiceImpl extends OkAbsService implements SysAccountSer
             return null;
         }
         SysAccount0 dto = new SysAccount0();
-        OkBeanUtils.copyPropertiesTo(account, account);
+        OkBeanUtils.copyPropertiesTo(account, dto);
         return dto;
     }
 

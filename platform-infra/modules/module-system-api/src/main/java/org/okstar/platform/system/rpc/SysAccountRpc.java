@@ -42,6 +42,10 @@ public interface SysAccountRpc {
     RpcResult<Boolean> signDown(@PathParam("accountId") Long accountId);
 
     @GET
+    @Path("findByAccount/{account}")
+    RpcResult<SysAccount0> getByAccount(@PathParam("account") String account);
+
+    @GET
     @Path("findByBind")
     RpcResult<SysAccount0> findByBind(@QueryParam("type") AccountDefines.BindType type,
                                       @QueryParam("iso") String iso,
@@ -60,9 +64,6 @@ public interface SysAccountRpc {
     @Path("findById/{id}")
     RpcResult<SysAccount0> findById(@PathParam("id") Long id);
 
-    @GET
-    @Path("findByAccount/{account}")
-    RpcResult<SysAccount0> getByAccount(@PathParam("account") String account);
 
     @POST
     @Path("setCert/{id}")

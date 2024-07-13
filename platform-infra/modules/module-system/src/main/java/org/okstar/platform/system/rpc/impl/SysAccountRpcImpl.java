@@ -16,7 +16,6 @@ package org.okstar.platform.system.rpc.impl;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import org.okstar.platform.common.core.defined.AccountDefines;
-import org.okstar.platform.common.core.exception.OkRuntimeException;
 import org.okstar.platform.common.core.utils.bean.OkBeanUtils;
 import org.okstar.platform.common.rpc.RpcResult;
 import org.okstar.platform.system.account.domain.SysAccount;
@@ -67,12 +66,10 @@ public class SysAccountRpcImpl implements SysAccountRpc {
         }
     }
 
+
     @Override
     public RpcResult<SysAccount0> getByAccount(String account) {
         SysAccount sysAccount = accountService.findByAccount(account);
-        if (sysAccount == null) {
-            throw new OkRuntimeException("Account is not exist");
-        }
         return RpcResult.success(accountService.toAccount0(sysAccount));
     }
 
