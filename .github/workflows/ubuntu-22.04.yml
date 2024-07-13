@@ -49,8 +49,6 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           files: |
-#           for windows
-            distribution/tar/ok-stack-assembly.zip
-#           for linux/unix
-            distribution/tar/ok-stack-assembly.tar.gz
+            ${{ github.workspace }}/distribution/tar/ok-stack-assembly.zip
+            ${{ github.workspace }}/distribution/tar/ok-stack-assembly.tar.gz
 
