@@ -19,8 +19,7 @@ import jakarta.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
 import org.eclipse.microprofile.rest.client.inject.RestClient;
 import org.okstar.platform.auth.backend.AuthzClientManager;
-import org.okstar.platform.auth.backend.BackUser;
-import org.okstar.platform.auth.backend.BackUserManager;
+
 import org.okstar.platform.common.core.exception.OkRuntimeException;
 import org.okstar.platform.common.core.utils.OkAssert;
 import org.okstar.platform.common.core.utils.OkStringUtil;
@@ -28,7 +27,9 @@ import org.okstar.platform.common.rpc.RpcAssert;
 import org.okstar.platform.common.rpc.RpcResult;
 import org.okstar.platform.org.dto.OrgStaffFragment;
 import org.okstar.platform.org.rpc.OrgStaffRpc;
+import org.okstar.platform.system.dto.BackUser;
 import org.okstar.platform.system.rpc.SysAccountRpc;
+import org.okstar.platform.system.rpc.SysBackUserManagerRpc;
 import org.okstar.platform.system.sign.*;
 import org.okstar.platform.system.vo.SysAccount0;
 
@@ -48,7 +49,8 @@ public class PassportServiceImpl implements PassportService {
     @RestClient
     OrgStaffRpc orgStaffRpc;
     @Inject
-    BackUserManager backUserManager;
+    @RestClient
+    SysBackUserManagerRpc backUserManager;
     @Inject
     AuthzClientManager authzClientManager;
 
@@ -87,8 +89,7 @@ public class PassportServiceImpl implements PassportService {
             user.setEmail(form.getAccount());
         }
 
-
-        BackUser backUser = backUserManager.addUser(user);
+        BackUser backUser = backUserManager.add(user);
         log.info("Added user:{}", backUser.getUsername());
         return signUpResult;
     }
@@ -100,7 +101,7 @@ public class PassportServiceImpl implements PassportService {
         SysAccount0 account0 = RpcAssert.isTrue(sysAccountRpc.findById(accountId));
 
         //删除认证信息
-        boolean backUser = backUserManager.deleteUser(account0.getUsername());
+        boolean backUser = backUserManager.delete(account0.getUsername());
         Log.infof("Sign down auth account:%s=>%s", accountId, backUser);
         OkAssert.isTrue(backUser, "Sign down auth account failed");
 
@@ -123,7 +124,7 @@ public class PassportServiceImpl implements PassportService {
         }
 
         //从后端系统获取用户
-        Optional<BackUser> backUser = backUserManager.getUser(account0.getUsername());
+        Optional<BackUser> backUser = backUserManager.get(account0.getUsername());
         if (backUser.isEmpty()) {
             //不存在则创建
             RpcResult<String> lastedPassword = sysAccountRpc.lastPassword(account0.getId());
@@ -135,7 +136,7 @@ public class PassportServiceImpl implements PassportService {
             addUser.setUsername(account0.getUsername());
             addUser.setPassword(pwd);
 
-            BackUser added = backUserManager.addUser(addUser);
+            BackUser added = backUserManager.add(addUser);
             Log.infof("User:%s is initialized to ldap successfully.", added.getUsername());
         }
         return authzClientManager.authorization(account0.getUsername(), signInForm.getPassword());

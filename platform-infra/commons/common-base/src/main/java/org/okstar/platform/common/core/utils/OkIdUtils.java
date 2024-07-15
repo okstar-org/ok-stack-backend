@@ -11,37 +11,29 @@
  * /
  */
 
-package org.okstar.platform.auth.backend;
+package org.okstar.platform.common.core.utils;
 
-import java.util.List;
-import java.util.Optional;
 
+import java.util.UUID;
 
 /**
- * 后端认证用户管理接口
+ * ID生成器工具类
+ * 
+ * 
  */
-public interface BackUserManager {
-    void resetPassword(String username, String password);
+public class OkIdUtils
+{
 
-    List<BackUser> users();
-
-    Optional<BackUser> getUser(String username);
 
     /**
-     * 增加用户
-     *
-     * @param user
-     * @return
+     * 获取随机UUID
+     * 
+     * @return 随机UUID
      */
-    BackUser addUser(BackUser user);
+    public static String makeUuid()
+    {
+        return UUID.randomUUID().toString();
+    }
 
-    /**
-     * 删除用户
-     *
-     * @param username
-     * @return
-     */
-    boolean deleteUser(String username);
 
-    void forgot(String username);
 }

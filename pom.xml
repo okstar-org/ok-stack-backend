@@ -44,7 +44,7 @@
 
         <quarkus.platform.artifact-id>quarkus-bom</quarkus.platform.artifact-id>
         <quarkus.platform.group-id>io.quarkus.platform</quarkus.platform.group-id>
-        <quarkus.platform.version>3.6.5</quarkus.platform.version>
+        <quarkus.platform.version>3.5.3</quarkus.platform.version>
 
         <maven.compiler.release>17</maven.compiler.release>
         <maven.compiler.source>17</maven.compiler.source>
@@ -80,9 +80,7 @@
                 <quarkus.datasource.jdbc.url>jdbc:mariadb://localhost:13306</quarkus.datasource.jdbc.url>
                 <quarkus.datasource.jdbc.driver>org.mariadb.jdbc.Driver</quarkus.datasource.jdbc.driver>
                 <quarkus.hibernate-orm.dialect>org.hibernate.dialect.MariaDBDialect</quarkus.hibernate-orm.dialect>
-                <quarkus.keycloak.admin-client.server-url>https://kc.localhost:18443</quarkus.keycloak.admin-client.server-url>
                 <quarkus.oidc.auth-server-url>https://kc.localhost:18443/realms/okstar</quarkus.oidc.auth-server-url>
-                <quarkus.oidc.credentials.secret>oidc-client-secret</quarkus.oidc.credentials.secret>
             </properties>
         </profile>
 
@@ -98,13 +96,25 @@
                 <quarkus.datasource.db-kind>mariadb</quarkus.datasource.db-kind>
                 <quarkus.datasource.username>okstar</quarkus.datasource.username>
                 <quarkus.datasource.password>Encrypt=>YOzFYCG4evdiWnDP8vGdLw==</quarkus.datasource.password>
-                <quarkus.datasource.jdbc.url>jdbc:mariadb://chuanshaninfo.com:3307</quarkus.datasource.jdbc.url>
+                <quarkus.datasource.jdbc.url>jdbc:mariadb://okstar.org.cn:3307</quarkus.datasource.jdbc.url>
                 <quarkus.datasource.jdbc.args>autoReconnect=true&amp;connectTimeout=60000&amp;socketTimeout=50000</quarkus.datasource.jdbc.args>
                 <quarkus.datasource.jdbc.driver>org.mariadb.jdbc.Driver</quarkus.datasource.jdbc.driver>
                 <quarkus.hibernate-orm.dialect>org.hibernate.dialect.MariaDBDialect</quarkus.hibernate-orm.dialect>
-                <quarkus.keycloak.admin-client.server-url>https://kc.okstar.org.cn</quarkus.keycloak.admin-client.server-url>
                 <quarkus.oidc.auth-server-url>https://kc.okstar.org.cn/realms/okstar</quarkus.oidc.auth-server-url>
-                <quarkus.oidc.credentials.secret>paYHiWpp0vV2jkIhz6EWLPw0HI5yv2XM</quarkus.oidc.credentials.secret>
+            </properties>
+        </profile>
+
+        <profile>
+            <id>ccfoj</id>
+            <properties>
+                <quarkus.datasource.db-kind>mariadb</quarkus.datasource.db-kind>
+                <quarkus.datasource.username>root</quarkus.datasource.username>
+                <quarkus.datasource.password>okstar</quarkus.datasource.password>
+                <quarkus.datasource.jdbc.url>jdbc:mariadb://meet.ccfoj.com:13306</quarkus.datasource.jdbc.url>
+                <quarkus.datasource.jdbc.args>autoReconnect=true&amp;connectTimeout=60000&amp;socketTimeout=50000</quarkus.datasource.jdbc.args>
+                <quarkus.datasource.jdbc.driver>org.mariadb.jdbc.Driver</quarkus.datasource.jdbc.driver>
+                <quarkus.hibernate-orm.dialect>org.hibernate.dialect.MariaDBDialect</quarkus.hibernate-orm.dialect>
+                <quarkus.oidc.auth-server-url>https://kc.ccfoj.com:18443/realms/okstar</quarkus.oidc.auth-server-url>
             </properties>
         </profile>
 
@@ -129,11 +139,11 @@
             <scope>test</scope>
         </dependency>
 
-        <dependency>
-            <groupId>io.rest-assured</groupId>
-            <artifactId>rest-assured</artifactId>
-            <scope>test</scope>
-        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>io.rest-assured</groupId>-->
+<!--            <artifactId>rest-assured</artifactId>-->
+<!--            <scope>test</scope>-->
+<!--        </dependency>-->
 
         <dependency>
             <groupId>org.projectlombok</groupId>
@@ -440,8 +450,8 @@
         </plugins>
     </build>
 
-    <!-- 配置阿里云仓库 -->
     <repositories>
+        <!-- 配置阿里云仓库 -->
         <repository>
             <id>AliYun Public Repository</id>
             <url>https://maven.aliyun.com/repository/public/</url>

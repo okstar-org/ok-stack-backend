@@ -178,7 +178,6 @@ public class OkStringUtil extends org.apache.commons.lang3.StringUtils {
         boolean upperCase = false;
         for (int i = 0; i < s.length(); i++) {
             char c = s.charAt(i);
-
             if (c == SEPARATOR) {
                 upperCase = true;
             } else if (upperCase) {

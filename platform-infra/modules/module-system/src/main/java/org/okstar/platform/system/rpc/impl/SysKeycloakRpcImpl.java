@@ -11,29 +11,23 @@
  * /
  */
 
-package org.okstar.platform.common.core.utils;
+package org.okstar.platform.system.rpc.impl;
 
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
+import org.okstar.platform.system.kv.rpc.SysKeycloakConfDTO;
+import org.okstar.platform.system.kv.rpc.SysKeycloakRpc;
+import org.okstar.platform.system.settings.service.SysKeycloakService;
 
-import java.util.UUID;
+@ApplicationScoped
+public class SysKeycloakRpcImpl implements SysKeycloakRpc {
 
-/**
- * ID生成器工具类
- * 
- * 
- */
-public class IdUtils
-{
+    @Inject
+    SysKeycloakService keycloakService;
 
-
-    /**
-     * 获取随机UUID
-     * 
-     * @return 随机UUID
-     */
-    public static String makeUuid()
-    {
-        return UUID.randomUUID().toString();
+    @Override
+    public SysKeycloakConfDTO getKeycloakConf() {
+        return keycloakService.getOidcConfig();
     }
-
 
 }

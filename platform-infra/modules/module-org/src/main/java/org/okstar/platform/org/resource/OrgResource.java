@@ -64,7 +64,6 @@ public class OrgResource extends OkCommonResource {
     @RestClient
     SysAccountRpc sysAccountRpc;
 
-
     @GET
     @Path("current")
     public Res<Org0> current() {

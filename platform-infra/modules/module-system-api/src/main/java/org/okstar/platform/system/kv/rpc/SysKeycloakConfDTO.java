@@ -10,17 +10,17 @@
  * See the Mulan PubL v2 for more details.
  * /
  */
-package org.okstar.platform.chat;
 
-import io.quarkus.runtime.Quarkus;
-import io.quarkus.runtime.annotations.QuarkusMain;
+package org.okstar.platform.system.kv.rpc;
 
-/**
- * 聊天管理服务
- */
-@QuarkusMain
-public class ModuleChatApplication {
-    public static void main(String... args) {
-        Quarkus.run(args);
-    }
+import lombok.Data;
+import lombok.ToString;
+
+@Data
+@ToString
+public class SysKeycloakConfDTO {
+    String authServerUrl;
+    String realm;
+    String clientId;
+    String clientSecret;
 }

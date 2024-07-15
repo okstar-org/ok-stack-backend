@@ -33,15 +33,16 @@ public class TokenFilters {
     @RouteFilter(100)
     void jwtFilter(RoutingContext rc) {
         String uri = rc.request().uri();
-        Log.infof("uri=%s", uri);
+        Log.infof("jwtFilter: %s", uri);
 
-        String username = jwt.getName();
         if (uri.contains("/passport") || uri.contains("/rpc") || uri.contains("/_well-known") || uri.contains("/staff")) {
             Log.infof("bypass the uri.");
             rc.next();
             return;
         }
 
+        Log.infof("jwt: %s", jwt);
+        String username = jwt.getName();
         if (OkStringUtil.isEmpty(username)) {
             rc.fail(HttpResponseStatus.FORBIDDEN.code());
             return;

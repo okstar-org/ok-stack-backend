@@ -11,13 +11,12 @@
  * /
  */
 
-package org.okstar.platform.auth.keycloak;
+package org.okstar.platform.system.keycloak;
 
 import io.quarkus.logging.Log;
 import io.quarkus.test.junit.QuarkusTest;
 import jakarta.inject.Inject;
 import org.junit.jupiter.api.Test;
-import org.okstar.platform.auth.backend.BackUserManager;
 
 
 
@@ -33,7 +32,7 @@ class BackUserManagerTest {
         var users = backUserManager.users();
         Log.infof("users：");
         users.forEach(userRepresentation -> {
-            Log.infof("Username:%s, FirstName:%s, LastName:%s, Email:%s",
+            Log.infof("\tUsername:%s, FirstName:%s, LastName:%s, Email:%s",
                     userRepresentation.getUsername(),
                     userRepresentation.getFirstName(),
                     userRepresentation.getLastName(),

@@ -22,6 +22,7 @@
 <!--        <module>module-org-sync-api</module>-->
         <module>module-chat</module>
         <module>module-chat-api</module>
+        <module>module-billing</module>
     </modules>
 
     <dependencies>
@@ -49,6 +50,11 @@
         <dependency>
             <groupId>io.quarkus</groupId>
             <artifactId>quarkus-rest-client-jackson</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>io.quarkus</groupId>
+            <artifactId>quarkus-smallrye-jwt</artifactId>
         </dependency>
 
         <dependency>

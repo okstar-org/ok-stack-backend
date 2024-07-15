@@ -21,12 +21,17 @@ openfire: 9090
 
 ### 准备 Linux服务器(X64)一台
 ```shell
-sudo apt update
-sudo apt dist-upgrade -y
+#debian
+sudo apt update && sudo apt dist-upgrade -y
+#rhel
+sudo dnf update
+
 ```
 
 ### 安装Docker或者Podman
-> Podman 参考：https://podman.io/docs/installation
+- Redhat系，推荐使用 Podman 替代 参考：https://podman.io/docs/installation
+- Debian: apt install docker.io
+- Ubuntu: apt install docker.io 或者 snap install docker
 
 ### 安装 Git
 ```shell

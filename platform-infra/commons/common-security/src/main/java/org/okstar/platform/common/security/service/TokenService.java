@@ -19,7 +19,7 @@ import jakarta.enterprise.context.ApplicationScoped;
 import org.okstar.platform.common.core.constant.CacheConstants;
 import org.okstar.platform.common.core.constant.Constants;
 import org.okstar.platform.common.core.constant.SecurityConstants;
-import org.okstar.platform.common.core.utils.IdUtils;
+import org.okstar.platform.common.core.utils.OkIdUtils;
 import org.okstar.platform.common.core.utils.OkStringUtil;
 import org.okstar.platform.common.core.utils.OkWebUtil;
 import org.okstar.platform.common.redis.service.RedisService;
@@ -76,7 +76,7 @@ public class TokenService {
         Assert.assertNotNull(loginUser.getUserid());
         Assert.assertNotNull(loginUser.getUsername());
 
-        String token = IdUtils.makeUuid();
+        String token = OkIdUtils.makeUuid();
         loginUser.setToken(token);
         loginUser.setIpaddr(OkWebUtil.getIpAddr(request));
         refreshToken(loginUser);

@@ -11,9 +11,25 @@
  * /
  */
 
-package org.okstar.platform.system.settings.service;
+package org.okstar.platform.system.dto;
 
-public interface SysOidcService {
-    void initOidc();
-    void initOidcClient();
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+/**
+ * 后端认证用户
+ */
+@Builder
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+public class BackUser {
+   String id;
+   String username;
+   String firstName;
+   String lastName;
+   String email;
+   String password;
 }

@@ -14,28 +14,54 @@
 package org.okstar.platform.auth.backend;
 
 import io.quarkus.logging.Log;
-import io.quarkus.oidc.client.OidcClient;
-import io.quarkus.oidc.client.Tokens;
-import io.smallrye.mutiny.Uni;
+import io.quarkus.runtime.StartupEvent;
 import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.enterprise.event.Observes;
 import jakarta.inject.Inject;
+import org.eclipse.microprofile.rest.client.inject.RestClient;
 import org.keycloak.authorization.client.AuthzClient;
+import org.keycloak.authorization.client.Configuration;
 import org.keycloak.authorization.client.util.HttpResponseException;
 import org.keycloak.representations.idm.authorization.AuthorizationRequest;
 import org.okstar.platform.common.core.exception.OkRuntimeException;
 import org.okstar.platform.common.core.utils.OkAssert;
-import org.okstar.platform.common.core.utils.OkDateUtils;
+import org.okstar.platform.system.kv.rpc.SysKeycloakConfDTO;
+import org.okstar.platform.system.kv.rpc.SysKeycloakRpc;
 import org.okstar.platform.system.sign.SignInResult;
 
-import java.util.concurrent.ExecutionException;
+import java.util.Map;
 
 @ApplicationScoped
 class AuthzClientManagerImpl implements AuthzClientManager {
-    @Inject
+//    @Inject
     AuthzClient authzClient;
 
+//    @Inject
+//    OidcClient oidcClient;
     @Inject
-    OidcClient oidcClient;
+    @RestClient
+    SysKeycloakRpc sysKeycloakRpc;
+
+
+    /**
+     * 2.初始化oidcClient
+     */
+
+    public void startup(@Observes StartupEvent event){
+
+        SysKeycloakConfDTO conf = sysKeycloakRpc.getKeycloakConf();
+        Log.infof("Get keycloak conf: %s", conf);
+
+        Configuration configuration = new Configuration(
+                conf.getAuthServerUrl(),
+                conf.getRealm(),
+                conf.getClientId(),
+                Map.of("secret",conf.getClientSecret()),
+                null
+        );
+        authzClient = AuthzClient.create(configuration);
+    }
+
 
     @Override
     public SignInResult authorization(String username, String password) {
@@ -66,32 +92,33 @@ class AuthzClientManagerImpl implements AuthzClientManager {
 
     @Override
     public SignInResult refresh(String refreshToken) {
-        Uni<Tokens> uni = oidcClient.refreshTokens(refreshToken);
-        try {
-            Tokens tokens = uni.subscribeAsCompletionStage().get();
-            long expiresIn = (tokens.getAccessTokenExpiresAt() * 1000 - OkDateUtils.getTime()) / 1000;
-            return SignInResult.builder()
-                    .accessToken(tokens.getAccessToken())
-                    .expiresIn(expiresIn)
-                    .refreshToken(tokens.getRefreshToken())
-                    .refreshExpiresIn(tokens.getRefreshTokenTimeSkew())
-                    .build();
-        } catch (InterruptedException | ExecutionException e) {
-            throw new RuntimeException(e);
-        }
+//        Uni<Tokens> uni = oidcClient.refreshTokens(refreshToken);
+//        try {
+//            Tokens tokens = uni.subscribeAsCompletionStage().get();
+//            long expiresIn = (tokens.getAccessTokenExpiresAt() * 1000 - OkDateUtils.getTime()) / 1000;
+//            return SignInResult.builder()
+//                    .accessToken(tokens.getAccessToken())
+//                    .expiresIn(expiresIn)
+//                    .refreshToken(tokens.getRefreshToken())
+//                    .refreshExpiresIn(tokens.getRefreshTokenTimeSkew())
+//                    .build();
+//        } catch (InterruptedException | ExecutionException e) {
+//            throw new RuntimeException(e);
+//        }
+        return null;
     }
 
     @Override
     public void revoke(String accessToken) {
-        Log.infof("Revoke access token:%s", accessToken);
-        Uni<Boolean> uni = oidcClient.revokeAccessToken(accessToken);
-        try {
-            Boolean aBoolean = uni.subscribe().asCompletionStage().get();
-            Log.infof("revoke:%s=>%s", accessToken, aBoolean);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        } catch (ExecutionException e) {
-            throw new RuntimeException(e);
-        }
+//        Log.infof("Revoke access token:%s", accessToken);
+//        Uni<Boolean> uni = oidcClient.revokeAccessToken(accessToken);
+//        try {
+//            Boolean aBoolean = uni.subscribe().asCompletionStage().get();
+//            Log.infof("revoke:%s=>%s", accessToken, aBoolean);
+//        } catch (InterruptedException e) {
+//            throw new RuntimeException(e);
+//        } catch (ExecutionException e) {
+//            throw new RuntimeException(e);
+//        }
     }
 }

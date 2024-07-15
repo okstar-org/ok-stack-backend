@@ -14,17 +14,20 @@
 package org.okstar.platform.auth.service;
 
 import io.quarkus.logging.Log;
+import io.quarkus.test.junit.QuarkusTest;
 import io.smallrye.common.constraint.Assert;
 import jakarta.inject.Inject;
 import org.junit.jupiter.api.Order;
+import org.junit.jupiter.api.Test;
 import org.okstar.platform.common.core.defined.AccountDefines;
-import org.okstar.platform.common.core.utils.IdUtils;
+import org.okstar.platform.common.core.utils.OkIdUtils;
+import org.okstar.platform.system.sign.SignInForm;
+import org.okstar.platform.system.sign.SignInResult;
 import org.okstar.platform.system.sign.SignUpForm;
 import org.okstar.platform.system.sign.SignUpResult;
 
 
-
-//@QuarkusTest
+@QuarkusTest
 class PassportServiceImplTest {
 
     public static final String STRING = "okstar";
@@ -35,10 +38,10 @@ class PassportServiceImplTest {
     /**
      * 注册用户
      */
-//    @Test
+    @Test
     @Order(1)
     void signUp() {
-        String uuid = IdUtils.makeUuid();
+        String uuid = OkIdUtils.makeUuid();
         SignUpForm form = new SignUpForm();
         form.setTs(1L);
 
@@ -54,5 +57,17 @@ class PassportServiceImplTest {
         Log.infof("result=>%s", resultDto);
         Assert.assertNotNull(resultDto);
         Assert.assertNotNull(resultDto.getUsername());
+    }
+
+    @Test
+    void signIn() {
+        SignInForm form = new SignInForm();
+        form.setIso(AccountDefines.DefaultISO);
+        form.setGrantType("password");
+        form.setAccount("18910221510");
+        form.setPassword("123456");
+        SignInResult result = passportService.signIn(form);
+        Log.infof("result=>%s", result);
+        Assert.assertNotNull(result);
     }
 }

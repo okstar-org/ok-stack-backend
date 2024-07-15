@@ -77,6 +77,11 @@
             <scope>compile</scope>
         </dependency>
 
+        <dependency>
+            <groupId>io.quarkus</groupId>
+            <artifactId>quarkus-keycloak-admin-client</artifactId>
+        </dependency>
+
     </dependencies>
 
 

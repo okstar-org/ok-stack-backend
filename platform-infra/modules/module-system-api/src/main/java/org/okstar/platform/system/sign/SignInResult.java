@@ -33,6 +33,7 @@ public class SignInResult {
     //tokenType："Bearer"
     protected String tokenType;
     protected String accessToken;
+
     /**
      * 过期时间：
      * 以秒为单位或描述的时间跨度字符串表示。

@@ -11,25 +11,18 @@
  * /
  */
 
-package org.okstar.platform.auth.backend;
+package org.okstar.platform.system.kv.rpc;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import jakarta.ws.rs.GET;
+import jakarta.ws.rs.Path;
+import org.eclipse.microprofile.rest.client.inject.RegisterRestClient;
 
-/**
- * 后端认证用户
- */
-@Builder
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
-public class BackUser {
-   String id;
-   String username;
-   String firstName;
-   String lastName;
-   String email;
-   String password;
+@RegisterRestClient
+@Path("rpc/SysSetKvRpc")
+public interface SysKeycloakRpc {
+
+    @GET
+    @Path("/getKeycloakConf")
+    SysKeycloakConfDTO getKeycloakConf();
+
 }
