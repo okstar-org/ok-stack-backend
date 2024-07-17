@@ -19,6 +19,7 @@ import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.event.Observes;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
+import org.eclipse.microprofile.config.inject.ConfigProperty;
 import org.jboss.resteasy.client.jaxrs.internal.ResteasyClientBuilderImpl;
 import org.keycloak.admin.client.Keycloak;
 import org.keycloak.admin.client.KeycloakBuilder;
@@ -34,28 +35,71 @@ import org.okstar.platform.system.kv.rpc.SysKeycloakConfDTO;
 import org.okstar.platform.system.settings.domain.SysSetKv;
 import org.okstar.platform.system.settings.mapper.SysSetKVMapper;
 
+import java.net.URI;
 import java.util.List;
 import java.util.Optional;
 
 @Transactional
 @ApplicationScoped
 public class SysKeycloakServiceImpl implements SysKeycloakService {
-
-    public static final String REALM_OK_STAR = "okstar";
-    public static final String CLIENT_OK_STACK = "okstack";
-    public static final String DEFAULT_KC_USERNAME = "admin";
-    public static final String DEFAULT_KC_PASSWORD = "okstar";
-
-    static String CONF_KEYCLOAK_GROUP   = "quarkus.keycloak.admin-client";
-
+    //Keycloak 用户名和密码
+    private static final String DEFAULT_KC_USERNAME = "admin";
+    private static final String DEFAULT_KC_PASSWORD = "okstar";
 
     @Inject
     SysSetKVMapper kvMapper;
 
-    void startup(@Observes StartupEvent event) {
-        initKeycloakConfig();
 
-        String realm = initRealm(REALM_OK_STAR);
+    @ConfigProperty(name = "quarkus.oidc.auth-server-url",
+            defaultValue = "http://localhost:18043/realms/okstar")
+    private String authServerUrl;
+    private String serverUrl;
+    private String realm;
+
+
+    @ConfigProperty(name = "quarkus.oidc.client-id",
+            defaultValue = "okstack")
+    private String clientId;
+
+    //配置组
+    private String confGroup;
+
+
+    void startup(@Observes StartupEvent event) {
+        try {
+            Log.infof("auth-server-url: %s", authServerUrl);
+            URI url = new URI(authServerUrl);
+
+            if (url.getPort() <= 0) {
+                serverUrl = url.getScheme()+"://"+url.getHost();
+            } else {
+                serverUrl = url.getScheme()+"://"+url.getHost()+":"+url.getPort();
+            }
+            Log.infof("server-url: %s", serverUrl);
+
+            String path = url.getPath();
+            if (OkStringUtil.isEmpty(path)) {
+                throw new IllegalArgumentException("Is invliad auth server url:" + authServerUrl);
+            }
+
+            //realms/okstar
+            String[] split = path.split("/");
+            if (split.length != 3 || OkStringUtil.isEmpty(split[2].trim())) {
+                throw new IllegalArgumentException("Is invliad auth server url:" + authServerUrl);
+            }
+
+            realm = split[2];
+            Log.infof("Using realm: %s", realm);
+
+        } catch (Exception e) {
+            throw new RuntimeException("Unable to resolve auth server url", e);
+        }
+
+        confGroup = realm + "/" + clientId + "-quarkus.keycloak.admin-client";
+        Log.debugf("Keycloak config prefix: %s", confGroup);
+
+        initKeycloakConfig();
+        String realm = initRealm(this.realm);
         Log.infof("Initialized realm=>%s", realm);
     }
 
@@ -108,7 +152,7 @@ public class SysKeycloakServiceImpl implements SysKeycloakService {
                 return null;
             }
             for (ClientRepresentation client : clients) {
-                if (client.getClientId().equals(CLIENT_OK_STACK)) {
+                if (client.getClientId().equals(this.clientId)) {
                     return client;
                 }
             }
@@ -148,7 +192,7 @@ public class SysKeycloakServiceImpl implements SysKeycloakService {
             realmRepresentation.setDisplayName(realm);
             realmRepresentation.setEnabled(true);
 
-            initClient(realmRepresentation, CLIENT_OK_STACK);
+            initClient(realmRepresentation, clientId);
 
             realms.create(realmRepresentation);
 
@@ -171,7 +215,7 @@ public class SysKeycloakServiceImpl implements SysKeycloakService {
 
     @Override
     public void clear() {
-        kvMapper.delete("grouping", CONF_KEYCLOAK_GROUP);
+        kvMapper.delete("grouping", confGroup);
     }
 
     /**
@@ -181,24 +225,24 @@ public class SysKeycloakServiceImpl implements SysKeycloakService {
      */
     @Override
     public void initKeycloakConfig() {
-        String serverUrlKey = CONF_KEYCLOAK_GROUP + ".server-url";
-        long serverUrl = kvMapper.find("k", serverUrlKey).count();
-        if (serverUrl <= 0) {
+        String serverUrlKey = confGroup + ".server-url";
+        long server = kvMapper.find("k", serverUrlKey).count();
+        if (server <= 0) {
             SysSetKv kv = SysSetKv.builder()
-                    .grouping(CONF_KEYCLOAK_GROUP)
+                    .grouping(confGroup)
                     .name("Authorization Server Url")
                     .k(serverUrlKey)
-                    .v("https://kc.okstar.org.cn")
+                    .v(serverUrl)
                     .comment("Keycloak server URL")
                     .build();
             kvMapper.persist(kv);
         }
 
-        String realmKey = CONF_KEYCLOAK_GROUP + ".realm";
+        String realmKey = confGroup + ".realm";
         long realm = kvMapper.find("k", realmKey).count();
         if (realm <= 0) {
             SysSetKv kv = SysSetKv.builder()
-                    .grouping(CONF_KEYCLOAK_GROUP)
+                    .grouping(confGroup)
                     .name("Realm")
                     .k(realmKey)
                     .v("master")
@@ -207,11 +251,11 @@ public class SysKeycloakServiceImpl implements SysKeycloakService {
             kvMapper.persist(kv);
         }
 
-        String clientIdKey = CONF_KEYCLOAK_GROUP + ".client-id";
+        String clientIdKey = confGroup + ".client-id";
         long clientId = kvMapper.find("k", clientIdKey).count();
         if (clientId <= 0) {
             SysSetKv kv = SysSetKv.builder()
-                    .grouping(CONF_KEYCLOAK_GROUP)
+                    .grouping(confGroup)
                     .name("Client Id")
                     .k(clientIdKey)
                     .v("admin-cli")
@@ -220,11 +264,11 @@ public class SysKeycloakServiceImpl implements SysKeycloakService {
             kvMapper.persist(kv);
         }
 
-        String usernameKey = CONF_KEYCLOAK_GROUP + ".username";
+        String usernameKey = confGroup + ".username";
         long username = kvMapper.find("k", usernameKey).count();
         if (username <= 0) {
             SysSetKv kv = SysSetKv.builder()
-                    .grouping(CONF_KEYCLOAK_GROUP)
+                    .grouping(confGroup)
                     .name("Username")
                     .k(usernameKey)
                     .v(DEFAULT_KC_USERNAME)
@@ -233,11 +277,11 @@ public class SysKeycloakServiceImpl implements SysKeycloakService {
             kvMapper.persist(kv);
         }
 
-        String passwordKey = CONF_KEYCLOAK_GROUP + ".password";
+        String passwordKey = confGroup + ".password";
         long pwd = kvMapper.find("k", passwordKey).count();
         if (pwd <= 0) {
             SysSetKv kv = SysSetKv.builder()
-                    .grouping(CONF_KEYCLOAK_GROUP)
+                    .grouping(confGroup)
                     .name("Password")
                     .k(passwordKey)
                     .v(DEFAULT_KC_PASSWORD)
@@ -247,11 +291,11 @@ public class SysKeycloakServiceImpl implements SysKeycloakService {
         }
 
         //为客户端生成的密码
-        String clientSecretKey = CONF_KEYCLOAK_GROUP + ".client-secret";
+        String clientSecretKey = confGroup + ".client-secret";
         long clientSecret = kvMapper.find("k", clientSecretKey).count();
         if (clientSecret <= 0) {
             SysSetKv kv = SysSetKv.builder()
-                    .grouping(CONF_KEYCLOAK_GROUP)
+                    .grouping(confGroup)
                     .name("Client Secret")
                     .k(clientSecretKey)
                     .v(OkIdUtils.makeUuid())
@@ -273,28 +317,28 @@ public class SysKeycloakServiceImpl implements SysKeycloakService {
 
 
     public Optional<String> getClientSecret() {
-        String clientSecretKey = CONF_KEYCLOAK_GROUP + ".client-secret";
+        String clientSecretKey = confGroup + ".client-secret";
         return kvMapper.find("k", clientSecretKey).stream()
                 .map(e -> e.getV())
                 .findFirst();
     }
 
     public SysKeycloakConfDTO getOidcConfig() {
-        var list = kvMapper.find("grouping", CONF_KEYCLOAK_GROUP).list();
+        var list = kvMapper.find("grouping", confGroup).list();
         if (list.isEmpty()) {
             return null;
         }
 
         SysKeycloakConfDTO dto = new SysKeycloakConfDTO();
-        dto.setRealm(REALM_OK_STAR);
-        dto.setClientId(CLIENT_OK_STACK);
+        dto.setRealm(realm);
+        dto.setClientId(clientId);
 
         for (SysSetKv item : list) {
             if (item.getV() == null)
                 continue;
-            if (OkStringUtil.equals(item.getK(), CONF_KEYCLOAK_GROUP + ".server-url")) {
+            if (OkStringUtil.equals(item.getK(), confGroup + ".server-url")) {
                 dto.setAuthServerUrl(item.getV());
-            } else if (OkStringUtil.equals(item.getK(), CONF_KEYCLOAK_GROUP + ".client-secret")) {
+            } else if (OkStringUtil.equals(item.getK(), confGroup + ".client-secret")) {
                 dto.setClientSecret(item.getV());
             }
         }
@@ -303,14 +347,14 @@ public class SysKeycloakServiceImpl implements SysKeycloakService {
 
     @Override
     public UsersResource getUsersResource(Keycloak keycloak) {
-        RealmResource realm = keycloak.realms().realm(REALM_OK_STAR);
+        RealmResource realm = keycloak.realms().realm(this.realm);
         return realm.users();
 
     }
 
     @Override
     public Keycloak openKeycloak() {
-        var list = kvMapper.find("grouping", CONF_KEYCLOAK_GROUP).list();
+        var list = kvMapper.find("grouping", confGroup).list();
         if (list.isEmpty()) {
             return null;
         }
@@ -318,15 +362,15 @@ public class SysKeycloakServiceImpl implements SysKeycloakService {
         for (SysSetKv item : list) {
             if (item.getV() == null)
                 continue;
-            if (OkStringUtil.equals(item.getK(), CONF_KEYCLOAK_GROUP + ".server-url")) {
+            if (OkStringUtil.equals(item.getK(), confGroup + ".server-url")) {
                 builder.serverUrl(item.getV());
-            } else if (OkStringUtil.equals(item.getK(), CONF_KEYCLOAK_GROUP + ".username")) {
+            } else if (OkStringUtil.equals(item.getK(), confGroup + ".username")) {
                 builder.username(item.getV());
-            } else if (OkStringUtil.equals(item.getK(), CONF_KEYCLOAK_GROUP + ".password")) {
+            } else if (OkStringUtil.equals(item.getK(), confGroup + ".password")) {
                 builder.password(item.getV());
-            } else if (OkStringUtil.equals(item.getK(), CONF_KEYCLOAK_GROUP + ".realm")) {
+            } else if (OkStringUtil.equals(item.getK(), confGroup + ".realm")) {
                 builder.realm(item.getV());
-            } else if (OkStringUtil.equals(item.getK(), CONF_KEYCLOAK_GROUP + ".client-id")) {
+            } else if (OkStringUtil.equals(item.getK(), confGroup + ".client-id")) {
                 builder.clientId(item.getV());
             }
         }

@@ -86,7 +86,7 @@ public class MeResource {
         ex.setStateCert(org0.getCert());
 
         String cert = channel.registerCitizen(ex);
-        Log.infof("Account cert=>", cert);
+        Log.infof("Account cert=>%s", cert);
         if (cert != null) {
             sysAccountRpc.setCert(account0.getId(), cert);
         }

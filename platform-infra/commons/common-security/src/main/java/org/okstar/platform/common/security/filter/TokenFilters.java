@@ -44,9 +44,11 @@ public class TokenFilters {
         Log.infof("jwt: %s", jwt);
         String username = jwt.getName();
         if (OkStringUtil.isEmpty(username)) {
+            Log.warnf("Access denied!");
             rc.fail(HttpResponseStatus.FORBIDDEN.code());
             return;
         }
+
         Log.infof("username:%s", username);
         rc.put(SystemDefines.Header_X_OK_username, username);
         rc.next();

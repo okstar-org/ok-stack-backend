@@ -53,7 +53,6 @@ public class KeycloakUserManager implements BackUserManager {
     public void resetPassword(String username, String password) {
         Log.infof("Reset password for user:%s", username);
         try (Keycloak keycloak = keycloakService.openKeycloak()) {
-
             UsersResource usersResource = keycloakService.getUsersResource(keycloak);
             setPassword(usersResource, username, password);
         }
@@ -113,7 +112,6 @@ public class KeycloakUserManager implements BackUserManager {
     public BackUser addUser(BackUser user) {
         Log.infof("Add user:%s", user.getUsername());
         try (Keycloak keycloak = keycloakService.openKeycloak()) {
-
             UsersResource usersResource = keycloakService.getUsersResource(keycloak);
             try {
                 var response = usersResource.create(toRepresent(user));

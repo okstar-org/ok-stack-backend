@@ -72,7 +72,7 @@
 
     <profiles>
         <profile>
-            <id>dev</id>
+            <id>local</id>
             <properties>
                 <quarkus.datasource.db-kind>mariadb</quarkus.datasource.db-kind>
                 <quarkus.datasource.username>root</quarkus.datasource.username>
@@ -81,18 +81,20 @@
                 <quarkus.datasource.jdbc.driver>org.mariadb.jdbc.Driver</quarkus.datasource.jdbc.driver>
                 <quarkus.hibernate-orm.dialect>org.hibernate.dialect.MariaDBDialect</quarkus.hibernate-orm.dialect>
                 <quarkus.oidc.auth-server-url>https://kc.localhost:18443/realms/okstar</quarkus.oidc.auth-server-url>
+                <quarkus.oidc.client-id>okstack</quarkus.oidc.client-id>
             </properties>
         </profile>
 
         <profile>
-            <id>dev-okstar</id>
+            <id>dev</id>
             <activation>
                 <activeByDefault>true</activeByDefault>
                 <property>
-                    <name>dev-okstar</name>
+                    <name>dev</name>
                 </property>
             </activation>
             <properties>
+                <quarkus.profile>dev</quarkus.profile>
                 <quarkus.datasource.db-kind>mariadb</quarkus.datasource.db-kind>
                 <quarkus.datasource.username>okstar</quarkus.datasource.username>
                 <quarkus.datasource.password>Encrypt=>YOzFYCG4evdiWnDP8vGdLw==</quarkus.datasource.password>
@@ -101,20 +103,7 @@
                 <quarkus.datasource.jdbc.driver>org.mariadb.jdbc.Driver</quarkus.datasource.jdbc.driver>
                 <quarkus.hibernate-orm.dialect>org.hibernate.dialect.MariaDBDialect</quarkus.hibernate-orm.dialect>
                 <quarkus.oidc.auth-server-url>https://kc.okstar.org.cn/realms/okstar</quarkus.oidc.auth-server-url>
-            </properties>
-        </profile>
-
-        <profile>
-            <id>ccfoj</id>
-            <properties>
-                <quarkus.datasource.db-kind>mariadb</quarkus.datasource.db-kind>
-                <quarkus.datasource.username>root</quarkus.datasource.username>
-                <quarkus.datasource.password>okstar</quarkus.datasource.password>
-                <quarkus.datasource.jdbc.url>jdbc:mariadb://meet.ccfoj.com:13306</quarkus.datasource.jdbc.url>
-                <quarkus.datasource.jdbc.args>autoReconnect=true&amp;connectTimeout=60000&amp;socketTimeout=50000</quarkus.datasource.jdbc.args>
-                <quarkus.datasource.jdbc.driver>org.mariadb.jdbc.Driver</quarkus.datasource.jdbc.driver>
-                <quarkus.hibernate-orm.dialect>org.hibernate.dialect.MariaDBDialect</quarkus.hibernate-orm.dialect>
-                <quarkus.oidc.auth-server-url>https://kc.ccfoj.com:18443/realms/okstar</quarkus.oidc.auth-server-url>
+                <quarkus.oidc.client-id>okstack</quarkus.oidc.client-id>
             </properties>
         </profile>
 
@@ -137,6 +126,12 @@
             <groupId>io.quarkus</groupId>
             <artifactId>quarkus-junit5</artifactId>
             <scope>test</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.slf4j</groupId>
+                    <artifactId>slf4j-api</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
 
 <!--        <dependency>-->
@@ -226,18 +221,6 @@
                 <groupId>com.alibaba.fastjson2</groupId>
                 <artifactId>fastjson2</artifactId>
                 <version>2.0.20.graal</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.slf4j</groupId>
-                <artifactId>slf4j-api</artifactId>
-                <version>1.7.36</version>
-            </dependency>
-
-            <dependency>
-                <groupId>ch.qos.logback</groupId>
-                <artifactId>logback-classic</artifactId>
-                <version>1.2.11</version>
             </dependency>
 
             <dependency>

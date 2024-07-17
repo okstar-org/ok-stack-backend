@@ -33,11 +33,9 @@ import java.util.Map;
 
 @ApplicationScoped
 class AuthzClientManagerImpl implements AuthzClientManager {
-//    @Inject
+
     AuthzClient authzClient;
 
-//    @Inject
-//    OidcClient oidcClient;
     @Inject
     @RestClient
     SysKeycloakRpc sysKeycloakRpc;
