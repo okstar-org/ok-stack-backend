@@ -6,7 +6,7 @@ permissions:
 
 on:
   push:
-    branches: [ "develop-ci" ]
+    branches: [ "develop" ]
     tags:
       - "v*.*.*"
   pull_request:
