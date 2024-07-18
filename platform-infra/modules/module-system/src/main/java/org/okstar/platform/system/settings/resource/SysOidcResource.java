@@ -29,7 +29,7 @@ public class SysOidcResource extends BaseResource {
     @GET
     @Path("test")
     public Res<String> test() {
-        String tested = oidcService.testKeycloakConfig();
+        String tested = oidcService.testConfig();
         return Res.ok(tested);
     }
 }

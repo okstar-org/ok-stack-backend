@@ -102,8 +102,8 @@
                 <quarkus.datasource.jdbc.args>autoReconnect=true&amp;connectTimeout=60000&amp;socketTimeout=50000</quarkus.datasource.jdbc.args>
                 <quarkus.datasource.jdbc.driver>org.mariadb.jdbc.Driver</quarkus.datasource.jdbc.driver>
                 <quarkus.hibernate-orm.dialect>org.hibernate.dialect.MariaDBDialect</quarkus.hibernate-orm.dialect>
-                <quarkus.oidc.auth-server-url>https://kc.okstar.org.cn/realms/okstar</quarkus.oidc.auth-server-url>
-                <quarkus.oidc.client-id>okstack</quarkus.oidc.client-id>
+                <quarkus.oidc.auth-server-url>https://kc.okstar.org.cn/realms/ok-star</quarkus.oidc.auth-server-url>
+                <quarkus.oidc.client-id>ok-stack</quarkus.oidc.client-id>
             </properties>
         </profile>
 

@@ -29,11 +29,11 @@ public interface SysKeycloakService {
 
     List<String> listRealms();
 
-    void removeRealm(String realm);
+    void removeRealm();
 
-    String initRealm(String realm);
+    String initRealm();
 
-    void clear();
+    void clearConfig();
 
     void initKeycloakConfig();
 
@@ -45,7 +45,11 @@ public interface SysKeycloakService {
      */
     Keycloak openKeycloak();
 
-    String testKeycloakConfig();
+    /**
+     * 测试配置可用性
+     * @return
+     */
+    String testConfig();
 
     SysKeycloakConfDTO getOidcConfig();
 }

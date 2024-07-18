@@ -32,6 +32,7 @@ sudo dnf update
 - Redhat系，推荐使用 Podman 替代 参考：https://podman.io/docs/installation
 - Debian: apt install docker.io
 - Ubuntu: apt install docker.io 或者 snap install docker
+> 记得配置阿里云容器镜像加速,上云的主机请配置自家加速.
 
 ### 安装 Git
 ```shell
@@ -96,10 +97,10 @@ MYSQL_ROOT_PASSWORD=okstar
 - KEYCLOAK_ADMIN_PASSWORD=okstar
 
 # 拉取镜像
-docker pull mirror.ccs.tencentyun.com/library/mariadb:10.6.15
-docker pull mirror.ccs.tencentyun.com/keycloak/keycloak:latest
-docker pull mirror.ccs.tencentyun.com/library/nginx
-docker pull mirror.ccs.tencentyun.com/library/maven
+docker pull mariadb:10.6.15
+docker pull keycloak:latest
+docker pull nginx
+docker pull maven
 
 # 启动依赖服务
 docker-compose up -d #docker
@@ -108,76 +109,16 @@ podman-compose up -d #podman
 
 ### 配置Keycloak服务
 - 登录：https://localhost:18443/admin/
-- 输入帐号：admin,okstar登录
-- 到左上角，新建 `okstar` ream
-- 创建Client `okstack`
-```text
-======>General Settings<=========
-Client Type *: OpenID Client
-Client ID * : okstack
-Name        : OkStack
-
-======>Capability config<=========
-Client authentication: ON
-Authentication flow: ON [Standard flow]  ON [Direct access grants]
-
-======>Access settings<=========
-Root URL:   http://localhost:9100
-Home URL:   http://localhost:9100/q/swagger-ui/
-Valid redirect URIs: *
-Valid post logout redirect URIs:    http://localhost:9100/q/swagger-ui/
-Admin URL:  http://localhost:9100
+- 输入帐号: `admin` 密码: `okstar` 登录后台.
+- 到左上角，选择: `okstar`或者`ok-star`ream
+- 到client列表, 选择`okstack`或者`ok-stack`
+- 点击`Authorization`菜单
+- 找到`Default Resource`,点击`Create permission
+```shell
+Name      : Default Permissions
+Policies  : Default Policy
+Decision strategy: Unanimous
 ```
-- 第三个Tab [credentials]
-```text
-Client Authenticator：Client Id and Secret 
-Client Secret：点击复制和保存 (保留后续配置到项目) 
-```
-- 点击左下角  `User Federation`，选择增加`LDAP`
-> General options
-```text
-UI display name *   :ldap 
-Vendor *            :Other
-```
-> Connection and authentication settings
-```text
-Connection URL *    :ldap://apacheds:10389
-Connection pooling  :On
-Connection timeout  :10000
-Bind type *         :simple
-Bind DN *           :uid=admin,ou=system
-Bind credentials *  :secret
-
-# 可以点击Test测试是否成功
-```
-> LDAP searching and updating
-```text
-Edit mode *                 :WRITABLE
-Users DN *                  :ou=users,dc=okstar,dc=org
-Username LDAP attribute *   :uid
-RDN LDAP attribute *        :uid
-UUID LDAP attribute *   :entryUUID
-User object classes *   :inetOrgPerson, organizationalPerson
-Search scope        :Subtree
-Read timeout        :10000
-Pagination          :On
-```
-
-> Synchronization settings
-```text
-Import users        :On
-Sync Registrations  :On
-Periodic full sync  :On
-Full sync period    :604800
-Periodic changed users sync :On
-Changed users sync period   :604800
-```
-点击`保存`完成操作
-
-- 右下角`Authentication`
-  - 第二个tab`Requried actions`
-  - 关闭`Verify Profile`
-
 - 点击`Save`保存
 至此，Keycloak认证服务器则配置完成
 

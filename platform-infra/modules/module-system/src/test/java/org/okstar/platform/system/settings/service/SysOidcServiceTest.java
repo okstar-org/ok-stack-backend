@@ -29,15 +29,22 @@ class SysOidcServiceTest {
 
     @Test
     void testKeycloakConfig() {
-        String tested = sysKeycloakService.testKeycloakConfig();
+        String tested = sysKeycloakService.testConfig();
         System.out.println(tested);
         assertNotNull(tested);
     }
 
     @Test
-    void clear() {
-        sysKeycloakService.clear();
+    void clearConfig() {
+        sysKeycloakService.clearConfig();
     }
+
+    @Test
+    void initRealm() {
+        String test = sysKeycloakService.initRealm();
+        assertNotNull(test);
+    }
+
 
     @Test
     void listRealms(){
@@ -48,14 +55,9 @@ class SysOidcServiceTest {
 
     @Test
     void removeRealm() {
-        sysKeycloakService.removeRealm("test");
+        sysKeycloakService.removeRealm();
     }
 
-    @Test
-    void initRealm() {
-        String test = sysKeycloakService.initRealm("test");
-        assertNotNull(test);
-    }
 
 
 }

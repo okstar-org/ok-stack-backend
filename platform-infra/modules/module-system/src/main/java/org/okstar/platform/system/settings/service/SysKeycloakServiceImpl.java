@@ -13,6 +13,8 @@
 
 package org.okstar.platform.system.settings.service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.quarkus.logging.Log;
 import io.quarkus.runtime.StartupEvent;
 import jakarta.enterprise.context.ApplicationScoped;
@@ -28,6 +30,7 @@ import org.keycloak.admin.client.resource.RealmsResource;
 import org.keycloak.admin.client.resource.UsersResource;
 import org.keycloak.representations.idm.ClientRepresentation;
 import org.keycloak.representations.idm.RealmRepresentation;
+import org.keycloak.representations.idm.authorization.*;
 import org.okstar.platform.common.core.utils.OkAssert;
 import org.okstar.platform.common.core.utils.OkIdUtils;
 import org.okstar.platform.common.core.utils.OkStringUtil;
@@ -37,7 +40,9 @@ import org.okstar.platform.system.settings.mapper.SysSetKVMapper;
 
 import java.net.URI;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 
 @Transactional
 @ApplicationScoped
@@ -61,6 +66,9 @@ public class SysKeycloakServiceImpl implements SysKeycloakService {
             defaultValue = "okstack")
     private String clientId;
 
+    @Inject
+    ObjectMapper objectMapper;
+
     //配置组
     private String confGroup;
 
@@ -71,9 +79,9 @@ public class SysKeycloakServiceImpl implements SysKeycloakService {
             URI url = new URI(authServerUrl);
 
             if (url.getPort() <= 0) {
-                serverUrl = url.getScheme()+"://"+url.getHost();
+                serverUrl = url.getScheme() + "://" + url.getHost();
             } else {
-                serverUrl = url.getScheme()+"://"+url.getHost()+":"+url.getPort();
+                serverUrl = url.getScheme() + "://" + url.getHost() + ":" + url.getPort();
             }
             Log.infof("server-url: %s", serverUrl);
 
@@ -99,7 +107,7 @@ public class SysKeycloakServiceImpl implements SysKeycloakService {
         Log.debugf("Keycloak config prefix: %s", confGroup);
 
         initKeycloakConfig();
-        String realm = initRealm(this.realm);
+        String realm = initRealm();
         Log.infof("Initialized realm=>%s", realm);
     }
 
@@ -135,6 +143,33 @@ public class SysKeycloakServiceImpl implements SysKeycloakService {
         clientRepresentation.setDirectGrantsOnly(true);
         clientRepresentation.setDirectAccessGrantsEnabled(true);
 
+        ResourceServerRepresentation authorization = new ResourceServerRepresentation();
+        authorization.setName(clientId + "-authorization");
+//        authorization.setClientId(clientId);
+        authorization.setDecisionStrategy(DecisionStrategy.UNANIMOUS);
+        authorization.setPolicyEnforcementMode(PolicyEnforcementMode.ENFORCING);
+        authorization.setAllowRemoteResourceManagement(true);
+
+        ResourceRepresentation res = new ResourceRepresentation();
+        res.setName("Default Resource");
+        res.setDisplayName("Default Resource");
+        res.setUris(Set.of("/*"));
+        res.setType("urn:%s:resources:default".formatted(clientId));
+        authorization.setResources(List.of(res));
+
+        PolicyRepresentation policy = new PolicyRepresentation();
+        policy.setName("Default Policy");
+        policy.setType("client");
+        try {
+            policy.setConfig(Map.of("clients", objectMapper.writeValueAsString(Set.of(clientId))));
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
+
+        policy.setLogic(Logic.POSITIVE);
+        authorization.setPolicies(List.of(policy));
+        clientRepresentation.setAuthorizationSettings(authorization);
+
         realm.setClients(List.of(clientRepresentation));
         Log.infof("Initialized client: %s", clientId);
     }
@@ -169,7 +204,7 @@ public class SysKeycloakServiceImpl implements SysKeycloakService {
     }
 
     @Override
-    public void removeRealm(String realm) {
+    public void removeRealm() {
         try (Keycloak kc = openKeycloak()) {
             RealmsResource realms = kc.realms();
             realms.realm(realm).remove();
@@ -177,7 +212,7 @@ public class SysKeycloakServiceImpl implements SysKeycloakService {
     }
 
     @Override
-    public String initRealm(String realm) {
+    public String initRealm() {
         Log.infof("Initialize realm: %s", realm);
         try (Keycloak kc = openKeycloak()) {
             RealmsResource realms = kc.realms();
@@ -194,6 +229,7 @@ public class SysKeycloakServiceImpl implements SysKeycloakService {
 
             initClient(realmRepresentation, clientId);
 
+            // 创建realm
             realms.create(realmRepresentation);
 
             Log.infof("Created realm: %s", realmRepresentation.getRealm());
@@ -214,7 +250,7 @@ public class SysKeycloakServiceImpl implements SysKeycloakService {
 
 
     @Override
-    public void clear() {
+    public void clearConfig() {
         kvMapper.delete("grouping", confGroup);
     }
 
@@ -307,7 +343,7 @@ public class SysKeycloakServiceImpl implements SysKeycloakService {
 
 
     @Override
-    public String testKeycloakConfig() {
+    public String testConfig() {
         Log.info("Test OIDC config");
         try (var kc = openKeycloak()) {
             if (kc == null) return null;
