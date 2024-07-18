@@ -13,10 +13,11 @@
 
 package org.okstar.platform.org.service;
 
+import io.quarkus.test.junit.QuarkusTest;
 import jakarta.inject.Inject;
 import org.junit.jupiter.api.Test;
 
-//@QuarkusTest
+@QuarkusTest
 class OrgDeptServiceImplTest {
 
     @Inject
