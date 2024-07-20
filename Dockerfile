@@ -1,4 +1,4 @@
-FROM openjdk:17-jre
+FROM eclipse-temurin:17-jre
 
 ENV OK_STAR_USER=okstar \
     OK_STACK_DIR=/home/okstar/ok-stack  \
