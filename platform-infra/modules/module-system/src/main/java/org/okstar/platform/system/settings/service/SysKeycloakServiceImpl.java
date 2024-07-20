@@ -36,6 +36,7 @@ import org.okstar.platform.common.core.utils.OkIdUtils;
 import org.okstar.platform.common.core.utils.OkStringUtil;
 import org.okstar.platform.system.kv.rpc.SysKeycloakConfDTO;
 import org.okstar.platform.system.settings.domain.SysSetKv;
+import org.okstar.platform.system.settings.domain.SysSetKv_;
 import org.okstar.platform.system.settings.mapper.SysSetKVMapper;
 
 import java.net.URI;
@@ -251,7 +252,7 @@ public class SysKeycloakServiceImpl implements SysKeycloakService {
 
     @Override
     public void clearConfig() {
-        kvMapper.delete("grouping", confGroup);
+        kvMapper.delete(SysSetKv_.GROUPING, confGroup);
     }
 
     /**
@@ -360,7 +361,7 @@ public class SysKeycloakServiceImpl implements SysKeycloakService {
     }
 
     public SysKeycloakConfDTO getOidcConfig() {
-        var list = kvMapper.find("grouping", confGroup).list();
+        var list = kvMapper.find(SysSetKv_.GROUPING, confGroup).list();
         if (list.isEmpty()) {
             return null;
         }
@@ -390,7 +391,7 @@ public class SysKeycloakServiceImpl implements SysKeycloakService {
 
     @Override
     public Keycloak openKeycloak() {
-        var list = kvMapper.find("grouping", confGroup).list();
+        var list = kvMapper.find(SysSetKv_.GROUPING, confGroup).list();
         if (list.isEmpty()) {
             return null;
         }
