@@ -21,6 +21,6 @@ RUN rm -f ${OK_STAR_DIIR}/ok-stack-assembly.tar.gz
 LABEL maintainer="cto@chuanshaninfo.com"
 WORKDIR ${OK_STACK_DIR}
 
-EXPOSE 80 10389 8043 8443 9000 9100 9200 9300 9400
+EXPOSE 9000 9100 9200 9300 9400
 VOLUME ["${OK_STAR_DATA_DIR}"]
 ENTRYPOINT [ "/sbin/entrypoint.sh" ]
