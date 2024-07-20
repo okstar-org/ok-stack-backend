@@ -1,8 +1,8 @@
 FROM openjdk:17-jre
 
 ENV OK_STAR_USER=okstar \
-    OK_STACK_DIR=/home/okstar/ok-stack
-    OK_STAR_DIIR=/home/okstar
+    OK_STACK_DIR=/home/okstar/ok-stack  \
+    OK_STAR_DIIR=/home/okstar   \
     OK_STAR_DATA_DIR=/home/okstar/ok-stack
 
 RUN apt-get update -qq \
