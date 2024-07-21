@@ -41,7 +41,7 @@ fi
 
 PIDS=()
 MODULES=("module-system" "module-org" "module-auth" "module-chat" "module-billing")
-for item in "${MODULES[@]}"
+for item in ${MODULES[@]}
 do
 #  start-stop-daemon --start --background --exec /path/to/daemon --pidfile /var/run/daemon.pid
     echo "The $item is starting."
@@ -53,7 +53,7 @@ do
 done
 
 APPS=("app-open")
-for item in "${APPS[@]}"
+for item in ${APPS[@]}
 do
     echo "The $item is starting."
     nohup java -jar $BASE_DIR/app/$item/quarkus-run.jar ${EXTRA_ARGS} &
@@ -62,7 +62,11 @@ do
     echo "The $item is startup successfully=>[$PID]"
 done
 
-echo "Wait for process: ${PIDS[@]}"
-wait -p -n ${PIDS[@]}
+echo "OkStack process pid is: ${PIDS[@]}"
+for pid in ${PIDS[@]} ; do
+  echo "Wait for process $pid"
+  wait $pid
+  echo "Process:$pid is exiting."
+done
 
 echo "OkStack Server has been exit."
