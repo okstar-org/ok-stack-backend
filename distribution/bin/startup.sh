@@ -10,7 +10,7 @@ echo "Start nginx=>$?"
 
 daemon=0
 # 使用 getopts 解析选项
-while getopts "d:" opt; do
+while getopts "d" opt; do
   case $opt in
     d)
       daemon=1
@@ -45,7 +45,7 @@ for item in ${MODULES[@]}
 do
 #  start-stop-daemon --start --background --exec /path/to/daemon --pidfile /var/run/daemon.pid
     echo "The $item is starting."
-    nohup java -jar $BASE_DIR/infra/$item/quarkus-run.jar ${EXTRA_ARGS} &
+    nohup java -jar $BASE_DIR/infra/$item/quarkus-run.jar ${EXTRA_ARGS} &>/dev/null &
     PID=$!
     PIDS+="$PID "
     echo "The $item is startup successfully=>[$PID]"
@@ -56,17 +56,19 @@ APPS=("app-open")
 for item in ${APPS[@]}
 do
     echo "The $item is starting."
-    nohup java -jar $BASE_DIR/app/$item/quarkus-run.jar ${EXTRA_ARGS} &
+    nohup java -jar $BASE_DIR/app/$item/quarkus-run.jar ${EXTRA_ARGS} &>/dev/null &
     PID=$!
     PIDS+="$PID "
     echo "The $item is startup successfully=>[$PID]"
 done
 
 echo "OkStack process pid is: ${PIDS[@]}"
-for pid in ${PIDS[@]} ; do
-  echo "Wait for process $pid"
-  wait $pid
-  echo "Process:$pid is exiting."
-done
 
-echo "OkStack Server has been exit."
+if [ $daemon -eq 0 ]; then
+  for pid in ${PIDS[@]} ; do
+    echo "Wait for process $pid"
+    wait $pid
+    echo "Process:$pid is exiting."
+  done
+  echo "OkStack Server has been exit."
+fi
