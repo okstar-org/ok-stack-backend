@@ -29,7 +29,7 @@ import lombok.Data;
  */
 @Data
 @Builder
-public class SignInResult {
+public class AuthorizationResult {
     //tokenType："Bearer"
     protected String tokenType;
     protected String accessToken;

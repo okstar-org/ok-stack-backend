@@ -24,9 +24,9 @@ public interface PassportService {
 
     void signDown(Long accountId);
 
-    SignInResult signIn(SignInForm signInForm);
+    AuthorizationResult signIn(SignInForm signInForm);
 
-    SignInResult refresh(String refreshToken);
+    AuthorizationResult refresh(String refreshToken);
 
     void signOut(String accessToken);
 

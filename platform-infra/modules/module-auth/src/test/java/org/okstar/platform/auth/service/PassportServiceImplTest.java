@@ -22,7 +22,7 @@ import org.junit.jupiter.api.Test;
 import org.okstar.platform.common.core.defined.AccountDefines;
 import org.okstar.platform.common.core.utils.OkIdUtils;
 import org.okstar.platform.system.sign.SignInForm;
-import org.okstar.platform.system.sign.SignInResult;
+import org.okstar.platform.system.sign.AuthorizationResult;
 import org.okstar.platform.system.sign.SignUpForm;
 import org.okstar.platform.system.sign.SignUpResult;
 
@@ -66,7 +66,7 @@ class PassportServiceImplTest {
         form.setGrantType("password");
         form.setAccount("18910221510");
         form.setPassword("123456");
-        SignInResult result = passportService.signIn(form);
+        AuthorizationResult result = passportService.signIn(form);
         Log.infof("result=>%s", result);
         Assert.assertNotNull(result);
     }

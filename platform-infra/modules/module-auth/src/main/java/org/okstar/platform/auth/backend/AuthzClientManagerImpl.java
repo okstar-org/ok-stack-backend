@@ -14,7 +14,17 @@
 package org.okstar.platform.auth.backend;
 
 import io.quarkus.logging.Log;
+import io.quarkus.oidc.client.OidcClient;
+import io.quarkus.oidc.client.OidcClientConfig;
+import io.quarkus.oidc.client.OidcClients;
+import io.quarkus.oidc.client.Tokens;
+import io.quarkus.oidc.client.runtime.OidcClientRecorder;
+import io.quarkus.oidc.client.runtime.OidcClientsConfig;
+import io.quarkus.oidc.common.runtime.OidcCommonConfig;
 import io.quarkus.runtime.StartupEvent;
+import io.quarkus.runtime.TlsConfig;
+import io.smallrye.mutiny.Uni;
+import io.vertx.core.Vertx;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.event.Observes;
 import jakarta.inject.Inject;
@@ -25,26 +35,31 @@ import org.keycloak.authorization.client.util.HttpResponseException;
 import org.keycloak.representations.idm.authorization.AuthorizationRequest;
 import org.okstar.platform.common.core.exception.OkRuntimeException;
 import org.okstar.platform.common.core.utils.OkAssert;
+import org.okstar.platform.common.core.utils.OkDateUtils;
 import org.okstar.platform.system.kv.rpc.SysKeycloakConfDTO;
 import org.okstar.platform.system.kv.rpc.SysKeycloakRpc;
-import org.okstar.platform.system.sign.SignInResult;
+import org.okstar.platform.system.sign.AuthorizationResult;
 
 import java.util.Map;
+import java.util.concurrent.ExecutionException;
 
 @ApplicationScoped
 class AuthzClientManagerImpl implements AuthzClientManager {
 
-    AuthzClient authzClient;
+    @Inject
+    Vertx vertx;
 
     @Inject
     @RestClient
     SysKeycloakRpc sysKeycloakRpc;
 
+    OidcClient oidcClient;
+
+    AuthzClient authzClient;
 
     /**
      * 2.初始化oidcClient
      */
-
     public void startup(@Observes StartupEvent event){
 
         SysKeycloakConfDTO conf = sysKeycloakRpc.getKeycloakConf();
@@ -58,17 +73,37 @@ class AuthzClientManagerImpl implements AuthzClientManager {
                 null
         );
         authzClient = AuthzClient.create(configuration);
+
+        OidcClientConfig cc = new OidcClientConfig();
+        cc.setClientId(conf.getClientId());
+        cc.setAuthServerUrl(conf.getAuthServerUrl()+"/realms/"+conf.getRealm());
+
+        OidcCommonConfig.Credentials credentials = new OidcCommonConfig.Credentials();
+        credentials.clientSecret.setValue(conf.getClientSecret());
+        cc.setCredentials(credentials);
+
+        OidcClientRecorder recorder = new OidcClientRecorder();
+        TlsConfig tls = new TlsConfig();
+        tls.trustAll=true;
+        OidcClientsConfig csc = new OidcClientsConfig();
+        csc.defaultClient = cc;
+        csc.namedClients=Map.of();
+
+        OidcClients oidcClients = recorder.setup(csc, tls, () -> vertx);
+       oidcClient= oidcClients.getClient();
+
+
     }
 
 
     @Override
-    public SignInResult authorization(String username, String password) {
+    public AuthorizationResult authorization(String username, String password) {
         OkAssert.hasText(username, "username is empty");
         OkAssert.hasText(password, "password is empty");
         AuthorizationRequest request = new AuthorizationRequest();
         try {
             var response = authzClient.authorization(username.toLowerCase(), password).authorize(request);
-            return SignInResult.builder()
+            return AuthorizationResult.builder()
                     .session_state(response.getSessionState())
                     .accessToken(response.getToken())
                     .tokenType(response.getTokenType())
@@ -89,34 +124,35 @@ class AuthzClientManagerImpl implements AuthzClientManager {
     }
 
     @Override
-    public SignInResult refresh(String refreshToken) {
-//        Uni<Tokens> uni = oidcClient.refreshTokens(refreshToken);
-//        try {
-//            Tokens tokens = uni.subscribeAsCompletionStage().get();
-//            long expiresIn = (tokens.getAccessTokenExpiresAt() * 1000 - OkDateUtils.getTime()) / 1000;
-//            return SignInResult.builder()
-//                    .accessToken(tokens.getAccessToken())
-//                    .expiresIn(expiresIn)
-//                    .refreshToken(tokens.getRefreshToken())
-//                    .refreshExpiresIn(tokens.getRefreshTokenTimeSkew())
-//                    .build();
-//        } catch (InterruptedException | ExecutionException e) {
-//            throw new RuntimeException(e);
-//        }
-        return null;
+    public AuthorizationResult refresh(String refreshToken) {
+        Log.infof("refresh:%s", refreshToken);
+        Uni<Tokens> uni = oidcClient.refreshTokens(refreshToken);
+        try {
+            Tokens tokens = uni.subscribeAsCompletionStage().get();
+            long expiresIn = (tokens.getAccessTokenExpiresAt() * 1000 - OkDateUtils.getTime()) / 1000;
+            return AuthorizationResult.builder()
+                    .accessToken(tokens.getAccessToken())
+                    .expiresIn(expiresIn)
+                    .refreshToken(tokens.getRefreshToken())
+                    .refreshExpiresIn(tokens.getRefreshTokenTimeSkew())
+                    .build();
+        } catch (InterruptedException | ExecutionException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
-    public void revoke(String accessToken) {
-//        Log.infof("Revoke access token:%s", accessToken);
-//        Uni<Boolean> uni = oidcClient.revokeAccessToken(accessToken);
-//        try {
-//            Boolean aBoolean = uni.subscribe().asCompletionStage().get();
-//            Log.infof("revoke:%s=>%s", accessToken, aBoolean);
-//        } catch (InterruptedException e) {
-//            throw new RuntimeException(e);
-//        } catch (ExecutionException e) {
-//            throw new RuntimeException(e);
-//        }
+    public Boolean revoke(String accessToken) {
+        Log.infof("Revoke access token:%s", accessToken);
+        Uni<Boolean> uni = oidcClient.revokeAccessToken(accessToken);
+        try {
+            Boolean aBoolean = uni.subscribe().asCompletionStage().get();
+            Log.infof("revoke:%s=>%s", accessToken, aBoolean);
+            return aBoolean;
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        } catch (ExecutionException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

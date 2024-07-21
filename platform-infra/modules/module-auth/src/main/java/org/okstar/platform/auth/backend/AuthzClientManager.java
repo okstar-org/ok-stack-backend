@@ -13,13 +13,13 @@
 
 package org.okstar.platform.auth.backend;
 
-import org.okstar.platform.system.sign.SignInResult;
+import org.okstar.platform.system.sign.AuthorizationResult;
 
 public interface AuthzClientManager {
 
-    SignInResult authorization(String username, String password);
+    AuthorizationResult authorization(String username, String password);
 
-    SignInResult refresh(String refreshToken);
+    AuthorizationResult refresh(String refreshToken);
 
-    void revoke(String accessToken);
+    Boolean revoke(String accessToken);
 }

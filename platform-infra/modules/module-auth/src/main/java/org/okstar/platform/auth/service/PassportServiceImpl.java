@@ -112,7 +112,7 @@ public class PassportServiceImpl implements PassportService {
     }
 
     @Override
-    public SignInResult signIn(SignInForm signInForm) {
+    public AuthorizationResult signIn(SignInForm signInForm) {
         Log.infof("signIn:%s", signInForm);
         String account = signInForm.getAccount();
 
@@ -143,7 +143,7 @@ public class PassportServiceImpl implements PassportService {
     }
 
     @Override
-    public SignInResult refresh(String refreshForm) {
+    public AuthorizationResult refresh(String refreshForm) {
         return authzClientManager.refresh(refreshForm);
     }
 

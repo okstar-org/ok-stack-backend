@@ -45,7 +45,7 @@ public class PassportResource extends OkCommonResource {
 
     @POST
     @Path("signIn")
-    public Res<SignInResult> signIn(SignInForm signInForm) {
+    public Res<AuthorizationResult> signIn(SignInForm signInForm) {
         Log.infof("signIn:%s", signInForm);
         var resultDto = passportService.signIn(signInForm);
         Log.infof("signIn=>%s", resultDto);
@@ -67,10 +67,10 @@ public class PassportResource extends OkCommonResource {
 
     @POST
     @Path("refresh")
-    public Res<SignInResult> refresh(RefreshForm refreshForm) {
+    public Res<AuthorizationResult> refresh(RefreshForm refreshForm) {
         Log.infof("current accessToken:%s", refreshForm.getAccessToken());
 
-        SignInResult result0 = passportService.refresh(refreshForm.getRefreshToken());
+        AuthorizationResult result0 = passportService.refresh(refreshForm.getRefreshToken());
         Log.infof("refresh accessToken=>%s", result0.getAccessToken());
 
         return Res.ok(refreshForm, result0);
