@@ -28,7 +28,7 @@ COPY platform-infra/commons/common-base/src/main/resources/lib/libsigar-amd64-li
 ADD --chown=${OK_STAR_USER}:${OK_STAR_USER} distribution/target/ok-stack-assembly.tar.gz ${OK_STAR_DIR}
 
 # UI
-COPY ./build/docker/ok-stack.conf /etc/nginx/sites-enabled
+COPY build/docker/default /etc/nginx/sites-enabled
 
 ADD https://github.com/okstar-org/ok-stack-ui/releases/download/latest/ok-stack-ui.zip ${OK_STAR_DIR}
 RUN unzip ${OK_STAR_DIR}/ok-stack-ui.zip -d /usr/share/nginx/html/

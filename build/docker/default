@@ -1,7 +1,7 @@
 server {
     listen 80;
-    server_name localhost;
-    root /usr/share/nginx/html;
+    server_name _;
+    root /usr/share/nginx/html/ok-stack;
 
     location / {
       try_files $uri $uri/ /index.html;
@@ -15,7 +15,6 @@ server {
         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
         proxy_pass http://localhost:8000/;
     }
-
 
     location /api/auth/ {
         proxy_cache off;
