@@ -31,7 +31,7 @@ ADD --chown=${OK_STAR_USER}:${OK_STAR_USER} distribution/target/ok-stack-assembl
 COPY ./build/docker/ok-stack.conf /etc/nginx/sites-enabled
 
 ADD https://github.com/okstar-org/ok-stack-ui/releases/download/latest/ok-stack-ui.zip ${OK_STAR_DIR}
-unzip ${OK_STAR_DIR}/ok-stack-ui.zip -d /usr/share/nginx/html/
+RUN unzip ${OK_STAR_DIR}/ok-stack-ui.zip -d /usr/share/nginx/html/
 #COPY  ./ok-stack /usr/share/nginx/html/ok-stack
 
 EXPOSE 80
