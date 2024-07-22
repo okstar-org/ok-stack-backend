@@ -106,6 +106,12 @@
 <!--            <artifactId>quarkus-oidc-token-propagation</artifactId>-->
 <!--        </dependency>-->
 
+        <dependency>
+            <groupId>org.amqphub.quarkus</groupId>
+            <artifactId>quarkus-qpid-jms</artifactId>
+            <version>2.6.1</version>
+        </dependency>
+
     </dependencies>
 
 

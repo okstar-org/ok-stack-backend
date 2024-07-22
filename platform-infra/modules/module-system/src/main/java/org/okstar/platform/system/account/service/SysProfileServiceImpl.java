@@ -13,8 +13,14 @@
 
 package org.okstar.platform.system.account.service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import io.quarkus.logging.Log;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
+import jakarta.jms.ConnectionFactory;
+import jakarta.jms.JMSContext;
+import jakarta.jms.JMSProducer;
 import jakarta.transaction.Transactional;
 import org.okstar.platform.common.core.defined.AccountDefines;
 import org.okstar.platform.common.core.utils.OkAssert;
@@ -36,27 +42,51 @@ public class SysProfileServiceImpl implements SysProfileService {
     SysProfileMapper mapper;
     @Inject
     SysAccountService accountService;
+    @Inject
+    ConnectionFactory jmsFactory;
+    @Inject
+    ObjectMapper objectMapper;
 
     @Override
     public void save(SysProfile entity) {
-        if (entity.id != null && entity.id > 0) {
-            SysProfile exist = get(entity.id);
-            exist.setFirstName(entity.getFirstName());
-            exist.setLastName(entity.getLastName());
-            exist.setGender(entity.getGender());
-            exist.setIdentify(entity.getIdentify());
-            exist.setCountry(entity.getCountry());
-            exist.setCity(entity.getCity());
-            exist.setAddress(entity.getAddress());
-            exist.setEmail(entity.getEmail());
-            exist.setPhone(entity.getPhone());
-            exist.setTelephone(entity.getTelephone());
-            exist.setWebsite(entity.getWebsite());
-            exist.setBirthday(entity.getBirthday());
-            mapper.persist(exist);
-        } else {
-            mapper.persist(entity);
+        Log.infof("save: %s", entity);
+        try (JMSContext context = jmsFactory.createContext(JMSContext.AUTO_ACKNOWLEDGE)) {
+            JMSProducer producer = context.createProducer();
+            if (entity.id != null && entity.id > 0) {
+
+                SysProfile exist = get(entity.id);
+                OkAssert.notNull(exist, "Invalid parameter!");
+
+                exist.setFirstName(entity.getFirstName());
+                exist.setLastName(entity.getLastName());
+                exist.setGender(entity.getGender());
+                exist.setIdentify(entity.getIdentify());
+                exist.setCountry(entity.getCountry());
+                exist.setCity(entity.getCity());
+                exist.setAddress(entity.getAddress());
+                exist.setEmail(entity.getEmail());
+                exist.setPhone(entity.getPhone());
+                exist.setTelephone(entity.getTelephone());
+                exist.setWebsite(entity.getWebsite());
+                exist.setBirthday(entity.getBirthday());
+                mapper.persist(exist);
+                try {
+                    producer.send(context.createQueue(SysProfile.class.getName()+".UPDATE"),//
+                            objectMapper.writeValueAsString(exist));
+                } catch (JsonProcessingException e) {
+                    throw new RuntimeException(e);
+                }
+            } else {
+                mapper.persist(entity);
+                try {
+                    producer.send(context.createQueue(SysProfile.class.getName()+".INSERT"), //
+                            objectMapper.writeValueAsString(entity));
+                } catch (JsonProcessingException e) {
+                    throw new RuntimeException(e);
+                }
+            }
         }
+        Log.infof("saved: %s", entity);
     }
 
     @Override
