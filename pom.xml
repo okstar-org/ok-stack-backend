@@ -117,7 +117,7 @@
                 <quarkus.datasource.jdbc.url>jdbc:mariadb://db:3306</quarkus.datasource.jdbc.url>
                 <quarkus.datasource.jdbc.driver>org.mariadb.jdbc.Driver</quarkus.datasource.jdbc.driver>
                 <quarkus.hibernate-orm.dialect>org.hibernate.dialect.MariaDBDialect</quarkus.hibernate-orm.dialect>
-                <quarkus.oidc.auth-server-url>https://keycloak:8443/realms/okstar</quarkus.oidc.auth-server-url>
+                <quarkus.oidc.auth-server-url>http://keycloak:8080/realms/okstar</quarkus.oidc.auth-server-url>
                 <quarkus.oidc.client-id>okstack</quarkus.oidc.client-id>
             </properties>
         </profile>
