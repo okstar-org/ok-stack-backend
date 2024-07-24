@@ -58,7 +58,7 @@ public class PassportServiceImpl implements PassportService {
     @Override
     public synchronized SignUpResult signUp(SignUpForm form) {
         log.info("signUp:{}", form);
-
+        validateParam(form);
         //初始化系统帐号
         SignUpResult signUpResult = RpcAssert.isTrue(sysAccountRpc.signUp(form));
         Log.infof("signUp=>%s", signUpResult);
@@ -174,5 +174,18 @@ public class PassportServiceImpl implements PassportService {
         backUserManager.forgot(account.getUsername());
     }
 
+    /**
+     * 验证参数
+     *
+     * @param signUpForm
+     */
+    public void validateParam(SignUpForm signUpForm) {
+        if (signUpForm.getAccountType() == SignUpForm.AccountType.email && !signUpForm.getAccount().matches("^\\w+([-+.]\\w+)*@\\w+([-.]\\w+)*\\.\\w+([-.]\\w+)*$")) {
+            throw new OkRuntimeException("邮箱格式错误");
+        }
+        if (signUpForm.getAccountType() == SignUpForm.AccountType.phone && !signUpForm.getAccount().matches("^1[3456789]{1}[0-9]{9}$")) {
+            throw new OkRuntimeException("手机号格式错误");
+        }
+    }
 
 }
