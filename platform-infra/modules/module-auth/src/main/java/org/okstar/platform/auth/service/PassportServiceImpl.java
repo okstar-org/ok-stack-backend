@@ -17,6 +17,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.eclipse.microprofile.rest.client.inject.RestClient;
 import org.okstar.platform.auth.backend.BackUser;
 import org.okstar.platform.auth.backend.BackUserManager;
+import org.okstar.platform.common.core.exception.OkRuntimeException;
 import org.okstar.platform.common.core.utils.IdUtils;
 import org.okstar.platform.org.dto.SignUpForm;
 import org.okstar.platform.org.dto.SignUpResultDto;
@@ -41,6 +42,7 @@ public class PassportServiceImpl implements PassportService {
     @Override
     public SignUpResultDto signUp(SignUpForm signUpForm) {
         log.info("signUp:{}", signUpForm);
+        validateParam(signUpForm);
         SignUpResultDto resultDto = sysUserRpc.signUp(signUpForm);
         log.info("resultDto=>{}", resultDto);
 
@@ -61,5 +63,18 @@ public class PassportServiceImpl implements PassportService {
         return resultDto;
     }
 
+    /**
+     * 验证参数
+     *
+     * @param signUpForm
+     */
+    public void validateParam(SignUpForm signUpForm) {
+        if (signUpForm.getAccountType() == SignUpForm.AccountType.email && !signUpForm.getAccount().matches("^\\w+([-+.]\\w+)*@\\w+([-.]\\w+)*\\.\\w+([-.]\\w+)*$")) {
+            throw new OkRuntimeException("邮箱格式错误");
+        }
+        if (signUpForm.getAccountType() == SignUpForm.AccountType.phone && !signUpForm.getAccount().matches("^1[3456789]{1}[0-9]{9}$")) {
+            throw new OkRuntimeException("手机号格式错误");
+        }
+    }
 
 }
