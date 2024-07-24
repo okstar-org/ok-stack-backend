@@ -39,12 +39,11 @@
 - 🪟 Windows
 - Java 17
 
-# ⚙️ 构建开发
-> 具体参考：[buildings.md](docs%2Fbuildings.md)
+# ⚙️ 部署文档
+> 具体参考：[docs/deployment.md](docs/deployment.md)
 
 # ⚒️ 任务计划
 > 【金山文档】 OkStar社区任务列表 https://kdocs.cn/l/csib86aYwx0P
-
 
 # 🏭 社区建设
 
@@ -58,19 +57,14 @@
 
 
 # 🧑‍🤝‍🧑 贡献者
-> 欢迎加入参与社区建设
-- Joy1024
-- 赵慧
-- [更多](https://gitee.com/okstar-org/ok-stack-backend/contributors?ref=master)
+- [贡献者列表](https://gitee.com/okstar-org/ok-stack-backend/contributors?ref=master)
 
 # 💰 赞助商
 
 - Joy1024（个人）
 
 # 📦 欢迎体验
-- 下载地址：https://www.chuanshaninfo.com/download/OkEDU/
-- 测试帐号：ok_1001到ok_1005，密码:okedu
-- 更多请加微信：chuanshantech
+请访问公司官网了解，👉 [船山信息](https://www.chuanshaninfo.com)。
 
 # ☎️ 联系我们
 
@@ -79,7 +73,7 @@
   <img src="https://gitee.com/okstar-org/ok-edu-desktop/raw/develop/docs/assets/assistant-OkEDU.jpg" width="240"  alt=""/> 
 </div>
 
-> 微信公众号，关注账号：**OkEDU**
+> 微信公众号，关注账号：**TheOkStarOrg**
 <div>
   <img src="https://gitee.com/okstar-org/ok-edu-desktop/raw/develop/docs/assets/gzh-OkEDU.jpg" width="240"  alt=""/> 
 </div>
@@ -91,7 +85,7 @@
 # ❤️ 捐赠方式
 
 > 您的捐款是OkEDU开源项目持续前进的动力，希望该项目可以让任何人从中受益。
-> 捐赠列表 https://kdocs.cn/l/cr7rVyXnbxuK
+> 捐赠列表👉 https://kdocs.cn/l/cr7rVyXnbxuK
 
 <div>
 <img src="https://gitee.com/okstar-org/ok-edu-desktop/raw/develop/docs/donate/wx.jpg" width="240"  alt=""/> 
@@ -106,7 +100,7 @@
 
 1.遵循软件分发协议
   - 国际：**[GPL-2.0](https://opensource.org/license/gpl-2-0/)**
-  - 中国：**[木兰公共许可证, 第2版](https://opensource.org/license/mulanpsl-2-0/)**
+  - 中国：**[木兰公共许可证, 第2版](http://license.coscl.org.cn/MulanPubL-2.0)**
 
 2.付费得到商业授权（试行）
 - [OKEDU软件合作伙伴合同-个人版](https://www.kdocs.cn/l/cgdtyImooeol)
