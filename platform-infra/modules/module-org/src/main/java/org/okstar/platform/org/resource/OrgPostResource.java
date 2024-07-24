@@ -19,7 +19,7 @@ import org.okstar.platform.common.core.utils.OkStringUtil;
 import org.okstar.platform.common.core.web.bean.Req;
 import org.okstar.platform.common.core.web.bean.Res;
 import org.okstar.platform.org.domain.OrgPost;
-import org.okstar.platform.org.domain.OrgStaff;
+import org.okstar.platform.org.staff.domain.OrgStaff;
 import org.okstar.platform.org.service.OrgPostService;
 import org.okstar.platform.org.staff.service.OrgStaffService;
 

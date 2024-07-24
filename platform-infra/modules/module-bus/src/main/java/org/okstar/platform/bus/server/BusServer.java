@@ -14,31 +14,20 @@
 package org.okstar.platform.bus.server;
 
 import io.quarkus.logging.Log;
+import io.quarkus.runtime.Startup;
 import io.quarkus.runtime.StartupEvent;
-import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.event.Observes;
-import org.apache.activemq.artemis.core.config.Configuration;
-import org.apache.activemq.artemis.core.config.impl.ConfigurationImpl;
+import jakarta.inject.Singleton;
 import org.apache.activemq.artemis.core.server.embedded.EmbeddedActiveMQ;
 
-@ApplicationScoped
-public class BusServer  {
+@Startup
+@Singleton
+public class BusServer {
 
     public void init(@Observes StartupEvent event) throws Exception {
-
-            Log.infof("init busServer...");
-
-            Configuration config = new ConfigurationImpl();
-            config.addAcceptorConfiguration("in-vm", "vm://0");
-            config.addAcceptorConfiguration("tcp", "tcp://127.0.0.1:5672");
-
-            EmbeddedActiveMQ embedded = new EmbeddedActiveMQ();
-            embedded.start();
-
-            Log.infof("Initialize busServer successfully.");
-
-        }
+        Log.info("init busServer...");
+        EmbeddedActiveMQ embedded = new EmbeddedActiveMQ();
+        embedded.start();
+        Log.info("Initialize busServer successfully.");
     }
-
-
 }

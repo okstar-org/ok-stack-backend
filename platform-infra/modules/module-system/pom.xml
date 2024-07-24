@@ -96,21 +96,13 @@
             <groupId>io.quarkus</groupId>
             <artifactId>quarkus-oidc</artifactId>
         </dependency>
-
-<!--        <dependency>-->
-<!--            <groupId>io.quarkus</groupId>-->
-<!--            <artifactId>quarkus-oidc-client-filter</artifactId>-->
-<!--        </dependency>-->
-<!--        <dependency>-->
-<!--            <groupId>io.quarkus</groupId>-->
-<!--            <artifactId>quarkus-oidc-token-propagation</artifactId>-->
-<!--        </dependency>-->
-
         <dependency>
-            <groupId>org.amqphub.quarkus</groupId>
-            <artifactId>quarkus-qpid-jms</artifactId>
-            <version>2.6.1</version>
+            <groupId>org.okstar.platform</groupId>
+            <artifactId>common-bus</artifactId>
+            <version>${revision}</version>
+            <scope>compile</scope>
         </dependency>
+
 
     </dependencies>
 

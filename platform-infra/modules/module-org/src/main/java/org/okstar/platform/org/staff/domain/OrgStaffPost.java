@@ -11,7 +11,7 @@
  * /
  */
 
-package org.okstar.platform.org.domain;
+package org.okstar.platform.org.staff.domain;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;

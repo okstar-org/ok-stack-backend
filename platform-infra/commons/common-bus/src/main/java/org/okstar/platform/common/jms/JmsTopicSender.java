@@ -11,20 +11,8 @@
  * /
  */
 
-package org.okstar.platform.org.staff.mapper;
+package org.okstar.platform.common.jms;
 
-
-import io.quarkus.hibernate.orm.panache.PanacheRepository;
-import jakarta.enterprise.context.ApplicationScoped;
-import org.okstar.platform.org.staff.domain.OrgStaff;
-
-
-
-
-/**
- * 人员管理
- */
-@ApplicationScoped
-public class OrgStaffMapper implements PanacheRepository<OrgStaff> {
-
+public interface JmsTopicSender {
+    void send(String topic, String message);
 }

@@ -15,7 +15,7 @@ package org.okstar.platform.org.mapper;
 
 
 import jakarta.enterprise.context.ApplicationScoped;
-import org.okstar.platform.org.domain.OrgStaffPost;
+import org.okstar.platform.org.staff.domain.OrgStaffPost;
 
 
 import java.util.List;

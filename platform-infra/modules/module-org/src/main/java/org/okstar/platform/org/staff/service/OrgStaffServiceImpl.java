@@ -29,8 +29,8 @@ import org.okstar.platform.common.core.utils.bean.OkBeanUtils;
 import org.okstar.platform.common.core.web.page.OkPageResult;
 import org.okstar.platform.common.core.web.page.OkPageable;
 import org.okstar.platform.org.domain.OrgPost;
-import org.okstar.platform.org.domain.OrgStaff;
-import org.okstar.platform.org.domain.OrgStaffPost;
+import org.okstar.platform.org.staff.domain.OrgStaff;
+import org.okstar.platform.org.staff.domain.OrgStaffPost;
 import org.okstar.platform.org.dto.OrgPost0;
 import org.okstar.platform.org.dto.OrgStaff0;
 import org.okstar.platform.org.dto.OrgStaffFragment;
@@ -38,6 +38,7 @@ import org.okstar.platform.org.service.OrgPostService;
 import org.okstar.platform.org.staff.mapper.OrgStaffMapper;
 import org.okstar.platform.org.vo.OrgStaffFind;
 import org.okstar.platform.org.vo.OrgStaffReq;
+import org.okstar.platform.system.dto.SysProfileDTO;
 
 import java.util.Collections;
 import java.util.List;
@@ -191,13 +192,13 @@ public class OrgStaffServiceImpl implements OrgStaffService {
     }
 
     private List<OrgStaff0> forResult(List<OrgStaff> pq) {
-       return pq.stream().map(staff -> {
+        return pq.stream().map(staff -> {
             OrgStaff0 staff0 = new OrgStaff0();
 
             OkBeanUtils.copyPropertiesTo(staff, staff0);
             OkBeanUtils.copyPropertiesTo(staff.getFragment(), staff0);
 
-            List<OrgPost0> posts = orgStaffPostService.findByStaffId(staff.id).stream().map(e->{
+            List<OrgPost0> posts = orgStaffPostService.findByStaffId(staff.id).stream().map(e -> {
                 OrgPost0 p0 = new OrgPost0();
                 OrgPost post = orgPostService.get(e.getPostId());
                 OkBeanUtils.copyPropertiesTo(post, p0);
@@ -271,6 +272,39 @@ public class OrgStaffServiceImpl implements OrgStaffService {
     @Override
     public long getCount() {
         return orgStaffMapper.count("disabled", false);
+    }
+
+    @Override
+    public void save(SysProfileDTO dto) {
+        Long accountId = dto.getAccountId();
+        if (accountId == null) {
+            Log.warnf("accountId is null");
+            return;
+        }
+
+        Optional<OrgStaff> staff = getByAccountId(accountId);
+        if (staff.isEmpty()) {
+            Log.warnf("Unable to find staff[accountId=%s]", accountId);
+            return;
+        }
+
+        OrgStaff orgStaff = staff.get();
+        OrgStaffFragment fragment = orgStaff.getFragment();
+        if (fragment == null) {
+            return;
+        }
+        fragment.setFirstName(dto.getFirstName());
+        fragment.setLastName(dto.getLastName());
+        fragment.setName(OkStringUtil.combinePeopleName(dto.getLanguage(), dto.getFirstName(), dto.getLastName()));
+        fragment.setEmail(dto.getEmail());
+        fragment.setPhone(dto.getPhone());
+        fragment.setGender(dto.getGender());
+        fragment.setBirthday(dto.getBirthday());
+        fragment.setIdentity(dto.getIdentify());
+        fragment.setLivingIn(dto.getAddress());
+        fragment.setCity(dto.getCity());
+        fragment.setCountry(dto.getCountry());
+        fragment.setLanguage(dto.getLanguage());
     }
 
     private Optional<OrgStaff> findByNo(String no) {

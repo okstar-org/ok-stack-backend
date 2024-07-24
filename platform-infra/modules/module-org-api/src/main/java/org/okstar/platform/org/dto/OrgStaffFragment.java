@@ -96,6 +96,16 @@ public class OrgStaffFragment {
     private Date birthday;
 
     /**
+     * 居住国家
+     */
+    private String country;
+
+    /**
+     * 居住城市
+     */
+    private String city;
+
+    /**
      * 居住地址
      */
     private String livingIn;

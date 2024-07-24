@@ -25,7 +25,7 @@ import org.okstar.platform.common.rpc.RpcAssert;
 import org.okstar.platform.org.domain.Org;
 import org.okstar.platform.org.domain.OrgDept;
 import org.okstar.platform.org.domain.OrgPost;
-import org.okstar.platform.org.domain.OrgStaff;
+import org.okstar.platform.org.staff.domain.OrgStaff;
 import org.okstar.platform.org.dto.*;
 import org.okstar.platform.org.service.OrgDeptService;
 import org.okstar.platform.org.service.OrgPostService;

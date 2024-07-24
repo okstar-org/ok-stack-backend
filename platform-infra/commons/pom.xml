@@ -32,6 +32,7 @@
         <module>common-security</module>
 		<module>common-jpa</module>
         <module>common-text</module>
+        <module>common-bus</module>
     </modules>
 
 

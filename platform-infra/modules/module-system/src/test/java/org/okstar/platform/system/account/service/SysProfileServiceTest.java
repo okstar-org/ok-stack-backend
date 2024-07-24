@@ -16,6 +16,9 @@ package org.okstar.platform.system.account.service;
 import io.quarkus.test.junit.QuarkusTest;
 import jakarta.inject.Inject;
 import org.junit.jupiter.api.Test;
+import org.okstar.platform.common.core.defined.UserDefines;
+import org.okstar.platform.common.core.utils.OkDateUtils;
+import org.okstar.platform.common.core.utils.OkIdUtils;
 import org.okstar.platform.system.account.domain.SysProfile;
 
 @QuarkusTest
@@ -24,10 +27,37 @@ class SysProfileServiceTest {
     @Inject SysProfileService sysProfileService;
 
     @Test
-    void save() {
+    void update() {
         SysProfile profile = sysProfileService.get(1L);
         profile.setFirstName("Ok");
         profile.setLastName("Star");
+        profile.setPhone("18910221510");
+        profile.setEmail("okstar@gmail.com");
+        profile.setIdentify("430000000000");
+        profile.setAddress("ChaoYang");
+        profile.setCity("Beijing");
+        profile.setCountry("China");
+        profile.setLanguage("zh-CN");
+        profile.setBirthday(OkDateUtils.now());
+        profile.setGender(UserDefines.Gender.male);
+        sysProfileService.save(profile);
+    }
+
+    @Test
+    void save() {
+        SysProfile profile = new SysProfile();
+        profile.setAccountId(51L);
+        profile.setFirstName("Ok");
+        profile.setLastName("Star");
+        profile.setPhone("18910221510");
+        profile.setEmail("okstar@gmail.com");
+        profile.setAddress("ChaoYang");
+        profile.setCity("Beijing");
+        profile.setCountry("China");
+        profile.setLanguage("zh-CN");
+        profile.setIdentify(OkIdUtils.makeUuid());
+        profile.setBirthday(OkDateUtils.now());
+        profile.setGender(UserDefines.Gender.male);
         sysProfileService.save(profile);
     }
 }

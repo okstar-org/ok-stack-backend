@@ -15,7 +15,7 @@ package org.okstar.platform.org.staff.service;
 
 
 import org.okstar.platform.common.datasource.OkService;
-import org.okstar.platform.org.domain.OrgStaffPost;
+import org.okstar.platform.org.staff.domain.OrgStaffPost;
 
 import java.util.List;
 import java.util.Set;

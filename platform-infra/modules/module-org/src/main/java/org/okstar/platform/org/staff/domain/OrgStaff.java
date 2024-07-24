@@ -11,13 +11,14 @@
  * /
  */
 
-package org.okstar.platform.org.domain;
+package org.okstar.platform.org.staff.domain;
 
 
 import jakarta.persistence.*;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
+import lombok.ToString;
 import org.okstar.platform.common.core.defined.JobDefines;
+import org.okstar.platform.org.domain.BaseEntity;
 import org.okstar.platform.org.dto.OrgStaffFragment;
 
 import java.util.Date;
@@ -26,11 +27,12 @@ import java.util.Date;
 /**
  * 组织-人员
  */
-@EqualsAndHashCode(callSuper = true)
 @Data
-@Table
+@ToString(callSuper = true)
 @Entity
+@Table(uniqueConstraints = {@UniqueConstraint(columnNames = {"accountId"})})
 public class OrgStaff extends BaseEntity {
+
     /**
      * 帐号ID
      */

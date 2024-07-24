@@ -91,5 +91,9 @@ public class SysProfileDTO {
      * 主页地址
      */
     private String website;
-
+    /**
+     * 语言,格式:zh-CN, zh-TW, zh-HK, en-US
+     * @link https://www.loc.gov/standards/iso639-2/php/code_list.php
+     */
+    private String language;
 }

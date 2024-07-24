@@ -13,19 +13,18 @@
 
 package org.okstar.platform.system.account.service;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import io.quarkus.logging.Log;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.jms.ConnectionFactory;
-import jakarta.jms.JMSContext;
-import jakarta.jms.JMSProducer;
 import jakarta.transaction.Transactional;
+import org.okstar.platform.common.OkJsonUtils;
 import org.okstar.platform.common.core.defined.AccountDefines;
 import org.okstar.platform.common.core.utils.OkAssert;
 import org.okstar.platform.common.core.web.page.OkPageResult;
 import org.okstar.platform.common.core.web.page.OkPageable;
+import org.okstar.platform.common.jms.JmsTopicSender;
+import org.okstar.platform.system.ModuleSystemApplication;
 import org.okstar.platform.system.account.domain.SysAccount;
 import org.okstar.platform.system.account.domain.SysAccountBind;
 import org.okstar.platform.system.account.domain.SysProfile;
@@ -43,48 +42,53 @@ public class SysProfileServiceImpl implements SysProfileService {
     @Inject
     SysAccountService accountService;
     @Inject
+    OkJsonUtils jsonUtils;
+
+    @Inject
     ConnectionFactory jmsFactory;
     @Inject
-    ObjectMapper objectMapper;
+    JmsTopicSender topicSender;
 
     @Override
     public void save(SysProfile entity) {
         Log.infof("save: %s", entity);
-        try (JMSContext context = jmsFactory.createContext(JMSContext.AUTO_ACKNOWLEDGE)) {
-            JMSProducer producer = context.createProducer();
-            if (entity.id != null && entity.id > 0) {
 
-                SysProfile exist = get(entity.id);
-                OkAssert.notNull(exist, "Invalid parameter!");
+        Long accountId = entity.getAccountId();
+        OkAssert.notNull(accountId, "Account id not be null");
 
-                exist.setFirstName(entity.getFirstName());
-                exist.setLastName(entity.getLastName());
-                exist.setGender(entity.getGender());
-                exist.setIdentify(entity.getIdentify());
-                exist.setCountry(entity.getCountry());
-                exist.setCity(entity.getCity());
-                exist.setAddress(entity.getAddress());
-                exist.setEmail(entity.getEmail());
-                exist.setPhone(entity.getPhone());
-                exist.setTelephone(entity.getTelephone());
-                exist.setWebsite(entity.getWebsite());
-                exist.setBirthday(entity.getBirthday());
-                mapper.persist(exist);
-                try {
-                    producer.send(context.createQueue(SysProfile.class.getName()+".UPDATE"),//
-                            objectMapper.writeValueAsString(exist));
-                } catch (JsonProcessingException e) {
-                    throw new RuntimeException(e);
-                }
-            } else {
-                mapper.persist(entity);
-                try {
-                    producer.send(context.createQueue(SysProfile.class.getName()+".INSERT"), //
-                            objectMapper.writeValueAsString(entity));
-                } catch (JsonProcessingException e) {
-                    throw new RuntimeException(e);
-                }
-            }
+        String topic = ModuleSystemApplication.class.getSimpleName() + "." + SysProfile.class.getSimpleName() + ".UPDATE";
+
+        SysProfile exist = null;
+        if (entity.id != null && entity.id > 0) {
+            exist = get(entity.id);
+        }
+        if (entity.getAccountId() != null && exist == null) {
+            exist = loadByAccount(entity.getAccountId());
+        }
+
+        if (exist != null) {
+            exist.setFirstName(entity.getFirstName());
+            exist.setLastName(entity.getLastName());
+            exist.setGender(entity.getGender());
+            exist.setIdentify(entity.getIdentify());
+            exist.setCountry(entity.getCountry());
+            exist.setCity(entity.getCity());
+            exist.setAddress(entity.getAddress());
+            exist.setEmail(entity.getEmail());
+            exist.setPhone(entity.getPhone());
+            exist.setTelephone(entity.getTelephone());
+            exist.setWebsite(entity.getWebsite());
+            exist.setBirthday(entity.getBirthday());
+            exist.setLanguage(entity.getLanguage());
+            mapper.persist(exist);
+
+            String msg = jsonUtils.asJsonString(exist);
+            topicSender.send(topic, msg);
+        } else {
+            mapper.persist(entity);
+
+            String msg = jsonUtils.asJsonString(entity);
+            topicSender.send(topic, msg);
         }
         Log.infof("saved: %s", entity);
     }
