@@ -113,10 +113,13 @@ class AuthzClientManagerImpl implements AuthzClientManager {
                     .build();
         } catch (Exception e) {
             Log.warnf(e, "认证异常:%s", e.getCause().getMessage());
-            if (e.getCause() instanceof HttpResponseException) {
-                int statusCode = ((HttpResponseException) e.getCause()).getStatusCode();
-                if (statusCode == 401) {
+            if (e.getCause() instanceof HttpResponseException cause) {
+                int statusCode = cause.getStatusCode();
+                if (statusCode / 100 == 4) {
                     throw new OkRuntimeException("认证异常，帐号或密码不正确！");
+                } else if (statusCode / 100 ==3) {
+
+                    throw new OkRuntimeException("认证异常，连接被重定向！");
                 }
             }
             throw new OkRuntimeException("认证异常，请稍后再试！");
