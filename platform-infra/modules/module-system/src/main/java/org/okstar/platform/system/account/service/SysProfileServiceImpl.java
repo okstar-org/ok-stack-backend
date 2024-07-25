@@ -18,12 +18,12 @@ import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.jms.ConnectionFactory;
 import jakarta.transaction.Transactional;
-import org.okstar.platform.common.OkJsonUtils;
+import org.okstar.platform.common.bus.jms.JmsTopicSenderUtil;
+import org.okstar.platform.common.json.OkJsonUtils;
 import org.okstar.platform.common.core.defined.AccountDefines;
-import org.okstar.platform.common.core.utils.OkAssert;
+import org.okstar.platform.common.asserts.OkAssert;
 import org.okstar.platform.common.core.web.page.OkPageResult;
 import org.okstar.platform.common.core.web.page.OkPageable;
-import org.okstar.platform.common.jms.JmsTopicSender;
 import org.okstar.platform.system.ModuleSystemApplication;
 import org.okstar.platform.system.account.domain.SysAccount;
 import org.okstar.platform.system.account.domain.SysAccountBind;
@@ -46,8 +46,6 @@ public class SysProfileServiceImpl implements SysProfileService {
 
     @Inject
     ConnectionFactory jmsFactory;
-    @Inject
-    JmsTopicSender topicSender;
 
     @Override
     public void save(SysProfile entity) {
@@ -83,12 +81,12 @@ public class SysProfileServiceImpl implements SysProfileService {
             mapper.persist(exist);
 
             String msg = jsonUtils.asJsonString(exist);
-            topicSender.send(topic, msg);
+            JmsTopicSenderUtil.send(jmsFactory, topic, msg);
         } else {
             mapper.persist(entity);
 
             String msg = jsonUtils.asJsonString(entity);
-            topicSender.send(topic, msg);
+            JmsTopicSenderUtil.send(jmsFactory, topic, msg);
         }
         Log.infof("saved: %s", entity);
     }

@@ -21,7 +21,8 @@ import jakarta.enterprise.event.Observes;
 import jakarta.inject.Inject;
 import jakarta.jms.JMSException;
 import jakarta.jms.Message;
-import org.okstar.platform.common.OkJsonUtils;
+import org.okstar.platform.common.json.OkJsonUtils;
+import org.okstar.platform.common.thread.OkThreadUtils;
 import org.okstar.platform.org.bus.ConsumerJms;
 import org.okstar.platform.org.staff.service.OrgStaffService;
 import org.okstar.platform.system.dto.SysProfileDTO;
@@ -35,23 +36,31 @@ public class StaffListener {
     ConsumerJms consumerJms;
     @Inject
     OrgStaffService orgStaffService;
+    int sec = 5;
+    //监听系统模块(启动类).
+    static String UPDATE = "ModuleSystemApplication.SysProfile.UPDATE";
+    static String INSERT = "ModuleSystemApplication.SysProfile.INSERT";
+    static String[] TOPICS = {UPDATE, INSERT};
 
     public void onStart(@Observes StartupEvent ev) {
-        String update = "ModuleSystemApplication.SysProfile.UPDATE";
-        consumerJms.setTopicListener(update, (Message msg)->{
-            try {
-                String body = msg.getBody(String.class);
-                SysProfileDTO dto = jsonUtils.asObject(body, SysProfileDTO.class);
-                updateStaff(dto);
-            } catch (JMSException e) {
-                Log.warnf(e, "Unable to parse message=%s", msg);
-            }
-        });
+        for (String TOPIC : TOPICS) {
+            boolean b;
+            do {
+                b = addStaffUpdateListener(TOPIC);
+                if (!b) {
+                    Log.warnf("Unable to add staff update listener to topic: %s ", TOPIC);
+                    Log.warnf("Try again in %d seconds", sec);
+                    OkThreadUtils.sleepSeconds(sec, true);
+                }
+            } while (!b);
+        }
+    }
 
-        String insert = "ModuleSystemApplication.SysProfile.INSERT";
-        consumerJms.setTopicListener(insert, (Message msg)->{
+    private boolean addStaffUpdateListener(String update) {
+        return consumerJms.setTopicListener(update, (Message msg) -> {
             try {
                 String body = msg.getBody(String.class);
+                Log.infof("body=%s", body);
                 SysProfileDTO dto = jsonUtils.asObject(body, SysProfileDTO.class);
                 updateStaff(dto);
             } catch (JMSException e) {
@@ -62,6 +71,7 @@ public class StaffListener {
 
     /**
      * 更新人员信息
+     *
      * @param dto
      */
     private void updateStaff(SysProfileDTO dto) {

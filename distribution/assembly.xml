@@ -9,6 +9,11 @@
     </formats>
     <fileSets>
         <fileSet>
+            <directory>../platform-infra/modules/module-bus/target/quarkus-app</directory>
+            <outputDirectory>./infra/module-bus</outputDirectory>
+        </fileSet>
+
+        <fileSet>
             <directory>../platform-infra/modules/module-system/target/quarkus-app</directory>
             <outputDirectory>./infra/module-system</outputDirectory>
         </fileSet>

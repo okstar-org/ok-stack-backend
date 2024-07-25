@@ -17,9 +17,9 @@ import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 import org.apache.commons.lang3.BooleanUtils;
-import org.okstar.platform.common.core.utils.OkAssert;
-import org.okstar.platform.common.core.utils.OkDateUtils;
-import org.okstar.platform.common.core.utils.bean.OkBeanUtils;
+import org.okstar.platform.common.asserts.OkAssert;
+import org.okstar.platform.common.date.OkDateUtils;
+import org.okstar.platform.common.bean.OkBeanUtils;
 import org.okstar.platform.common.core.web.page.OkPageResult;
 import org.okstar.platform.common.core.web.page.OkPageable;
 import org.okstar.platform.org.domain.Org;
@@ -88,8 +88,8 @@ public class OrgServiceImpl implements OrgService {
     public Org setDefault() {
         Org org = new Org();
         org.setCurrent(true);
-        org.setName("默认组织");
-        org.setUrl("example.org");
+        org.setName("");
+        org.setUrl("");
         org.setNo(UUID.randomUUID().toString());
         org.setParentId(0L);
         org.setCreateBy(0L);

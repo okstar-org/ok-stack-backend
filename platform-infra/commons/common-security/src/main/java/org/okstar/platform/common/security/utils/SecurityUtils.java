@@ -14,7 +14,7 @@
 package org.okstar.platform.common.security.utils;
 
 import org.okstar.platform.common.core.constant.SecurityConstants;
-import org.okstar.platform.common.core.utils.OkStringUtil;
+import org.okstar.platform.common.string.OkStringUtil;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 /**

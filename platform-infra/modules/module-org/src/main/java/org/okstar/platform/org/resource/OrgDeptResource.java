@@ -15,7 +15,7 @@ package org.okstar.platform.org.resource;
 
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
-import org.okstar.platform.common.core.utils.OkAssert;
+import org.okstar.platform.common.asserts.OkAssert;
 import org.okstar.platform.common.core.web.bean.Req;
 import org.okstar.platform.common.core.web.bean.Res;
 import org.okstar.platform.org.domain.Org;

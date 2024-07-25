@@ -14,13 +14,11 @@
 package org.okstar.platform.org.bus;
 
 import io.quarkus.arc.Arc;
+import io.quarkus.logging.Log;
 import io.quarkus.runtime.Startup;
 import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
-import jakarta.jms.ConnectionFactory;
-import jakarta.jms.JMSConsumer;
-import jakarta.jms.JMSContext;
-import jakarta.jms.Message;
+import jakarta.jms.*;
 import org.okstar.platform.common.datasource.OkAbsService;
 
 import java.util.function.Consumer;
@@ -48,9 +46,17 @@ public class ConsumerJms extends OkAbsService {
 //        });
 //    }
 
-    public void setTopicListener(String topicName, Consumer<Message> consumer) {
-        //不用关闭context，避免内部线程无法读取
-        JMSContext context = connectionFactory.createContext();
+    public boolean setTopicListener(String topicName, Consumer<Message> consumer) {
+        Log.debugf("Set topic listener: %s", topicName);
+        JMSContext context;
+        try {
+            //不用关闭context，避免内部线程无法读取
+            context = connectionFactory.createContext();
+        } catch (JMSRuntimeException e) {
+            Log.warnf("Create JMS context failed: %s", e.getMessage());
+            return false;
+        }
+
         JMSConsumer jmsConsumer = context.createConsumer(context.createTopic(topicName));
         Arc.container().getExecutorService().execute(() -> {
             do {
@@ -58,5 +64,7 @@ public class ConsumerJms extends OkAbsService {
                 consumer.accept(message);
             } while (true);
         });
+
+        return true;
     }
 }

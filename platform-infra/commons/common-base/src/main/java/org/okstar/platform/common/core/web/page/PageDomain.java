@@ -13,7 +13,7 @@
 
 package org.okstar.platform.common.core.web.page;
 
-import org.okstar.platform.common.core.utils.OkStringUtil;
+import org.okstar.platform.common.string.OkStringUtil;
 
 /**
  * 分页数据

@@ -15,7 +15,7 @@ package org.okstar.platform.system.rpc.impl;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
-import org.okstar.platform.common.core.utils.bean.OkBeanUtils;
+import org.okstar.platform.common.bean.OkBeanUtils;
 import org.okstar.platform.system.dto.SysSetGlobalDTO;
 import org.okstar.platform.system.rpc.SysSettingsRpc;
 import org.okstar.platform.system.settings.domain.SysSetGlobal;

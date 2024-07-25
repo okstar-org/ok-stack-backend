@@ -16,7 +16,7 @@ package org.okstar.platform.org.dto;
 import jakarta.persistence.Embeddable;
 import lombok.Data;
 import org.okstar.platform.common.core.defined.UserDefines;
-import org.okstar.platform.common.core.utils.OkStringUtil;
+import org.okstar.platform.common.string.OkStringUtil;
 
 import java.util.Date;
 

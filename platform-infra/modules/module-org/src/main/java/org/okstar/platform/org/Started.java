@@ -23,9 +23,9 @@ import org.okstar.cloud.channel.FederalChannel;
 import org.okstar.cloud.entity.AuthenticationToken;
 import org.okstar.cloud.entity.FederalStateEntity;
 import org.okstar.platform.common.core.defined.OkCloudDefines;
-import org.okstar.platform.common.core.utils.OkStringUtil;
 import org.okstar.platform.common.os.HostInfo;
 import org.okstar.platform.common.os.HostUtils;
+import org.okstar.platform.common.string.OkStringUtil;
 import org.okstar.platform.org.domain.Org;
 import org.okstar.platform.org.service.OrgService;
 import org.okstar.platform.system.dto.SysSetGlobalDTO;
@@ -57,14 +57,30 @@ public class Started {
 
     public void doPing() {
         Org org = orgService.loadCurrent();
+        String orgNo = org.getNo();
+        if (OkStringUtil.isEmpty(orgNo)) {
+            return;
+        }
+
+        String orgName = org.getName();
+        if (OkStringUtil.isEmpty(orgName)) {
+            return;
+        }
+
 
         /**
          * 获取全局配置
          */
-        SysSetGlobalDTO global = settingsRpc.getGlobal();
-        if (global == null) {
+        SysSetGlobalDTO global;
+        try {
+            global = settingsRpc.getGlobal();
+            if (global == null) {
+                return;
+            }
+        } catch (Exception e) {
             return;
         }
+
         if (OkStringUtil.isEmpty(global.getStackUrl()) || OkStringUtil.isEmpty(global.getXmppHost())) {
             return;
         }

@@ -15,6 +15,7 @@ package org.okstar.platform.system.rpc;
 
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;
+import jakarta.ws.rs.ProcessingException;
 import org.eclipse.microprofile.rest.client.inject.RegisterRestClient;
 import org.okstar.platform.system.dto.SysSetGlobalDTO;
 
@@ -28,5 +29,5 @@ public interface SysSettingsRpc {
      */
     @GET
     @Path("getGlobal")
-    SysSetGlobalDTO getGlobal();
+    SysSetGlobalDTO getGlobal() throws ProcessingException;
 }

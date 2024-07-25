@@ -25,7 +25,7 @@ import org.okstar.platform.chat.beans.ChatGeneral;
 import org.okstar.platform.chat.beans.ChatGroup;
 import org.okstar.platform.chat.beans.ChatParticipant;
 import org.okstar.platform.chat.beans.ChatRoom;
-import org.okstar.platform.common.core.utils.OkStringUtil;
+import org.okstar.platform.common.string.OkStringUtil;
 import org.okstar.platform.system.dto.SysSetGlobalDTO;
 import org.okstar.platform.system.dto.SysSetXmppDTO;
 import org.okstar.platform.system.rpc.SysSettingsRpc;

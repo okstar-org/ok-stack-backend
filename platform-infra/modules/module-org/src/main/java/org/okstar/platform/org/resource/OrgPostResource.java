@@ -15,7 +15,7 @@ package org.okstar.platform.org.resource;
 
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
-import org.okstar.platform.common.core.utils.OkStringUtil;
+import org.okstar.platform.common.string.OkStringUtil;
 import org.okstar.platform.common.core.web.bean.Req;
 import org.okstar.platform.common.core.web.bean.Res;
 import org.okstar.platform.org.domain.OrgPost;
