@@ -27,7 +27,7 @@ import org.keycloak.admin.client.resource.UsersResource;
 import org.keycloak.representations.idm.CredentialRepresentation;
 import org.keycloak.representations.idm.UserRepresentation;
 import org.okstar.platform.common.core.exception.OkRuntimeException;
-import org.okstar.platform.common.core.utils.OkAssert;
+import org.okstar.platform.common.asserts.OkAssert;
 import org.okstar.platform.system.dto.BackUser;
 import org.okstar.platform.system.settings.service.SysKeycloakService;
 

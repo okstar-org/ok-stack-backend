@@ -16,7 +16,7 @@ package org.okstar.platform.org.dto;
 import jakarta.persistence.Embeddable;
 import lombok.Data;
 import org.okstar.platform.common.core.defined.UserDefines;
-import org.okstar.platform.common.core.utils.OkStringUtil;
+import org.okstar.platform.common.string.OkStringUtil;
 
 import java.util.Date;
 
@@ -94,6 +94,16 @@ public class OrgStaffFragment {
      * 生日
      */
     private Date birthday;
+
+    /**
+     * 居住国家
+     */
+    private String country;
+
+    /**
+     * 居住城市
+     */
+    private String city;
 
     /**
      * 居住地址

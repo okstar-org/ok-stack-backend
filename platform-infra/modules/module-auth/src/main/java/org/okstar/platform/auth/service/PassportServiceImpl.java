@@ -22,8 +22,8 @@ import org.okstar.platform.auth.backend.AuthzClientManager;
 
 import org.okstar.platform.common.core.defined.AccountDefines;
 import org.okstar.platform.common.core.exception.OkRuntimeException;
-import org.okstar.platform.common.core.utils.OkAssert;
-import org.okstar.platform.common.core.utils.OkStringUtil;
+import org.okstar.platform.common.asserts.OkAssert;
+import org.okstar.platform.common.string.OkStringUtil;
 import org.okstar.platform.common.rpc.RpcAssert;
 import org.okstar.platform.common.rpc.RpcResult;
 import org.okstar.platform.org.dto.OrgStaffFragment;

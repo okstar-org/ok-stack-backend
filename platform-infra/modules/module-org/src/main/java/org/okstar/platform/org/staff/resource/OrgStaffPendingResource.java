@@ -20,7 +20,7 @@ import org.okstar.platform.common.core.web.bean.Req;
 import org.okstar.platform.common.core.web.bean.Res;
 import org.okstar.platform.common.core.web.page.OkPageResult;
 import org.okstar.platform.common.core.web.page.OkPageable;
-import org.okstar.platform.org.domain.OrgStaff;
+import org.okstar.platform.org.staff.domain.OrgStaff;
 import org.okstar.platform.org.staff.service.OrgStaffPostService;
 import org.okstar.platform.org.staff.service.OrgStaffService;
 import org.okstar.platform.org.vo.OrgStaffJoinReq;

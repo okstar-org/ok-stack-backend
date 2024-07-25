@@ -15,7 +15,7 @@ package org.okstar.platform.system.rpc.impl;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
-import org.okstar.platform.common.core.utils.bean.OkBeanUtils;
+import org.okstar.platform.common.bean.OkBeanUtils;
 import org.okstar.platform.system.account.domain.SysProfile;
 import org.okstar.platform.system.account.service.SysProfileService;
 import org.okstar.platform.system.dto.SysProfileDTO;

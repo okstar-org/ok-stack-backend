@@ -25,7 +25,7 @@ import org.okstar.cloud.entity.OrderResultEntity;
 import org.okstar.platform.billing.order.domain.BillingOrder;
 import org.okstar.platform.billing.order.mapper.BillingOrderMapper;
 import org.okstar.platform.common.core.defined.OkCloudDefines;
-import org.okstar.platform.common.core.utils.bean.OkBeanUtils;
+import org.okstar.platform.common.bean.OkBeanUtils;
 import org.okstar.platform.common.core.web.page.OkPageResult;
 import org.okstar.platform.common.core.web.page.OkPageable;
 

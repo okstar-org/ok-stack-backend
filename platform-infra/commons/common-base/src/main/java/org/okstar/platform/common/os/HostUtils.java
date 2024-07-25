@@ -15,7 +15,7 @@ package org.okstar.platform.common.os;
 
 import lombok.SneakyThrows;
 import org.hyperic.sigar.*;
-import org.okstar.platform.common.core.utils.OkWebUtil;
+import org.okstar.platform.common.web.OkWebUtil;
 
 import java.net.InetAddress;
 import java.util.ArrayList;

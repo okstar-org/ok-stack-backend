@@ -13,7 +13,7 @@
 
 package org.okstar.platform.common.core.text;
 
-import org.okstar.platform.common.core.utils.OkStringUtil;
+import org.okstar.platform.common.string.OkStringUtil;
 
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;

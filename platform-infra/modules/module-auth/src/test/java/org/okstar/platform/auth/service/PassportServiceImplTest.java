@@ -20,7 +20,7 @@ import jakarta.inject.Inject;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.okstar.platform.common.core.defined.AccountDefines;
-import org.okstar.platform.common.core.utils.OkIdUtils;
+import org.okstar.platform.common.id.OkIdUtils;
 import org.okstar.platform.system.sign.SignInForm;
 import org.okstar.platform.system.sign.AuthorizationResult;
 import org.okstar.platform.system.sign.SignUpForm;

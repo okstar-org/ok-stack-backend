@@ -15,7 +15,7 @@ package org.okstar.platform.system.vo;
 
 import lombok.Data;
 import org.okstar.platform.common.core.defined.AccountDefines;
-import org.okstar.platform.common.core.utils.OkStringUtil;
+import org.okstar.platform.common.string.OkStringUtil;
 import org.okstar.platform.common.core.web.bean.DTO;
 
 import java.util.Optional;

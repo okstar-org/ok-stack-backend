@@ -14,7 +14,7 @@
 package org.okstar.platform.common.core.text;
 
 import org.apache.commons.lang3.ArrayUtils;
-import org.okstar.platform.common.core.utils.OkStringUtil;
+import org.okstar.platform.common.string.OkStringUtil;
 
 /**
  * 字符串格式化

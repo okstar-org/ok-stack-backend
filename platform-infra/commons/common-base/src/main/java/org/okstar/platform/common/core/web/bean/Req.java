@@ -15,7 +15,7 @@ package org.okstar.platform.common.core.web.bean;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import org.okstar.platform.common.core.utils.OkDateUtils;
+import org.okstar.platform.common.date.OkDateUtils;
 
 /**
  * 请求实体

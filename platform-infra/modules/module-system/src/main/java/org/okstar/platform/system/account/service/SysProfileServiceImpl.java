@@ -13,13 +13,18 @@
 
 package org.okstar.platform.system.account.service;
 
+import io.quarkus.logging.Log;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
+import jakarta.jms.ConnectionFactory;
 import jakarta.transaction.Transactional;
+import org.okstar.platform.common.bus.jms.JmsTopicSenderUtil;
+import org.okstar.platform.common.json.OkJsonUtils;
 import org.okstar.platform.common.core.defined.AccountDefines;
-import org.okstar.platform.common.core.utils.OkAssert;
+import org.okstar.platform.common.asserts.OkAssert;
 import org.okstar.platform.common.core.web.page.OkPageResult;
 import org.okstar.platform.common.core.web.page.OkPageable;
+import org.okstar.platform.system.ModuleSystemApplication;
 import org.okstar.platform.system.account.domain.SysAccount;
 import org.okstar.platform.system.account.domain.SysAccountBind;
 import org.okstar.platform.system.account.domain.SysProfile;
@@ -36,11 +41,30 @@ public class SysProfileServiceImpl implements SysProfileService {
     SysProfileMapper mapper;
     @Inject
     SysAccountService accountService;
+    @Inject
+    OkJsonUtils jsonUtils;
+
+    @Inject
+    ConnectionFactory jmsFactory;
 
     @Override
     public void save(SysProfile entity) {
+        Log.infof("save: %s", entity);
+
+        Long accountId = entity.getAccountId();
+        OkAssert.notNull(accountId, "Account id not be null");
+
+        String topic = ModuleSystemApplication.class.getSimpleName() + "." + SysProfile.class.getSimpleName() + ".UPDATE";
+
+        SysProfile exist = null;
         if (entity.id != null && entity.id > 0) {
-            SysProfile exist = get(entity.id);
+            exist = get(entity.id);
+        }
+        if (entity.getAccountId() != null && exist == null) {
+            exist = loadByAccount(entity.getAccountId());
+        }
+
+        if (exist != null) {
             exist.setFirstName(entity.getFirstName());
             exist.setLastName(entity.getLastName());
             exist.setGender(entity.getGender());
@@ -53,10 +77,18 @@ public class SysProfileServiceImpl implements SysProfileService {
             exist.setTelephone(entity.getTelephone());
             exist.setWebsite(entity.getWebsite());
             exist.setBirthday(entity.getBirthday());
+            exist.setLanguage(entity.getLanguage());
             mapper.persist(exist);
+
+            String msg = jsonUtils.asJsonString(exist);
+            JmsTopicSenderUtil.send(jmsFactory, topic, msg);
         } else {
             mapper.persist(entity);
+
+            String msg = jsonUtils.asJsonString(entity);
+            JmsTopicSenderUtil.send(jmsFactory, topic, msg);
         }
+        Log.infof("saved: %s", entity);
     }
 
     @Override

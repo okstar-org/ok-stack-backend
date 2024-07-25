@@ -4,7 +4,7 @@ import io.quarkus.hibernate.orm.panache.PanacheRepositoryBase;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import org.eclipse.microprofile.rest.client.inject.RestClient;
-import org.okstar.platform.common.core.utils.bean.OkBeanUtils;
+import org.okstar.platform.common.bean.OkBeanUtils;
 import org.okstar.platform.common.rpc.RpcResult;
 import org.okstar.platform.org.rbac.domain.OrgRbacUser;
 import org.okstar.platform.org.rbac.domain.OrgRbacUserRole;

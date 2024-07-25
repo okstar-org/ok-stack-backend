@@ -23,6 +23,7 @@
         <module>module-chat</module>
         <module>module-chat-api</module>
         <module>module-billing</module>
+        <module>module-bus</module>
     </modules>
 
     <dependencies>
@@ -63,6 +64,16 @@
             <artifactId>quarkus-smallrye-jwt</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>io.quarkiverse.artemis</groupId>
+            <artifactId>quarkus-artemis-jms</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>io.quarkiverse.artemis</groupId>
+            <artifactId>quarkus-test-artemis</artifactId>
+            <scope>test</scope>
+        </dependency>
 
     </dependencies>
 </project>

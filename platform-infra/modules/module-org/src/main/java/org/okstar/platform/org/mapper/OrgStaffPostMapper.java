@@ -16,7 +16,7 @@ package org.okstar.platform.org.mapper;
 
 import io.quarkus.hibernate.orm.panache.PanacheRepository;
 import jakarta.enterprise.context.ApplicationScoped;
-import org.okstar.platform.org.domain.OrgStaffPost;
+import org.okstar.platform.org.staff.domain.OrgStaffPost;
 
 
 /**

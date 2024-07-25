@@ -14,7 +14,7 @@
 package org.okstar.platform.org.service.impl;
 
 import jakarta.enterprise.context.ApplicationScoped;
-import org.okstar.platform.common.core.utils.OkDateUtils;
+import org.okstar.platform.common.date.OkDateUtils;
 import org.okstar.platform.org.domain.SysMessage;
 import org.okstar.platform.org.mapper.SysMessageMapper;
 import org.okstar.platform.org.service.ISysMessageService;

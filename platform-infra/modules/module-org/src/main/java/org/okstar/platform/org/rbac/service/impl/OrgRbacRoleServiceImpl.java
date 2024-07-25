@@ -3,7 +3,7 @@ package org.okstar.platform.org.rbac.service.impl;
 import io.quarkus.panache.common.Parameters;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
-import org.okstar.platform.common.core.utils.bean.OkBeanUtils;
+import org.okstar.platform.common.bean.OkBeanUtils;
 import org.okstar.platform.org.rbac.mapper.OrgRbacRoleMapper;
 import org.okstar.platform.org.rbac.mapper.SysRbacRoleResourceMapper;
 import org.okstar.platform.org.rbac.resource.vo.OrgRbacRoleResponseVo;

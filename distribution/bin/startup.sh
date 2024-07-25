@@ -5,8 +5,10 @@ export BASE_DIR=`cd $(dirname $0)/..; pwd`
 echo "WorkDir:${BASE_DIR}"
 cd ${BASE_DIR}
 
-/etc/init.d/nginx start
-echo "Start nginx=>$?"
+if [ -f /etc/init.d/nginx  ]; then
+  /etc/init.d/ngin start
+  echo "Start nginx=>$?"
+fi
 
 daemon=0
 # 使用 getopts 解析选项
@@ -40,7 +42,7 @@ if [ ! -z "$pid" ] ; then
 fi
 
 PIDS=()
-MODULES=("module-system" "module-org" "module-auth" "module-chat" "module-billing")
+MODULES=("module-bus" "module-system" "module-org" "module-auth" "module-chat" "module-billing")
 for item in ${MODULES[@]}
 do
 #  start-stop-daemon --start --background --exec /path/to/daemon --pidfile /var/run/daemon.pid

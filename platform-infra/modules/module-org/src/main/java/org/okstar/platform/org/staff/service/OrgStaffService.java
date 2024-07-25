@@ -17,10 +17,11 @@ package org.okstar.platform.org.staff.service;
 import org.okstar.platform.common.core.web.page.OkPageResult;
 import org.okstar.platform.common.core.web.page.OkPageable;
 import org.okstar.platform.common.datasource.OkService;
-import org.okstar.platform.org.domain.OrgStaff;
+import org.okstar.platform.org.staff.domain.OrgStaff;
 import org.okstar.platform.org.dto.OrgStaff0;
 import org.okstar.platform.org.vo.OrgStaffFind;
 import org.okstar.platform.org.vo.OrgStaffReq;
+import org.okstar.platform.system.dto.SysProfileDTO;
 
 import java.util.List;
 import java.util.Optional;
@@ -69,4 +70,9 @@ public interface OrgStaffService extends OkService<OrgStaff> {
 
     long getCount();
 
+    /**
+     * 设置帐号profile信息到员工
+     * @param dto
+     */
+    void save(SysProfileDTO dto);
 }

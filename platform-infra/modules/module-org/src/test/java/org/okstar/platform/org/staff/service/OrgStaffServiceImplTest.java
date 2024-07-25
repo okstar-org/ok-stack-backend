@@ -18,7 +18,7 @@ import io.quarkus.test.junit.QuarkusTest;
 import jakarta.inject.Inject;
 import org.junit.jupiter.api.Test;
 import org.okstar.platform.common.core.web.page.OkPageResult;
-import org.okstar.platform.org.domain.OrgStaff;
+import org.okstar.platform.org.staff.domain.OrgStaff;
 import org.okstar.platform.org.vo.OrgStaffFind;
 
 @QuarkusTest

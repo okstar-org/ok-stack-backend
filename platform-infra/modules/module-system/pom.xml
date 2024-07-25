@@ -96,15 +96,13 @@
             <groupId>io.quarkus</groupId>
             <artifactId>quarkus-oidc</artifactId>
         </dependency>
+        <dependency>
+            <groupId>org.okstar.platform</groupId>
+            <artifactId>common-bus</artifactId>
+            <version>${revision}</version>
+            <scope>compile</scope>
+        </dependency>
 
-<!--        <dependency>-->
-<!--            <groupId>io.quarkus</groupId>-->
-<!--            <artifactId>quarkus-oidc-client-filter</artifactId>-->
-<!--        </dependency>-->
-<!--        <dependency>-->
-<!--            <groupId>io.quarkus</groupId>-->
-<!--            <artifactId>quarkus-oidc-token-propagation</artifactId>-->
-<!--        </dependency>-->
 
     </dependencies>
 

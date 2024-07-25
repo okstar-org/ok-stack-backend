@@ -2,7 +2,7 @@ package org.okstar.platform.org.rbac.service.impl;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
-import org.okstar.platform.common.core.utils.bean.OkBeanUtils;
+import org.okstar.platform.common.bean.OkBeanUtils;
 import org.okstar.platform.org.rbac.mapper.OrgRbacResourceMapper;
 import org.okstar.platform.org.rbac.resource.vo.OrgRbacRoleResponseVo;
 import org.okstar.platform.org.rbac.service.OrgRbacResourceService;

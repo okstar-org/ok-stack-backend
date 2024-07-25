@@ -15,6 +15,7 @@ package org.okstar.platform.common.core.utils;
 
 import io.smallrye.common.constraint.Assert;
 import org.junit.jupiter.api.Test;
+import org.okstar.platform.common.string.OkStringUtil;
 
 class OkStringUtilTest {
 

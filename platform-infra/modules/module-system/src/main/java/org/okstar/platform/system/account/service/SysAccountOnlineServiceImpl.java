@@ -15,7 +15,7 @@ package org.okstar.platform.system.account.service;
 
 
 import jakarta.enterprise.context.ApplicationScoped;
-import org.okstar.platform.common.core.utils.OkAssert;
+import org.okstar.platform.common.asserts.OkAssert;
 import org.okstar.platform.org.vo.LoginJwtUser;
 import org.okstar.platform.system.account.domain.SysAccountOnline;
 import org.okstar.platform.system.account.vo.SignInAttached;

@@ -13,7 +13,7 @@
 
 package org.okstar.platform.org.vo;
 
-import org.okstar.platform.common.core.utils.OkStringUtil;
+import org.okstar.platform.common.string.OkStringUtil;
 
 /**
  * 路由显示信息
