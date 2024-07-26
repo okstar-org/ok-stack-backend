@@ -13,6 +13,7 @@
 
 package org.okstar.platform.chat.openfire;
 
+import org.igniterealtime.restclient.RestApiClient;
 import org.igniterealtime.restclient.entity.RosterEntities;
 import org.igniterealtime.restclient.entity.UserEntities;
 import org.igniterealtime.restclient.entity.UserEntity;
@@ -24,6 +25,8 @@ import org.okstar.platform.chat.beans.ChatRoom;
 import java.util.List;
 
 public interface XmppClient {
+
+    RestApiClient makeXmppClient(String host, int xmppAdminPort, String secretKey);
 
     UserEntities users();
 

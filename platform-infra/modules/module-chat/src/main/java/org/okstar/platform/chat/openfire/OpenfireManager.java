@@ -44,44 +44,49 @@ public class OpenfireManager implements XmppClient {
 
     @Inject
     @RestClient
-     SysSettingsRpc settingsRpc;
+    SysSettingsRpc settingsRpc;
 
-    public RestApiClient ensure() {
+    private RestApiClient ensure() {
         SysSetGlobalDTO global = settingsRpc.getGlobal();
         if (global == null) {
             Log.warnf("Can not find global settings!");
             return null;
         }
 
-        SysSetXmppDTO xmpp = global.extraXmpp();
-        if (OkStringUtil.isEmpty(xmpp.getHost())) {
+        var newXmppConf = global.extraXmpp();
+        if (restApiClient != null && newXmppConf.equals(this.xmppConf)) {
+            Log.infof("Using cached client.");
+            return restApiClient;
+        }
+
+        if (OkStringUtil.isEmpty(newXmppConf.getHost())) {
             Log.warnf("Unable to find xmpp host!");
             return null;
         }
 
-        if (restApiClient != null && xmpp.equals(xmppConf)) {
-            return restApiClient;
-        }
-
-        int xmppAdminPort = xmpp.getAdminPort();
+        int xmppAdminPort = newXmppConf.getAdminPort();
         if (xmppAdminPort == 0) {
             Log.warnf("Unable to find xmpp admin port!");
             return null;
         }
 
-        String secretKey = xmpp.getApiSecretKey();
+        String secretKey = newXmppConf.getApiSecretKey();
         if (OkStringUtil.isEmpty(secretKey)) {
             Log.warnf("Unable to find xmpp api secret key!");
             return null;
         }
 
-        AuthenticationToken token = new AuthenticationToken(secretKey);
-        restApiClient = new RestApiClient(
-                "http://" + xmpp.getHost(), xmppAdminPort, //
-                token, SupportedMediaType.JSON);
-
-        xmppConf = xmpp;
+        xmppConf = newXmppConf;
+        restApiClient = makeXmppClient(newXmppConf.getHost(), xmppAdminPort, secretKey);
         return restApiClient;
+    }
+
+    @Override
+    public RestApiClient makeXmppClient(String host, int xmppAdminPort, String secretKey) {
+        AuthenticationToken token = new AuthenticationToken(secretKey);
+        return new RestApiClient(
+                "http://" + host, xmppAdminPort, //
+                token, SupportedMediaType.JSON);
     }
 
     @Override
