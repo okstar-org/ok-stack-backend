@@ -15,7 +15,7 @@ package org.okstar.platform.system.account.service;
 
 
 import org.okstar.platform.common.core.defined.AccountDefines;
-import org.okstar.platform.common.datasource.OkService;
+import org.okstar.platform.common.datasource.OkJpaService;
 import org.okstar.platform.system.account.domain.SysAccount;
 import org.okstar.platform.system.account.domain.SysAccountBind;
 import org.okstar.platform.system.account.domain.SysAccountPassword;
@@ -29,7 +29,7 @@ import java.util.Optional;
 /**
  * 用户业务层
  */
-public interface SysAccountService extends OkService<SysAccount> {
+public interface SysAccountService extends OkJpaService<SysAccount> {
 
 
     SysAccount findByBind(AccountDefines.BindType bindType, String iso, String bindValue);

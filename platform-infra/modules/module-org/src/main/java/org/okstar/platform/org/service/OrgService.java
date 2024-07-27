@@ -14,11 +14,11 @@
 package org.okstar.platform.org.service;
 
 
-import org.okstar.platform.common.datasource.OkService;
+import org.okstar.platform.common.datasource.OkJpaService;
 import org.okstar.platform.org.domain.Org;
 import org.okstar.platform.org.dto.Org0;
 
-public interface OrgService extends OkService<Org>
+public interface OrgService extends OkJpaService<Org>
 {
     /**
      * 获取当前组织

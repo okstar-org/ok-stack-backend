@@ -11,23 +11,18 @@
  * /
  */
 
-package org.okstar.platform.system.settings.domain;
+package org.okstar.platform.system.settings.service;
 
-import jakarta.persistence.Entity;
-import lombok.Data;
-import org.okstar.platform.system.domain.BaseEntity;
 
+import org.okstar.platform.common.core.OkService;
+import org.okstar.platform.system.settings.domain.SysConfIntegration;
 
 /**
- * 系统管理-基础设置-全局设置
+ *集成配置
  */
-@Data
-@Entity
-public class SysSetGlobal extends BaseEntity {
-    boolean globalEnable;
-    boolean verifyAccount;
-    String xmppHost;
-    int xmppAdminPort;
-    String xmppApiSecretKey;
-    String stackUrl;
+public interface SysConfIntegrationService extends OkService
+{
+    SysConfIntegration find();
+
+    void save(SysConfIntegration integration);
 }

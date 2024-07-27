@@ -16,7 +16,7 @@ package org.okstar.platform.org.staff.service;
 
 import org.okstar.platform.common.core.web.page.OkPageResult;
 import org.okstar.platform.common.core.web.page.OkPageable;
-import org.okstar.platform.common.datasource.OkService;
+import org.okstar.platform.common.datasource.OkJpaService;
 import org.okstar.platform.org.staff.domain.OrgStaff;
 import org.okstar.platform.org.dto.OrgStaff0;
 import org.okstar.platform.org.vo.OrgStaffFind;
@@ -29,7 +29,7 @@ import java.util.Optional;
 /**
  * 部门管理 服务层
  */
-public interface OrgStaffService extends OkService<OrgStaff> {
+public interface OrgStaffService extends OkJpaService<OrgStaff> {
 
     List<OrgStaff> children(Long parentId);
 

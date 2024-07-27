@@ -14,7 +14,7 @@
 package org.okstar.platform.org.staff.service;
 
 
-import org.okstar.platform.common.datasource.OkService;
+import org.okstar.platform.common.datasource.OkJpaService;
 import org.okstar.platform.org.staff.domain.OrgStaffPost;
 
 import java.util.List;
@@ -24,7 +24,7 @@ import java.util.SortedSet;
 /**
  * 人员与岗位关联
  */
-public interface OrgStaffPostService extends OkService<OrgStaffPost> {
+public interface OrgStaffPostService extends OkJpaService<OrgStaffPost> {
 
 
     List<OrgStaffPost> findByPostIds(Set<Long> posIds);

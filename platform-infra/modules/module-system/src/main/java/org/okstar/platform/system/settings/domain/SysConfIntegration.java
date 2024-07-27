@@ -11,13 +11,20 @@
  * /
  */
 
-package org.okstar.platform.system.settings.mapper;
+package org.okstar.platform.system.settings.domain;
 
-import jakarta.enterprise.context.ApplicationScoped;
-import org.okstar.platform.common.datasource.OkRepository;
-import org.okstar.platform.system.settings.domain.SysSetGlobal;
+import lombok.Data;
 
-@ApplicationScoped
-public class SysSetGlobalMapper implements OkRepository<SysSetGlobal> {
 
+/**
+ * 系统管理-集成设置
+ */
+@Data
+public class SysConfIntegration  {
+    //IM 设置
+    SysConfIntegrationIm im;
+    //Stack 设置
+    SysConfIntegrationStack stack;
+    //Keycloak 设置
+    SysConfIntegrationKeycloak keycloak;
 }

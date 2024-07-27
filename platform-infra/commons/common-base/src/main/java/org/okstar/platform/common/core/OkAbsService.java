@@ -11,22 +11,20 @@
  * /
  */
 
-package org.okstar.platform.system.settings.service;
+package org.okstar.platform.common.core;
+
+import jakarta.inject.Inject;
+import org.eclipse.microprofile.context.ManagedExecutor;
+import org.eclipse.microprofile.context.ThreadContext;
 
 
-import org.okstar.platform.common.datasource.OkService;
-import org.okstar.platform.system.account.domain.SysAccount;
-import org.okstar.platform.system.settings.domain.SysSetGlobal;
-import org.okstar.platform.system.settings.domain.SysSetPersonal;
 
-/**
- *
- */
-public interface SysBasicService extends OkService<SysSetGlobal>
-{
-    SysSetGlobal findDefaultGlobal();
+public abstract class OkAbsService {
 
-    SysSetPersonal findDefaultPersonal(SysAccount account);
+    @Inject
+    protected ThreadContext threadContext;
 
-    void savePersonal(SysSetPersonal personal);
+    protected ManagedExecutor managedExecutor = ManagedExecutor.builder()
+            .propagated(ThreadContext.CDI)
+            .build();
 }

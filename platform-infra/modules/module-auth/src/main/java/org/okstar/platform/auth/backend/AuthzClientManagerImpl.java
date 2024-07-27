@@ -60,7 +60,7 @@ class AuthzClientManagerImpl implements AuthzClientManager {
     /**
      * 2.初始化oidcClient
      */
-    public void startup(@Observes StartupEvent event){
+    public void startup(@Observes StartupEvent event) {
 
         SysKeycloakConfDTO conf = sysKeycloakRpc.getKeycloakConf();
         Log.infof("Get keycloak conf: %s", conf);
@@ -69,14 +69,14 @@ class AuthzClientManagerImpl implements AuthzClientManager {
                 conf.getAuthServerUrl(),
                 conf.getRealm(),
                 conf.getClientId(),
-                Map.of("secret",conf.getClientSecret()),
+                Map.of("secret", conf.getClientSecret()),
                 null
         );
         authzClient = AuthzClient.create(configuration);
 
         OidcClientConfig cc = new OidcClientConfig();
         cc.setClientId(conf.getClientId());
-        cc.setAuthServerUrl(conf.getAuthServerUrl()+"/realms/"+conf.getRealm());
+        cc.setAuthServerUrl(conf.getAuthServerUrl() + "/realms/" + conf.getRealm());
 
         OidcCommonConfig.Credentials credentials = new OidcCommonConfig.Credentials();
         credentials.clientSecret.setValue(conf.getClientSecret());
@@ -84,15 +84,13 @@ class AuthzClientManagerImpl implements AuthzClientManager {
 
         OidcClientRecorder recorder = new OidcClientRecorder();
         TlsConfig tls = new TlsConfig();
-        tls.trustAll=true;
+        tls.trustAll = true;
         OidcClientsConfig csc = new OidcClientsConfig();
         csc.defaultClient = cc;
-        csc.namedClients=Map.of();
+        csc.namedClients = Map.of();
 
         OidcClients oidcClients = recorder.setup(csc, tls, () -> vertx);
-       oidcClient= oidcClients.getClient();
-
-
+        oidcClient = oidcClients.getClient();
     }
 
 
@@ -117,7 +115,7 @@ class AuthzClientManagerImpl implements AuthzClientManager {
                 int statusCode = cause.getStatusCode();
                 if (statusCode / 100 == 4) {
                     throw new OkRuntimeException("认证异常，帐号或密码不正确！");
-                } else if (statusCode / 100 ==3) {
+                } else if (statusCode / 100 == 3) {
 
                     throw new OkRuntimeException("认证异常，连接被重定向！");
                 }

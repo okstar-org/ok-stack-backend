@@ -14,10 +14,10 @@
 package org.okstar.platform.system.account.service;
 
 
-import org.okstar.platform.common.datasource.OkService;
+import org.okstar.platform.common.datasource.OkJpaService;
 import org.okstar.platform.system.account.domain.SysProfile;
 
-public interface SysProfileService extends OkService<SysProfile> {
+public interface SysProfileService extends OkJpaService<SysProfile> {
 
     SysProfile loadByUsername(String username);
 

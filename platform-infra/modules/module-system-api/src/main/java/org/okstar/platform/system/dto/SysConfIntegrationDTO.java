@@ -20,38 +20,19 @@ import org.okstar.platform.common.core.web.bean.DTO;
  * 全局设置
  */
 @Data
-public class SysSetGlobalDTO extends DTO {
+public class SysConfIntegrationDTO extends DTO {
+
 
     boolean globalEnable;
 
     boolean verifyAccount;
 
-    /**
-     * xmpp地址
-     */
-    private String xmppHost;
-
-    /**
-     * xmpp服务器管理端口
-     */
-    private int xmppAdminPort;
-
-    /**
-     * xmpp服务器API SecretKey
-     */
-    private String xmppApiSecretKey;
+    SysConfImDTO im;
 
     /**
      * Stack Url地址
      */
     private String stackUrl;
 
-    public SysSetXmppDTO extraXmpp(){
-        SysSetXmppDTO n = new SysSetXmppDTO();
-        n.setHost(xmppHost);
-        n.setAdminPort(xmppAdminPort);
-        n.setApiSecretKey(xmppApiSecretKey);
-        return n;
-    }
 
 }

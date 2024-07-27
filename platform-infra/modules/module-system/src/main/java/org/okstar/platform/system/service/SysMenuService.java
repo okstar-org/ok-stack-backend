@@ -14,7 +14,7 @@
 package org.okstar.platform.system.service;
 
 
-import org.okstar.platform.common.datasource.OkService;
+import org.okstar.platform.common.datasource.OkJpaService;
 import org.okstar.platform.system.domain.SysMenu;
 
 /**
@@ -22,7 +22,7 @@ import org.okstar.platform.system.domain.SysMenu;
  * 
  *
  */
-public interface SysMenuService extends OkService<SysMenu>
+public interface SysMenuService extends OkJpaService<SysMenu>
 {
 
 

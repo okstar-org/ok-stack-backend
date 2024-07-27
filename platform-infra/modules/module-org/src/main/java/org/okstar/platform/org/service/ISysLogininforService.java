@@ -14,7 +14,7 @@
 package org.okstar.platform.org.service;
 
 
-import org.okstar.platform.common.datasource.OkService;
+import org.okstar.platform.common.datasource.OkJpaService;
 import org.okstar.platform.org.domain.SysLogininfor;
 
 /**
@@ -22,7 +22,7 @@ import org.okstar.platform.org.domain.SysLogininfor;
  * 
  *
  */
-public interface ISysLogininforService extends OkService<SysLogininfor>
+public interface ISysLogininforService extends OkJpaService<SysLogininfor>
 {
 
 }

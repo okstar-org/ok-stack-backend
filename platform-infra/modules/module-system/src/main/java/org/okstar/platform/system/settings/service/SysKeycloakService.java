@@ -18,12 +18,13 @@ import org.keycloak.admin.client.resource.UsersResource;
 import org.keycloak.representations.idm.ClientRepresentation;
 import org.keycloak.representations.idm.RealmRepresentation;
 import org.okstar.platform.system.kv.rpc.SysKeycloakConfDTO;
+import org.okstar.platform.system.settings.domain.SysConfIntegrationKeycloak;
 
 import java.util.List;
 
 public interface SysKeycloakService {
 
-    void initClient(RealmRepresentation realm, String clientId);
+    void initClient(SysConfIntegrationKeycloak conf, RealmRepresentation realm, String clientId);
 
     ClientRepresentation getClient(String realm, String clientId);
 
@@ -31,11 +32,9 @@ public interface SysKeycloakService {
 
     void removeRealm();
 
-    String initRealm();
+    String initRealm(SysConfIntegrationKeycloak conf, String realm);
 
     void clearConfig();
-
-    void initKeycloakConfig();
 
     UsersResource getUsersResource(Keycloak keycloak);
 
@@ -44,6 +43,10 @@ public interface SysKeycloakService {
      * @return
      */
     Keycloak openKeycloak();
+
+    SysConfIntegrationKeycloak getConfig();
+
+    SysConfIntegrationKeycloak initConfig();
 
     /**
      * 测试配置可用性

@@ -19,7 +19,7 @@ import io.quarkus.runtime.Startup;
 import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
 import jakarta.jms.*;
-import org.okstar.platform.common.datasource.OkAbsService;
+import org.okstar.platform.common.core.OkAbsService;
 
 import java.util.function.Consumer;
 

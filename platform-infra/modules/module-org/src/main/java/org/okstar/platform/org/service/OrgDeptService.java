@@ -14,7 +14,7 @@
 package org.okstar.platform.org.service;
 
 
-import org.okstar.platform.common.datasource.OkService;
+import org.okstar.platform.common.datasource.OkJpaService;
 import org.okstar.platform.org.domain.OrgDept;
 
 import java.util.List;
@@ -24,7 +24,7 @@ import java.util.List;
  * 
  *
  */
-public interface OrgDeptService extends OkService<OrgDept>
+public interface OrgDeptService extends OkJpaService<OrgDept>
 {
 
     List<OrgDept> children(Long parentId);

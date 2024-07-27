@@ -11,31 +11,33 @@
  * /
  */
 
-package org.okstar.platform.system.resource;
+package org.okstar.platform.system.settings.resource;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.GET;
+import jakarta.ws.rs.PUT;
 import jakarta.ws.rs.Path;
-import org.okstar.platform.common.resource.OkCommonResource;
+import org.okstar.platform.common.core.web.bean.Res;
+import org.okstar.platform.system.resource.BaseResource;
 import org.okstar.platform.system.settings.domain.SysConfIntegration;
 import org.okstar.platform.system.settings.service.SysConfIntegrationService;
 
-@Path(".well-known")
-public class OkWellKnownResource extends OkCommonResource {
+@Path("conf/integration")
+public class SysConfIntegrationResource extends BaseResource {
 
     @Inject
     SysConfIntegrationService service;
 
+
     @GET
-    @Path("meet.json")
-    public JsonNode meet() {
-        ObjectNode node = objectMapper.createObjectNode();
+    @Path("")
+    public Res<SysConfIntegration> get() {
+        return Res.ok(service.find());
+    }
 
-        SysConfIntegration im = service.find();
-        node.put("xmppHost", im.getIm().getHost());
-
-        return node;
+    @PUT
+    @Path("")
+    public void put(SysConfIntegration integration) {
+        service.save(integration);
     }
 }

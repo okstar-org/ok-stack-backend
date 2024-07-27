@@ -16,23 +16,23 @@ package org.okstar.platform.system.rpc.impl;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import org.okstar.platform.common.bean.OkBeanUtils;
-import org.okstar.platform.system.dto.SysSetGlobalDTO;
-import org.okstar.platform.system.rpc.SysSettingsRpc;
-import org.okstar.platform.system.settings.domain.SysSetGlobal;
-import org.okstar.platform.system.settings.service.SysBasicService;
+import org.okstar.platform.system.dto.SysConfIntegrationDTO;
+import org.okstar.platform.system.rpc.SysConfIntegrationRpc;
+import org.okstar.platform.system.settings.domain.SysConfIntegration;
+import org.okstar.platform.system.settings.service.SysConfIntegrationService;
 
 
 @ApplicationScoped
-public class SysSetGlobalRpcImpl implements SysSettingsRpc {
+public class SysConfIntegrationRpcImpl implements SysConfIntegrationRpc {
 
     @Inject
-    SysBasicService service;
+    SysConfIntegrationService service;
 
     @Override
-    public SysSetGlobalDTO getGlobal() {
-        SysSetGlobalDTO dto = new SysSetGlobalDTO();
-        SysSetGlobal global = service.findDefaultGlobal();
-        OkBeanUtils.copyPropertiesTo(global, dto);
+    public SysConfIntegrationDTO getIntegrationConf() {
+        SysConfIntegrationDTO dto = new SysConfIntegrationDTO();
+        SysConfIntegration integration = service.find();
+        OkBeanUtils.copyPropertiesTo(integration, dto);
         return dto;
     }
 }

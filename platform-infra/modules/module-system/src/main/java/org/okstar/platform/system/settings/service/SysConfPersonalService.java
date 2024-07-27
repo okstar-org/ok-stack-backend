@@ -11,23 +11,20 @@
  * /
  */
 
-package org.okstar.platform.system.rpc;
-
-import jakarta.ws.rs.GET;
-import jakarta.ws.rs.Path;
-import jakarta.ws.rs.ProcessingException;
-import org.eclipse.microprofile.rest.client.inject.RegisterRestClient;
-import org.okstar.platform.system.dto.SysSetGlobalDTO;
+package org.okstar.platform.system.settings.service;
 
 
-@Path("rpc/SysSettingsRpc")
-@RegisterRestClient
-public interface SysSettingsRpc {
+import org.okstar.platform.common.core.OkService;
+import org.okstar.platform.system.account.domain.SysAccount;
+import org.okstar.platform.system.settings.domain.SysConfPersonal;
+import org.okstar.platform.system.settings.domain.SysProperty;
 
-    /**
-     * 获取全局配置
-     */
-    @GET
-    @Path("getGlobal")
-    SysSetGlobalDTO getGlobal() throws ProcessingException;
+/**
+ * 个人配置
+ */
+public interface SysConfPersonalService extends OkService
+{
+    SysConfPersonal findDefault(SysAccount account);
+
+    SysProperty save(SysAccount account, SysConfPersonal personal);
 }

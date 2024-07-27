@@ -11,22 +11,28 @@
  * /
  */
 
-package org.okstar.platform.system.settings.domain;
+package org.okstar.platform.system.dto;
 
-import jakarta.persistence.Entity;
 import lombok.Data;
-import org.okstar.platform.system.domain.BaseEntity;
+import lombok.ToString;
 
-
-
-/**
- * 系统管理-基础设置-个人设置
- *
- */
 @Data
-@Entity
-public class SysSetPersonal extends BaseEntity {
-    Long accountId;
-    //语言，格式：zh_CN
-    String language;
+@ToString
+public class SysConfImDTO {
+    /**
+     * xmpp地址
+     */
+    private String host;
+
+    /**
+     * xmpp服务器管理端口
+     */
+    private int adminPort;
+
+    /**
+     * xmpp服务器API SecretKey
+     */
+    private String apiSecretKey;
+
+
 }

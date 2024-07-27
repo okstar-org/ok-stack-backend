@@ -11,13 +11,27 @@
  * /
  */
 
-package org.okstar.platform.system.settings.mapper;
+package org.okstar.platform.system.settings.domain;
 
-import jakarta.enterprise.context.ApplicationScoped;
-import org.okstar.platform.common.datasource.OkRepository;
-import org.okstar.platform.system.settings.domain.SysSetKv;
+import java.util.List;
+import java.util.Map;
 
-@ApplicationScoped
-public class SysSetKVMapper implements OkRepository<SysSetKv> {
+/**
+ * 集成配置接口
+ */
+public interface SysConfItem {
 
+
+    /**
+     * 配置组
+     */
+    String getGroup();
+
+    Map<String, SysProperty> getProperties() ;
+
+    void addProperty(SysProperty property);
+
+    default void addProperties(List<SysProperty> properties) {
+        properties.forEach(this::addProperty);
+    }
 }

@@ -28,8 +28,8 @@ import org.okstar.platform.common.os.HostUtils;
 import org.okstar.platform.common.string.OkStringUtil;
 import org.okstar.platform.org.domain.Org;
 import org.okstar.platform.org.service.OrgService;
-import org.okstar.platform.system.dto.SysSetGlobalDTO;
-import org.okstar.platform.system.rpc.SysSettingsRpc;
+import org.okstar.platform.system.dto.SysConfIntegrationDTO;
+import org.okstar.platform.system.rpc.SysConfIntegrationRpc;
 
 @ApplicationScoped
 public class Started {
@@ -41,7 +41,7 @@ public class Started {
 
     @Inject
     @RestClient
-    SysSettingsRpc settingsRpc;
+    SysConfIntegrationRpc settingsRpc;
 
 
     public Started() {
@@ -71,25 +71,25 @@ public class Started {
         /**
          * 获取全局配置
          */
-        SysSetGlobalDTO global;
+        SysConfIntegrationDTO integrationDTO;
         try {
-            global = settingsRpc.getGlobal();
-            if (global == null) {
+            integrationDTO = settingsRpc.getIntegrationConf();
+            if (integrationDTO == null) {
                 return;
             }
         } catch (Exception e) {
             return;
         }
 
-        if (OkStringUtil.isEmpty(global.getStackUrl()) || OkStringUtil.isEmpty(global.getXmppHost())) {
+        if (OkStringUtil.isEmpty(integrationDTO.getStackUrl()) || OkStringUtil.isEmpty(integrationDTO.getIm().getHost())) {
             return;
         }
 
         FederalStateEntity ex = new FederalStateEntity();
         ex.setNo(org.getNo());
         ex.setName(org.getName());
-        ex.setStackUrl(global.getStackUrl());
-        ex.setXmppHost(global.getXmppHost());
+        ex.setStackUrl(integrationDTO.getStackUrl());
+        ex.setXmppHost(integrationDTO.getIm().getHost());
 
         HostInfo info = null;
         try {

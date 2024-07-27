@@ -26,9 +26,9 @@ import org.okstar.platform.chat.beans.ChatGroup;
 import org.okstar.platform.chat.beans.ChatParticipant;
 import org.okstar.platform.chat.beans.ChatRoom;
 import org.okstar.platform.common.string.OkStringUtil;
-import org.okstar.platform.system.dto.SysSetGlobalDTO;
-import org.okstar.platform.system.dto.SysSetXmppDTO;
-import org.okstar.platform.system.rpc.SysSettingsRpc;
+import org.okstar.platform.system.dto.SysConfImDTO;
+import org.okstar.platform.system.dto.SysConfIntegrationDTO;
+import org.okstar.platform.system.rpc.SysConfIntegrationRpc;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -40,21 +40,21 @@ import java.util.stream.Collectors;
 public class OpenfireManager implements XmppClient {
 
     private RestApiClient restApiClient;
-    private SysSetXmppDTO xmppConf;
+    private SysConfImDTO imConfDTO;
 
     @Inject
     @RestClient
-    SysSettingsRpc settingsRpc;
+    SysConfIntegrationRpc settingsRpc;
 
     private RestApiClient ensure() {
-        SysSetGlobalDTO global = settingsRpc.getGlobal();
+        SysConfIntegrationDTO global = settingsRpc.getIntegrationConf();
         if (global == null) {
             Log.warnf("Can not find global settings!");
             return null;
         }
 
-        var newXmppConf = global.extraXmpp();
-        if (restApiClient != null && newXmppConf.equals(this.xmppConf)) {
+        var newXmppConf = global.getIm();
+        if (restApiClient != null && newXmppConf.equals(this.imConfDTO)) {
             Log.infof("Using cached client.");
             return restApiClient;
         }
@@ -76,7 +76,7 @@ public class OpenfireManager implements XmppClient {
             return null;
         }
 
-        xmppConf = newXmppConf;
+        imConfDTO = newXmppConf;
         restApiClient = makeXmppClient(newXmppConf.getHost(), xmppAdminPort, secretKey);
         return restApiClient;
     }

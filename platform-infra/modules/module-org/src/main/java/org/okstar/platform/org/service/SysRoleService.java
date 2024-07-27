@@ -14,7 +14,7 @@
 package org.okstar.platform.org.service;
 
 
-import org.okstar.platform.common.datasource.OkService;
+import org.okstar.platform.common.datasource.OkJpaService;
 import org.okstar.platform.org.rbac.domain.OrgRbacRole;
 
 /**
@@ -22,7 +22,7 @@ import org.okstar.platform.org.rbac.domain.OrgRbacRole;
  * 
  * 
  */
-public interface SysRoleService extends OkService<OrgRbacRole>
+public interface SysRoleService extends OkJpaService<OrgRbacRole>
 {
 
 

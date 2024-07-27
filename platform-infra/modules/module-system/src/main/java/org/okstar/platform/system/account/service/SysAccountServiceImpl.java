@@ -34,7 +34,7 @@ import org.okstar.platform.common.string.OkStringUtil;
 import org.okstar.platform.common.bean.OkBeanUtils;
 import org.okstar.platform.common.core.web.page.OkPageResult;
 import org.okstar.platform.common.core.web.page.OkPageable;
-import org.okstar.platform.common.datasource.OkAbsService;
+import org.okstar.platform.common.core.OkAbsService;
 import org.okstar.platform.common.datasource.domain.OkEntity;
 import org.okstar.platform.system.account.domain.SysAccount;
 import org.okstar.platform.system.account.domain.SysAccountBind;

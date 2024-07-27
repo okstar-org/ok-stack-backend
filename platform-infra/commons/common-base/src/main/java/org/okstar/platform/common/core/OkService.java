@@ -11,21 +11,14 @@
  * /
  */
 
-package org.okstar.platform.billing.order.service;
+package org.okstar.platform.common.core;
 
-import org.okstar.cloud.entity.OrderResultEntity;
-import org.okstar.platform.billing.order.domain.BillingOrder;
-import org.okstar.platform.common.datasource.OkService;
+import jakarta.transaction.Transactional;
 
-import java.util.stream.Stream;
+/**
+ * 服务接口
+ */
 
-public interface BillingOrderService extends OkService<BillingOrder> {
-    Stream<BillingOrder> notSyncList();
-
-    void saveResult(OrderResultEntity result, Long createBy);
-
-    OrderResultEntity createOrder(Long planId, Long createBy);
-
-    boolean closeOrder(String no, Long createBy);
+public interface OkService {
 
 }

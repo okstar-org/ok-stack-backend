@@ -16,6 +16,8 @@ package org.okstar.platform.system.settings.service;
 import io.quarkus.test.junit.QuarkusTest;
 import jakarta.inject.Inject;
 import org.junit.jupiter.api.Test;
+import org.okstar.platform.system.kv.rpc.SysKeycloakConfDTO;
+import org.okstar.platform.system.settings.domain.SysConfIntegrationKeycloak;
 
 import java.util.List;
 
@@ -26,6 +28,12 @@ class SysOidcServiceTest {
 
     @Inject
     SysKeycloakService sysKeycloakService;
+    @Test
+    void initKeycloakConfig() {
+        var config = sysKeycloakService.initConfig();
+        System.out.println(config);
+        assertNotNull(config);
+    }
 
     @Test
     void testKeycloakConfig() {
@@ -41,10 +49,10 @@ class SysOidcServiceTest {
 
     @Test
     void initRealm() {
-        String test = sysKeycloakService.initRealm();
+        SysConfIntegrationKeycloak config = sysKeycloakService.getConfig();
+        String test = sysKeycloakService.initRealm(config, "okstar");
         assertNotNull(test);
     }
-
 
     @Test
     void listRealms(){
@@ -58,6 +66,11 @@ class SysOidcServiceTest {
         sysKeycloakService.removeRealm();
     }
 
-
+    @Test
+    void getOidcConf(){
+        SysKeycloakConfDTO oidcConfig = sysKeycloakService.getOidcConfig();
+        System.out.println(oidcConfig);
+        assertNotNull(oidcConfig);
+    }
 
 }

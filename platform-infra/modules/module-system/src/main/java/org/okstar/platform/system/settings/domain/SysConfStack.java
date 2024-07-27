@@ -11,33 +11,15 @@
  * /
  */
 
-package org.okstar.platform.org.service;
+package org.okstar.platform.system.settings.domain;
 
+import lombok.Data;
 
-import org.okstar.platform.common.datasource.OkJpaService;
-import org.okstar.platform.org.domain.OrgPost;
-import org.okstar.platform.org.dto.OrgPost0;
-
-import java.util.List;
 
 /**
- * 岗位信息 服务层
- * 
- * 
+ * 系统管理-集成设置-Stack设置
  */
-public interface OrgPostService extends OkJpaService<OrgPost>
-{
-
-    List<OrgPost> findByDept(Long deptId);
-
-    /**
-     * 获取可分配的岗位
-     * @param assignment
-     * @param disabled
-     * @return
-     */
-    List<OrgPost0> findAssignAble(Boolean assignment, boolean disabled);
-
-    long getCount();
-
+@Data
+public class SysConfStack {
+    String stackUrl;
 }

@@ -35,14 +35,14 @@ import org.okstar.platform.common.asserts.OkAssert;
 import org.okstar.platform.common.id.OkIdUtils;
 import org.okstar.platform.common.string.OkStringUtil;
 import org.okstar.platform.system.kv.rpc.SysKeycloakConfDTO;
-import org.okstar.platform.system.settings.domain.SysSetKv;
-import org.okstar.platform.system.settings.domain.SysSetKv_;
-import org.okstar.platform.system.settings.mapper.SysSetKVMapper;
+import org.okstar.platform.system.settings.domain.SysConfIntegrationKeycloak;
+import org.okstar.platform.system.settings.domain.SysProperty;
+import org.okstar.platform.system.settings.domain.SysProperty_;
+import org.okstar.platform.system.settings.mapper.SysSetKvMapper;
 
 import java.net.URI;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.Set;
 
 @Transactional
@@ -51,30 +51,27 @@ public class SysKeycloakServiceImpl implements SysKeycloakService {
     //Keycloak 用户名和密码
     private static final String DEFAULT_KC_USERNAME = "admin";
     private static final String DEFAULT_KC_PASSWORD = "okstar";
+    public static final String MASTER_REALM = "master";
+    public static final String ADMIN_CLIENT_CLI = "admin-cli";
 
     @Inject
-    SysSetKVMapper kvMapper;
+    SysSetKvMapper kvMapper;
 
 
     @ConfigProperty(name = "quarkus.oidc.auth-server-url",
-            defaultValue = "http://localhost:18043/realms/okstar")
+            defaultValue = "http://localhost:18080/realms/okstar")
     private String authServerUrl;
-    private String serverUrl;
     private String realm;
+    private String serverUrl;
 
-
-    @ConfigProperty(name = "quarkus.oidc.client-id",
-            defaultValue = "okstack")
+    @ConfigProperty(name = "quarkus.oidc.client-id", defaultValue = "okstack")
     private String clientId;
 
     @Inject
     ObjectMapper objectMapper;
 
-    //配置组
-    private String confGroup;
-
-
     void startup(@Observes StartupEvent event) {
+
         try {
             Log.infof("auth-server-url: %s", authServerUrl);
             URI url = new URI(authServerUrl);
@@ -91,7 +88,7 @@ public class SysKeycloakServiceImpl implements SysKeycloakService {
                 throw new IllegalArgumentException("Is invliad auth server url:" + authServerUrl);
             }
 
-            //realms/okstar
+            //["", "realms", "okstar"]
             String[] split = path.split("/");
             if (split.length != 3 || OkStringUtil.isEmpty(split[2].trim())) {
                 throw new IllegalArgumentException("Is invliad auth server url:" + authServerUrl);
@@ -104,17 +101,16 @@ public class SysKeycloakServiceImpl implements SysKeycloakService {
             throw new RuntimeException("Unable to resolve auth server url", e);
         }
 
-        confGroup = realm + "/" + clientId + "-quarkus.keycloak.admin-client";
-        Log.debugf("Keycloak config prefix: %s", confGroup);
+//        confGroup = realm + "/" + clientId + "-quarkus.keycloak.admin-client";
+//        Log.debugf("Keycloak config prefix: %s", confGroup);
 
-        initKeycloakConfig();
-        String realm = initRealm();
+        SysConfIntegrationKeycloak conf = initConfig();
+        initRealm(conf, realm);
         Log.infof("Initialized realm=>%s", realm);
     }
 
 
-    @Override
-    public void initClient(RealmRepresentation realm, String clientId) {
+    public void initClient(SysConfIntegrationKeycloak conf, RealmRepresentation realm, String clientId) {
         Log.infof("Initialize client: %s for realm:%s", clientId, realm.getRealm());
 
         ClientRepresentation client = getClient(realm.getRealm(), clientId);
@@ -123,15 +119,15 @@ public class SysKeycloakServiceImpl implements SysKeycloakService {
             return;
         }
 
-        Optional<String> clientSecret = getClientSecret();
-        OkAssert.isTrue(clientSecret.isPresent(), "Unable to find client secret");
+        String clientSecret = conf.getClientSecret();
+        OkAssert.isTrue(OkStringUtil.isNoneBlank(clientSecret), "Unable to find client secret");
 
         ClientRepresentation clientRepresentation = new ClientRepresentation();
         clientRepresentation.setEnabled(true);
         clientRepresentation.setClientId(clientId);
         clientRepresentation.setName(OkStringUtil.toCamelCase(clientId));
         clientRepresentation.setClientAuthenticatorType("client-secret");
-        clientRepresentation.setSecret(clientSecret.get());
+        clientRepresentation.setSecret(clientSecret);
 
         clientRepresentation.setRootUrl("http://localhost:9100");
         clientRepresentation.setBaseUrl("http://localhost:9100");
@@ -208,12 +204,16 @@ public class SysKeycloakServiceImpl implements SysKeycloakService {
     public void removeRealm() {
         try (Keycloak kc = openKeycloak()) {
             RealmsResource realms = kc.realms();
-            realms.realm(realm).remove();
+            realms.findAll().forEach(r -> {
+                if (!OkStringUtil.equals(r.getRealm(), MASTER_REALM)) {
+                    Log.infof("Removing realm=%s", r.getRealm());
+                    realms.realm(r.getRealm()).remove();
+                }
+            });
         }
     }
 
-    @Override
-    public String initRealm() {
+    public String initRealm(SysConfIntegrationKeycloak conf, String realm) {
         Log.infof("Initialize realm: %s", realm);
         try (Keycloak kc = openKeycloak()) {
             RealmsResource realms = kc.realms();
@@ -228,7 +228,7 @@ public class SysKeycloakServiceImpl implements SysKeycloakService {
             realmRepresentation.setDisplayName(realm);
             realmRepresentation.setEnabled(true);
 
-            initClient(realmRepresentation, clientId);
+            initClient(conf, realmRepresentation, clientId);
 
             // 创建realm
             realms.create(realmRepresentation);
@@ -252,94 +252,106 @@ public class SysKeycloakServiceImpl implements SysKeycloakService {
 
     @Override
     public void clearConfig() {
-        kvMapper.delete(SysSetKv_.GROUPING, confGroup);
+        SysConfIntegrationKeycloak keycloak = new SysConfIntegrationKeycloak();
+        kvMapper.delete(SysProperty_.GROUPING, keycloak.getGroup());
+    }
+
+
+    @Override
+    public SysConfIntegrationKeycloak getConfig() {
+        SysConfIntegrationKeycloak conf = new SysConfIntegrationKeycloak();
+        List<SysProperty> kvs = kvMapper.findByGroup(conf.getGroup());
+        conf.addProperties(kvs);
+        return conf;
     }
 
     /**
-     * # Configuration file
-     *
-     * @link https://quarkus.io/guides/security-oidc-configuration-properties-reference
+     * Configuration file
      */
     @Override
-    public void initKeycloakConfig() {
-        String serverUrlKey = confGroup + ".server-url";
-        long server = kvMapper.find("k", serverUrlKey).count();
-        if (server <= 0) {
-            SysSetKv kv = SysSetKv.builder()
-                    .grouping(confGroup)
-                    .name("Authorization Server Url")
-                    .k(serverUrlKey)
-                    .v(serverUrl)
-                    .comment("Keycloak server URL")
+    public SysConfIntegrationKeycloak initConfig() {
+        SysConfIntegrationKeycloak conf = new SysConfIntegrationKeycloak();
+        conf.setServerUrl(serverUrl);
+        conf.setUsername(DEFAULT_KC_USERNAME);
+        conf.setPassword(DEFAULT_KC_PASSWORD);
+        conf.setRealm(MASTER_REALM);
+        conf.setClientId(ADMIN_CLIENT_CLI);
+
+        var serverUrl = kvMapper.findByKey(conf.getGroup(), conf.getRealm(), "server-url");
+        if (serverUrl.isEmpty()) {
+            SysProperty kv = SysProperty.builder()
+                    .grouping(conf.getGroup())
+                    .k("server-url")
+                    .v(conf.getServerUrl())
+                    .domain(conf.getRealm())
                     .build();
             kvMapper.persist(kv);
         }
-
-        String realmKey = confGroup + ".realm";
-        long realm = kvMapper.find("k", realmKey).count();
-        if (realm <= 0) {
-            SysSetKv kv = SysSetKv.builder()
-                    .grouping(confGroup)
-                    .name("Realm")
+        String realmKey = "realm";
+        var realm = kvMapper.findByKey(conf.getGroup(), conf.getRealm(), realmKey);
+        if (realm.isEmpty()) {
+            SysProperty kv = SysProperty.builder()
+                    .grouping(conf.getGroup())
                     .k(realmKey)
-                    .v("master")
-                    .comment("Realm.")
+                    .v(conf.getRealm())
+                    .domain(conf.getRealm())
                     .build();
             kvMapper.persist(kv);
         }
-
-        String clientIdKey = confGroup + ".client-id";
-        long clientId = kvMapper.find("k", clientIdKey).count();
-        if (clientId <= 0) {
-            SysSetKv kv = SysSetKv.builder()
-                    .grouping(confGroup)
-                    .name("Client Id")
+        String clientIdKey = "client-id";
+        var clientId = kvMapper.findByKey(conf.getGroup(), conf.getRealm(), clientIdKey);
+        if (clientId.isEmpty()) {
+            SysProperty kv = SysProperty.builder()
+                    .grouping(conf.getGroup())
                     .k(clientIdKey)
-                    .v("admin-cli")
-                    .comment("The admin client id for the Keycloak.")
+                    .v(conf.getClientId())
+                    .domain(conf.getRealm())
                     .build();
             kvMapper.persist(kv);
         }
 
-        String usernameKey = confGroup + ".username";
-        long username = kvMapper.find("k", usernameKey).count();
-        if (username <= 0) {
-            SysSetKv kv = SysSetKv.builder()
-                    .grouping(confGroup)
-                    .name("Username")
+        String usernameKey = "username";
+        var username = kvMapper.findByKey(conf.getGroup(), conf.getRealm(), usernameKey);
+        if (username.isEmpty()) {
+            SysProperty kv = SysProperty.builder()
+                    .grouping(conf.getGroup())
                     .k(usernameKey)
-                    .v(DEFAULT_KC_USERNAME)
-                    .comment("The username of the Keycloak.")
+                    .v(conf.getUsername())
+                    .domain(conf.getRealm())
                     .build();
             kvMapper.persist(kv);
         }
 
-        String passwordKey = confGroup + ".password";
-        long pwd = kvMapper.find("k", passwordKey).count();
-        if (pwd <= 0) {
-            SysSetKv kv = SysSetKv.builder()
-                    .grouping(confGroup)
-                    .name("Password")
+        String passwordKey = "password";
+        var pwd = kvMapper.findByKey(conf.getGroup(), conf.getRealm(), passwordKey);
+        if (pwd.isEmpty()) {
+            SysProperty kv = SysProperty.builder()
+                    .grouping(conf.getGroup())
                     .k(passwordKey)
-                    .v(DEFAULT_KC_PASSWORD)
-                    .comment("The password of the Keycloak.")
+                    .v(conf.getPassword())
+                    .domain(conf.getRealm())
                     .build();
             kvMapper.persist(kv);
         }
 
-        //为客户端生成的密码
-        String clientSecretKey = confGroup + ".client-secret";
-        long clientSecret = kvMapper.find("k", clientSecretKey).count();
-        if (clientSecret <= 0) {
-            SysSetKv kv = SysSetKv.builder()
-                    .grouping(confGroup)
-                    .name("Client Secret")
+        String clientSecretKey = "client-secret";
+        var clientSecret = kvMapper.findByKey(conf.getGroup(), conf.getRealm(), clientSecretKey);
+        if (clientSecret.isEmpty()) {
+            //为客户端生成的密码
+            String secret = OkIdUtils.makeUuid();
+            conf.setClientSecret(secret);
+            SysProperty kv = SysProperty.builder()
+                    .grouping(conf.getGroup())
                     .k(clientSecretKey)
-                    .v(OkIdUtils.makeUuid())
-                    .comment("The default secret of the Keycloak.")
+                    .v(secret)
+                    .domain(conf.getRealm())
                     .build();
             kvMapper.persist(kv);
+        }else {
+            conf.setClientSecret(clientSecret.stream().findFirst().get().getV());
         }
+
+        return conf;
     }
 
 
@@ -352,33 +364,15 @@ public class SysKeycloakServiceImpl implements SysKeycloakService {
         }
     }
 
-
-    public Optional<String> getClientSecret() {
-        String clientSecretKey = confGroup + ".client-secret";
-        return kvMapper.find("k", clientSecretKey).stream()
-                .map(e -> e.getV())
-                .findFirst();
-    }
-
+    @Override
     public SysKeycloakConfDTO getOidcConfig() {
-        var list = kvMapper.find(SysSetKv_.GROUPING, confGroup).list();
-        if (list.isEmpty()) {
-            return null;
-        }
-
+        SysConfIntegrationKeycloak config = getConfig();
+        if (config == null) return null;
         SysKeycloakConfDTO dto = new SysKeycloakConfDTO();
         dto.setRealm(realm);
         dto.setClientId(clientId);
-
-        for (SysSetKv item : list) {
-            if (item.getV() == null)
-                continue;
-            if (OkStringUtil.equals(item.getK(), confGroup + ".server-url")) {
-                dto.setAuthServerUrl(item.getV());
-            } else if (OkStringUtil.equals(item.getK(), confGroup + ".client-secret")) {
-                dto.setClientSecret(item.getV());
-            }
-        }
+        dto.setAuthServerUrl(config.getServerUrl());
+        dto.setClientSecret(config.getClientSecret());
         return dto;
     }
 
@@ -386,33 +380,29 @@ public class SysKeycloakServiceImpl implements SysKeycloakService {
     public UsersResource getUsersResource(Keycloak keycloak) {
         RealmResource realm = keycloak.realms().realm(this.realm);
         return realm.users();
-
     }
 
     @Override
     public Keycloak openKeycloak() {
-        var list = kvMapper.find(SysSetKv_.GROUPING, confGroup).list();
-        if (list.isEmpty()) {
+        SysConfIntegrationKeycloak config = getConfig();
+        if (config == null) {
+            Log.warn("Keycloak config not found!");
             return null;
         }
-        var builder = KeycloakBuilder.builder();
-        for (SysSetKv item : list) {
-            if (item.getV() == null)
-                continue;
-            if (OkStringUtil.equals(item.getK(), confGroup + ".server-url")) {
-                builder.serverUrl(item.getV());
-            } else if (OkStringUtil.equals(item.getK(), confGroup + ".username")) {
-                builder.username(item.getV());
-            } else if (OkStringUtil.equals(item.getK(), confGroup + ".password")) {
-                builder.password(item.getV());
-            } else if (OkStringUtil.equals(item.getK(), confGroup + ".realm")) {
-                builder.realm(item.getV());
-            } else if (OkStringUtil.equals(item.getK(), confGroup + ".client-id")) {
-                builder.clientId(item.getV());
-            }
-        }
-        return builder
+
+        var builder = KeycloakBuilder.builder()
+                .serverUrl(config.getServerUrl())
+                .username(config.getUsername())
+                .password(config.getPassword())
+                .realm(config.getRealm())
+                .clientId(config.getClientId())
+                .clientSecret(config.getClientSecret());
+
+        Keycloak keycloak = builder
                 .resteasyClient(new ResteasyClientBuilderImpl().connectionPoolSize(10).build())
                 .build();
+
+        Log.infof("Opened Keycloak %s", keycloak);
+        return keycloak;
     }
 }

@@ -11,28 +11,23 @@
  * /
  */
 
-package org.okstar.platform.system.dto;
+package org.okstar.platform.system.rpc;
 
-import lombok.Data;
-import lombok.ToString;
+import jakarta.ws.rs.GET;
+import jakarta.ws.rs.Path;
+import jakarta.ws.rs.ProcessingException;
+import org.eclipse.microprofile.rest.client.inject.RegisterRestClient;
+import org.okstar.platform.system.dto.SysConfIntegrationDTO;
 
-@Data
-@ToString
-public class SysSetXmppDTO {
-    /**
-     * xmpp地址
-     */
-    private String host;
 
-    /**
-     * xmpp服务器管理端口
-     */
-    private int adminPort;
+@Path("rpc/SysSettingsRpc")
+@RegisterRestClient
+public interface SysConfIntegrationRpc {
 
     /**
-     * xmpp服务器API SecretKey
+     * 获取全局配置
      */
-    private String apiSecretKey;
-
-
+    @GET
+    @Path("getIntegrationConf")
+    SysConfIntegrationDTO getIntegrationConf() throws ProcessingException;
 }

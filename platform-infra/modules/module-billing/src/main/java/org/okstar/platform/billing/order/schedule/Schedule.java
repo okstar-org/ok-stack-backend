@@ -19,14 +19,14 @@ import jakarta.inject.Inject;
 import org.okstar.cloud.OkCloudApiClient;
 import org.okstar.cloud.entity.AuthenticationToken;
 import org.okstar.cloud.entity.PayOrderEntity;
-import org.okstar.platform.billing.order.service.BillingOrderService;
+import org.okstar.platform.billing.order.service.BillingOrderJpaService;
 import org.okstar.platform.common.core.defined.OkCloudDefines;
 
 @ApplicationScoped
 public class Schedule {
     private final OkCloudApiClient client;
     @Inject
-    private BillingOrderService billingOrderService;
+    private BillingOrderJpaService billingOrderService;
 
     public Schedule() {
         client = new OkCloudApiClient(OkCloudDefines.OK_CLOUD_API_STACK,

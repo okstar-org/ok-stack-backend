@@ -13,8 +13,10 @@
 
 package org.okstar.platform.system.settings.domain;
 
-import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
+import jakarta.persistence.UniqueConstraint;
+import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -24,21 +26,28 @@ import org.okstar.platform.system.domain.BaseEntity;
 
 @Data
 @Entity
+@Table(uniqueConstraints = @UniqueConstraint(columnNames = {"grouping", "domain", "k"}))
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class SysSetKv extends BaseEntity {
+public class SysProperty extends BaseEntity {
 
-    //group
+    /**
+     * 配置组，针对不同类型（实体）配置的区分
+     * @see org.okstar.platform.system.settings.SysConfDefines
+     */
+    @NotBlank
     String grouping;
 
-    //参数名称
-    String name;
+    /**
+     * 配置所在域或范围（比如：隔离不同用户或者其他区域范围）
+     */
+    String domain;
+
     //key
-    @Column( unique = true)
     String k;
+
     //value
     String v;
-    //备注
-    String comment;
+
 }

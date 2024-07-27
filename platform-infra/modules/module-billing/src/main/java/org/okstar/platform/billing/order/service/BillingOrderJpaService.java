@@ -11,14 +11,21 @@
  * /
  */
 
-package org.okstar.platform.system.settings.mapper;
+package org.okstar.platform.billing.order.service;
 
-import jakarta.enterprise.context.ApplicationScoped;
-import org.okstar.platform.common.datasource.OkRepository;
-import org.okstar.platform.system.settings.domain.SysSetPersonal;
+import org.okstar.cloud.entity.OrderResultEntity;
+import org.okstar.platform.billing.order.domain.BillingOrder;
+import org.okstar.platform.common.datasource.OkJpaService;
 
+import java.util.stream.Stream;
 
-@ApplicationScoped
-public class SysSetPersonalMapper implements OkRepository<SysSetPersonal> {
+public interface BillingOrderJpaService extends OkJpaService<BillingOrder> {
+    Stream<BillingOrder> notSyncList();
+
+    void saveResult(OrderResultEntity result, Long createBy);
+
+    OrderResultEntity createOrder(Long planId, Long createBy);
+
+    boolean closeOrder(String no, Long createBy);
 
 }

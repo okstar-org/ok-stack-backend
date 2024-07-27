@@ -11,22 +11,22 @@
  * /
  */
 
-package org.okstar.platform.common.datasource;
+package org.okstar.platform.system.settings;
 
-import jakarta.inject.Inject;
-import jakarta.transaction.Transactional;
-import org.eclipse.microprofile.context.ManagedExecutor;
-import org.eclipse.microprofile.context.ThreadContext;
+/**
+ * 配置group、prefix相关定义
+ * 不能重复否则出现替代或者覆盖问题
+ */
+public interface SysConfDefines {
 
+    /**
+     * 个人配置组
+     */
+    String CONF_GROUP_PERSONAL_PREFIX = "sys.conf.personal";
 
+    /**
+     * 集成配置组
+     */
+    String CONF_GROUP_INTEGRATION_PREFIX = "sys.conf.integration";
 
-@Transactional
-public abstract class OkAbsService {
-
-    @Inject
-    protected ThreadContext threadContext;
-
-    protected ManagedExecutor managedExecutor = ManagedExecutor.builder()
-            .propagated(ThreadContext.CDI)
-            .build();
 }

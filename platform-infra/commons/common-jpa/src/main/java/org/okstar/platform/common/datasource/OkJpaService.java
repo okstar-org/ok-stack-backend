@@ -13,15 +13,22 @@
 
 package org.okstar.platform.common.datasource;
 
-import org.okstar.platform.common.date.OkDateUtils;
+import jakarta.transaction.Transactional;
 import org.okstar.platform.common.bean.OkBeanUtils;
+import org.okstar.platform.common.core.OkService;
 import org.okstar.platform.common.core.web.page.OkPageResult;
 import org.okstar.platform.common.core.web.page.OkPageable;
 import org.okstar.platform.common.datasource.domain.OkEntity;
+import org.okstar.platform.common.date.OkDateUtils;
 
 import java.util.List;
 
-public interface OkService <T extends OkEntity> {
+/**
+ * JPA 存储通用服务
+ * @param <T>
+ */
+@Transactional
+public interface OkJpaService<T extends OkEntity> extends OkService {
 
     default void update(T t, Long updateBy){
         T exist = get(t.id);

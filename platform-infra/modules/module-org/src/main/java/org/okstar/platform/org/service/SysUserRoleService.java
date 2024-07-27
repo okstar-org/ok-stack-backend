@@ -14,7 +14,7 @@
 package org.okstar.platform.org.service;
 
 
-import org.okstar.platform.common.datasource.OkService;
+import org.okstar.platform.common.datasource.OkJpaService;
 import org.okstar.platform.org.rbac.domain.OrgRbacUserRole;
 
 /**
@@ -22,7 +22,7 @@ import org.okstar.platform.org.rbac.domain.OrgRbacUserRole;
  * 
  *
  */
-public interface SysUserRoleService extends OkService<OrgRbacUserRole>
+public interface SysUserRoleService extends OkJpaService<OrgRbacUserRole>
 {
     long countByRoleId(Long roleId);
 

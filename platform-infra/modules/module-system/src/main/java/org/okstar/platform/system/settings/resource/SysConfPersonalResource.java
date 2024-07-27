@@ -14,27 +14,27 @@
 package org.okstar.platform.system.settings.resource;
 
 import jakarta.inject.Inject;
-import org.okstar.platform.common.core.web.bean.Res;
-import org.okstar.platform.system.account.domain.SysAccount;
-import org.okstar.platform.system.dto.SysLanguage;
-import org.okstar.platform.system.resource.BaseResource;
-import org.okstar.platform.system.settings.domain.SysSetGlobal;
-import org.okstar.platform.system.settings.domain.SysSetPersonal;
-import org.okstar.platform.system.settings.service.SysBasicService;
-
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.PUT;
 import jakarta.ws.rs.Path;
+import org.okstar.platform.common.core.web.bean.Res;
+import org.okstar.platform.system.dto.SysLanguage;
+import org.okstar.platform.system.resource.BaseResource;
+import org.okstar.platform.system.settings.domain.SysConfPersonal;
+import org.okstar.platform.system.settings.service.SysConfPersonalService;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-@Path("settings/basic")
-public class SysBasicResource extends BaseResource {
+/**
+ * 个人设置
+ */
+@Path("conf/personal")
+public class SysConfPersonalResource extends BaseResource {
 
     @Inject
-    SysBasicService service;
-
+    SysConfPersonalService service;
 
     @GET
     @Path("languages")
@@ -47,30 +47,15 @@ public class SysBasicResource extends BaseResource {
     }
 
     @GET
-    @Path("global")
-    public Res<SysSetGlobal> getGlobal() {
-        return Res.ok(service.findDefaultGlobal());
+    @Path("")
+    public Res<SysConfPersonal> get() {
+        SysConfPersonal personal = service.findDefault(self());
+        return Res.ok(personal);
     }
 
     @PUT
-    @Path("global")
-    public void updateGlobal(SysSetGlobal global) {
-        /**
-         * 保存设置
-         */
-        service.save(global);
-    }
-
-    @GET
-    @Path("personal")
-    public Res<SysSetPersonal> getPersonal() {
-        SysAccount account = self();
-        return Res.ok(service.findDefaultPersonal(account));
-    }
-
-    @PUT
-    @Path("personal")
-    public void updatePersonal(SysSetPersonal basic) {
-        service.savePersonal(basic);
+    @Path("")
+    public void put(SysConfPersonal personal) {
+        service.save(self(), personal);
     }
 }
