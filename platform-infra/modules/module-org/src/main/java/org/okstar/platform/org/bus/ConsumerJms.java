@@ -30,22 +30,6 @@ public class ConsumerJms extends OkAbsService {
     @Inject
     ConnectionFactory connectionFactory;
 
-//    public void init(@Observes StartupEvent event) throws Exception {
-//        JMSContext context = connectionFactory.createContext();
-//        JMSConsumer jmsConsumer = context.createConsumer(context.createTopic("ModuleSystemApplication.SysProfile.UPDATE"));
-//        Arc.container().getExecutorService().execute(() -> {
-//            do {
-//                Message message = jmsConsumer.receive();
-//                try {
-//                    String body = message.getBody(String.class);
-//                    Log.infof("message=%s", body);
-//                } catch (JMSException e) {
-//                    Log.warnf(e, "Unable to parse message:%s", message);
-//                }
-//            } while (true);
-//        });
-//    }
-
     public boolean setTopicListener(String topicName, Consumer<Message> consumer) {
         Log.debugf("Set topic listener: %s", topicName);
         JMSContext context;

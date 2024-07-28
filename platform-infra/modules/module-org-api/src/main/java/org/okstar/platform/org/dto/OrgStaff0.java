@@ -17,10 +17,9 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.okstar.platform.common.core.defined.UserDefines;
 
 import java.util.Date;
-import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * 组织成员
@@ -30,19 +29,18 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 @NoArgsConstructor
 public class OrgStaff0 {
+    private Long accountId;
     private Long id;
     private String no;
     private String name;
     private String phone;
     private String email;
-    private String username;
-    private Long accountId;
-    private String gender;
+    private UserDefines.Gender gender;
     private Date birthday;
     private Date joinedDate;
-    private List<OrgPost0> posts;
-
-    public String getPostNames() {
-        return posts == null ? "" : posts.stream().map(OrgPost0::getName).collect(Collectors.joining(","));
-    }
+//
+//    private List<OrgPost0> posts;
+//    public String getPostNames() {
+//        return posts == null ? "" : posts.stream().map(OrgPost0::getName).collect(Collectors.joining(","));
+//    }
 }

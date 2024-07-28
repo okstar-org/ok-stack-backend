@@ -88,6 +88,8 @@ public class OrgResource extends OkCommonResource {
         SysAccount0 account0 = RpcAssert.isTrue(sysAccountRpc.findByUsername(username));
         Log.infof("SysAccount0=> %s", account0);
 
+        SysProfileDTO profile = sysProfileRpc.getByAccount(account0.getId());
+
         var staffOptional = staffService.getByAccountId(account0.getId());
         var orgStaff = staffOptional.orElseGet(() -> {
             OrgStaff staff0 = new OrgStaff();
@@ -95,9 +97,6 @@ public class OrgResource extends OkCommonResource {
 
             OrgStaffFragment f = new OrgStaffFragment();
             f.setIso(account0.getIso());
-            f.setName(account0.getDisplayName());
-            f.setFirstName(account0.getFirstName());
-            f.setLastName(account0.getLastName());
             List<SysAccountBindDTO> bindDTOS = RpcAssert.isTrue(sysAccountRpc.getBinds(account0.getId()));
             bindDTOS.forEach(bind -> {
                 switch (bind.getBindType()) {
@@ -113,7 +112,7 @@ public class OrgResource extends OkCommonResource {
 
         MyOrgInfo info = new MyOrgInfo();
         info.setAccount(account0);
-
+        info.setProfile(profile);
         info.setOrg(Org0.builder()
                 .name(org.getName())
                 .url(org.getUrl())
@@ -121,11 +120,16 @@ public class OrgResource extends OkCommonResource {
                 .location(org.getLocation())
                 .build());
 
-        SysProfileDTO profile = sysProfileRpc.getByAccount(account0.getId());
         info.setStaff(OrgStaff0.builder()
+                .accountId(account0.getId())
+                .name(profile.getPersonalName())
+                .id(orgStaff.id)
                 .no(orgStaff.getFragment().getNo())
-                .phone(profile.getPhone())
-                .email(profile.getEmail())
+                .phone(orgStaff.getFragment().getPhone())
+                .email(orgStaff.getFragment().getEmail())
+                .gender(orgStaff.getFragment().getGender())
+                .birthday(orgStaff.getFragment().getBirthday())
+                .joinedDate(orgStaff.getJoinedDate())
                 .build());
 
         /**
@@ -141,7 +145,6 @@ public class OrgResource extends OkCommonResource {
                 OrgDept dept = orgDeptService.get(post.getDeptId());
                 if (dept != null)
                     postInfo.setDept(dept.getName());
-
                 return postInfo;
             }).collect(Collectors.toList());
             info.setPostInfo(infos);

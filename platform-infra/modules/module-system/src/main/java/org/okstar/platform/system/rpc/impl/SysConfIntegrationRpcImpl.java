@@ -15,8 +15,9 @@ package org.okstar.platform.system.rpc.impl;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
-import org.okstar.platform.common.bean.OkBeanUtils;
+import org.okstar.platform.system.dto.SysConfImDTO;
 import org.okstar.platform.system.dto.SysConfIntegrationDTO;
+import org.okstar.platform.system.dto.SysConfStackDTO;
 import org.okstar.platform.system.rpc.SysConfIntegrationRpc;
 import org.okstar.platform.system.settings.domain.SysConfIntegration;
 import org.okstar.platform.system.settings.service.SysConfIntegrationService;
@@ -30,9 +31,20 @@ public class SysConfIntegrationRpcImpl implements SysConfIntegrationRpc {
 
     @Override
     public SysConfIntegrationDTO getIntegrationConf() {
-        SysConfIntegrationDTO dto = new SysConfIntegrationDTO();
         SysConfIntegration integration = service.find();
-        OkBeanUtils.copyPropertiesTo(integration, dto);
+
+        SysConfIntegrationDTO dto = new SysConfIntegrationDTO();
+
+        SysConfImDTO im = new SysConfImDTO();
+        im.setAdminPort(integration.getIm().getAdminPort());
+        im.setHost(integration.getIm().getHost());
+        im.setApiSecretKey(integration.getIm().getApiSecret());
+        dto.setIm(im);
+
+        SysConfStackDTO stack = new SysConfStackDTO();
+        stack.setFqdn(integration.getStack().getFqdn());
+        dto.setStack(stack);
+
         return dto;
     }
 }

@@ -22,17 +22,9 @@ import org.okstar.platform.common.core.web.bean.DTO;
 @Data
 public class SysConfIntegrationDTO extends DTO {
 
-
-    boolean globalEnable;
-
-    boolean verifyAccount;
-
     SysConfImDTO im;
 
-    /**
-     * Stack Url地址
-     */
-    private String stackUrl;
+    SysConfStackDTO stack;
 
 
 }

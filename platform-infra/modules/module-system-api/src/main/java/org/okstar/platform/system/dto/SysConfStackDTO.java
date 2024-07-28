@@ -11,33 +11,17 @@
  * /
  */
 
-package org.okstar.platform.system.vo;
+package org.okstar.platform.system.dto;
 
 import lombok.Data;
-import org.okstar.platform.common.core.defined.AccountDefines;
-import org.okstar.platform.common.core.web.bean.DTO;
-
-import java.util.Optional;
+import lombok.ToString;
 
 /**
- * 简单帐号对象
+ * Stack设置
  */
 @Data
-public class SysAccount0 extends DTO {
-    private Long id;
-    //国家
-    private String iso;
-    //语言
-    private String lang;
-
-    private String username;
-
-    private String nickname;
-
-    private String avatar;
-
-    public String getAvatar() {
-        return Optional.ofNullable(avatar).orElse(AccountDefines.DefaultAvatar);
-    }
-
+@ToString
+public class SysConfStackDTO {
+    //全限定域名
+    String fqdn;
 }

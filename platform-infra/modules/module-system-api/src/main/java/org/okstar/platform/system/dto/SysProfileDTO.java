@@ -18,8 +18,10 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.okstar.platform.common.core.defined.UserDefines;
+import org.okstar.platform.common.string.OkStringUtil;
 
 import java.util.Date;
+import java.util.Optional;
 
 @Data
 @Builder
@@ -96,4 +98,22 @@ public class SysProfileDTO {
      * @link https://www.loc.gov/standards/iso639-2/php/code_list.php
      */
     private String language;
+
+
+    public String getFirstName() {
+        return Optional.ofNullable(firstName).orElse("");
+    }
+
+    public String getLastName() {
+        return Optional.ofNullable(lastName).orElse("");
+    }
+
+    /**
+     * 个人真实名称
+     */
+    public String getPersonalName() {
+        return OkStringUtil.combinePeopleName(language,   getFirstName(),  getLastName());
+    }
+
+
 }

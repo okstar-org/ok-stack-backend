@@ -22,7 +22,7 @@ import java.util.Map;
 
 
 /**
- * 系统管理-集成设置-IM设置
+ * 系统管理-集成设置-Stack设置
  */
 @Data
 public class SysConfIntegrationStack implements SysConfItem {

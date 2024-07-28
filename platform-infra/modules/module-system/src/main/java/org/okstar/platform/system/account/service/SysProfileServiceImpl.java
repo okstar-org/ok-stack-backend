@@ -14,16 +14,20 @@
 package org.okstar.platform.system.account.service;
 
 import io.quarkus.logging.Log;
+import io.quarkus.runtime.StartupEvent;
 import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.enterprise.event.Observes;
 import jakarta.inject.Inject;
 import jakarta.jms.ConnectionFactory;
+import jakarta.jms.JMSContext;
+import jakarta.jms.JMSProducer;
+import jakarta.jms.Topic;
 import jakarta.transaction.Transactional;
-import org.okstar.platform.common.bus.jms.JmsTopicSenderUtil;
-import org.okstar.platform.common.json.OkJsonUtils;
-import org.okstar.platform.common.core.defined.AccountDefines;
 import org.okstar.platform.common.asserts.OkAssert;
+import org.okstar.platform.common.core.defined.AccountDefines;
 import org.okstar.platform.common.core.web.page.OkPageResult;
 import org.okstar.platform.common.core.web.page.OkPageable;
+import org.okstar.platform.common.json.OkJsonUtils;
 import org.okstar.platform.system.ModuleSystemApplication;
 import org.okstar.platform.system.account.domain.SysAccount;
 import org.okstar.platform.system.account.domain.SysAccountBind;
@@ -31,6 +35,7 @@ import org.okstar.platform.system.account.domain.SysProfile;
 import org.okstar.platform.system.account.mapper.SysProfileMapper;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Transactional
@@ -45,7 +50,21 @@ public class SysProfileServiceImpl implements SysProfileService {
     OkJsonUtils jsonUtils;
 
     @Inject
-    ConnectionFactory jmsFactory;
+    ConnectionFactory connectionFactory;
+
+    JMSProducer producer;
+    Topic topic;
+
+    static final String topicName = ModuleSystemApplication.class.getSimpleName()
+            + "." + SysProfile.class.getSimpleName();
+
+
+
+    public void init(@Observes StartupEvent e){
+        JMSContext context = connectionFactory.createContext();
+        producer = context.createProducer();
+        topic = context.createTopic(topicName);
+    }
 
     @Override
     public void save(SysProfile entity) {
@@ -53,8 +72,6 @@ public class SysProfileServiceImpl implements SysProfileService {
 
         Long accountId = entity.getAccountId();
         OkAssert.notNull(accountId, "Account id not be null");
-
-        String topic = ModuleSystemApplication.class.getSimpleName() + "." + SysProfile.class.getSimpleName() + ".UPDATE";
 
         SysProfile exist = null;
         if (entity.id != null && entity.id > 0) {
@@ -79,14 +96,10 @@ public class SysProfileServiceImpl implements SysProfileService {
             exist.setBirthday(entity.getBirthday());
             exist.setLanguage(entity.getLanguage());
             mapper.persist(exist);
-
-            String msg = jsonUtils.asJsonString(exist);
-            JmsTopicSenderUtil.send(jmsFactory, topic, msg);
+            producer.send(topic, Map.of("UPDATED", jsonUtils.asJsonString(exist)));
         } else {
             mapper.persist(entity);
-
-            String msg = jsonUtils.asJsonString(entity);
-            JmsTopicSenderUtil.send(jmsFactory, topic, msg);
+            producer.send(topic, Map.of("INSERTED", jsonUtils.asJsonString(exist)));
         }
         Log.infof("saved: %s", entity);
     }

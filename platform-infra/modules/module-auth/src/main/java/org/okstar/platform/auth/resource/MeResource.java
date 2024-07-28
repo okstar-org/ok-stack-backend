@@ -24,31 +24,39 @@ import org.okstar.cloud.OkCloudApiClient;
 import org.okstar.cloud.channel.FederalChannel;
 import org.okstar.cloud.entity.AuthenticationToken;
 import org.okstar.cloud.entity.FederalCitizenEntity;
+import org.okstar.platform.auth.dto.Me;
 import org.okstar.platform.common.core.defined.OkCloudDefines;
-import org.okstar.platform.common.core.web.bean.Req;
 import org.okstar.platform.common.core.web.bean.Res;
 import org.okstar.platform.common.rpc.RpcAssert;
 import org.okstar.platform.org.rpc.OrgRpc;
+import org.okstar.platform.system.dto.SysProfileDTO;
 import org.okstar.platform.system.rpc.SysAccountRpc;
+import org.okstar.platform.system.rpc.SysProfileRpc;
 import org.okstar.platform.system.vo.SysAccount0;
 
 import java.util.concurrent.ExecutorService;
 
 @Slf4j
 @Path("me")
-public class MeResource {
+public class MeResource extends BaseResource {
 
     @Inject
     JsonWebToken jwt;
 
     @Inject
+    ExecutorService executorService;
+
+    @Inject
     @RestClient
     SysAccountRpc sysAccountRpc;
+
+    @Inject
+    @RestClient
+    SysProfileRpc sysProfileRpc;
+
     @Inject
     @RestClient
     OrgRpc orgRpc;
-    @Inject
-    ExecutorService executorService;
 
     OkCloudApiClient client;
 
@@ -59,21 +67,24 @@ public class MeResource {
 
 
     @GET
-    public Res<SysAccount0> get() {
-        for (var name : jwt.getClaimNames()) {
-            Log.infof("claim=>%s %s", name, jwt.claim(name));
-        }
-        String name = jwt.getName();
-        Log.infof("name:%s", name);
+    public Res<Me> get() {
+//        for (var name : jwt.getClaimNames()) {
+//            Log.infof("claim=>%s %s", name, jwt.claim(name));
+//        }
+//        String name = jwt.getName();
+//        Log.infof("name:%s", name);
+        SysAccount0 account0 = self();
+        SysProfileDTO profileDTO = sysProfileRpc.getByAccount(account0.getId());
 
-        var account0 = RpcAssert.isTrue(sysAccountRpc.findByUsername(name));
+//      var account0 = RpcAssert.isTrue(sysAccountRpc.findByUsername(sysAccount0.getUsername()));
 
         executorService.execute(() -> {
             detach(account0);
         });
 
-        Log.infof("My info is:%s", account0);
-        return Res.ok(Req.empty(), account0);
+        Me me = Me.builder().account(account0).profile(profileDTO).build();
+        Log.infof("My info is:%s", me);
+        return Res.ok(me);
     }
 
     private void detach(SysAccount0 account0) {
@@ -82,7 +93,7 @@ public class MeResource {
         FederalChannel channel = client.getFederalChannel();
         FederalCitizenEntity ex = new FederalCitizenEntity();
         ex.setAccountId(String.valueOf(account0.getId()));
-        ex.setName(account0.getDisplayName());
+//        ex.setName(account0.getDisplayName());
         ex.setStateCert(org0.getCert());
 
         String cert = channel.registerCitizen(ex);

@@ -81,14 +81,15 @@ public class Started {
             return;
         }
 
-        if (OkStringUtil.isEmpty(integrationDTO.getStackUrl()) || OkStringUtil.isEmpty(integrationDTO.getIm().getHost())) {
+        if (OkStringUtil.isEmpty(integrationDTO.getStack().getFqdn())
+                || OkStringUtil.isEmpty(integrationDTO.getIm().getHost())) {
             return;
         }
 
         FederalStateEntity ex = new FederalStateEntity();
         ex.setNo(org.getNo());
         ex.setName(org.getName());
-        ex.setStackUrl(integrationDTO.getStackUrl());
+        ex.setStackUrl(integrationDTO.getStack().getFqdn());
         ex.setXmppHost(integrationDTO.getIm().getHost());
 
         HostInfo info = null;

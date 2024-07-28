@@ -16,6 +16,7 @@ package org.okstar.platform.org.dto;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.okstar.platform.common.core.web.bean.DTO;
+import org.okstar.platform.system.dto.SysProfileDTO;
 import org.okstar.platform.system.vo.SysAccount0;
 
 import java.util.List;
@@ -33,6 +34,11 @@ public class MyOrgInfo extends DTO {
     private SysAccount0 account;
 
     /**
+     * profile
+     */
+    private SysProfileDTO profile;
+
+    /**
      * 组织信息
      */
     private Org0 org;
@@ -46,5 +52,6 @@ public class MyOrgInfo extends DTO {
      * 岗位信息
      */
     private List<MyPostInfo> postInfo;
+
 
 }

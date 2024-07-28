@@ -204,22 +204,26 @@ public class OkStringUtil extends org.apache.commons.lang3.StringUtils {
      * @return
      */
     public static String combinePeopleName(String language, String firstName, String lastName) {
+        if (OkStringUtil.isEmpty(firstName) && OkStringUtil.isEmpty(lastName))
+            return "";
 
-        if (firstName == null && lastName == null)
-            return null;
-
-        if (firstName == null) {
+        if (OkStringUtil.isEmpty(firstName)) {
             return lastName;
         }
 
-        if (lastName == null)
+        if (OkStringUtil.isEmpty(lastName))
             return firstName;
 
         String fmt;
-        if (firstName.trim().isEmpty() || lastName.trim().isEmpty()
-                || (language != null && (language.startsWith("zh") || language.startsWith("ko") || language.startsWith("ja")))) {
+        if ( OkStringUtil.isEmpty(language)
+                || language.startsWith("zh")
+                || language.startsWith("ko")
+                || language.startsWith("ja"))
+        {
+            //中日韩名字无需空格
             fmt = "%s%s";
         } else {
+            //其他都加空格
             fmt = "%s %s";
         }
         return fmt.formatted(Objects.requireNonNullElse(firstName, ""),

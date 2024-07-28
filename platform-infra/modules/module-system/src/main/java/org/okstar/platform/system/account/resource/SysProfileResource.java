@@ -15,19 +15,19 @@ package org.okstar.platform.system.account.resource;
 
 import io.quarkus.security.Authenticated;
 import jakarta.inject.Inject;
-import org.okstar.platform.common.core.web.bean.Req;
-import org.okstar.platform.common.core.web.bean.Res;
-import org.okstar.platform.common.resource.OkCommonResource;
-import org.okstar.platform.system.account.domain.SysProfile;
-import org.okstar.platform.system.account.service.SysProfileService;
-
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.PUT;
 import jakarta.ws.rs.Path;
+import org.okstar.platform.common.core.web.bean.Req;
+import org.okstar.platform.common.core.web.bean.Res;
+import org.okstar.platform.system.account.domain.SysAccount;
+import org.okstar.platform.system.account.domain.SysProfile;
+import org.okstar.platform.system.account.service.SysProfileService;
+import org.okstar.platform.system.resource.BaseResource;
 
 @Authenticated
 @Path("/profile")
-public class SysProfileResource extends OkCommonResource {
+public class SysProfileResource extends BaseResource {
 
     @Inject
     SysProfileService profileService;
@@ -41,7 +41,9 @@ public class SysProfileResource extends OkCommonResource {
 
     @PUT
     public Res<Boolean> put(SysProfile profile){
-        profileService.save(profile);
+        SysAccount self = self();
+        profile.setAccountId(self.id);
+        profileService.save( profile);
         return Res.ok(true);
     }
 }

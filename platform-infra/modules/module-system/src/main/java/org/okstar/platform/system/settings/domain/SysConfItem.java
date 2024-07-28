@@ -20,8 +20,6 @@ import java.util.Map;
  * 集成配置接口
  */
 public interface SysConfItem {
-
-
     /**
      * 配置组
      */

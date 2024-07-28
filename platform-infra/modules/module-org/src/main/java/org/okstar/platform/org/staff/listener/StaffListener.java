@@ -19,13 +19,14 @@ import io.quarkus.runtime.StartupEvent;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.event.Observes;
 import jakarta.inject.Inject;
-import jakarta.jms.JMSException;
 import jakarta.jms.Message;
 import org.okstar.platform.common.json.OkJsonUtils;
 import org.okstar.platform.common.thread.OkThreadUtils;
 import org.okstar.platform.org.bus.ConsumerJms;
 import org.okstar.platform.org.staff.service.OrgStaffService;
 import org.okstar.platform.system.dto.SysProfileDTO;
+
+import java.util.Map;
 
 @Startup
 @ApplicationScoped
@@ -38,32 +39,31 @@ public class StaffListener {
     OrgStaffService orgStaffService;
     int sec = 5;
     //监听系统模块(启动类).
-    static String UPDATE = "ModuleSystemApplication.SysProfile.UPDATE";
-    static String INSERT = "ModuleSystemApplication.SysProfile.INSERT";
-    static String[] TOPICS = {UPDATE, INSERT};
+    static String TOPIC = "ModuleSystemApplication.SysProfile";
 
     public void onStart(@Observes StartupEvent ev) {
-        for (String TOPIC : TOPICS) {
-            boolean b;
-            do {
-                b = addStaffUpdateListener(TOPIC);
-                if (!b) {
-                    Log.warnf("Unable to add staff update listener to topic: %s ", TOPIC);
-                    Log.warnf("Try again in %d seconds", sec);
-                    OkThreadUtils.sleepSeconds(sec, true);
-                }
-            } while (!b);
-        }
+        boolean b;
+        do {
+            b = addStaffUpdateListener(TOPIC);
+            if (!b) {
+                Log.warnf("Unable to add staff update listener to topic: %s ", TOPIC);
+                Log.warnf("Try again in %d seconds", sec);
+                OkThreadUtils.sleepSeconds(sec, true);
+            }
+        } while (!b);
     }
 
     private boolean addStaffUpdateListener(String update) {
         return consumerJms.setTopicListener(update, (Message msg) -> {
             try {
-                String body = msg.getBody(String.class);
+                Map<String, String> body = msg.getBody(Map.class);
                 Log.infof("body=%s", body);
-                SysProfileDTO dto = jsonUtils.asObject(body, SysProfileDTO.class);
-                updateStaff(dto);
-            } catch (JMSException e) {
+                body.forEach((k, v) -> {
+                    Log.infof("k=%s, v=%s", k, v);
+                    SysProfileDTO profileDTO = jsonUtils.asObject(v, SysProfileDTO.class);
+                    updateStaff(profileDTO);
+                });
+            } catch (Exception e) {
                 Log.warnf(e, "Unable to parse message=%s", msg);
             }
         });
