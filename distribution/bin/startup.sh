@@ -5,11 +5,6 @@ export BASE_DIR=`cd $(dirname $0)/..; pwd`
 echo "WorkDir:${BASE_DIR}"
 cd ${BASE_DIR}
 
-if [ -f /etc/init.d/nginx  ]; then
-  /etc/init.d/ngin start
-  echo "Start nginx=>$?"
-fi
-
 daemon=0
 # 使用 getopts 解析选项
 while getopts "d" opt; do

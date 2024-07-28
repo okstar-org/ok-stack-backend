@@ -51,7 +51,7 @@ public class ConsumerJms extends OkAbsService {
         JMSContext context;
         try {
             //不用关闭context，避免内部线程无法读取
-            context = connectionFactory.createContext();
+            context = connectionFactory.createContext(Session.AUTO_ACKNOWLEDGE);
         } catch (JMSRuntimeException e) {
             Log.warnf("Create JMS context failed: %s", e.getMessage());
             return false;
