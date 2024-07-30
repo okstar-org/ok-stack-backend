@@ -70,7 +70,7 @@ jobs:
         if: ${{ github.ref == 'refs/heads/main' }}
         run: echo "SOURCE_TAG=latest" >> $GITHUB_ENV
 
-      - name: Set up variables if we're on main
+      - name: Set up variables if we're on develop
         if: ${{ github.ref == 'refs/heads/develop' }}
         run: echo "SOURCE_TAG=beta" >> $GITHUB_ENV
 
