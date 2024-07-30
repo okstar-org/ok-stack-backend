@@ -11,7 +11,7 @@
  * /
  */
 
-package org.okstar.platform.org;
+package org.okstar.platform.org.task;
 
 import io.quarkus.logging.Log;
 import io.quarkus.scheduler.Scheduled;
@@ -32,9 +32,7 @@ import org.okstar.platform.system.dto.SysConfIntegrationDTO;
 import org.okstar.platform.system.rpc.SysConfIntegrationRpc;
 
 @ApplicationScoped
-public class Started {
-
-    OkCloudApiClient client;
+public class PingTask {
 
     @Inject
     OrgService orgService;
@@ -44,18 +42,16 @@ public class Started {
     SysConfIntegrationRpc settingsRpc;
 
 
-    public Started() {
-        client = new OkCloudApiClient(OkCloudDefines.OK_CLOUD_API_STACK,
-                new AuthenticationToken(OkCloudDefines.OK_CLOUD_USERNAME, OkCloudDefines.OK_CLOUD_PASSWORD));
-    }
-
-
     @Scheduled(every = "1m")
     public void pingTask() {
-        doPing();
+        OkCloudApiClient client = new OkCloudApiClient(OkCloudDefines.OK_CLOUD_API_STACK,
+                new AuthenticationToken(OkCloudDefines.OK_CLOUD_USERNAME,
+                        OkCloudDefines.OK_CLOUD_PASSWORD));
+
+        doPing(client);
     }
 
-    public void doPing() {
+    public void doPing(OkCloudApiClient client) {
         Org org = orgService.loadCurrent();
         String orgNo = org.getNo();
         if (OkStringUtil.isEmpty(orgNo)) {
@@ -67,7 +63,6 @@ public class Started {
             return;
         }
 
-
         /**
          * 获取全局配置
          */
@@ -78,6 +73,7 @@ public class Started {
                 return;
             }
         } catch (Exception e) {
+            Log.warnf("Fetch integration configuration failed, error: %s", e.getMessage());
             return;
         }
 

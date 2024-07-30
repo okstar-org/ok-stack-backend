@@ -16,16 +16,16 @@ package org.okstar.platform.org;
 import io.quarkus.test.junit.QuarkusTest;
 import jakarta.inject.Inject;
 import org.junit.jupiter.api.Test;
-
-import static org.junit.jupiter.api.Assertions.*;
+import org.okstar.platform.org.task.PingTask;
 
 @QuarkusTest
-class StartedTest {
+class PingTaskTest {
 
-    @Inject Started started;
+    @Inject
+    PingTask pingTask;
 
     @Test
     void doPing() {
-        started.doPing();
+        pingTask.pingTask();
     }
 }

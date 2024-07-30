@@ -31,7 +31,11 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 @NoArgsConstructor
 public class OrgStaff0 {
+
+    //account
+    private String username;
     private Long accountId;
+
     private Long id;
     private String no;
     private String name;
@@ -42,6 +46,7 @@ public class OrgStaff0 {
     private Date joinedDate;
 
     private List<OrgPost0> posts;
+
     public String getPostNames() {
         return posts == null ? "" : posts.stream().map(OrgPost0::getName).collect(Collectors.joining(","));
     }

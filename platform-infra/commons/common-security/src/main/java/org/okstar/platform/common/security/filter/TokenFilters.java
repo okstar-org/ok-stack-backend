@@ -35,7 +35,7 @@ public class TokenFilters {
         String uri = rc.request().uri();
         Log.infof("jwtFilter: %s", uri);
 
-        if (uri.contains("/passport") || uri.contains("/rpc") || uri.contains("/_well-known") || uri.contains("/staff")) {
+        if (uri.contains("/passport") || uri.contains("/q/") || uri.contains("/rpc") || uri.contains("/_well-known") || uri.contains("/staff")) {
             Log.infof("bypass the uri.");
             rc.next();
             return;
