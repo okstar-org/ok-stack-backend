@@ -30,6 +30,8 @@ import lombok.Data;
 @Data
 @Builder
 public class AuthorizationResult {
+    private String username;
+
     //tokenType："Bearer"
     protected String tokenType;
     protected String accessToken;

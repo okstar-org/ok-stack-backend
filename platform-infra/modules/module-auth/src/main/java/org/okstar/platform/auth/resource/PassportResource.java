@@ -68,12 +68,10 @@ public class PassportResource extends OkCommonResource {
     @POST
     @Path("refresh")
     public Res<AuthorizationResult> refresh(RefreshForm refreshForm) {
-        Log.infof("current accessToken:%s", refreshForm.getAccessToken());
-
-        AuthorizationResult result0 = passportService.refresh(refreshForm.getRefreshToken());
-        Log.infof("refresh accessToken=>%s", result0.getAccessToken());
-
-        return Res.ok(refreshForm, result0);
+        Log.infof("refreshToken:%s", refreshForm.getRefreshToken());
+        AuthorizationResult result = passportService.refresh(refreshForm.getRefreshToken());
+        Log.infof("refresh accessToken=>%s", result);
+        return Res.ok(refreshForm, result);
     }
 
 
@@ -82,7 +80,7 @@ public class PassportResource extends OkCommonResource {
     /**
      * 忘记密码
      *
-     * @param username
+     * @param form
      * @return
      */
     @POST

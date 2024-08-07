@@ -16,6 +16,7 @@ package org.okstar.platform.auth.service;
 import io.quarkus.logging.Log;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
+import jakarta.ws.rs.NotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.eclipse.microprofile.rest.client.inject.RestClient;
 import org.okstar.platform.auth.backend.AuthzClientManager;
@@ -122,7 +123,7 @@ public class PassportServiceImpl implements PassportService {
         SysAccount0 account0 = getAccount(account);
         Log.debugf("getAccount=>%s", account0);
         if (account0 == null) {
-            throw new OkRuntimeException("帐号不存在！");
+            throw new NotFoundException("帐号不存在！");
         }
 
         //从后端系统获取用户
@@ -141,7 +142,9 @@ public class PassportServiceImpl implements PassportService {
             BackUser added = backUserManager.add(addUser);
             Log.infof("User:%s is initialized to ldap successfully.", added.getUsername());
         }
-        return authzClientManager.authorization(account0.getUsername(), signInForm.getPassword());
+        AuthorizationResult result = authzClientManager.authorization(account0.getUsername(), signInForm.getPassword());
+        result.setUsername(account0.getUsername());
+        return result;
     }
 
     @Override
