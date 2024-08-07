@@ -20,7 +20,7 @@ import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.event.Observes;
 import jakarta.inject.Inject;
 import jakarta.jms.Message;
-import org.okstar.platform.common.json.OkJsonUtils;
+import org.okstar.platform.common.json.OkJsonHelper;
 import org.okstar.platform.common.thread.OkThreadUtils;
 import org.okstar.platform.org.bus.ConsumerJms;
 import org.okstar.platform.org.staff.service.OrgStaffService;
@@ -32,7 +32,7 @@ import java.util.Map;
 @ApplicationScoped
 public class StaffListener {
     @Inject
-    OkJsonUtils jsonUtils;
+    OkJsonHelper jsonUtils;
     @Inject
     ConsumerJms consumerJms;
     @Inject

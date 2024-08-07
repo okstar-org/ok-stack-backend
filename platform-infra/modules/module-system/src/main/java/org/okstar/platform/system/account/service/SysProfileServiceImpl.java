@@ -27,7 +27,7 @@ import org.okstar.platform.common.asserts.OkAssert;
 import org.okstar.platform.common.core.defined.AccountDefines;
 import org.okstar.platform.common.core.web.page.OkPageResult;
 import org.okstar.platform.common.core.web.page.OkPageable;
-import org.okstar.platform.common.json.OkJsonUtils;
+import org.okstar.platform.common.json.OkJsonHelper;
 import org.okstar.platform.system.ModuleSystemApplication;
 import org.okstar.platform.system.account.domain.SysAccount;
 import org.okstar.platform.system.account.domain.SysAccountBind;
@@ -47,7 +47,7 @@ public class SysProfileServiceImpl implements SysProfileService {
     @Inject
     SysAccountService accountService;
     @Inject
-    OkJsonUtils jsonUtils;
+    OkJsonHelper jsonUtils;
 
     @Inject
     ConnectionFactory connectionFactory;

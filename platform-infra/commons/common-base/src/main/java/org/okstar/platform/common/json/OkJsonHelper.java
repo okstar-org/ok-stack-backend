@@ -19,7 +19,7 @@ import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 
 @ApplicationScoped
-public class OkJsonUtils {
+public class OkJsonHelper {
 
     @Inject
     ObjectMapper objectMapper;

@@ -13,6 +13,8 @@
 
 package org.okstar.platform.auth.backend;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.quarkus.logging.Log;
 import io.quarkus.oidc.client.OidcClient;
 import io.quarkus.oidc.client.OidcClientConfig;
@@ -33,9 +35,11 @@ import org.keycloak.authorization.client.AuthzClient;
 import org.keycloak.authorization.client.Configuration;
 import org.keycloak.authorization.client.util.HttpResponseException;
 import org.keycloak.representations.idm.authorization.AuthorizationRequest;
-import org.okstar.platform.common.core.exception.OkRuntimeException;
+import org.keycloak.representations.idm.authorization.AuthorizationResponse;
 import org.okstar.platform.common.asserts.OkAssert;
+import org.okstar.platform.common.core.exception.OkRuntimeException;
 import org.okstar.platform.common.date.OkDateUtils;
+import org.okstar.platform.common.json.OkJsonHelper;
 import org.okstar.platform.system.kv.rpc.SysKeycloakConfDTO;
 import org.okstar.platform.system.kv.rpc.SysKeycloakRpc;
 import org.okstar.platform.system.sign.AuthorizationResult;
@@ -48,6 +52,8 @@ class AuthzClientManagerImpl implements AuthzClientManager {
 
     @Inject
     Vertx vertx;
+    @Inject
+    OkJsonHelper jsonHelper;
 
     @Inject
     @RestClient
@@ -98,9 +104,10 @@ class AuthzClientManagerImpl implements AuthzClientManager {
     public AuthorizationResult authorization(String username, String password) {
         OkAssert.hasText(username, "username is empty");
         OkAssert.hasText(password, "password is empty");
+
         AuthorizationRequest request = new AuthorizationRequest();
         try {
-            var response = authzClient.authorization(username.toLowerCase(), password).authorize(request);
+            AuthorizationResponse response = authzClient.authorization(username.toLowerCase(), password).authorize(request);
             return AuthorizationResult.builder()
                     .session_state(response.getSessionState())
                     .accessToken(response.getToken())
@@ -110,14 +117,28 @@ class AuthzClientManagerImpl implements AuthzClientManager {
                     .refreshExpiresIn(response.getRefreshExpiresIn())
                     .build();
         } catch (Exception e) {
-            Log.warnf(e, "认证异常:%s", e.getCause().getMessage());
+            Log.warnf(e, "认证异常！");
+
             if (e.getCause() instanceof HttpResponseException cause) {
                 int statusCode = cause.getStatusCode();
-                if (statusCode / 100 == 4) {
-                    throw new OkRuntimeException("认证异常，帐号或密码不正确！");
-                } else if (statusCode / 100 == 3) {
-
-                    throw new OkRuntimeException("认证异常，连接被重定向！");
+                // {"error":"invalid_grant","error_description":"Account is not fully set up"}
+                ObjectNode node = jsonHelper.asObject(new String(cause.getBytes()), ObjectNode.class);
+                JsonNode description;
+                if (node != null && ( description = node.get("error_description")) != null) {
+                    String error = node.get("error").asText();
+                    String descriptionText = description.asText();
+                    Log.warnf("error:%s description: %s",  error, descriptionText);
+                    //400 / Bad Request / Body : {"error":"invalid_grant","error_description":"Account is not fully set up"}
+//                    if (statusCode == 400) {
+//                        throw new OkRuntimeException(description);
+//                    } else if (statusCode == 401) {
+//                        throw new OkRuntimeException("帐号或密码不正确！");
+//                    } else if (statusCode == 403) {
+//                        throw new OkRuntimeException("帐号未授权！");
+//                    } else if (statusCode / 100 == 3) {
+//                        throw new OkRuntimeException("认证异常，连接被重定向！");
+//                    }
+                    throw new OkRuntimeException("认证异常：" + statusCode+", " + descriptionText);
                 }
             }
             throw new OkRuntimeException("认证异常，请稍后再试！");
