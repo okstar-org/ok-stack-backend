@@ -25,11 +25,15 @@ import io.quarkus.oidc.client.runtime.OidcClientsConfig;
 import io.quarkus.oidc.common.runtime.OidcCommonConfig;
 import io.quarkus.runtime.StartupEvent;
 import io.quarkus.runtime.TlsConfig;
+import io.quarkus.security.UnauthorizedException;
 import io.smallrye.mutiny.Uni;
 import io.vertx.core.Vertx;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.event.Observes;
 import jakarta.inject.Inject;
+import jakarta.ws.rs.BadRequestException;
+import jakarta.ws.rs.NotAuthorizedException;
+import jakarta.ws.rs.core.Response;
 import org.eclipse.microprofile.rest.client.inject.RestClient;
 import org.keycloak.authorization.client.AuthzClient;
 import org.keycloak.authorization.client.Configuration;
@@ -38,8 +42,10 @@ import org.keycloak.representations.idm.authorization.AuthorizationRequest;
 import org.keycloak.representations.idm.authorization.AuthorizationResponse;
 import org.okstar.platform.common.asserts.OkAssert;
 import org.okstar.platform.common.core.exception.OkRuntimeException;
+import org.okstar.platform.common.core.web.bean.Req;
+import org.okstar.platform.common.core.web.bean.Res;
 import org.okstar.platform.common.date.OkDateUtils;
-import org.okstar.platform.common.json.OkJsonHelper;
+import org.okstar.platform.common.json.OkJsonUtils;
 import org.okstar.platform.system.kv.rpc.SysKeycloakConfDTO;
 import org.okstar.platform.system.kv.rpc.SysKeycloakRpc;
 import org.okstar.platform.system.sign.AuthorizationResult;
@@ -53,8 +59,7 @@ class AuthzClientManagerImpl implements AuthzClientManager {
     @Inject
     Vertx vertx;
     @Inject
-    OkJsonHelper jsonHelper;
-
+    OkJsonUtils jsonUtils;
     @Inject
     @RestClient
     SysKeycloakRpc sysKeycloakRpc;
@@ -121,27 +126,29 @@ class AuthzClientManagerImpl implements AuthzClientManager {
 
             if (e.getCause() instanceof HttpResponseException cause) {
                 int statusCode = cause.getStatusCode();
-                // {"error":"invalid_grant","error_description":"Account is not fully set up"}
-                ObjectNode node = jsonHelper.asObject(new String(cause.getBytes()), ObjectNode.class);
+                // 错误信息：{"error":"invalid_grant","error_description":"Account is not fully set up"}
+                ObjectNode node = jsonUtils.asObject(new String(cause.getBytes()), ObjectNode.class);
                 JsonNode description;
-                if (node != null && ( description = node.get("error_description")) != null) {
+                if (node != null && (description = node.get("error_description")) != null) {
                     String error = node.get("error").asText();
-                    String descriptionText = description.asText();
-                    Log.warnf("error:%s description: %s",  error, descriptionText);
+                    Log.warnf("error:%s description: %s", error, description);
                     //400 / Bad Request / Body : {"error":"invalid_grant","error_description":"Account is not fully set up"}
-//                    if (statusCode == 400) {
-//                        throw new OkRuntimeException(description);
-//                    } else if (statusCode == 401) {
-//                        throw new OkRuntimeException("帐号或密码不正确！");
-//                    } else if (statusCode == 403) {
-//                        throw new OkRuntimeException("帐号未授权！");
-//                    } else if (statusCode / 100 == 3) {
-//                        throw new OkRuntimeException("认证异常，连接被重定向！");
-//                    }
-                    throw new OkRuntimeException("认证异常：" + statusCode+", " + descriptionText);
+                    Res<Object> error0 = Res.error(Req.empty(), description.asText());
+                    Response response = Response
+                            .status(Response.Status.fromStatusCode(statusCode))
+                            .entity(error0)
+                            .build();
+                    switch (statusCode) {
+                        case 400:
+                            throw new BadRequestException(response);
+                        case 401:
+                            throw new UnauthorizedException(description.asText());
+                        case 403:
+                            throw new NotAuthorizedException(response);
+                    }
                 }
             }
-            throw new OkRuntimeException("认证异常，请稍后再试！");
+            throw new OkRuntimeException("服务异常，请稍后再试！");
         }
     }
 

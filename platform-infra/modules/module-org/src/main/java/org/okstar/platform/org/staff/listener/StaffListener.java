@@ -20,7 +20,7 @@ import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.event.Observes;
 import jakarta.inject.Inject;
 import jakarta.jms.Message;
-import org.okstar.platform.common.json.OkJsonHelper;
+import org.okstar.platform.common.json.OkJsonUtils;
 import org.okstar.platform.common.thread.OkThreadUtils;
 import org.okstar.platform.org.bus.ConsumerJms;
 import org.okstar.platform.org.staff.service.OrgStaffService;
@@ -32,7 +32,7 @@ import java.util.Map;
 @ApplicationScoped
 public class StaffListener {
     @Inject
-    OkJsonHelper jsonUtils;
+    OkJsonUtils jsonUtils;
     @Inject
     ConsumerJms consumerJms;
     @Inject
@@ -59,7 +59,7 @@ public class StaffListener {
                 Map<String, String> body = msg.getBody(Map.class);
                 Log.infof("body=%s", body);
                 body.forEach((k, v) -> {
-                    Log.infof("k=%s, v=%s", k, v);
+                    Log.infof("%s => %s", k, v);
                     SysProfileDTO profileDTO = jsonUtils.asObject(v, SysProfileDTO.class);
                     updateStaff(profileDTO);
                 });

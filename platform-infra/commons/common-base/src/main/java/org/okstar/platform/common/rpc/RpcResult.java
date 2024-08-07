@@ -13,16 +13,14 @@
 
 package org.okstar.platform.common.rpc;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.okstar.platform.common.core.web.bean.DTO;
 
 /**
  * Rpc返回值
  * @param <T>
  */
+@EqualsAndHashCode(callSuper = true)
 @Data
 @Builder
 @NoArgsConstructor

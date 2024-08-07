@@ -13,30 +13,23 @@
 
 package org.okstar.platform.common.json;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.quarkus.arc.DefaultBean;
 import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.enterprise.inject.Produces;
 import jakarta.inject.Inject;
+import jakarta.inject.Singleton;
 
 @ApplicationScoped
-public class OkJsonHelper {
+public class OkJsonUtilsProducer {
 
     @Inject
     ObjectMapper objectMapper;
 
-    public String asJsonString(Object object) {
-        try {
-            return objectMapper.writeValueAsString(object);
-        } catch (JsonProcessingException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    public <T> T asObject(String jsonString, Class<T> clazz) {
-        try {
-            return objectMapper.readValue(jsonString, clazz);
-        } catch (JsonProcessingException e) {
-            throw new RuntimeException(e);
-        }
+    @DefaultBean
+    @Singleton
+    @Produces
+    public OkJsonUtils okJsonUtils() {
+        return new OkJsonUtils(objectMapper);
     }
 }

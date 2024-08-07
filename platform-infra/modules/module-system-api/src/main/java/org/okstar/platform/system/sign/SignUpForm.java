@@ -13,10 +13,7 @@
 
 package org.okstar.platform.system.sign;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.okstar.platform.common.core.defined.AccountDefines;
 import org.okstar.platform.common.string.OkStringUtil;
 import org.okstar.platform.common.core.web.bean.Req;
@@ -28,6 +25,7 @@ import org.okstar.platform.common.core.web.bean.Req;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@EqualsAndHashCode(callSuper = true)
 public class SignUpForm extends Req {
 
     //帐号类型

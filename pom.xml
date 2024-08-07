@@ -54,7 +54,7 @@
         <quarkus.datasource.db-kind>h2</quarkus.datasource.db-kind>
         <quarkus.datasource.username></quarkus.datasource.username>
         <quarkus.datasource.password></quarkus.datasource.password>
-        <quarkus.datasource.jdbc.url>jdbc:h2:mem:${artifactId}</quarkus.datasource.jdbc.url>
+        <quarkus.datasource.jdbc.url>jdbc:h2:mem:${project.artifactId}</quarkus.datasource.jdbc.url>
         <quarkus.datasource.jdbc.driver>org.h2.Driver</quarkus.datasource.jdbc.driver>
         <quarkus.datasource.jdbc.mix-size>2</quarkus.datasource.jdbc.mix-size>
         <quarkus.datasource.jdbc.max-size>15</quarkus.datasource.jdbc.max-size>
@@ -440,6 +440,7 @@
             <plugin>
                 <groupId>io.quarkus</groupId>
                 <artifactId>quarkus-extension-maven-plugin</artifactId>
+                <version>3.13.0</version>
                 <configuration>
                     <parentFirstArtifacts>
                         <parentFirstArtifact>io.quarkus:quarkus-bootstrap-core</parentFirstArtifact>
