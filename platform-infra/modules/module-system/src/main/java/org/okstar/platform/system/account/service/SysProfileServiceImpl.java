@@ -13,6 +13,8 @@
 
 package org.okstar.platform.system.account.service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.quarkus.logging.Log;
 import io.quarkus.runtime.StartupEvent;
 import jakarta.enterprise.context.ApplicationScoped;
@@ -23,11 +25,11 @@ import jakarta.jms.JMSContext;
 import jakarta.jms.JMSProducer;
 import jakarta.jms.Topic;
 import jakarta.transaction.Transactional;
+import lombok.SneakyThrows;
 import org.okstar.platform.common.asserts.OkAssert;
 import org.okstar.platform.common.core.defined.AccountDefines;
 import org.okstar.platform.common.core.web.page.OkPageResult;
 import org.okstar.platform.common.core.web.page.OkPageable;
-import org.okstar.platform.common.json.OkJsonUtils;
 import org.okstar.platform.system.ModuleSystemApplication;
 import org.okstar.platform.system.account.domain.SysAccount;
 import org.okstar.platform.system.account.domain.SysAccountBind;
@@ -47,7 +49,7 @@ public class SysProfileServiceImpl implements SysProfileService {
     @Inject
     SysAccountService accountService;
     @Inject
-    OkJsonUtils jsonUtils;
+    ObjectMapper objectMapper;
 
     @Inject
     ConnectionFactory connectionFactory;
@@ -66,6 +68,7 @@ public class SysProfileServiceImpl implements SysProfileService {
         topic = context.createTopic(topicName);
     }
 
+    @SneakyThrows(JsonProcessingException.class)
     @Override
     public void save(SysProfile entity) {
         Log.infof("save: %s", entity);
@@ -96,10 +99,10 @@ public class SysProfileServiceImpl implements SysProfileService {
             exist.setBirthday(entity.getBirthday());
             exist.setLanguage(entity.getLanguage());
             mapper.persist(exist);
-            producer.send(topic, Map.of("UPDATED", jsonUtils.asJsonString(exist)));
+            producer.send(topic, Map.of("UPDATED", objectMapper.writeValueAsString(exist)));
         } else {
             mapper.persist(entity);
-            producer.send(topic, Map.of("INSERTED", jsonUtils.asJsonString(exist)));
+            producer.send(topic, Map.of("INSERTED", objectMapper.writeValueAsString(exist)));
         }
         Log.infof("saved: %s", entity);
     }

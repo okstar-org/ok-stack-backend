@@ -18,6 +18,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 import org.okstar.platform.system.account.vo.SignInAttached;
 import org.okstar.platform.system.domain.BaseEntity;
 
@@ -26,7 +28,8 @@ import org.okstar.platform.system.domain.BaseEntity;
  * 
  *
  */
-@Data
+@Setter
+@Getter
 @Entity
 @Table(uniqueConstraints = {@UniqueConstraint(columnNames = {"sessionId"})})
 public class SysAccountOnline extends BaseEntity

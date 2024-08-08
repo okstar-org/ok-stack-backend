@@ -16,12 +16,15 @@ package org.okstar.platform.org.staff.domain;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 import org.okstar.platform.common.datasource.domain.OkEntity;
 
 /**
  * 人员和岗位关联
  */
-@Data
+@Setter
+@Getter
 @Table
 @Entity
 public class OrgStaffPost extends OkEntity {

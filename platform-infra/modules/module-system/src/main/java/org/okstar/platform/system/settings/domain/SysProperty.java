@@ -17,19 +17,16 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
 import jakarta.validation.constraints.NotBlank;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.okstar.platform.system.domain.BaseEntity;
 
-
-@Data
-@Entity
-@Table(uniqueConstraints = @UniqueConstraint(columnNames = {"grouping", "domain", "k"}))
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@Setter
+@Getter
+@Entity
+@Table(uniqueConstraints = @UniqueConstraint(columnNames = {"grouping", "domain", "k"}))
 public class SysProperty extends BaseEntity {
 
     /**

@@ -13,40 +13,43 @@
 
 package org.okstar.platform.common.json;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.github.fge.jackson.JacksonUtils;
+import lombok.SneakyThrows;
 
 /**
  * Json工具
  * 使用方法：
  * <code>
- * @Inject
- * OkJsonUtils jsonUtils
+ *
+ * @Inject OkJsonUtils jsonUtils
  * </code>
  */
 public class OkJsonUtils {
 
-    ObjectMapper objectMapper;
+    private OkJsonUtils(){}
 
-    OkJsonUtils(ObjectMapper objectMapper) {
-        this.objectMapper = objectMapper;
+    /**
+     * 对象转JSON
+     * @param object
+     * @return
+     */
+    @SneakyThrows
+    public static String asString(Object object) {
+        ObjectMapper mapper = JacksonUtils.newMapper();
+        return mapper.writeValueAsString(object);
     }
 
-    public String asJsonString(Object object) {
-        try {
-//            ObjectMapper mapper = JacksonUtils.newMapper();
-            return objectMapper.writeValueAsString(object);
-        } catch (JsonProcessingException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    public <T> T asObject(String jsonString, Class<T> clazz) {
-        try {
-//            ObjectMapper mapper = JacksonUtils.newMapper();
-            return objectMapper.readValue(jsonString, clazz);
-        } catch (JsonProcessingException e) {
-            throw new RuntimeException(e);
-        }
+    /**
+     * JSON转对象
+     * @param json
+     * @param clazz
+     * @return
+     * @param <T>
+     */
+    @SneakyThrows
+    public static <T> T asObject(String json, Class<T> clazz) {
+        ObjectMapper mapper = JacksonUtils.newMapper();
+        return mapper.readValue(json, clazz);
     }
 }

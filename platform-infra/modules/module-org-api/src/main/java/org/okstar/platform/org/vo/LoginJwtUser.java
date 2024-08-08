@@ -14,6 +14,7 @@
 package org.okstar.platform.org.vo;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import org.okstar.platform.common.core.web.bean.DTO;
 
 import java.util.Set;
@@ -23,6 +24,7 @@ import java.util.Set;
  *
  *
  */
+@EqualsAndHashCode(callSuper = true)
 @Data
 public class LoginJwtUser extends DTO
 {

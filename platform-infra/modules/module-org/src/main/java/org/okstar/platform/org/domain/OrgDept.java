@@ -17,13 +17,16 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 /**
  * 组织-部门
  * 
  * 
  */
-@Data
+@Setter
+@Getter
 @Entity
 @Table(uniqueConstraints = {@UniqueConstraint(columnNames = {"name", "no"})})
 public class OrgDept extends BaseEntity

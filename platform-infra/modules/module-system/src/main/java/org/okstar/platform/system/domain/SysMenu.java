@@ -18,6 +18,8 @@ import lombok.Data;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
+import lombok.EqualsAndHashCode;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,6 +29,7 @@ import java.util.List;
  * 
  */
 @Data
+@EqualsAndHashCode(callSuper = true)
 public class SysMenu extends BaseEntity
 {
     private static final long serialVersionUID = 1L;

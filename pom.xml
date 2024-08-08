@@ -74,6 +74,7 @@
         <profile>
             <id>local</id>
             <properties>
+                <quarkus.log.level>DEBUG</quarkus.log.level>
                 <quarkus.datasource.db-kind>mariadb</quarkus.datasource.db-kind>
                 <quarkus.datasource.username>root</quarkus.datasource.username>
                 <quarkus.datasource.password>okstar</quarkus.datasource.password>
@@ -95,6 +96,7 @@
             </activation>
             <properties>
                 <quarkus.profile>dev</quarkus.profile>
+                <quarkus.log.level>INFO</quarkus.log.level>
                 <quarkus.datasource.db-kind>mariadb</quarkus.datasource.db-kind>
                 <quarkus.datasource.username>okstar</quarkus.datasource.username>
                 <quarkus.datasource.password>Encrypt=>YOzFYCG4evdiWnDP8vGdLw==</quarkus.datasource.password>
@@ -111,6 +113,8 @@
             <id>docker</id>
             <properties>
                 <quarkus.profile>prod</quarkus.profile>
+                <quarkus.log.level>INFO</quarkus.log.level>
+                <quarkus.log.console.enable>false</quarkus.log.console.enable>
                 <quarkus.datasource.db-kind>mariadb</quarkus.datasource.db-kind>
                 <quarkus.datasource.username>root</quarkus.datasource.username>
                 <quarkus.datasource.password>okstar</quarkus.datasource.password>
@@ -230,12 +234,6 @@
                 <groupId>org.json</groupId>
                 <artifactId>json</artifactId>
                 <version>20230618</version>
-            </dependency>
-
-            <dependency>
-                <groupId>com.alibaba.fastjson2</groupId>
-                <artifactId>fastjson2</artifactId>
-                <version>2.0.20.graal</version>
             </dependency>
 
             <dependency>
@@ -398,7 +396,6 @@
                 <configuration>
                     <systemPropertyVariables>
                         <java.util.logging.manager>org.jboss.logmanager.LogManager</java.util.logging.manager>
-                        <maven.home>${maven.home}</maven.home>
                     </systemPropertyVariables>
                 </configuration>
             </plugin>
@@ -416,7 +413,6 @@
                             <systemPropertyVariables>
                                 <native.image.path>${project.build.directory}/${project.build.finalName}-runner</native.image.path>
                                 <java.util.logging.manager>org.jboss.logmanager.LogManager</java.util.logging.manager>
-                                <maven.home>${maven.home}</maven.home>
                             </systemPropertyVariables>
                         </configuration>
                     </execution>

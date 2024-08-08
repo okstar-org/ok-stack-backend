@@ -15,6 +15,8 @@ package org.okstar.platform.system.account.domain;
 
 import jakarta.persistence.Entity;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 import org.okstar.platform.system.domain.BaseEntity;
 
 
@@ -22,7 +24,8 @@ import org.okstar.platform.system.domain.BaseEntity;
 /**
  * 用户密码(修改历史)
  */
-@Data
+@Setter
+@Getter
 @Entity
 public class SysAccountPassword extends BaseEntity {
 

@@ -13,6 +13,8 @@
 
 package org.okstar.platform.org.staff.listener;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.quarkus.logging.Log;
 import io.quarkus.runtime.Startup;
 import io.quarkus.runtime.StartupEvent;
@@ -20,7 +22,6 @@ import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.event.Observes;
 import jakarta.inject.Inject;
 import jakarta.jms.Message;
-import org.okstar.platform.common.json.OkJsonUtils;
 import org.okstar.platform.common.thread.OkThreadUtils;
 import org.okstar.platform.org.bus.ConsumerJms;
 import org.okstar.platform.org.staff.service.OrgStaffService;
@@ -32,7 +33,7 @@ import java.util.Map;
 @ApplicationScoped
 public class StaffListener {
     @Inject
-    OkJsonUtils jsonUtils;
+    ObjectMapper objectMapper;
     @Inject
     ConsumerJms consumerJms;
     @Inject
@@ -60,8 +61,12 @@ public class StaffListener {
                 Log.infof("body=%s", body);
                 body.forEach((k, v) -> {
                     Log.infof("%s => %s", k, v);
-                    SysProfileDTO profileDTO = jsonUtils.asObject(v, SysProfileDTO.class);
-                    updateStaff(profileDTO);
+                    try {
+                        SysProfileDTO dto = objectMapper.readValue(v, SysProfileDTO.class);
+                        updateStaff(dto);
+                    } catch (JsonProcessingException e) {
+                        throw new RuntimeException(e);
+                    }
                 });
             } catch (Exception e) {
                 Log.warnf(e, "Unable to parse message=%s", msg);

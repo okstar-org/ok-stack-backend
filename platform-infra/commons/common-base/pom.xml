@@ -69,12 +69,6 @@
             <artifactId>jackson-databind</artifactId>
         </dependency>
 
-        <!-- Alibaba Fastjson -->
-        <dependency>
-            <groupId>com.alibaba.fastjson2</groupId>
-            <artifactId>fastjson2</artifactId>
-        </dependency>
-
         <!-- Commons Io -->
         <dependency>
             <groupId>commons-io</groupId>

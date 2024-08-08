@@ -17,13 +17,16 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 import org.okstar.platform.common.core.defined.AccountDefines;
 import org.okstar.platform.system.domain.BaseEntity;
 
 /**
  * 帐号实体
  */
-@Data
+@Setter
+@Getter
 @Entity
 @Table(uniqueConstraints = {@UniqueConstraint(columnNames = {"username"})})
 public class SysAccount extends BaseEntity {

@@ -15,12 +15,15 @@ package org.okstar.platform.system.account.domain;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 import org.okstar.platform.common.core.defined.UserDefines;
 import org.okstar.platform.system.domain.BaseEntity;
 
 import java.util.Date;
 
-@Data
+@Setter
+@Getter
 @Entity
 @Table(uniqueConstraints = {
         @UniqueConstraint(columnNames = {"accountId"}),

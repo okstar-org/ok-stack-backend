@@ -34,11 +34,6 @@
     </properties>
 
     <dependencies>
-        <dependency>
-            <groupId>org.okstar.platform</groupId>
-            <artifactId>common-base</artifactId>
-            <version>${revision}</version>
-        </dependency>
 
         <dependency>
             <groupId>org.okstar.platform</groupId>

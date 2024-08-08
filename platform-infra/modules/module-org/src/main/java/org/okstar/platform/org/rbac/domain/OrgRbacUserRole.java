@@ -17,6 +17,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 import org.okstar.platform.common.datasource.domain.OkEntity;
 
 /**
@@ -24,7 +26,8 @@ import org.okstar.platform.common.datasource.domain.OkEntity;
  * 
  * 
  */
-@Data
+@Setter
+@Getter
 @Table
 @Entity
 public class OrgRbacUserRole extends OkEntity

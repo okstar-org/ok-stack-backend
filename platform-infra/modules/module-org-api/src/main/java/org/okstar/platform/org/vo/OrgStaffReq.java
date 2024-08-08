@@ -14,6 +14,7 @@
 package org.okstar.platform.org.vo;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import org.okstar.platform.common.core.web.bean.Req;
 import org.okstar.platform.org.dto.OrgStaffFragment;
@@ -22,6 +23,7 @@ import org.okstar.platform.org.dto.OrgStaffFragment;
 /**
  * 人员管理添加
  */
+@EqualsAndHashCode(callSuper = true)
 @Data
 @ToString(callSuper = true)
 public class OrgStaffReq extends Req {

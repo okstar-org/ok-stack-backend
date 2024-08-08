@@ -14,6 +14,7 @@
 package org.okstar.platform.auth.backend;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.quarkus.logging.Log;
 import io.quarkus.oidc.client.OidcClient;
@@ -25,13 +26,13 @@ import io.quarkus.oidc.client.runtime.OidcClientsConfig;
 import io.quarkus.oidc.common.runtime.OidcCommonConfig;
 import io.quarkus.runtime.StartupEvent;
 import io.quarkus.runtime.TlsConfig;
-import io.quarkus.security.UnauthorizedException;
 import io.smallrye.mutiny.Uni;
 import io.vertx.core.Vertx;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.event.Observes;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.BadRequestException;
+import jakarta.ws.rs.ForbiddenException;
 import jakarta.ws.rs.NotAuthorizedException;
 import jakarta.ws.rs.core.Response;
 import org.eclipse.microprofile.rest.client.inject.RestClient;
@@ -45,11 +46,11 @@ import org.okstar.platform.common.core.exception.OkRuntimeException;
 import org.okstar.platform.common.core.web.bean.Req;
 import org.okstar.platform.common.core.web.bean.Res;
 import org.okstar.platform.common.date.OkDateUtils;
-import org.okstar.platform.common.json.OkJsonUtils;
 import org.okstar.platform.system.kv.rpc.SysKeycloakConfDTO;
 import org.okstar.platform.system.kv.rpc.SysKeycloakRpc;
 import org.okstar.platform.system.sign.AuthorizationResult;
 
+import java.io.IOException;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
@@ -59,7 +60,7 @@ class AuthzClientManagerImpl implements AuthzClientManager {
     @Inject
     Vertx vertx;
     @Inject
-    OkJsonUtils jsonUtils;
+    ObjectMapper objectMapper;
     @Inject
     @RestClient
     SysKeycloakRpc sysKeycloakRpc;
@@ -127,7 +128,12 @@ class AuthzClientManagerImpl implements AuthzClientManager {
             if (e.getCause() instanceof HttpResponseException cause) {
                 int statusCode = cause.getStatusCode();
                 // 错误信息：{"error":"invalid_grant","error_description":"Account is not fully set up"}
-                ObjectNode node = jsonUtils.asObject(new String(cause.getBytes()), ObjectNode.class);
+                ObjectNode node = null;
+                try {
+                    node = objectMapper.readValue((cause.getBytes()), ObjectNode.class);
+                } catch (IOException ex) {
+                    throw new RuntimeException(ex);
+                }
                 JsonNode description;
                 if (node != null && (description = node.get("error_description")) != null) {
                     String error = node.get("error").asText();
@@ -142,9 +148,9 @@ class AuthzClientManagerImpl implements AuthzClientManager {
                         case 400:
                             throw new BadRequestException(response);
                         case 401:
-                            throw new UnauthorizedException(description.asText());
-                        case 403:
                             throw new NotAuthorizedException(response);
+                        case 403:
+                            throw new ForbiddenException(response);
                     }
                 }
             }

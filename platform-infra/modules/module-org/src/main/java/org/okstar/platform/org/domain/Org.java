@@ -17,6 +17,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 
 /**
@@ -24,7 +26,8 @@ import lombok.Data;
  * 
  * 
  */
-@Data
+@Setter
+@Getter
 @Entity
 @Table(uniqueConstraints = {@UniqueConstraint(columnNames = {"name", "no"})})
 public class Org extends BaseEntity

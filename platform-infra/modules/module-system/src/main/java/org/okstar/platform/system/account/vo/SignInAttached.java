@@ -14,11 +14,13 @@
 package org.okstar.platform.system.account.vo;
 
 import jakarta.persistence.Embeddable;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 import org.okstar.platform.common.core.defined.SystemDefines;
 import org.okstar.platform.common.core.web.bean.DTO;
 
-@Data
+@Setter
+@Getter
 @Embeddable
 public class SignInAttached extends DTO {
 

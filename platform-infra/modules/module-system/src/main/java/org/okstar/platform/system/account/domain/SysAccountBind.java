@@ -14,25 +14,24 @@
 package org.okstar.platform.system.account.domain;
 
 import jakarta.persistence.Entity;
-import lombok.Data;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import lombok.Getter;
+import lombok.Setter;
 import org.okstar.platform.common.core.defined.AccountDefines;
 import org.okstar.platform.common.datasource.domain.OkEntity;
 
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-
 /**
  * 用户绑定
-
  */
-@Data
+@Getter
+@Setter
 @Entity
 public class SysAccountBind extends OkEntity {
 
     /**
      * 绑定到的帐号
      */
-//    @ManyToOne
     Long accountId;
 
     /**
@@ -50,4 +49,6 @@ public class SysAccountBind extends OkEntity {
      * 是否合法(验证过)
      */
     Boolean isValid;
+
+
 }

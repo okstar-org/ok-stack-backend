@@ -14,12 +14,14 @@
 package org.okstar.platform.org.dto;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import org.okstar.platform.common.core.web.bean.DTO;
 
 /**
  * 我的岗位信息
  */
 
+@EqualsAndHashCode(callSuper = true)
 @Data
 public class MyPostInfo extends DTO {
     /**

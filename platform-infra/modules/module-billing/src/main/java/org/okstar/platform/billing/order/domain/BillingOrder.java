@@ -15,6 +15,8 @@ package org.okstar.platform.billing.order.domain;
 
 import jakarta.persistence.Entity;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 import org.okstar.cloud.defines.PayDefines;
 import org.okstar.platform.common.datasource.SyncEntity;
 import org.okstar.platform.common.datasource.domain.OkEntity;
@@ -22,7 +24,8 @@ import org.okstar.platform.common.datasource.domain.OkEntity;
 import java.math.BigDecimal;
 import java.util.Date;
 
-@Data
+@Setter
+@Getter
 @Entity
 public class BillingOrder extends OkEntity implements SyncEntity {
 

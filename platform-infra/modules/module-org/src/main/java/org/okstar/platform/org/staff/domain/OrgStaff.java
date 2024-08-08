@@ -16,6 +16,8 @@ package org.okstar.platform.org.staff.domain;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 import lombok.ToString;
 import org.okstar.platform.common.core.defined.JobDefines;
 import org.okstar.platform.org.domain.BaseEntity;
@@ -27,7 +29,8 @@ import java.util.Date;
 /**
  * 组织-人员
  */
-@Data
+@Setter
+@Getter
 @ToString(callSuper = true)
 @Entity
 @Table(uniqueConstraints = {@UniqueConstraint(columnNames = {"accountId"})})
