@@ -11,38 +11,29 @@
  * /
  */
 
-package org.okstar.platform.common.datasource.domain;
+package org.okstar.platform.tenant.entity;
 
-import io.quarkus.hibernate.orm.panache.PanacheEntity;
-import jakarta.persistence.MappedSuperclass;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import org.okstar.platform.common.datasource.domain.OkEntity;
 
-import java.util.Date;
-
-@Setter
+/**
+ * Entity基类
+ */
 @Getter
+@Setter
 @MappedSuperclass
-public class OkEntity extends PanacheEntity {
+public class BaseEntity extends OkEntity {
 
-    /**
-     * 创建者
-     */
-    private Long createBy;
+    private String uuid;
 
-    /**
-     * 创建时间
-     */
-    private Date createAt;
+    private Boolean disabled;
 
-    /**
-     * 更新者
-     */
-    private Long updateBy;
-
-    /**
-     * 更新时间
-     */
-    private Date updateAt;
-
+    public Boolean getDisabled() {
+        if (disabled == null) {
+            return false;
+        }
+        return disabled;
+    }
 }

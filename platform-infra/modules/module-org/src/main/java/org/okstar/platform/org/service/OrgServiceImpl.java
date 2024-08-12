@@ -13,6 +13,7 @@
 
 package org.okstar.platform.org.service;
 
+import io.quarkus.panache.common.Sort;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
@@ -49,7 +50,10 @@ public class OrgServiceImpl implements OrgService {
 
     @Override
     public OkPageResult<Org> findPage(OkPageable page) {
-        return null;
+        var paged = orgMapper
+                .findAll(Sort.descending("id"))
+                .page(page.getPageIndex(), page.getPageSize());
+        return OkPageResult.build(paged.list(), paged.count(), paged.pageCount());
     }
 
     @Override

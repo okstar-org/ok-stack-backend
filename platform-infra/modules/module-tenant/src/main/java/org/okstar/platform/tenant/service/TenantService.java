@@ -11,38 +11,17 @@
  * /
  */
 
-package org.okstar.platform.common.datasource.domain;
+package org.okstar.platform.tenant.service;
 
-import io.quarkus.hibernate.orm.panache.PanacheEntity;
-import jakarta.persistence.MappedSuperclass;
-import lombok.Getter;
-import lombok.Setter;
+import org.okstar.platform.common.datasource.OkJpaService;
+import org.okstar.platform.tenant.entity.TenantEntity;
 
-import java.util.Date;
+public interface TenantService extends OkJpaService<TenantEntity>
+{
 
-@Setter
-@Getter
-@MappedSuperclass
-public class OkEntity extends PanacheEntity {
+    TenantEntity findByNo(String no);
 
-    /**
-     * 创建者
-     */
-    private Long createBy;
+    void disable(Long id);
 
-    /**
-     * 创建时间
-     */
-    private Date createAt;
-
-    /**
-     * 更新者
-     */
-    private Long updateBy;
-
-    /**
-     * 更新时间
-     */
-    private Date updateAt;
-
+    void enable(Long id);
 }

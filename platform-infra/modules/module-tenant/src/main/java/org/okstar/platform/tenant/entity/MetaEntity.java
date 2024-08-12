@@ -11,38 +11,23 @@
  * /
  */
 
-package org.okstar.platform.common.datasource.domain;
+package org.okstar.platform.tenant.entity;
 
-import io.quarkus.hibernate.orm.panache.PanacheEntity;
-import jakarta.persistence.MappedSuperclass;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.Date;
-
+/**
+ * 元数据
+ */
 @Setter
 @Getter
-@MappedSuperclass
-public class OkEntity extends PanacheEntity {
+@Entity
+public class MetaEntity extends BaseEntity{
+    private Long tenantId;
 
-    /**
-     * 创建者
-     */
-    private Long createBy;
-
-    /**
-     * 创建时间
-     */
-    private Date createAt;
-
-    /**
-     * 更新者
-     */
-    private Long updateBy;
-
-    /**
-     * 更新时间
-     */
-    private Date updateAt;
+    @Column(columnDefinition = "json")
+    private String jsonValue;
 
 }

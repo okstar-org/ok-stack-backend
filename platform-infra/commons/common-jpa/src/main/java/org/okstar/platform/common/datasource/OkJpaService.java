@@ -49,7 +49,7 @@ public interface OkJpaService<T extends OkEntity> extends OkService {
 
     List<T> findAll();
 
-    OkPageResult<T> findPage( OkPageable page);
+    OkPageResult<T> findPage(OkPageable page);
 
     T get(Long id);
 

@@ -11,38 +11,28 @@
  * /
  */
 
-package org.okstar.platform.common.datasource.domain;
+package org.okstar.platform.tenant.defines;
 
-import io.quarkus.hibernate.orm.panache.PanacheEntity;
-import jakarta.persistence.MappedSuperclass;
-import lombok.Getter;
-import lombok.Setter;
-
-import java.util.Date;
-
-@Setter
-@Getter
-@MappedSuperclass
-public class OkEntity extends PanacheEntity {
-
+public interface TenantDefined {
     /**
-     * 创建者
+     * 租户状态
+     * 状态（创建、启动、停止、销毁）
      */
-    private Long createBy;
+    enum TenantStatus {
+        Created,
+        Started,
+        Stopped,
+        Destroyed,
+        Error
+    }
 
-    /**
-     * 创建时间
-     */
-    private Date createAt;
+    enum DataBaseType{
+        pgsql,
+        mysql
+    }
 
-    /**
-     * 更新者
-     */
-    private Long updateBy;
-
-    /**
-     * 更新时间
-     */
-    private Date updateAt;
-
+    enum RunOn {
+        docker,
+        os
+    }
 }

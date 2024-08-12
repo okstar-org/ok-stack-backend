@@ -18,7 +18,6 @@ import jakarta.inject.Inject;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;
 import lombok.extern.slf4j.Slf4j;
-import org.eclipse.microprofile.jwt.JsonWebToken;
 import org.eclipse.microprofile.rest.client.inject.RestClient;
 import org.okstar.cloud.OkCloudApiClient;
 import org.okstar.cloud.channel.FederalChannel;
@@ -39,9 +38,6 @@ import java.util.concurrent.ExecutorService;
 @Slf4j
 @Path("me")
 public class MeResource extends BaseResource {
-
-    @Inject
-    JsonWebToken jwt;
 
     @Inject
     ExecutorService executorService;

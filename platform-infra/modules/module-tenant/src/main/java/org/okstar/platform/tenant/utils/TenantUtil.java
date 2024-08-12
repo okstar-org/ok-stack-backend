@@ -11,38 +11,26 @@
  * /
  */
 
-package org.okstar.platform.common.datasource.domain;
+package org.okstar.platform.tenant.utils;
 
-import io.quarkus.hibernate.orm.panache.PanacheEntity;
-import jakarta.persistence.MappedSuperclass;
-import lombok.Getter;
-import lombok.Setter;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
+import org.okstar.platform.tenant.dto.TenantMetaDTO;
 
-import java.util.Date;
+@ApplicationScoped
+public class TenantUtil {
 
-@Setter
-@Getter
-@MappedSuperclass
-public class OkEntity extends PanacheEntity {
+    @Inject
+    ObjectMapper objectMapper;
 
-    /**
-     * 创建者
-     */
-    private Long createBy;
+    public TenantMetaDTO toMetaDTO(String json) {
+        try {
+            return objectMapper.readValue(json, TenantMetaDTO.class);
+        } catch (Exception e) {
+            return null;
+        }
+    }
 
-    /**
-     * 创建时间
-     */
-    private Date createAt;
-
-    /**
-     * 更新者
-     */
-    private Long updateBy;
-
-    /**
-     * 更新时间
-     */
-    private Date updateAt;
 
 }

@@ -11,38 +11,26 @@
  * /
  */
 
-package org.okstar.platform.common.datasource.domain;
+package org.okstar.platform.common.os;
 
-import io.quarkus.hibernate.orm.panache.PanacheEntity;
-import jakarta.persistence.MappedSuperclass;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.SneakyThrows;
 
-import java.util.Date;
+import java.io.IOException;
+import java.net.ServerSocket;
 
-@Setter
-@Getter
-@MappedSuperclass
-public class OkEntity extends PanacheEntity {
+public class PortFinder {
 
     /**
-     * 创建者
+     * 找到一个可用的本地端口。
+     *
+     * @return 可用的端口号，如果找不到则返回 0。
      */
-    private Long createBy;
-
-    /**
-     * 创建时间
-     */
-    private Date createAt;
-
-    /**
-     * 更新者
-     */
-    private Long updateBy;
-
-    /**
-     * 更新时间
-     */
-    private Date updateAt;
-
+    @SneakyThrows
+    public static int findAvailablePort() {
+        try (ServerSocket serverSocket = new ServerSocket(0)) {
+            return serverSocket.getLocalPort();
+        } catch (IOException e) {
+            return 0;
+        }
+    }
 }

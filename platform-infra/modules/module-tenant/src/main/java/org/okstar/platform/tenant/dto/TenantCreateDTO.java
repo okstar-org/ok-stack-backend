@@ -11,38 +11,15 @@
  * /
  */
 
-package org.okstar.platform.common.datasource.domain;
+package org.okstar.platform.tenant.dto;
 
-import io.quarkus.hibernate.orm.panache.PanacheEntity;
-import jakarta.persistence.MappedSuperclass;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import org.okstar.platform.common.core.web.bean.DTO;
 
-import java.util.Date;
-
-@Setter
-@Getter
-@MappedSuperclass
-public class OkEntity extends PanacheEntity {
-
-    /**
-     * 创建者
-     */
-    private Long createBy;
-
-    /**
-     * 创建时间
-     */
-    private Date createAt;
-
-    /**
-     * 更新者
-     */
-    private Long updateBy;
-
-    /**
-     * 更新时间
-     */
-    private Date updateAt;
-
+@Data
+@EqualsAndHashCode(callSuper = true)
+public class TenantCreateDTO extends DTO {
+    String name;
+    String no;
 }

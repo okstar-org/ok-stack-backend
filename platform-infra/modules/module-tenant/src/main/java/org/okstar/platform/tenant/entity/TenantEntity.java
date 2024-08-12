@@ -11,38 +11,36 @@
  * /
  */
 
-package org.okstar.platform.common.datasource.domain;
+package org.okstar.platform.tenant.entity;
 
-import io.quarkus.hibernate.orm.panache.PanacheEntity;
-import jakarta.persistence.MappedSuperclass;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import org.okstar.platform.tenant.defines.TenantDefined;
 
-import java.util.Date;
-
+/**
+ * 租户
+ */
 @Setter
 @Getter
-@MappedSuperclass
-public class OkEntity extends PanacheEntity {
+@Entity
+@Table(uniqueConstraints = {@UniqueConstraint(columnNames = {"no"})})
+public class TenantEntity extends BaseEntity {
+    /**
+     * 编号
+     */
+    private String no;
 
     /**
-     * 创建者
+     * 名称
      */
-    private Long createBy;
+    private String name;
 
     /**
-     * 创建时间
+     * 状态
      */
-    private Date createAt;
+    @Enumerated(EnumType.STRING)
+    private TenantDefined.TenantStatus status;
 
-    /**
-     * 更新者
-     */
-    private Long updateBy;
-
-    /**
-     * 更新时间
-     */
-    private Date updateAt;
 
 }

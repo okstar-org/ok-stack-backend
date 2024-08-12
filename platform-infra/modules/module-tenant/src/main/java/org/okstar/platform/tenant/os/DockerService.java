@@ -11,38 +11,22 @@
  * /
  */
 
-package org.okstar.platform.common.datasource.domain;
+package org.okstar.platform.tenant.os;
 
-import io.quarkus.hibernate.orm.panache.PanacheEntity;
-import jakarta.persistence.MappedSuperclass;
-import lombok.Getter;
-import lombok.Setter;
+import com.github.dockerjava.api.model.Container;
+import lombok.SneakyThrows;
 
-import java.util.Date;
+public interface DockerService {
 
-@Setter
-@Getter
-@MappedSuperclass
-public class OkEntity extends PanacheEntity {
 
-    /**
-     * 创建者
-     */
-    private Long createBy;
+    String findContainerByName(String name);
 
-    /**
-     * 创建时间
-     */
-    private Date createAt;
+    Container getContainer(String containerId);
 
-    /**
-     * 更新者
-     */
-    private Long updateBy;
+    @SneakyThrows
+    String createContainer(String name, String image, String port, String portBinds, String... env);
 
-    /**
-     * 更新时间
-     */
-    private Date updateAt;
+    void startContainer(String containerId);
 
+    void stopContainer(String containerId);
 }

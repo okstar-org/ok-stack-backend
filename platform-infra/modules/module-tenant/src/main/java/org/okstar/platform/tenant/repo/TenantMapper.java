@@ -11,38 +11,16 @@
  * /
  */
 
-package org.okstar.platform.common.datasource.domain;
+package org.okstar.platform.tenant.repo;
 
-import io.quarkus.hibernate.orm.panache.PanacheEntity;
-import jakarta.persistence.MappedSuperclass;
-import lombok.Getter;
-import lombok.Setter;
+import io.quarkus.hibernate.orm.panache.PanacheRepository;
+import jakarta.enterprise.context.ApplicationScoped;
+import org.okstar.platform.tenant.entity.TenantEntity;
 
-import java.util.Date;
+@ApplicationScoped
+public class TenantMapper implements PanacheRepository<TenantEntity> {
 
-@Setter
-@Getter
-@MappedSuperclass
-public class OkEntity extends PanacheEntity {
-
-    /**
-     * 创建者
-     */
-    private Long createBy;
-
-    /**
-     * 创建时间
-     */
-    private Date createAt;
-
-    /**
-     * 更新者
-     */
-    private Long updateBy;
-
-    /**
-     * 更新时间
-     */
-    private Date updateAt;
-
+    public TenantEntity findByNo(String no) {
+        return find("no", no).firstResult();
+    }
 }

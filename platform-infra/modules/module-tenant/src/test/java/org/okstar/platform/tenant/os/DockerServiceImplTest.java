@@ -11,28 +11,25 @@
  * /
  */
 
-package org.okstar.platform.org.domain;
+package org.okstar.platform.tenant.os;
 
-import lombok.Data;
-import org.okstar.platform.common.datasource.domain.OkEntity;
+import io.quarkus.test.junit.QuarkusTest;
+import jakarta.inject.Inject;
+import org.junit.jupiter.api.Test;
 
-import jakarta.persistence.MappedSuperclass;
+@QuarkusTest
+class DockerServiceImplTest {
+    @Inject
+    DockerService dockerService;
 
-/**
- * Entity基类
- * 
- * 
- */
-@Data
-@MappedSuperclass
-public class BaseEntity extends OkEntity
-{
-    /**
-     * 禁用
-     */
-    private Boolean disabled;
+    @Test
+    void createContainer() {
+    }
 
-    public Boolean getDisabled() {
-        return disabled == null || disabled;
+    @Test
+    void startContainer() {
+
+        String id="f8969f164d7c476a051fdfa4925ad159c82edbcf58750090e0cbba454dad00ab";
+        dockerService.startContainer(id);
     }
 }

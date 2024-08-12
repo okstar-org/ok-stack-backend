@@ -11,38 +11,27 @@
  * /
  */
 
-package org.okstar.platform.common.datasource.domain;
+package org.okstar.platform.tenant.manager;
 
-import io.quarkus.hibernate.orm.panache.PanacheEntity;
-import jakarta.persistence.MappedSuperclass;
-import lombok.Getter;
-import lombok.Setter;
+import org.okstar.platform.tenant.dto.TenantCreateDTO;
+import org.okstar.platform.tenant.dto.TenantUpdateDTO;
 
-import java.util.Date;
-
-@Setter
-@Getter
-@MappedSuperclass
-public class OkEntity extends PanacheEntity {
-
+public interface TenantManager {
     /**
-     * 创建者
+     * 创建租户
+     * @param tenant
+     * @return id
      */
-    private Long createBy;
+    Long createTenant(TenantCreateDTO tenant);
 
-    /**
-     * 创建时间
-     */
-    private Date createAt;
 
-    /**
-     * 更新者
-     */
-    private Long updateBy;
+    void createPgSql(Long tenantId);
 
-    /**
-     * 更新时间
-     */
-    private Date updateAt;
+    void startContainer(String containerId);
 
+    Long updateTenant(TenantUpdateDTO tenant);
+
+    void start(Long tenantId);
+
+    void stop(Long tenantId);
 }
