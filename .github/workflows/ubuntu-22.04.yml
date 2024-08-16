@@ -68,13 +68,11 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
 
-      - name: Install dependencies
-        run: npm install
-
       - name: Building the OkStack-UI
         run: |
           git clone -b ${{ steps.branch-names.outputs.current_branch }} git@github.com:okstar-org/ok-stack-ui.git
           cd ok-stack-ui
+          npm install
           npm run build
           cd dist
           zip -r ok-stack-ui.zip  ok-stack
