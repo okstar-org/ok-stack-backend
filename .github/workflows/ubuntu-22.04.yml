@@ -24,6 +24,7 @@ jobs:
         arch: [x64]
         os: [ubuntu-22.04]
         build_type: [Release]
+        node-version: [20.x]
 
     steps:
       - name: Get branch names
@@ -62,6 +63,10 @@ jobs:
             ${{ github.workspace }}/distribution/target/ok-stack-assembly.zip
             ${{ github.workspace }}/distribution/target/ok-stack-assembly.tar.gz
 
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
 
       - name: Install dependencies
         run: npm install
