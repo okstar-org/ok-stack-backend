@@ -1,4 +1,4 @@
-FROM eclipse-temurin:17-jre
+FROM eclipse-temurin:17-jdk
 
 LABEL maintainer="cto@chuanshaninfo.com"
 
