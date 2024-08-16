@@ -26,6 +26,13 @@ jobs:
         build_type: [Release]
 
     steps:
+      - name: Get branch names
+        id: branch-names
+        uses: tj-actions/branch-names@v8
+      - name: Current branch names
+        run: |
+          echo "${{ steps.branch-names.outputs.current_branch }}"
+
       - uses: actions/checkout@v4
 
       - name: Set up JDK for x64
@@ -54,6 +61,18 @@ jobs:
           files: |
             ${{ github.workspace }}/distribution/target/ok-stack-assembly.zip
             ${{ github.workspace }}/distribution/target/ok-stack-assembly.tar.gz
+
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Building the OkStack-UI
+        run: |
+          git clone -b ${{ steps.branch-names.outputs.current_branch }} git@github.com:okstar-org/ok-stack-ui.git
+          cd ok-stack-ui
+          npm run build
+          cd dist
+          zip -r ok-stack-ui.zip  ok-stack
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
