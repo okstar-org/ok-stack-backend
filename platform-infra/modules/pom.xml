@@ -24,6 +24,7 @@
         <module>module-chat-api</module>
         <module>module-billing</module>
         <module>module-bus</module>
+        <module>module-work</module>
     </modules>
 
     <dependencies>

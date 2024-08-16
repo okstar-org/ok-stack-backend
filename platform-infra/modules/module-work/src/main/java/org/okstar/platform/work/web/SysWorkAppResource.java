@@ -11,7 +11,7 @@
  * /
  */
 
-package org.okstar.platform.system.work.resource;
+package org.okstar.platform.work.web;
 
 import io.quarkus.security.Authenticated;
 import jakarta.ws.rs.GET;
@@ -28,8 +28,11 @@ import org.okstar.platform.common.core.web.bean.Res;
 import org.okstar.platform.common.core.web.page.OkPageable;
 import org.okstar.platform.common.resource.OkCommonResource;
 
+/**
+ * 工作中心-应用列表
+ */
 @Authenticated
-@Path("/work/app")
+@Path("/app")
 public class SysWorkAppResource extends OkCommonResource {
 
     OkCloudApiClient client;

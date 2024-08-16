@@ -12,35 +12,30 @@
   ~ */
   -->
 
-<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xmlns="http://maven.apache.org/POM/4.0.0"
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>org.okstar.platform</groupId>
         <artifactId>modules</artifactId>
         <version>${revision}</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
-    <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>module-system</artifactId>
-    <build>
-        <finalName>${project.artifactId}</finalName>
-    </build>
+    <groupId>org.okstar.platform.work</groupId>
+    <artifactId>module-work</artifactId>
 
     <properties>
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <db.name>okstack_module_system</db.name>
     </properties>
 
     <dependencies>
-
         <dependency>
-            <groupId>org.okstar.platform</groupId>
-            <artifactId>module-system-api</artifactId>
-            <version>${revision}</version>
+            <groupId>io.quarkus</groupId>
+            <artifactId>quarkus-oidc</artifactId>
         </dependency>
 
         <dependency>
@@ -52,44 +47,19 @@
 
         <dependency>
             <groupId>org.okstar.platform</groupId>
-            <artifactId>common-security</artifactId>
+            <artifactId>OkCloud-API-Client</artifactId>
             <version>${revision}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.okstar.platform</groupId>
-            <artifactId>common-cache</artifactId>
-            <version>${revision}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.okstar.platform</groupId>
-            <artifactId>common-log</artifactId>
-            <version>${revision}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.okstar.platform</groupId>
-            <artifactId>common-jpa</artifactId>
-            <version>${revision}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.okstar.platform</groupId>
-            <artifactId>module-org-api</artifactId>
-            <version>${revision}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>io.quarkus</groupId>
-            <artifactId>quarkus-keycloak-admin-client</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>io.quarkus</groupId>
-            <artifactId>quarkus-oidc</artifactId>
+            <scope>compile</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.slf4j</groupId>
+                    <artifactId>slf4j-api</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.slf4j</groupId>
+                    <artifactId>slf4j-simple</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
     </dependencies>
-
-
 </project>
