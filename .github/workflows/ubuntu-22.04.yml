@@ -70,7 +70,7 @@ jobs:
 
       - name: Building the OkStack-UI
         run: |
-          git clone -b ${{ steps.branch-names.outputs.current_branch }} git@github.com:okstar-org/ok-stack-ui.git
+          git clone -b ${{ steps.branch-names.outputs.current_branch }} https://github.com/okstar-org/ok-stack-ui.git
           cd ok-stack-ui
           npm install
           npm run build
