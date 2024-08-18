@@ -10,20 +10,8 @@
  * See the Mulan PubL v2 for more details.
  * /
  */
+package org.okstar.platform.common.core;
 
-package org.okstar.platform.tenant.utils;
-
-import com.fasterxml.jackson.databind.ObjectMapper;
-import jakarta.enterprise.context.ApplicationScoped;
-import jakarta.inject.Inject;
-
-
-@ApplicationScoped
-public class TenantUtil {
-
-    @Inject
-    ObjectMapper objectMapper;
-
-
-
+enum ResourceType {
+    datasource,
 }

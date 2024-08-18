@@ -14,20 +14,31 @@
 package org.okstar.platform.tenant.dto;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import org.okstar.platform.common.core.web.bean.DTO;
 import org.okstar.platform.tenant.defines.TenantDefined;
+import org.okstar.platform.tenant.doc.TenantMetaDoc;
 
 @Data
-public class TenantMetaDTO {
+@EqualsAndHashCode(callSuper = true)
+public class TenantDetailDTO extends DTO {
 
-    @Data
-    public static class DB {
-        String containerId;
-        String jdbcUrl;
-        String username;
-        String password;
-    }
+    private Long id;
 
-    private TenantDefined.DataBaseType dbType;
-    private TenantDefined.RunOn runOn;
-    private DB db;
+    /**
+     * 编号
+     */
+    private String no;
+
+    /**
+     * 名称
+     */
+    private String name;
+
+    /**
+     * 状态
+     */
+    private TenantDefined.TenantStatus status;
+
+    private TenantMetaDoc meta;
 }

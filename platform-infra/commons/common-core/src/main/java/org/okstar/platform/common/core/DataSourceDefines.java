@@ -11,19 +11,32 @@
  * /
  */
 
-package org.okstar.platform.tenant.utils;
+package org.okstar.platform.common.core;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import jakarta.enterprise.context.ApplicationScoped;
-import jakarta.inject.Inject;
+/**
+ * 数据源相关定义
+ */
+public interface DataSourceDefines {
 
+    /**
+     * 数据源类型
+     */
+    enum Type {
+        db,   //数据库
+        ai,     //ai接口
+        api,    //API
+        saas,   //saas集成
+    }
 
-@ApplicationScoped
-public class TenantUtil {
-
-    @Inject
-    ObjectMapper objectMapper;
-
-
-
+    /**
+     * DB类型
+     */
+    enum DatabaseType {
+        mysql,
+        pgsql,
+        oracle,
+        sqlserver,
+        redis,
+        mongo
+    }
 }

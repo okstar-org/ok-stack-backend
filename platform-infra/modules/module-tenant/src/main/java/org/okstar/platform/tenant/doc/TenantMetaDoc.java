@@ -11,19 +11,24 @@
  * /
  */
 
-package org.okstar.platform.tenant.utils;
+package org.okstar.platform.tenant.doc;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import jakarta.enterprise.context.ApplicationScoped;
-import jakarta.inject.Inject;
+import lombok.Data;
+import org.okstar.platform.common.core.DatabaseResource;
 
+import java.util.ArrayList;
+import java.util.List;
 
-@ApplicationScoped
-public class TenantUtil {
+@Data
+public class TenantMetaDoc {
+    private Long tenantId;
+    //数据源列表
+    private List<DatabaseResource> dbs;
 
-    @Inject
-    ObjectMapper objectMapper;
-
-
-
+    public void addDb(DatabaseResource db) {
+        if (dbs == null) {
+            dbs = new ArrayList<>();
+        }
+        dbs.add(db);
+    }
 }

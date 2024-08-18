@@ -26,13 +26,6 @@ public interface TenantDefined {
         Error
     }
 
-    enum DataBaseType{
-        pgsql,
-        mysql
-    }
 
-    enum RunOn {
-        docker,
-        os
-    }
+
 }

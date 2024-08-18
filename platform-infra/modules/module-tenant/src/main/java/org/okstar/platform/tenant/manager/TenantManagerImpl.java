@@ -13,37 +13,31 @@
 
 package org.okstar.platform.tenant.manager;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import io.quarkus.arc.Arc;
 import io.quarkus.logging.Log;
-import io.quarkus.runtime.ShutdownEvent;
-import io.quarkus.runtime.StartupEvent;
 import jakarta.enterprise.context.ApplicationScoped;
-import jakarta.enterprise.event.Observes;
 import jakarta.inject.Inject;
-import jakarta.jms.ConnectionFactory;
-import jakarta.jms.JMSContext;
-import jakarta.jms.JMSProducer;
-import jakarta.jms.Topic;
 import jakarta.transaction.Transactional;
 import jakarta.ws.rs.NotFoundException;
 import lombok.SneakyThrows;
 import org.okstar.platform.common.asserts.OkAssert;
+import org.okstar.platform.common.bean.OkBeanUtils;
+import org.okstar.platform.common.core.DataSourceDefines;
+import org.okstar.platform.common.core.DatabaseResource;
+import org.okstar.platform.common.core.RunOn;
 import org.okstar.platform.common.date.OkDateUtils;
 import org.okstar.platform.common.id.OkIdUtils;
 import org.okstar.platform.common.os.PortFinder;
 import org.okstar.platform.common.string.OkStringUtil;
-import org.okstar.platform.tenant.ModuleTenantApplication;
 import org.okstar.platform.tenant.defines.TenantDefined;
+import org.okstar.platform.tenant.doc.TenantMetaDoc;
 import org.okstar.platform.tenant.dto.TenantCreateDTO;
-import org.okstar.platform.tenant.dto.TenantMetaDTO;
+import org.okstar.platform.tenant.dto.TenantDetailDTO;
 import org.okstar.platform.tenant.dto.TenantUpdateDTO;
-import org.okstar.platform.tenant.entity.MetaEntity;
 import org.okstar.platform.tenant.entity.TenantEntity;
 import org.okstar.platform.tenant.os.DockerService;
-import org.okstar.platform.tenant.service.MetaService;
+import org.okstar.platform.tenant.repo.MetaDocMapper;
 import org.okstar.platform.tenant.service.TenantService;
-import org.okstar.platform.tenant.utils.TenantUtil;
 
 import java.util.concurrent.ExecutorService;
 
@@ -53,37 +47,12 @@ public class TenantManagerImpl implements TenantManager {
 
     @Inject
     TenantService tenantService;
-    @Inject
-    MetaService metaService;
 
     @Inject
     DockerService dockerService;
-    @Inject
-    ObjectMapper objectMapper;
 
     @Inject
-    TenantUtil tenantUtil;
-
-    @Inject
-    ConnectionFactory connectionFactory;
-    JMSContext context;
-    JMSProducer producer;
-    Topic topic;
-
-    static final String topicName = ModuleTenantApplication.class.getSimpleName()
-            + "." + TenantEntity.class.getSimpleName();
-
-    public void startup(@Observes StartupEvent e) {
-        Log.infof("Initialize....");
-        context = connectionFactory.createContext();
-        producer = context.createProducer();
-        topic = context.createTopic(topicName);
-    }
-
-    public void shutdown(@Observes ShutdownEvent e) {
-        Log.infof("Shutdown....");
-        context.close();
-    }
+    MetaDocMapper metaDocMapper;
 
 
     @Override
@@ -114,16 +83,29 @@ public class TenantManagerImpl implements TenantManager {
             return;
         }
 
-        MetaEntity meta = metaService.loadByTenant(entity.id);
-        TenantMetaDTO metaDTO = tenantUtil.toMetaDTO(meta.getJsonValue());
+        TenantMetaDoc metaDTO = metaDocMapper.getMetaDoc(entity.id);
         OkAssert.notNull(metaDTO, "没有资源元数据！");
 
-        if (metaDTO.getRunOn() == TenantDefined.RunOn.docker) {
-            TenantMetaDTO.DB db = metaDTO.getDb();
+        for (var db : metaDTO.getDbs()) {
             stopContainer(db.getContainerId());
         }
         entity.setStatus(TenantDefined.TenantStatus.Stopped);
+    }
 
+    @Override
+    public TenantDetailDTO loadDetail(Long tenantId) {
+        TenantDetailDTO detailDTO = new TenantDetailDTO();
+
+        TenantEntity entity = tenantService.get(tenantId);
+        if (entity == null) {
+            throw new NotFoundException("不存在租户！");
+        }
+        OkBeanUtils.copyPropertiesTo(entity, detailDTO);
+
+        TenantMetaDoc metaDTO = metaDocMapper.getMetaDoc(entity.id);
+        detailDTO.setMeta(metaDTO);
+
+        return detailDTO;
     }
 
 
@@ -133,17 +115,16 @@ public class TenantManagerImpl implements TenantManager {
         if (entity == null) {
             throw new NotFoundException("不存在租户！");
         }
-        MetaEntity meta = metaService.loadByTenant(entity.id);
-        TenantMetaDTO metaDTO = tenantUtil.toMetaDTO(meta.getJsonValue());
-        OkAssert.notNull(metaDTO, "没有资源元数据！");
 
-        if (metaDTO.getRunOn() == TenantDefined.RunOn.docker) {
-            TenantMetaDTO.DB db = metaDTO.getDb();
+        TenantMetaDoc metaDTO = metaDocMapper.getMetaDoc(entity.id);
+        OkAssert.notNull(metaDTO, "没有资源元数据！");
+        for (var db : metaDTO.getDbs()) {
             startContainer(db.getContainerId());
         }
 
         entity.setStatus(TenantDefined.TenantStatus.Started);
     }
+
 
     @Override
     public Long createTenant(TenantCreateDTO createDTO) {
@@ -167,7 +148,7 @@ public class TenantManagerImpl implements TenantManager {
         //初始化租户环境
         ExecutorService executorService = Arc.container().getExecutorService();
         executorService.execute(() -> {
-            createPgSql(tenantEntity.id);
+            createResource(tenantEntity.id);
         });
 
         return tenantEntity.id;
@@ -175,40 +156,89 @@ public class TenantManagerImpl implements TenantManager {
 
     @SneakyThrows
     @Override
-    public void createPgSql(Long tenantId) {
-        Log.infof("Create PgSql tenant: %s", tenantId);
-        String image = "postgres:latest";
-        String name = "tenant_%s_%s".formatted(tenantId, image.split(":")[0]);
+    public void createResource(Long tenantId) {
+        Log.infof("Create resource tenant: %s", tenantId);
 
+        TenantMetaDoc metaDTO = metaDocMapper.loadMetaDoc(tenantId);
+        createMongo(tenantId, metaDTO);
+        createRedis(tenantId, metaDTO);
+        Long count = metaDocMapper.update(metaDTO);
+        Log.infof("Inserted tenant meta => %s", count);
+        Log.infof("Create resource successfully tenant: %s", tenantId);
+    }
+
+    private void createRedis(Long tenantId, TenantMetaDoc metaDTO) {
+        //redis
+
+        String image = "redis";
+        String name = "tenant_%s_%s".formatted(tenantId, image);
         String existContainerId = dockerService.findContainerByName(name);
         Log.infof("Find exist containerId=>%s", existContainerId);
         OkAssert.isTrue(existContainerId == null, "资源已存在！");
 
-        String password = "ok123456";
-        String username = "okstar";
+        String[] env = {};
         int localPort = PortFinder.findAvailablePort();
+        String redisContainerId = dockerService.createContainer(name, image, "6379/tcp", localPort + ":6379", env);
+        Log.infof("create redisContainerId[%s]=> %s for tenant: %s", image, redisContainerId, tenantId);
+
+        var pgDb = new DatabaseResource();
+        pgDb.setUrl("redis://localhost:" + localPort);
+        pgDb.setRunOn(RunOn.docker);
+        pgDb.setContainerId(redisContainerId);
+        pgDb.setDbType(DataSourceDefines.DatabaseType.redis);
+        metaDTO.addDb(pgDb);
+    }
+
+
+    /**
+     * Create mongo container
+     * @param tenantId tenant id
+     * @param metaDTO
+     */
+    private void createMongo(Long tenantId, TenantMetaDoc metaDTO) {
+        //mongo docker pull quay.kubesre.xyz/mongodb/mongodb-community-server:latest
+        String image = "mongodb/mongodb-community-server";
+        String name = "tenant_%s_%s".formatted(tenantId, image.split("/")[1]);
+        String existContainerId = dockerService.findContainerByName(name);
+        Log.infof("Find exist containerId=>%s", existContainerId);
+        OkAssert.isTrue(existContainerId == null, "资源已存在！");
+
+        String[] env = {"--replSet=rs0"};
+        int localPort = PortFinder.findAvailablePort();
+        String mongoContainerId = dockerService.createContainer(name, image, "27017/tcp", localPort + ":27017", env);
+        Log.infof("create mongoContainerId[%s]=> %s for tenant: %s", image, mongoContainerId, tenantId);
+
+        var pgDb = new DatabaseResource();
+        pgDb.setUrl("mongodb://localhost:" + localPort);
+        pgDb.setRunOn(RunOn.docker);
+        pgDb.setContainerId(mongoContainerId);
+        pgDb.setDbType(DataSourceDefines.DatabaseType.mongo);
+        metaDTO.addDb(pgDb);
+    }
+
+    private void createPgSql(Long tenantId, TenantMetaDoc metaDTO) {
+        //pgsql
+        String image = "postgres:latest";
+        String name = "tenant_%s_%s".formatted(tenantId, image.split(":")[0]);
+        String existContainerId = dockerService.findContainerByName(name);
+        Log.infof("Find exist containerId=>%s", existContainerId);
+        OkAssert.isTrue(existContainerId == null, "资源已存在！");
+
+        String username = "okstar";
+        String password = "ok123456";
         String[] env = {"POSTGRES_PASSWORD=" + password, "POSTGRES_USER=" + username};
+        int localPort = PortFinder.findAvailablePort();
+        String pgContainerId = dockerService.createContainer(name, image, "2345/tcp", localPort + ":2345", env);
+        Log.infof("create pgContainerId[%s]=> %s for tenant: %s", image, pgContainerId, tenantId);
 
-        String containerId = dockerService.createContainer(name, image, "2345/tcp", localPort + ":2345", env);
-        Log.infof("create existContainerId[%s]=> %s for tenant: %s", image, containerId, tenantId);
-
-
-        MetaEntity metaEntity = metaService.loadByTenant(tenantId);
-
-        TenantMetaDTO metaDTO = new TenantMetaDTO();
-        metaDTO.setDbType(TenantDefined.DataBaseType.pgsql);
-        metaDTO.setRunOn(TenantDefined.RunOn.docker);
-
-        var db = new TenantMetaDTO.DB();
-        db.setPassword(password);
-        db.setUsername(username);
-        db.setJdbcUrl("jdbc:postgresql://localhost:" + localPort);
-        db.setContainerId(containerId);
-        metaDTO.setDb(db);
-        metaEntity.setJsonValue(objectMapper.writeValueAsString(metaDTO));
-        metaService.save(metaEntity);
-
-        Log.infof("Create PgSql container successfully tenant: %s", tenantId);
+        var pgDb = new DatabaseResource();
+        pgDb.setPassword(password);
+        pgDb.setUsername(username);
+        pgDb.setUrl("jdbc:postgresql://localhost:" + localPort);
+        pgDb.setContainerId(pgContainerId);
+        pgDb.setRunOn(RunOn.docker);
+        pgDb.setDbType(DataSourceDefines.DatabaseType.pgsql);
+        metaDTO.addDb(pgDb);
     }
 
     @Override

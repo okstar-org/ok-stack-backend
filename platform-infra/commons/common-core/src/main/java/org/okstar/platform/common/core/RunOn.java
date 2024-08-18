@@ -11,19 +11,9 @@
  * /
  */
 
-package org.okstar.platform.tenant.utils;
+package org.okstar.platform.common.core;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import jakarta.enterprise.context.ApplicationScoped;
-import jakarta.inject.Inject;
-
-
-@ApplicationScoped
-public class TenantUtil {
-
-    @Inject
-    ObjectMapper objectMapper;
-
-
-
+public enum RunOn {
+    docker,
+    os
 }

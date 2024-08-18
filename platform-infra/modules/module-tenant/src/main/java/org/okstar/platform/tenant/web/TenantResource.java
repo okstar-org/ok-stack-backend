@@ -14,14 +14,13 @@
 package org.okstar.platform.tenant.web;
 
 import jakarta.inject.Inject;
-import jakarta.ws.rs.POST;
-import jakarta.ws.rs.PUT;
-import jakarta.ws.rs.Path;
+import jakarta.ws.rs.*;
 import org.okstar.platform.common.core.web.bean.Res;
 import org.okstar.platform.common.core.web.page.OkPageResult;
 import org.okstar.platform.common.core.web.page.OkPageable;
 import org.okstar.platform.common.resource.OkCommonResource;
 import org.okstar.platform.tenant.dto.TenantCreateDTO;
+import org.okstar.platform.tenant.dto.TenantDetailDTO;
 import org.okstar.platform.tenant.dto.TenantUpdateDTO;
 import org.okstar.platform.tenant.entity.TenantEntity;
 import org.okstar.platform.tenant.manager.TenantManager;
@@ -34,6 +33,13 @@ public class TenantResource extends OkCommonResource {
     TenantService tenantService;
     @Inject
     TenantManager tenantManager;
+
+    @GET
+    @Path("detail/{id}")
+    public Res<TenantDetailDTO> detail(@PathParam("id") Long id) {
+        TenantDetailDTO detailDTO  = tenantManager.loadDetail(id);
+        return Res.ok(detailDTO);
+    }
 
     @PUT
     @Path("start")

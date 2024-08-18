@@ -19,16 +19,18 @@ import io.quarkus.scheduler.Scheduled;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
+import org.apache.commons.collections.CollectionUtils;
+import org.okstar.platform.common.core.DatabaseResource;
 import org.okstar.platform.common.string.OkStringUtil;
 import org.okstar.platform.tenant.defines.TenantDefined;
-import org.okstar.platform.tenant.dto.TenantMetaDTO;
-import org.okstar.platform.tenant.entity.MetaEntity;
+import org.okstar.platform.tenant.doc.TenantMetaDoc;
 import org.okstar.platform.tenant.entity.TenantEntity;
 import org.okstar.platform.tenant.os.DockerService;
-import org.okstar.platform.tenant.service.MetaService;
+import org.okstar.platform.tenant.repo.MetaDocMapper;
 import org.okstar.platform.tenant.service.TenantService;
 import org.okstar.platform.tenant.utils.TenantUtil;
 
+import java.util.List;
 import java.util.concurrent.ExecutorService;
 
 @ApplicationScoped
@@ -39,7 +41,7 @@ public class TenantTask {
     @Inject
     DockerService dockerService;
     @Inject
-    MetaService metaService;
+    MetaDocMapper metaService;
     @Inject
     TenantUtil tenantUtil;
     @Inject
@@ -48,7 +50,7 @@ public class TenantTask {
 
     @Scheduled(every = "1m")
     public void statusSyncTask() {
-        executorService.execute(()->{
+        executorService.execute(() -> {
             for (TenantEntity tenant : tenantService.findAll()) {
                 statusSync(tenant.id);
             }
@@ -62,7 +64,7 @@ public class TenantTask {
      */
     @Transactional
     public void statusSync(Long tenantId) {
-         Log.infof("Status sync tenant[%s]", tenantId);
+        Log.infof("Status sync tenant[%s]", tenantId);
 
         TenantEntity tenant = tenantService.get(tenantId);
         if (tenant == null) {
@@ -70,36 +72,37 @@ public class TenantTask {
             return;
         }
 
-        MetaEntity meta = metaService.loadByTenant(tenant.id);
+        TenantMetaDoc meta = metaService.loadMetaDoc(tenant.id);
         if (meta == null) {
             Log.warnf("Tenant[%s] meta is null!");
             tenant.setStatus(TenantDefined.TenantStatus.Error);
             return;
         }
 
-        TenantMetaDTO metaDTO = tenantUtil.toMetaDTO(meta.getJsonValue());
-        if (metaDTO == null) {
-            Log.warnf("Tenant[%s] meta.jsonValue is null!", tenant.id);
+
+        List<DatabaseResource> dbs = meta.getDbs();
+        if (CollectionUtils.isEmpty(dbs)) {
+            Log.warnf("Tenant[%s] dbs is empty!", tenant.id);
             tenant.setStatus(TenantDefined.TenantStatus.Error);
             return;
         }
 
-        TenantMetaDTO.DB db = metaDTO.getDb();
-        if (db == null) {
-            Log.warnf("Tenant[%s] meta.db is null!", tenant.id);
-            tenant.setStatus(TenantDefined.TenantStatus.Error);
-            return;
+        int started = 0;
+        for (DatabaseResource db : dbs) {
+            String containerId = db.getContainerId();
+            if (containerId == null) {
+                Log.warnf("Tenant[%s] db containerId is null!", tenant.id);
+                tenant.setStatus(TenantDefined.TenantStatus.Error);
+                return;
+            }
+
+            Container container = dockerService.getContainer(containerId);
+            if (container != null && OkStringUtil.equals(container.getState(), "running")) {
+                started++;
+            }
         }
 
-        String containerId = db.getContainerId();
-        if(containerId == null) {
-            Log.warnf("Tenant[%s] meta.db.containerId is null!", tenant.id);
-            tenant.setStatus(TenantDefined.TenantStatus.Error);
-            return;
-        }
-
-        Container container = dockerService.getContainer(containerId);
-        if (container != null && OkStringUtil.equals(container.getState(), "running")  ) {
+        if (started == dbs.size()) {
             //update to Stopped
             tenant.setStatus(TenantDefined.TenantStatus.Started);
         } else {

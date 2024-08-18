@@ -14,6 +14,7 @@
 package org.okstar.platform.tenant.manager;
 
 import org.okstar.platform.tenant.dto.TenantCreateDTO;
+import org.okstar.platform.tenant.dto.TenantDetailDTO;
 import org.okstar.platform.tenant.dto.TenantUpdateDTO;
 
 public interface TenantManager {
@@ -25,7 +26,7 @@ public interface TenantManager {
     Long createTenant(TenantCreateDTO tenant);
 
 
-    void createPgSql(Long tenantId);
+    void createResource(Long tenantId);
 
     void startContainer(String containerId);
 
@@ -34,4 +35,11 @@ public interface TenantManager {
     void start(Long tenantId);
 
     void stop(Long tenantId);
+
+    /**
+     * 加载详情
+     * @param tenantId 租户ID
+     * @return TenantDetailDTO
+     */
+    TenantDetailDTO loadDetail(Long tenantId);
 }

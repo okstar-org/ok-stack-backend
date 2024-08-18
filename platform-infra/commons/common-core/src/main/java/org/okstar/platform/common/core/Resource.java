@@ -11,19 +11,23 @@
  * /
  */
 
-package org.okstar.platform.tenant.utils;
+package org.okstar.platform.common.core;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import jakarta.enterprise.context.ApplicationScoped;
-import jakarta.inject.Inject;
+import lombok.Getter;
+import lombok.Setter;
 
+/**
+ * 资源
+ */
+@Getter
+@Setter
+public abstract class Resource {
+    String url;
+    String username;
+    String password;
 
-@ApplicationScoped
-public class TenantUtil {
-
-    @Inject
-    ObjectMapper objectMapper;
-
-
-
+    //运行环境
+    RunOn runOn;
+    //容器ID，但runOn为Docker才有
+    String containerId;
 }

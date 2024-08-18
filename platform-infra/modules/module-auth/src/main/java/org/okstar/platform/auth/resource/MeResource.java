@@ -84,13 +84,16 @@ public class MeResource extends BaseResource {
     }
 
     private void detach(SysAccount0 account0) {
-        var org0 = RpcAssert.isTrue(orgRpc.current());
 
         FederalChannel channel = client.getFederalChannel();
         FederalCitizenEntity ex = new FederalCitizenEntity();
         ex.setAccountId(String.valueOf(account0.getId()));
-//        ex.setName(account0.getDisplayName());
-        ex.setStateCert(org0.getCert());
+
+        try {
+            var org0 = RpcAssert.isTrue(orgRpc.current());
+            ex.setStateCert(org0.getCert());
+        } catch (Exception ignored) {
+        }
 
         String cert = channel.registerCitizen(ex);
         Log.infof("Account cert=>%s", cert);

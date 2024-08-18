@@ -40,8 +40,8 @@ class TenantManagerImplTest {
     }
 
     @Test
-    void testCreatePgSql() {
-        tenantManager.createPgSql(701L);
+    void testCreateResource() {
+        tenantManager.createResource(701L);
     }
 
 

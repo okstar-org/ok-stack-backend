@@ -39,35 +39,33 @@ import java.time.Duration;
 public class DockerServiceImpl implements DockerService {
 
     DockerClientConfig config;
-    DockerHttpClient client;
-
 
     public void init(@Observes StartupEvent e) {
         config = DefaultDockerClientConfig.createDefaultConfigBuilder().build();
         RemoteApiVersion apiVersion = config.getApiVersion();
         Log.infof("Docker apiVersion=%s", apiVersion);
+        printVersion();
+    }
 
-        client = new ApacheDockerHttpClient.Builder()
+    private DockerHttpClient createClient() {
+        return new ApacheDockerHttpClient.Builder()
                 .dockerHost(config.getDockerHost())
                 .sslConfig(config.getSSLConfig())
                 .maxConnections(100)
                 .connectionTimeout(Duration.ofSeconds(30))
                 .responseTimeout(Duration.ofSeconds(45))
                 .build();
-
-        printVersion();
-
     }
 
     private void printVersion() {
-        DockerClient dockerClient = DockerClientImpl.getInstance(config, client);
+        DockerClient dockerClient = DockerClientImpl.getInstance(config, createClient());
         var versionCmd = dockerClient.versionCmd();
         Log.infof("version=> %s", versionCmd.exec());
     }
 
     @Override
     public String findContainerByName(String name) {
-        DockerClient dockerClient = DockerClientImpl.getInstance(config, client);
+        DockerClient dockerClient = DockerClientImpl.getInstance(config,createClient());
         var attached = dockerClient.listContainersCmd();
         var response = attached.withShowAll(true).exec();
         for (Container c : response) {
@@ -80,7 +78,7 @@ public class DockerServiceImpl implements DockerService {
 
     @Override
     public Container getContainer(String containerId) {
-        DockerClient dockerClient = DockerClientImpl.getInstance(config, client);
+        DockerClient dockerClient = DockerClientImpl.getInstance(config, createClient());
         var attached = dockerClient.listContainersCmd();
         var response = attached.withShowAll(true).exec();
         for (Container c : response) {
@@ -96,7 +94,7 @@ public class DockerServiceImpl implements DockerService {
     @Override
     public String createContainer(String name, String image, String port, String portBinds, String... env) {
 
-        DockerClient dockerClient = DockerClientImpl.getInstance(config, client);
+        DockerClient dockerClient = DockerClientImpl.getInstance(config, createClient());
         PullImageCmd pullImageCmd = dockerClient.pullImageCmd(image);
         try {
             pullImageCmd.start().awaitCompletion();
@@ -119,7 +117,7 @@ public class DockerServiceImpl implements DockerService {
     @Override
     public void startContainer(String containerId) {
         Log.infof("Starting container: %s", containerId);
-        DockerClient dockerClient = DockerClientImpl.getInstance(config, client);
+        DockerClient dockerClient = DockerClientImpl.getInstance(config, createClient());
         StartContainerCmd started = dockerClient.startContainerCmd(containerId);
         started.exec();
         Log.infof("Started container[%s]", containerId);
@@ -128,7 +126,7 @@ public class DockerServiceImpl implements DockerService {
     @Override
     public void stopContainer(String containerId) {
         Log.infof("Stopping container: %s", containerId);
-        DockerClient dockerClient = DockerClientImpl.getInstance(config, client);
+        DockerClient dockerClient = DockerClientImpl.getInstance(config, createClient());
         Container container = getContainer(containerId);
         if (container == null) {
             Log.warnf("container not found: %s", containerId);

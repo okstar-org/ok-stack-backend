@@ -11,19 +11,23 @@
  * /
  */
 
-package org.okstar.platform.tenant.utils;
+package org.okstar.platform.common.core;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import jakarta.enterprise.context.ApplicationScoped;
-import jakarta.inject.Inject;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 
+/**
+ * 资源类型-数据库
+ */
+@Data
+@EqualsAndHashCode(callSuper = true)
+public class DatabaseResource extends DataSourceResource {
 
-@ApplicationScoped
-public class TenantUtil {
+    //数据库类型
+    private DataSourceDefines.DatabaseType dbType;
 
-    @Inject
-    ObjectMapper objectMapper;
-
-
+    public DatabaseResource() {
+        super(DataSourceDefines.Type.db);
+    }
 
 }

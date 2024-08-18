@@ -11,19 +11,22 @@
  * /
  */
 
-package org.okstar.platform.tenant.utils;
+package org.okstar.platform.common.core;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import jakarta.enterprise.context.ApplicationScoped;
-import jakarta.inject.Inject;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 
+@Data
+@EqualsAndHashCode(callSuper = true)
+public abstract class DataSourceResource extends Resource {
 
-@ApplicationScoped
-public class TenantUtil {
+    DataSourceDefines.Type dsType;
 
-    @Inject
-    ObjectMapper objectMapper;
+    public DataSourceResource() {
 
+    }
 
-
+    public DataSourceResource(DataSourceDefines.Type dsType) {
+        this.dsType = dsType;
+    }
 }

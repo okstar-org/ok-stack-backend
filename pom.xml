@@ -27,6 +27,7 @@
         <module>platform-infra</module>
         <module>distribution</module>
         <module>thirdparty</module>
+        <module>platform-infra/commons/common-core</module>
     </modules>
 
     <properties>
