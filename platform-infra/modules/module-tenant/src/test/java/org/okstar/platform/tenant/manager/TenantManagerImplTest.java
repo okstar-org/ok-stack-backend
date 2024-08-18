@@ -29,11 +29,11 @@ class TenantManagerImplTest {
     @Inject TenantManager tenantManager;
 
     @Test
-    void createTenant() throws InterruptedException {
+    void create() throws InterruptedException {
         TenantCreateDTO t = new TenantCreateDTO() ;
         t.setName("测试租户");
         t.setNo(OkIdUtils.makeUuid());
-        Long id = tenantManager.createTenant(t);
+        Long id = tenantManager.create(t);
         Log.infof("Create tenant id => %s", id);
         Assert.assertTrue(id > 0);
         TimeUnit.SECONDS.sleep(5);

@@ -23,7 +23,7 @@ public interface TenantManager {
      * @param tenant
      * @return id
      */
-    Long createTenant(TenantCreateDTO tenant);
+    Long create(TenantCreateDTO tenant);
 
 
     void createResource(Long tenantId);

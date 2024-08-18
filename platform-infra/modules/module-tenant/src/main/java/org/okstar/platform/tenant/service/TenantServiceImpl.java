@@ -27,8 +27,8 @@ import org.okstar.platform.tenant.repo.TenantMapper;
 
 import java.util.List;
 
-@ApplicationScoped
 @Transactional
+@ApplicationScoped
 public class TenantServiceImpl implements TenantService {
     @Inject
     TenantMapper tenantMapper;

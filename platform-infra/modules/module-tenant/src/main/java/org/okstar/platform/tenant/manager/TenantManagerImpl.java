@@ -127,7 +127,7 @@ public class TenantManagerImpl implements TenantManager {
 
 
     @Override
-    public Long createTenant(TenantCreateDTO createDTO) {
+    public Long create(TenantCreateDTO createDTO) {
         Log.infof("Create tenant: %s", createDTO);
 
         OkAssert.isTrue(OkStringUtil.isNotEmpty(createDTO.getNo()), "no is empty");

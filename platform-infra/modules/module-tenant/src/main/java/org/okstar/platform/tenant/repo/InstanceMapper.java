@@ -11,23 +11,13 @@
  * /
  */
 
-package org.okstar.platform.tenant.entity;
+package org.okstar.platform.tenant.repo;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import lombok.Getter;
-import lombok.Setter;
+import io.quarkus.hibernate.orm.panache.PanacheRepository;
+import jakarta.enterprise.context.ApplicationScoped;
+import org.okstar.platform.tenant.entity.InstanceEntity;
 
-/**
- * 元数据
- */
-@Setter
-@Getter
-@Entity
-public class MetaEntity extends BaseEntity{
-    private Long tenantId;
-
-    @Column(columnDefinition = "json")
-    private String jsonValue;
+@ApplicationScoped
+public class InstanceMapper implements PanacheRepository<InstanceEntity> {
 
 }

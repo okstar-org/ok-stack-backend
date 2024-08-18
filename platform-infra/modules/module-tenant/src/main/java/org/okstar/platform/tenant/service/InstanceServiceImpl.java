@@ -19,59 +19,49 @@ import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 import org.okstar.platform.common.core.web.page.OkPageResult;
 import org.okstar.platform.common.core.web.page.OkPageable;
-import org.okstar.platform.tenant.entity.MetaEntity;
+import org.okstar.platform.tenant.entity.InstanceEntity;
 import org.okstar.platform.tenant.entity.MetaEntity_;
-import org.okstar.platform.tenant.repo.MetaMapper;
+import org.okstar.platform.tenant.repo.InstanceMapper;
 
 import java.util.List;
 
 @Transactional
 @ApplicationScoped
-public class MetaServiceImpl implements MetaService {
+public class InstanceServiceImpl implements InstanceService {
     @Inject
-    MetaMapper metaMapper;
+    InstanceMapper instanceMapper;
 
     @Override
-    public void save(MetaEntity metaEntity) {
-        metaMapper.persist(metaEntity);
+    public void save(InstanceEntity metaEntity) {
+        instanceMapper.persist(metaEntity);
     }
 
     @Override
-    public List<MetaEntity> findAll() {
-        return metaMapper.findAll().stream().toList();
+    public List<InstanceEntity> findAll() {
+        return instanceMapper.findAll().stream().toList();
     }
 
     @Override
-    public OkPageResult<MetaEntity> findPage(OkPageable page) {
-        var paged = metaMapper
+    public OkPageResult<InstanceEntity> findPage(OkPageable page) {
+        var paged = instanceMapper
                 .findAll(Sort.descending(MetaEntity_.ID))
                 .page(page.getPageIndex(), page.getPageSize());
         return OkPageResult.build(paged.list(), paged.count(), paged.pageCount());
     }
 
     @Override
-    public MetaEntity get(Long id) {
-        return metaMapper.findById(id);
+    public InstanceEntity get(Long id) {
+        return instanceMapper.findById(id);
     }
 
     @Override
     public void deleteById(Long id) {
-        metaMapper.deleteById(id);
+        instanceMapper.deleteById(id);
     }
 
     @Override
-    public void delete(MetaEntity metaEntity) {
-        metaMapper.delete(metaEntity);
+    public void delete(InstanceEntity metaEntity) {
+        instanceMapper.delete(metaEntity);
     }
 
-    @Override
-    public MetaEntity loadByTenant(Long tenantId) {
-        return metaMapper.find(MetaEntity_.TENANT_ID, tenantId).stream()
-                .findFirst().or(() -> {
-                    var metaEntity = new MetaEntity();
-                    metaEntity.setTenantId(tenantId);
-                    metaMapper.persist(metaEntity);
-                    return java.util.Optional.of(metaEntity);
-                }).get();
-    }
 }

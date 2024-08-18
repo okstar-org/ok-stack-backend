@@ -80,7 +80,7 @@ public class TenantResource extends OkCommonResource {
     @POST
     @Path("save")
     public Res<Long> save(TenantCreateDTO tenant) {
-        Long id = tenantManager.createTenant(tenant);
+        Long id = tenantManager.create(tenant);
         return Res.ok(id);
     }
 

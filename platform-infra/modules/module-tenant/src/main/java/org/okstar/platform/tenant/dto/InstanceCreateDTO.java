@@ -11,13 +11,27 @@
  * /
  */
 
-package org.okstar.platform.tenant.repo;
+package org.okstar.platform.tenant.dto;
 
-import io.quarkus.hibernate.orm.panache.PanacheRepository;
-import jakarta.enterprise.context.ApplicationScoped;
-import org.okstar.platform.tenant.entity.MetaEntity;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import org.okstar.platform.common.core.web.bean.DTO;
 
-@ApplicationScoped
-public class MetaMapper implements PanacheRepository<MetaEntity> {
+@Data
+@EqualsAndHashCode(callSuper = true)
+public class InstanceCreateDTO extends DTO {
+    /**
+     * 租户ID
+     */
+    private Long tenantId;
 
+    /**
+     * 应用ID
+     */
+    private Long appId;
+
+    /**
+     * 订单编号
+     */
+    private Long orderId;
 }

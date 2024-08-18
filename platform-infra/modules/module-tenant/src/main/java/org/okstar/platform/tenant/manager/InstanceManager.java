@@ -11,12 +11,11 @@
  * /
  */
 
-package org.okstar.platform.tenant.service;
+package org.okstar.platform.tenant.manager;
 
-import org.okstar.platform.common.datasource.OkJpaService;
-import org.okstar.platform.tenant.entity.MetaEntity;
 
-public interface MetaService extends OkJpaService<MetaEntity> {
+import org.okstar.platform.tenant.dto.InstanceCreateDTO;
 
-    MetaEntity loadByTenant(Long tenantId);
+public interface InstanceManager {
+    Long create(InstanceCreateDTO createDTO);
 }
