@@ -14,52 +14,45 @@
 package org.okstar.platform.work.web;
 
 import io.quarkus.security.Authenticated;
+import jakarta.inject.Inject;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.PathParam;
-import org.okstar.cloud.OkCloudApiClient;
 import org.okstar.cloud.entity.AppDetailEntity;
 import org.okstar.cloud.entity.AppEntities;
 import org.okstar.cloud.entity.AppEntity;
-import org.okstar.cloud.entity.AuthenticationToken;
-import org.okstar.platform.common.core.defined.OkCloudDefines;
 import org.okstar.platform.common.core.web.bean.Res;
 import org.okstar.platform.common.core.web.page.OkPageable;
 import org.okstar.platform.common.resource.OkCommonResource;
+import org.okstar.platform.work.service.WorkAppService;
 
 /**
  * 工作中心-应用列表
  */
 @Authenticated
 @Path("/app")
-public class SysWorkAppResource extends OkCommonResource {
+public class WorkAppResource extends OkCommonResource {
 
-    OkCloudApiClient client;
+    @Inject
+    WorkAppService workAppService;
 
-    public SysWorkAppResource() {
-        client = new OkCloudApiClient(OkCloudDefines.OK_CLOUD_API_STACK,
-                new AuthenticationToken(OkCloudDefines.OK_CLOUD_USERNAME, OkCloudDefines.OK_CLOUD_PASSWORD));
-    }
 
     @POST
     @Path("page")
     public Res<AppEntities> page(OkPageable pageable) {
-        AppEntities apps = client.getAppChannel().getApps(pageable);
-        return Res.ok(apps);
+        return Res.ok(workAppService.page(pageable));
     }
 
     @GET
     @Path("{id}")
     public Res<AppEntity> get(@PathParam("id") Long id) {
-        var page = client.getAppChannel().getApp(id);
-        return Res.ok(page);
+        return Res.ok(workAppService.get(id));
     }
 
     @GET
     @Path("/detail/{id}")
     public Res<AppDetailEntity> detail(@PathParam("id") Long id) {
-        var app = client.getAppChannel().getDetail(id);
-        return Res.ok(app);
+        return Res.ok(workAppService.detail(id));
     }
 }

@@ -19,7 +19,7 @@ import org.okstar.platform.common.datasource.OkJpaService;
 
 import java.util.stream.Stream;
 
-public interface BillingOrderJpaService extends OkJpaService<BillingOrder> {
+public interface BillingOrderService extends OkJpaService<BillingOrder> {
     Stream<BillingOrder> notSyncList();
 
     void saveResult(OrderResultEntity result, Long createBy);

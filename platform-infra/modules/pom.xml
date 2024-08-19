@@ -25,6 +25,8 @@
         <module>module-billing</module>
         <module>module-bus</module>
         <module>module-work</module>
+        <module>module-billing-api</module>
+        <module>module-work-api</module>
     </modules>
 
     <dependencies>
