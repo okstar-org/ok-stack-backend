@@ -17,10 +17,11 @@ import io.quarkus.panache.common.Sort;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
+import org.eclipse.microprofile.rest.client.inject.RestClient;
+import org.okstar.platform.billing.rpc.BillingOrderRpc;
 import org.okstar.platform.common.core.web.page.OkPageResult;
 import org.okstar.platform.common.core.web.page.OkPageable;
 import org.okstar.platform.tenant.entity.InstanceEntity;
-import org.okstar.platform.tenant.entity.MetaEntity_;
 import org.okstar.platform.tenant.repo.InstanceMapper;
 
 import java.util.List;
@@ -30,6 +31,7 @@ import java.util.List;
 public class InstanceServiceImpl implements InstanceService {
     @Inject
     InstanceMapper instanceMapper;
+
 
     @Override
     public void save(InstanceEntity metaEntity) {
@@ -44,7 +46,7 @@ public class InstanceServiceImpl implements InstanceService {
     @Override
     public OkPageResult<InstanceEntity> findPage(OkPageable page) {
         var paged = instanceMapper
-                .findAll(Sort.descending(MetaEntity_.ID))
+                .findAll(Sort.descending("id"))
                 .page(page.getPageIndex(), page.getPageSize());
         return OkPageResult.build(paged.list(), paged.count(), paged.pageCount());
     }

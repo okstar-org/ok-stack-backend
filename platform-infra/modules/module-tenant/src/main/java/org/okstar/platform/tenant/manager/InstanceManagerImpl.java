@@ -18,10 +18,15 @@ import io.quarkus.logging.Log;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
+import org.eclipse.microprofile.rest.client.inject.RestClient;
+import org.okstar.platform.billing.rpc.BillingOrderRpc;
 import org.okstar.platform.common.asserts.OkAssert;
+import org.okstar.platform.common.id.OkIdUtils;
+import org.okstar.platform.system.vo.SysAccount0;
 import org.okstar.platform.tenant.dto.InstanceCreateDTO;
 import org.okstar.platform.tenant.entity.InstanceEntity;
 import org.okstar.platform.tenant.service.InstanceService;
+import org.okstar.platform.work.rpc.WorkAppRpc;
 
 import java.util.concurrent.ExecutorService;
 
@@ -31,9 +36,16 @@ public class InstanceManagerImpl implements InstanceManager {
 
     @Inject
     InstanceService instanceService;
+    @Inject
+    @RestClient
+    BillingOrderRpc billingOrderRpc;
+    @Inject
+    @RestClient
+    WorkAppRpc workAppRpc;
+
 
     @Override
-    public Long create(InstanceCreateDTO createDTO) {
+    public Long create(InstanceCreateDTO createDTO, SysAccount0 account) {
 
         Log.infof("Create tenant: %s", createDTO);
 
@@ -41,7 +53,13 @@ public class InstanceManagerImpl implements InstanceManager {
         instanceEntity.setTenantId(createDTO.getTenantId());
         instanceEntity.setAppId(createDTO.getAppId());
         instanceEntity.setOrderId(createDTO.getOrderId());
-        instanceService.save(instanceEntity);
+        instanceEntity.setUuid(OkIdUtils.makeUuid());
+        instanceEntity.setDisabled(false);
+
+        //应用名称+套餐名称
+//        instanceEntity.setName();
+
+        instanceService.create(instanceEntity, account.getId());
 
         //初始化实例环境
         ExecutorService executorService = Arc.container().getExecutorService();

@@ -27,6 +27,8 @@ import lombok.Setter;
 @Entity
 public class InstanceEntity extends BaseEntity{
 
+    private String no;
+
     /**
      * 租户ID
      */

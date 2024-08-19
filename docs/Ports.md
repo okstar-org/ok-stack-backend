@@ -5,7 +5,7 @@
 9200 - org
 9300 - chat
 9400 - billing
-9500 - workplatform
+9500 - work
 9800 - bus
 9810 - tenant
 ```

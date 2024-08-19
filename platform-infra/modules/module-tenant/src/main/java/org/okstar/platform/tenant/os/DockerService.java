@@ -14,7 +14,6 @@
 package org.okstar.platform.tenant.os;
 
 import com.github.dockerjava.api.model.Container;
-import lombok.SneakyThrows;
 
 public interface DockerService {
 
@@ -23,7 +22,6 @@ public interface DockerService {
 
     Container getContainer(String containerId);
 
-    @SneakyThrows
     String createContainer(String name, String image, String port, String portBinds, String... env);
 
     void startContainer(String containerId);

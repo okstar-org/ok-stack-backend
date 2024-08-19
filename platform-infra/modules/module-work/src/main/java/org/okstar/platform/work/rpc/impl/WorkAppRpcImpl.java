@@ -30,7 +30,6 @@ public class WorkAppRpcImpl implements WorkAppRpc {
     @Inject
     WorkAppService workAppService;
 
-    @Inject
     @Override
     public RpcResult<List<AppDTO>> list() {
         AppEntities entities = workAppService.page(OkPageable.builder().pageIndex(0).pageSize(100).build());

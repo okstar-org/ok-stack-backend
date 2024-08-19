@@ -69,7 +69,18 @@
             <artifactId>docker-compose</artifactId>
             <version>2024-06-09T22-20-00</version>
         </dependency>
-
+        <dependency>
+            <groupId>org.okstar.platform</groupId>
+            <artifactId>module-billing-api</artifactId>
+            <version>${revision}</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.okstar.platform</groupId>
+            <artifactId>module-work-api</artifactId>
+            <version>${revision}</version>
+            <scope>compile</scope>
+        </dependency>
 
 
     </dependencies>

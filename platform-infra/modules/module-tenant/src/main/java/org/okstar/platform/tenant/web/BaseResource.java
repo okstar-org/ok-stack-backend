@@ -11,7 +11,7 @@
  * /
  */
 
-package org.okstar.platform.auth.resource;
+package org.okstar.platform.tenant.web;
 
 import jakarta.inject.Inject;
 import org.eclipse.microprofile.rest.client.inject.RestClient;

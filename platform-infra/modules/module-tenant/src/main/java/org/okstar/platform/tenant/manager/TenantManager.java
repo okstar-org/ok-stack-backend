@@ -13,6 +13,7 @@
 
 package org.okstar.platform.tenant.manager;
 
+import org.okstar.platform.system.vo.SysAccount0;
 import org.okstar.platform.tenant.dto.TenantCreateDTO;
 import org.okstar.platform.tenant.dto.TenantDetailDTO;
 import org.okstar.platform.tenant.dto.TenantUpdateDTO;
@@ -20,10 +21,12 @@ import org.okstar.platform.tenant.dto.TenantUpdateDTO;
 public interface TenantManager {
     /**
      * 创建租户
+     *
      * @param tenant
+     * @param self
      * @return id
      */
-    Long create(TenantCreateDTO tenant);
+    Long create(TenantCreateDTO tenant, SysAccount0 self);
 
 
     void createResource(Long tenantId);

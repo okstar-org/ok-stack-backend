@@ -19,6 +19,7 @@ import io.smallrye.common.constraint.Assert;
 import jakarta.inject.Inject;
 import org.junit.jupiter.api.Test;
 import org.okstar.platform.common.id.OkIdUtils;
+import org.okstar.platform.system.vo.SysAccount0;
 import org.okstar.platform.tenant.dto.TenantCreateDTO;
 
 import java.util.concurrent.TimeUnit;
@@ -26,14 +27,17 @@ import java.util.concurrent.TimeUnit;
 @QuarkusTest
 class TenantManagerImplTest {
 
-    @Inject TenantManager tenantManager;
+    @Inject
+    TenantManager tenantManager;
 
     @Test
     void create() throws InterruptedException {
         TenantCreateDTO t = new TenantCreateDTO() ;
         t.setName("测试租户");
         t.setNo(OkIdUtils.makeUuid());
-        Long id = tenantManager.create(t);
+        SysAccount0 self = new SysAccount0();
+        self.setId(1L);
+        Long id = tenantManager.create(t, self);
         Log.infof("Create tenant id => %s", id);
         Assert.assertTrue(id > 0);
         TimeUnit.SECONDS.sleep(5);

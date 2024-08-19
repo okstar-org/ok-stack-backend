@@ -41,7 +41,7 @@ public interface OkJpaService<T extends OkEntity> extends OkService {
     default void create(T t, Long createBy){
         t.id = null;
         t.setCreateAt(OkDateUtils.now());
-        t.setUpdateBy(createBy);
+        t.setCreateBy(createBy);
         save(t);
     }
 

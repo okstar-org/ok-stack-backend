@@ -29,6 +29,7 @@ import org.okstar.platform.common.date.OkDateUtils;
 import org.okstar.platform.common.id.OkIdUtils;
 import org.okstar.platform.common.os.PortFinder;
 import org.okstar.platform.common.string.OkStringUtil;
+import org.okstar.platform.system.vo.SysAccount0;
 import org.okstar.platform.tenant.defines.TenantDefined;
 import org.okstar.platform.tenant.doc.TenantMetaDoc;
 import org.okstar.platform.tenant.dto.TenantCreateDTO;
@@ -127,7 +128,7 @@ public class TenantManagerImpl implements TenantManager {
 
 
     @Override
-    public Long create(TenantCreateDTO createDTO) {
+    public Long create(TenantCreateDTO createDTO, SysAccount0 self) {
         Log.infof("Create tenant: %s", createDTO);
 
         OkAssert.isTrue(OkStringUtil.isNotEmpty(createDTO.getNo()), "no is empty");
@@ -143,7 +144,7 @@ public class TenantManagerImpl implements TenantManager {
         tenantEntity.setUuid(OkIdUtils.makeUuid());
         tenantEntity.setCreateAt(OkDateUtils.now());
         tenantEntity.setDisabled(false);
-        tenantService.save(tenantEntity);
+        tenantService.create(tenantEntity, self.getId());
 
         //初始化租户环境
         ExecutorService executorService = Arc.container().getExecutorService();

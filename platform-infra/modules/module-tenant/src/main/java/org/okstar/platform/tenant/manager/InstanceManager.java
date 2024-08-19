@@ -14,8 +14,9 @@
 package org.okstar.platform.tenant.manager;
 
 
+import org.okstar.platform.system.vo.SysAccount0;
 import org.okstar.platform.tenant.dto.InstanceCreateDTO;
 
 public interface InstanceManager {
-    Long create(InstanceCreateDTO createDTO);
+    Long create(InstanceCreateDTO createDTO, SysAccount0 account);
 }

@@ -18,7 +18,6 @@ import jakarta.ws.rs.*;
 import org.okstar.platform.common.core.web.bean.Res;
 import org.okstar.platform.common.core.web.page.OkPageResult;
 import org.okstar.platform.common.core.web.page.OkPageable;
-import org.okstar.platform.common.resource.OkCommonResource;
 import org.okstar.platform.tenant.dto.TenantCreateDTO;
 import org.okstar.platform.tenant.dto.TenantDetailDTO;
 import org.okstar.platform.tenant.dto.TenantUpdateDTO;
@@ -27,7 +26,7 @@ import org.okstar.platform.tenant.manager.TenantManager;
 import org.okstar.platform.tenant.service.TenantService;
 
 @Path("tenant")
-public class TenantResource extends OkCommonResource {
+public class TenantResource extends BaseResource {
 
     @Inject
     TenantService tenantService;
@@ -80,13 +79,13 @@ public class TenantResource extends OkCommonResource {
     @POST
     @Path("save")
     public Res<Long> save(TenantCreateDTO tenant) {
-        Long id = tenantManager.create(tenant);
+        Long id = tenantManager.create(tenant, self());
         return Res.ok(id);
     }
 
     @POST
     @Path("page")
-    public Res<OkPageResult<TenantEntity>> list(OkPageable page){
+    public Res<OkPageResult<TenantEntity>> page(OkPageable page){
         OkPageResult<TenantEntity> result = tenantService.findPage(page);
         return Res.ok(result);
     }

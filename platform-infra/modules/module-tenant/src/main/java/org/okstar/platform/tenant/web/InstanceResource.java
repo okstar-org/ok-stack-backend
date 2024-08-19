@@ -17,36 +17,58 @@ import jakarta.inject.Inject;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
+import org.eclipse.microprofile.rest.client.inject.RestClient;
+import org.okstar.platform.billing.dto.OrderDTO;
+import org.okstar.platform.billing.rpc.BillingOrderRpc;
 import org.okstar.platform.common.core.web.bean.Res;
-import org.okstar.platform.common.resource.OkCommonResource;
-import org.okstar.platform.tenant.dto.AppDTO;
+import org.okstar.platform.common.core.web.page.OkPageResult;
+import org.okstar.platform.common.core.web.page.OkPageable;
+import org.okstar.platform.common.rpc.RpcAssert;
 import org.okstar.platform.tenant.dto.InstanceCreateDTO;
-import org.okstar.platform.tenant.dto.OrderDTO;
 import org.okstar.platform.tenant.dto.TenantDTO;
+import org.okstar.platform.tenant.entity.InstanceEntity;
 import org.okstar.platform.tenant.entity.TenantEntity;
 import org.okstar.platform.tenant.manager.InstanceManager;
+import org.okstar.platform.tenant.service.InstanceService;
 import org.okstar.platform.tenant.service.TenantService;
+import org.okstar.platform.work.dto.AppDTO;
+import org.okstar.platform.work.rpc.WorkAppRpc;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Path("instance")
-public class InstanceResource extends OkCommonResource {
+public class InstanceResource extends BaseResource {
     @Inject
     InstanceManager instanceManager;
     @Inject
+    InstanceService instanceService;
+    @Inject
     TenantService tenantService;
+    @Inject
+    @RestClient
+    WorkAppRpc workAppRpc;
+    @Inject
+    @RestClient
+    BillingOrderRpc billingOrderRpc;
+
+    @POST
+    @Path("page")
+    public Res<OkPageResult<InstanceEntity>> page(OkPageable page){
+        OkPageResult<InstanceEntity> result = instanceService.findPage(page);
+        return Res.ok(result);
+    }
 
     @POST
     @Path("save")
     public Res<Long> save(InstanceCreateDTO tenant) {
-        Long id = instanceManager.create(tenant);
+        Long id = instanceManager.create(tenant, self());
         return Res.ok(id);
     }
 
     /**
      * 租户列表
-     * @return Res<List<TenantDTO>>
+     *
+     * @return Res<List < TenantDTO>>
      */
     @GET
     @Path("tenants")
@@ -65,9 +87,8 @@ public class InstanceResource extends OkCommonResource {
      */
     @GET
     @Path("orders")
-    public Res<List<OrderDTO>> orders(){
-        //TODO: 暂时返回固定值
-        List<OrderDTO> list = new ArrayList<>();
+    public Res<List<OrderDTO>> orders() {
+        List<OrderDTO> list = RpcAssert.isTrue(billingOrderRpc.list());
         return Res.ok(list);
     }
 
@@ -76,9 +97,8 @@ public class InstanceResource extends OkCommonResource {
      */
     @GET
     @Path("apps")
-    public Res<List<AppDTO>> apps(){
-        //TODO: 暂时返回固定值
-        List<AppDTO> list = new ArrayList<>();
+    public Res<List<AppDTO>> apps() {
+        List<AppDTO> list = RpcAssert.isTrue(workAppRpc.list());
         return Res.ok(list);
     }
 }

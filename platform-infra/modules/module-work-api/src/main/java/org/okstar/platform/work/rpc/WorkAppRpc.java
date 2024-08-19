@@ -21,9 +21,10 @@ import org.okstar.platform.work.dto.AppDTO;
 
 import java.util.List;
 
-@Path("rpc/WorkAppRpc")
 @RegisterRestClient
+@Path("rpc/WorkAppRpc")
 public interface WorkAppRpc {
+
     @GET
     @Path("list")
     RpcResult<List<AppDTO>> list();
