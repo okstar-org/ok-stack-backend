@@ -16,6 +16,8 @@ package org.okstar.platform.billing.order.service;
 import org.okstar.platform.billing.order.domain.BillingGoods;
 import org.okstar.platform.common.datasource.OkJpaService;
 
+import java.util.List;
+
 public interface BillingGoodsService extends OkJpaService<BillingGoods> {
     List<BillingGoods> findByOrderId(Long orderId);
 }
