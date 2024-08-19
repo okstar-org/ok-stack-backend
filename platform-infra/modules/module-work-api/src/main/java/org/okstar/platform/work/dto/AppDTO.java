@@ -10,26 +10,16 @@
  * See the Mulan PubL v2 for more details.
  * /
  */
-package org.okstar.platform.chat.beans;
-import lombok.*;
-import org.okstar.platform.common.core.web.bean.DTO;
+
+package org.okstar.platform.work.dto;
+
+import lombok.Builder;
+import lombok.Data;
 
 @Data
 @Builder
-@AllArgsConstructor
-@NoArgsConstructor
-@EqualsAndHashCode(callSuper = true)
-public class ChatUser extends DTO {
-
-    /** The username. */
-    private String username;
-
-    /** The name. */
+public class AppDTO {
+    private Long id;
+    private String no;
     private String name;
-
-    /** The email. */
-    private String email;
-
-    private boolean online;
-
 }

@@ -34,7 +34,7 @@ import java.util.stream.Stream;
 
 @Transactional
 @ApplicationScoped
-public class BillingOrderServiceImpl implements BillingOrderJpaService {
+public class BillingOrderServiceImpl implements BillingOrderService {
     @Inject
     BillingOrderMapper orderMapper;
 

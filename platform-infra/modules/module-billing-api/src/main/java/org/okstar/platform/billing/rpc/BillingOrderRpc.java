@@ -10,26 +10,22 @@
  * See the Mulan PubL v2 for more details.
  * /
  */
-package org.okstar.platform.chat.beans;
-import lombok.*;
-import org.okstar.platform.common.core.web.bean.DTO;
+package org.okstar.platform.billing.rpc;
 
-@Data
-@Builder
-@AllArgsConstructor
-@NoArgsConstructor
-@EqualsAndHashCode(callSuper = true)
-public class ChatUser extends DTO {
+import jakarta.ws.rs.GET;
+import jakarta.ws.rs.Path;
+import org.eclipse.microprofile.rest.client.inject.RegisterRestClient;
+import org.okstar.platform.billing.dto.OrderDTO;
+import org.okstar.platform.common.rpc.RpcResult;
 
-    /** The username. */
-    private String username;
+import java.util.List;
 
-    /** The name. */
-    private String name;
+@Path("rpc/BillingOrderRpc")
+@RegisterRestClient
+public interface BillingOrderRpc {
 
-    /** The email. */
-    private String email;
 
-    private boolean online;
-
+    @GET
+    @Path("list")
+    RpcResult<List<OrderDTO>> list();
 }

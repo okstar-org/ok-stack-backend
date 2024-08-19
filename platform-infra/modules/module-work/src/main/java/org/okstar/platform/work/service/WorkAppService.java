@@ -10,26 +10,19 @@
  * See the Mulan PubL v2 for more details.
  * /
  */
-package org.okstar.platform.chat.beans;
-import lombok.*;
-import org.okstar.platform.common.core.web.bean.DTO;
 
-@Data
-@Builder
-@AllArgsConstructor
-@NoArgsConstructor
-@EqualsAndHashCode(callSuper = true)
-public class ChatUser extends DTO {
+package org.okstar.platform.work.service;
 
-    /** The username. */
-    private String username;
+import jakarta.ws.rs.PathParam;
+import org.okstar.cloud.entity.AppDetailEntity;
+import org.okstar.cloud.entity.AppEntities;
+import org.okstar.cloud.entity.AppEntity;
+import org.okstar.platform.common.core.web.page.OkPageable;
 
-    /** The name. */
-    private String name;
+public interface WorkAppService {
+    AppEntities page(OkPageable pageable);
 
-    /** The email. */
-    private String email;
+    AppEntity get(@PathParam("id") Long id);
 
-    private boolean online;
-
+    AppDetailEntity detail(@PathParam("id") Long id);
 }

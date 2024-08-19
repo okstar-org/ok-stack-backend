@@ -21,7 +21,7 @@ import jakarta.ws.rs.Path;
 import jakarta.ws.rs.PathParam;
 import org.okstar.cloud.entity.OrderResultEntity;
 import org.okstar.platform.billing.order.domain.BillingOrder;
-import org.okstar.platform.billing.order.service.BillingOrderJpaService;
+import org.okstar.platform.billing.order.service.BillingOrderService;
 import org.okstar.platform.billing.resource.BillingBaseResource;
 import org.okstar.platform.common.core.web.bean.Res;
 import org.okstar.platform.common.core.web.page.OkPageResult;
@@ -33,7 +33,7 @@ public class BillingOrderResource extends BillingBaseResource {
 
 
     @Inject
-    BillingOrderJpaService orderService;
+    BillingOrderService orderService;
 
     /**
      * 创建订单
