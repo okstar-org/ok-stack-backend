@@ -16,8 +16,6 @@ package org.okstar.platform.billing.order.domain;
 import jakarta.persistence.Entity;
 import lombok.Getter;
 import lombok.Setter;
-import org.okstar.cloud.defines.PayDefines;
-import org.okstar.platform.common.datasource.SyncEntity;
 import org.okstar.platform.common.datasource.domain.OkEntity;
 
 import java.math.BigDecimal;
@@ -26,52 +24,40 @@ import java.util.Date;
 @Setter
 @Getter
 @Entity
-public class BillingOrder extends OkEntity implements SyncEntity {
+public class BillingGoods extends OkEntity {
+
+    private Long orderId;
 
     /**
-     * 同步字段
+     * 商品编号
      */
-    private Boolean sync;
-
-    /** 订单编号(与云端一致) */
     private String no;
 
-    /** 订单状态 */
-    private PayDefines.OrderStatus orderStatus;
-
-    /** 支付状态 */
-    private PayDefines.PaymentStatus paymentStatus;
-
-    /** 金额 */
-    private BigDecimal amount = new BigDecimal(0);
-
-    /** 订单名称*/
+    /**
+     * 商品名称，格式: 厂商 | 产品名称 | 型号 X 数量
+     */
     private String name;
 
-    /** 附言 */
-    private String memo;
+    /**
+     * 厂商
+     */
+    private Long providerId;
 
-    /** 到期时间 */
-    private Date expire;
-
-    private Boolean isExpired;
-
-    /** 支付方式名称 */
-    private String paymentName;
-
-    /** 付款时间 */
-    private Date paymentAt;
-
-    /** 供应商 */
     private String providerName;
 
     /**
-     * 开始时间
+     * 商品价格
      */
-    private Date periodBegin;
+    private BigDecimal amount = new BigDecimal(0);
 
     /**
-     * 结束时间
+     * 商品数量
      */
+    private Integer count;
+
+    /**
+     * 周期
+     */
+    private Date periodBegin;
     private Date periodEnd;
 }
