@@ -22,10 +22,13 @@ import org.okstar.cloud.OkCloudApiClient;
 import org.okstar.cloud.channel.OrderChannel;
 import org.okstar.cloud.entity.AuthenticationToken;
 import org.okstar.cloud.entity.OrderResultEntity;
+import org.okstar.cloud.entity.PayGoodsEntity;
+import org.okstar.cloud.entity.PayOrderEntity;
+import org.okstar.platform.billing.order.domain.BillingGoods;
 import org.okstar.platform.billing.order.domain.BillingOrder;
 import org.okstar.platform.billing.order.mapper.BillingOrderMapper;
-import org.okstar.platform.common.core.defined.OkCloudDefines;
 import org.okstar.platform.common.bean.OkBeanUtils;
+import org.okstar.platform.common.core.defined.OkCloudDefines;
 import org.okstar.platform.common.core.web.page.OkPageResult;
 import org.okstar.platform.common.core.web.page.OkPageable;
 
@@ -37,9 +40,10 @@ import java.util.stream.Stream;
 public class BillingOrderServiceImpl implements BillingOrderService {
     @Inject
     BillingOrderMapper orderMapper;
+    @Inject
+    BillingGoodsService billingGoodsService;
 
     OkCloudApiClient client;
-
 
     public BillingOrderServiceImpl() {
         client = new OkCloudApiClient(OkCloudDefines.OK_CLOUD_API_STACK,
@@ -94,25 +98,33 @@ public class BillingOrderServiceImpl implements BillingOrderService {
     @Override
     public void saveResult(OrderResultEntity result, Long createBy) {
         Log.infof("保存订单：%s", result);
-        BillingOrder order = new BillingOrder();
-        OkBeanUtils.copyPropertiesTo(result.getOrder(), order);
 
-        /**
-         * 该3项字段通过同步更新
-         */
+        PayOrderEntity orderEntity = result.getOrder();
+
+        BillingOrder order = new BillingOrder();
+        OkBeanUtils.copyPropertiesTo(orderEntity, order);
+        // 该3项字段通过同步更新
         order.setIsExpired(null);
         order.setOrderStatus(null);
         order.setPaymentStatus(null);
-
         create(order, createBy);
-
+        Log.infof("Create order=>%s", order.id);
+        // 创建订单商品
+        List<PayGoodsEntity> goods = orderEntity.getGoods();
+        goods.forEach(e -> {
+            BillingGoods d = new BillingGoods();
+            OkBeanUtils.copyPropertiesTo(e, d);
+            d.setOrderId(order.id);
+            billingGoodsService.save(d);
+            Log.infof("Create goods=>%s", d.id);
+        });
     }
 
     @Override
     public OrderResultEntity createOrder(Long planId, Long createBy) {
         OrderChannel orderChannel = client.getOrderChannel();
         OrderResultEntity result = orderChannel.create(planId);
-        result.setUrl(OkCloudDefines.OK_CLOUD_API+result.getUrl());
+        result.setUrl(OkCloudDefines.OK_CLOUD_API + result.getUrl());
         saveResult(result, createBy);
         return result;
     }

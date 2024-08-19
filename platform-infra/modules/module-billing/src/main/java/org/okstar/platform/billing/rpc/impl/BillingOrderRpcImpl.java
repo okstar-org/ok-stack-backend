@@ -16,7 +16,9 @@ package org.okstar.platform.billing.rpc.impl;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
+import org.okstar.platform.billing.dto.GoodsDTO;
 import org.okstar.platform.billing.dto.OrderDTO;
+import org.okstar.platform.billing.order.service.BillingGoodsService;
 import org.okstar.platform.billing.order.service.BillingOrderService;
 import org.okstar.platform.billing.rpc.BillingOrderRpc;
 import org.okstar.platform.common.rpc.RpcResult;
@@ -29,15 +31,23 @@ public class BillingOrderRpcImpl implements BillingOrderRpc {
 
     @Inject
     BillingOrderService billingOrderService;
+    @Inject
+    BillingGoodsService billingGoodsService;
 
     @Override
     public RpcResult<List<OrderDTO>> list() {
-        List<OrderDTO> list = billingOrderService.findAll().stream().map(e -> {
-                    var d = OrderDTO.builder().id(e.id).no(e.getNo()).name(e.getName()) //
-                            .build();
-                    return d;
-                }
-        ).toList();
+        List<OrderDTO> list = billingOrderService.findAll().stream()
+                .map(e -> {
+//goods
+                            var goods = billingGoodsService.findByOrderId(e.id).stream()
+                                    .map(g -> GoodsDTO.builder().no(g.getNo()).name(g.getName()).build())
+                                    .toList();
+//order
+                            return OrderDTO.builder().id(e.id).no(e.getNo()).name(e.getName())
+                                    .goods(goods).build();
+                        }
+
+                ).toList();
         return RpcResult.success(list);
     }
 }
