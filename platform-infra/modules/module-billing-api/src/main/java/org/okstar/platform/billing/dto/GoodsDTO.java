@@ -16,14 +16,17 @@ package org.okstar.platform.billing.dto;
 import lombok.Builder;
 import lombok.Data;
 
-import java.util.List;
-
-
 @Data
 @Builder
-public class OrderDTO {
-    private Long id;
-    private String no;
+public class GoodsDTO {
+    /**
+     * 商品名称
+     */
     private String name;
-    private List<GoodsDTO> goods;
+
+    /**
+     * 商品编号
+     */
+    private String no;
+
 }
