@@ -25,6 +25,8 @@ import java.util.List;
 public interface BillingOrderRpc {
 
 
+    RpcResult<OrderDTO> get(Long id);
+
     @GET
     @Path("list")
     RpcResult<List<OrderDTO>> list();
