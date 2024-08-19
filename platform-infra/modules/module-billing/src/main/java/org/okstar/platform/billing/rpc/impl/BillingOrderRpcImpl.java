@@ -21,6 +21,7 @@ import org.okstar.platform.billing.dto.OrderDTO;
 import org.okstar.platform.billing.order.service.BillingGoodsService;
 import org.okstar.platform.billing.order.service.BillingOrderService;
 import org.okstar.platform.billing.rpc.BillingOrderRpc;
+import org.okstar.platform.common.asserts.OkAssert;
 import org.okstar.platform.common.rpc.RpcResult;
 
 import java.util.List;
@@ -34,15 +35,32 @@ public class BillingOrderRpcImpl implements BillingOrderRpc {
     @Inject
     BillingGoodsService billingGoodsService;
 
+
+    @Override
+    public RpcResult<OrderDTO> get(Long id) {
+        var order = billingOrderService.get(id);
+        OkAssert.notNull(order, "order is null");
+
+        //goods
+        var goods = billingGoodsService.findByOrderId(order.id).stream()
+                .map(g -> GoodsDTO.builder().no(g.getNo()).name(g.getName()).build())
+                .toList();
+        // order
+        var goodsDTO = OrderDTO.builder().id(order.id).no(order.getNo()).name(order.getName())
+                .goods(goods).build();
+
+        return RpcResult.success(goodsDTO);
+    }
+
     @Override
     public RpcResult<List<OrderDTO>> list() {
         List<OrderDTO> list = billingOrderService.findAll().stream()
                 .map(e -> {
-//goods
+                            //goods
                             var goods = billingGoodsService.findByOrderId(e.id).stream()
                                     .map(g -> GoodsDTO.builder().no(g.getNo()).name(g.getName()).build())
                                     .toList();
-//order
+                            //order
                             return OrderDTO.builder().id(e.id).no(e.getNo()).name(e.getName())
                                     .goods(goods).build();
                         }
