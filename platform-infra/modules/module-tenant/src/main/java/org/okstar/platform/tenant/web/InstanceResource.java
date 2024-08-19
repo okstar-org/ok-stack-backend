@@ -19,12 +19,15 @@ import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
 import org.okstar.platform.common.core.web.bean.Res;
 import org.okstar.platform.common.resource.OkCommonResource;
+import org.okstar.platform.tenant.dto.AppDTO;
 import org.okstar.platform.tenant.dto.InstanceCreateDTO;
+import org.okstar.platform.tenant.dto.OrderDTO;
 import org.okstar.platform.tenant.dto.TenantDTO;
 import org.okstar.platform.tenant.entity.TenantEntity;
 import org.okstar.platform.tenant.manager.InstanceManager;
 import org.okstar.platform.tenant.service.TenantService;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Path("instance")
@@ -41,15 +44,41 @@ public class InstanceResource extends OkCommonResource {
         return Res.ok(id);
     }
 
+    /**
+     * 租户列表
+     * @return Res<List<TenantDTO>>
+     */
     @GET
     @Path("tenants")
-    public Res<List<TenantDTO>> tenants(InstanceCreateDTO tenant) {
+    public Res<List<TenantDTO>> tenants() {
         List<TenantEntity> all = tenantService.findAll();
         List<TenantDTO> list = all.stream().map(e -> //
                         TenantDTO.builder()
                                 .name(e.getName()).id(e.id)
                                 .build())//
                 .toList();
+        return Res.ok(list);
+    }
+
+    /**
+     * 订单列表
+     */
+    @GET
+    @Path("orders")
+    public Res<List<OrderDTO>> orders(){
+        //TODO: 暂时返回固定值
+        List<OrderDTO> list = new ArrayList<>();
+        return Res.ok(list);
+    }
+
+    /**
+     * 订单列表
+     */
+    @GET
+    @Path("apps")
+    public Res<List<AppDTO>> apps(){
+        //TODO: 暂时返回固定值
+        List<AppDTO> list = new ArrayList<>();
         return Res.ok(list);
     }
 }
