@@ -14,7 +14,6 @@
 package org.okstar.platform.billing.order.domain;
 
 import jakarta.persistence.Entity;
-import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 import org.okstar.cloud.defines.PayDefines;
@@ -55,6 +54,7 @@ public class BillingOrder extends OkEntity implements SyncEntity {
     /** 到期时间 */
     private Date expire;
 
+    /** 是否过期 */
     private Boolean isExpired;
 
     /** 支付方式名称 */

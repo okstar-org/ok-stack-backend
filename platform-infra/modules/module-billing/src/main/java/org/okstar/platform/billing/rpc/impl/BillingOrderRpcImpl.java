@@ -32,7 +32,12 @@ public class BillingOrderRpcImpl implements BillingOrderRpc {
 
     @Override
     public RpcResult<List<OrderDTO>> list() {
-        List<OrderDTO> list = billingOrderService.findAll().stream().map(e -> OrderDTO.builder().id(e.id).no(e.getNo()).name(e.getName()).build()).toList();
+        List<OrderDTO> list = billingOrderService.findAll().stream().map(e -> {
+                    var d = OrderDTO.builder().id(e.id).no(e.getNo()).name(e.getName()) //
+                            .build();
+                    return d;
+                }
+        ).toList();
         return RpcResult.success(list);
     }
 }
