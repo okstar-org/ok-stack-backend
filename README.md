@@ -1,11 +1,16 @@
 <h1 align="center">👑 OkStack 👑</h1>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/build-passing-brightgreen.svg">
   <img src="https://img.shields.io/badge/platform-Windows%20|%20Linux%20|%20Web-brightgreen.svg">
   <img src="https://img.shields.io/badge/license-MulanPubL%202.0-blue.svg">
   <img src="https://img.shields.io/badge/JDK-17-blue.svg">
-  <img src="https://img.shields.io/badge/Quarkus-2.16.x-blue.svg">
+  <img src="https://img.shields.io/badge/Quarkus-blue.svg">
+<a href="https://github.com/okstar-org/ok-stack-backend/actions">
+  <img src="https://github.com/okstar-org/ok-stack-backend/actions/workflows/ubuntu-22.04.yml/badge.svg">
+</a>
+<a href="https://github.com/okstar-org/ok-stack-backend/releases">
+    <img src="https://img.shields.io/docker/pulls/okstarorg/ok-stack-backend?color=4591df&style=for-the-badge">
+</a>
 </p>
 
 # 🎁 项目介绍
