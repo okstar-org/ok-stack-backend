@@ -20,11 +20,9 @@ import io.vertx.core.http.HttpServerRequest;
 import io.vertx.core.http.HttpServerResponse;
 import io.vertx.ext.web.RoutingContext;
 import jakarta.inject.Inject;
+import jakarta.ws.rs.core.Context;
 import org.okstar.platform.common.core.defined.SystemDefines;
 
-import jakarta.ws.rs.core.Context;
-
-import java.io.IOException;
 import java.io.InputStream;
 
 public class OkCommonResource {
@@ -47,8 +45,8 @@ public class OkCommonResource {
     protected JsonNode gitVersion() {
         try (InputStream stream = getClass().getResourceAsStream(GIT_PROPERTIES)) {
             return objectMapper.readTree(stream);
-        } catch (IOException e) {
-            Log.warnf(e, "Read git: %s", GIT_PROPERTIES);
+        } catch (Exception e) {
+            Log.warnf("Read git: %s", GIT_PROPERTIES);
             return null;
         }
 

@@ -139,6 +139,11 @@ public class SysProfileServiceImpl implements SysProfileService {
     }
 
     @Override
+    public SysProfile get(String uuid) {
+        return mapper.find("uuid", uuid).firstResult();
+    }
+
+    @Override
     public SysProfile loadByUsername(String username) {
         SysAccount account = accountService.loadByUsername(username);
         OkAssert.notNull(account, "Invalid username");

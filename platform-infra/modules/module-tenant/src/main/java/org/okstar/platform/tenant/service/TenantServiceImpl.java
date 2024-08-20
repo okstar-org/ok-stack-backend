@@ -67,6 +67,11 @@ public class TenantServiceImpl implements TenantService {
         tenantMapper.delete(tenantEntity);
     }
 
+    @Override
+    public TenantEntity get(String uuid) {
+        return tenantMapper.find("uuid", uuid).firstResult();
+    }
+
     private static void check(TenantEntity tenant) {
         OkAssert.isTrue(OkStringUtil.isNotEmpty(tenant.getNo()), "no is empty");
         OkAssert.isTrue(OkStringUtil.isNotEmpty(tenant.getName()), "name is empty");

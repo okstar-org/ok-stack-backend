@@ -32,6 +32,6 @@ public interface WorkAppRpc {
     RpcResult<List<AppDTO>> list();
 
     @GET
-    @Path("meta/{id}")
-    RpcResult<AppMetaDTO> meta(@PathParam("id") Long id);
+    @Path("{uuid}/meta")
+    RpcResult<AppMetaDTO> meta(@PathParam("uuid") String uuid);
 }

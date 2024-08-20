@@ -17,8 +17,6 @@ import io.quarkus.panache.common.Sort;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
-import org.eclipse.microprofile.rest.client.inject.RestClient;
-import org.okstar.platform.billing.rpc.BillingOrderRpc;
 import org.okstar.platform.common.core.web.page.OkPageResult;
 import org.okstar.platform.common.core.web.page.OkPageable;
 import org.okstar.platform.tenant.entity.InstanceEntity;
@@ -64,6 +62,11 @@ public class InstanceServiceImpl implements InstanceService {
     @Override
     public void delete(InstanceEntity metaEntity) {
         instanceMapper.delete(metaEntity);
+    }
+
+    @Override
+    public InstanceEntity get(String uuid) {
+        return instanceMapper.find("uuid", uuid).firstResult();
     }
 
 }

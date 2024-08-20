@@ -92,6 +92,11 @@ public class BillingOrderServiceImpl implements BillingOrderService {
         orderMapper.delete(billingOrder);
     }
 
+    @Override
+    public BillingOrder get(String uuid) {
+        return orderMapper.find("uuid", uuid).firstResult();
+    }
+
     /**
      * 保存订单
      */

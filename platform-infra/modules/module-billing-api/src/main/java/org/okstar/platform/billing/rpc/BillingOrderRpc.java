@@ -14,6 +14,7 @@ package org.okstar.platform.billing.rpc;
 
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;
+import jakarta.ws.rs.PathParam;
 import org.eclipse.microprofile.rest.client.inject.RegisterRestClient;
 import org.okstar.platform.billing.dto.OrderDTO;
 import org.okstar.platform.common.rpc.RpcResult;
@@ -25,7 +26,9 @@ import java.util.List;
 public interface BillingOrderRpc {
 
 
-    RpcResult<OrderDTO> get(Long id);
+    @GET
+    @Path("get/{id}")
+    RpcResult<OrderDTO> get(@PathParam("id") Long id);
 
     @GET
     @Path("list")

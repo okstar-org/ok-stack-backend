@@ -45,14 +45,14 @@ public class WorkAppResource extends OkCommonResource {
     }
 
     @GET
-    @Path("{id}")
-    public Res<AppEntity> get(@PathParam("id") Long id) {
-        return Res.ok(workAppService.get(id));
+    @Path("{uuid}")
+    public Res<AppEntity> get(@PathParam("uuid") String uuid) {
+        return Res.ok(workAppService.get(uuid));
     }
 
     @GET
-    @Path("/detail/{id}")
-    public Res<AppDetailEntity> detail(@PathParam("id") Long id) {
-        return Res.ok(workAppService.detail(id));
+    @Path("/detail/{uuid}")
+    public Res<AppDetailEntity> detail(@PathParam("uuid") String uuid) {
+        return Res.ok(workAppService.detail(uuid));
     }
 }

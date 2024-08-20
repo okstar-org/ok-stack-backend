@@ -56,4 +56,11 @@ public interface OkJpaService<T extends OkEntity> extends OkService {
     void deleteById(Long id);
 
     void delete(T t);
+
+    /**
+     * find by uuid
+     * @param uuid
+     * @return T
+     */
+    T get(String uuid);
 }

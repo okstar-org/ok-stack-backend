@@ -72,6 +72,11 @@ public class OrgServiceImpl implements OrgService {
     }
 
     @Override
+    public Org get(String uuid) {
+        return orgMapper.find("uuid", uuid).firstResult();
+    }
+
+    @Override
     public Org loadCurrent() {
         List<Org> all = findAll();
         if (all.isEmpty()) {

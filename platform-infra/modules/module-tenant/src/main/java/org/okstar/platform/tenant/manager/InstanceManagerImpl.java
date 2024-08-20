@@ -29,6 +29,7 @@ import org.okstar.platform.tenant.defines.TenantDefined;
 import org.okstar.platform.tenant.dto.InstanceCreateDTO;
 import org.okstar.platform.tenant.entity.InstanceEntity;
 import org.okstar.platform.tenant.service.InstanceService;
+import org.okstar.platform.work.dto.AppMetaDTO;
 import org.okstar.platform.work.rpc.WorkAppRpc;
 
 import java.util.concurrent.ExecutorService;
@@ -53,7 +54,10 @@ public class InstanceManagerImpl implements InstanceManager {
         Log.infof("Create tenant: %s", createDTO);
 
         var orderDTO = RpcAssert.isTrue(billingOrderRpc.get(createDTO.getOrderId()));
+        Log.infof("order: %s", orderDTO);
 
+        AppMetaDTO meta = RpcAssert.isTrue(workAppRpc.meta(createDTO.getAppId()));
+        Log.infof("meta: %s", meta);
 
         InstanceEntity instanceEntity = new InstanceEntity();
         instanceEntity.setTenantId(createDTO.getTenantId());

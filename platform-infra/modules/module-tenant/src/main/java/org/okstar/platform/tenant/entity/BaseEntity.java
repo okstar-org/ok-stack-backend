@@ -26,8 +26,6 @@ import org.okstar.platform.common.datasource.domain.OkEntity;
 @MappedSuperclass
 public class BaseEntity extends OkEntity {
 
-    private String uuid;
-
     private Boolean disabled;
 
     public Boolean getDisabled() {

@@ -124,6 +124,11 @@ public class OrgStaffServiceImpl implements OrgStaffService {
     }
 
     @Override
+    public OrgStaff get(String uuid) {
+        return orgStaffMapper.find("uuid", uuid).firstResult();
+    }
+
+    @Override
     public List<OrgStaff> children(Long deptId) {
         //获取部门下面的岗位
         var posIds = orgPostService.findByDept(deptId)//

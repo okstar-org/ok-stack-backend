@@ -57,6 +57,12 @@ public class SysUserRoleServiceImpl implements SysUserRoleService {
     public void delete(OrgRbacUserRole orgRbacUserRole) {
         userRoleRepository.delete(orgRbacUserRole);
     }
+
+    @Override
+    public OrgRbacUserRole get(String uuid) {
+        return userRoleRepository.find("uuid", uuid).firstResult();
+    }
+
     /**
      * 通过角色ID查询角色使用数量
      *

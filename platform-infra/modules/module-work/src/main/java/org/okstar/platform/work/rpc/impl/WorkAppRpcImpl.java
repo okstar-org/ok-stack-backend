@@ -36,14 +36,14 @@ public class WorkAppRpcImpl implements WorkAppRpc {
     public RpcResult<List<AppDTO>> list() {
         AppEntities entities = workAppService.page(OkPageable.builder().pageIndex(0).pageSize(100).build());
         List<AppDTO> list = entities.getList().stream().map(e -> AppDTO.builder()
-                .id(e.getId()).no(e.getNo())
+                .uuid(  e.getUuid()).no(e.getNo())
                 .name(e.getName()).build()).toList();
         return RpcResult.success(list);
     }
 
     @Override
-    public RpcResult<AppMetaDTO> meta(Long id) {
-        AppMetaEntity meta =  workAppService.getMeta(id);
+    public RpcResult<AppMetaDTO> meta(String uuid) {
+        AppMetaEntity meta =  workAppService.getMeta(uuid);
         return RpcResult.success(AppMetaDTO.builder()
                 .appId(meta.getAppId()).runOn(meta.getRunOn())
                 .build());

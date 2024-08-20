@@ -11,15 +11,27 @@
  * /
  */
 
-package org.okstar.platform.work.dto;
+package org.okstar.platform.tenant.entity;
 
-import lombok.Builder;
-import lombok.Data;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.MappedSuperclass;
+import lombok.Getter;
+import lombok.Setter;
+import org.okstar.platform.tenant.defines.TenantDefined;
 
-@Data
-@Builder
-public class AppDTO {
-    private String uuid;
-    private String no;
-    private String name;
+/**
+ * 可运行实体
+ */
+@Getter
+@Setter
+@MappedSuperclass
+public abstract class RunnableEntity extends BaseEntity {
+
+    /**
+     * 状态
+     */
+    @Enumerated(EnumType.STRING)
+    private TenantDefined.TenantStatus status;
+
 }

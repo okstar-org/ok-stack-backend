@@ -25,8 +25,10 @@ import lombok.Setter;
 @Setter
 @Getter
 @Entity
-public class InstanceEntity extends BaseEntity{
-
+public class InstanceEntity extends RunnableEntity{
+    /**
+     * 编号
+     */
     private String no;
 
     /**
@@ -36,9 +38,8 @@ public class InstanceEntity extends BaseEntity{
 
     /**
      * 应用ID
-     * @see org.okstar.cloud.entity.AppEntity
      */
-    private Long appId;
+    private String appId;
 
     /**
      * 订单编号

@@ -19,4 +19,8 @@ import org.okstar.platform.tenant.dto.InstanceCreateDTO;
 
 public interface InstanceManager {
     Long create(InstanceCreateDTO createDTO, SysAccount0 account);
+
+    void start(Long id);
+
+    void stop(Long id);
 }
