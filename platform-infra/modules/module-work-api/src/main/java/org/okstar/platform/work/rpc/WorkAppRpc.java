@@ -15,9 +15,11 @@ package org.okstar.platform.work.rpc;
 
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;
+import jakarta.ws.rs.PathParam;
 import org.eclipse.microprofile.rest.client.inject.RegisterRestClient;
 import org.okstar.platform.common.rpc.RpcResult;
 import org.okstar.platform.work.dto.AppDTO;
+import org.okstar.platform.work.dto.AppMetaDTO;
 
 import java.util.List;
 
@@ -28,4 +30,8 @@ public interface WorkAppRpc {
     @GET
     @Path("list")
     RpcResult<List<AppDTO>> list();
+
+    @GET
+    @Path("meta/{id}")
+    RpcResult<AppMetaDTO> meta(@PathParam("id") Long id);
 }
