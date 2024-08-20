@@ -1,11 +1,16 @@
 <h1 align="center">👑 OkStack 👑</h1>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/build-passing-brightgreen.svg">
   <img src="https://img.shields.io/badge/platform-Windows%20|%20Linux%20|%20Web-brightgreen.svg">
   <img src="https://img.shields.io/badge/license-MulanPubL%202.0-blue.svg">
   <img src="https://img.shields.io/badge/JDK-17-blue.svg">
-  <img src="https://img.shields.io/badge/Quarkus-2.16.x-blue.svg">
+  <img src="https://img.shields.io/badge/Quarkus-blue.svg">
+<a href="https://github.com/okstar-org/ok-stack-backend/actions">
+  <img src="https://github.com/okstar-org/ok-stack-backend/actions/workflows/ubuntu-22.04.yml/badge.svg">
+</a>
+<a href="https://github.com/okstar-org/ok-stack-backend/releases">
+    <img src="https://img.shields.io/docker/pulls/okstarorg/ok-stack-backend?color=4591df&style=for-the-badge">
+</a>
 </p>
 
 # 🎁 项目介绍
@@ -20,15 +25,15 @@
 
 # 🏢 软件架构
 
-![架构图](./docs/assets/OkMSG-arch.png "架构图")
+<img src="https://github.com/okstar-org/ok-msg-desktop/blob/main/docs/assets/ok-msg-architecture-diagram.png">
 
 # 🖼️ 界面展示
 - 规划中
 
 # ⛽ 第三方库
-- Eclipse MicroProfile 微服务规范
-- Quarkus 2.16.x
-- Hibernate 5.x
+- Eclipse MicroProfile
+- Quarkus
+- Hibernate
 - Vert.x
 - RESTEasy
 - Netty
@@ -79,8 +84,8 @@
 </div>
 
 # 🙏 感谢支持
-- 感谢配合测试的同学，有赵慧、戴斌、沈雪琪等
-- [感谢 JetBrains 对本项目的支持（Drive by JetBrains）](https://jb.gg/OpenSourceSupport) <img width="64" src="https://resources.jetbrains.com/storage/products/company/brand/logos/jb_beam.svg?_ga=2.83044246.1221182059.1672752920-1856866598.1665301971&_gl=1*3fzoi7*_ga*MTg1Njg2NjU5OC4xNjY1MzAxOTcx*_ga_9J976DJZ68*MTY3Mjc1MjkyMC40LjEuMTY3Mjc1NDM0Ni4wLjAuMA">
+- [Contributors](https://github.com/okstar-org/ok-stack-backend/graphs/contributors)
+- [Drive by JetBrains](https://jb.gg/OpenSourceSupport) <img width="64" src="https://resources.jetbrains.com/storage/products/company/brand/logos/jb_beam.svg?_ga=2.83044246.1221182059.1672752920-1856866598.1665301971&_gl=1*3fzoi7*_ga*MTg1Njg2NjU5OC4xNjY1MzAxOTcx*_ga_9J976DJZ68*MTY3Mjc1MjkyMC40LjEuMTY3Mjc1NDM0Ni4wLjAuMA">
 
 # ❤️ 捐赠方式
 
