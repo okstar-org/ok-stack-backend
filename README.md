@@ -25,15 +25,15 @@
 
 # 🏢 软件架构
 
-![架构图](./docs/assets/OkMSG-arch.png "架构图")
+<img src="https://github.com/okstar-org/ok-msg-desktop/blob/main/docs/assets/ok-msg-architecture-diagram.png">
 
 # 🖼️ 界面展示
 - 规划中
 
 # ⛽ 第三方库
-- Eclipse MicroProfile 微服务规范
-- Quarkus 2.16.x
-- Hibernate 5.x
+- Eclipse MicroProfile
+- Quarkus
+- Hibernate
 - Vert.x
 - RESTEasy
 - Netty
