@@ -16,9 +16,11 @@ package org.okstar.platform.work.rpc.impl;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import org.okstar.cloud.entity.AppEntities;
+import org.okstar.cloud.entity.AppMetaEntity;
 import org.okstar.platform.common.core.web.page.OkPageable;
 import org.okstar.platform.common.rpc.RpcResult;
 import org.okstar.platform.work.dto.AppDTO;
+import org.okstar.platform.work.dto.AppMetaDTO;
 import org.okstar.platform.work.rpc.WorkAppRpc;
 import org.okstar.platform.work.service.WorkAppService;
 
@@ -38,5 +40,13 @@ public class WorkAppRpcImpl implements WorkAppRpc {
                 .id(e.getId()).no(e.getNo())
                 .name(e.getName()).build()).toList();
         return RpcResult.success(list);
+    }
+
+    @Override
+    public RpcResult<AppMetaDTO> meta(Long id) {
+        AppMetaEntity meta =  workAppService.getMeta(id);
+        return RpcResult.success(AppMetaDTO.builder()
+                .appId(meta.getAppId()).runOn(meta.getRunOn())
+                .build());
     }
 }

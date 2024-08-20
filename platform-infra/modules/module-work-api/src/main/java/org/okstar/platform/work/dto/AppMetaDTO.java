@@ -11,21 +11,22 @@
  * /
  */
 
-package org.okstar.platform.work.service;
+package org.okstar.platform.work.dto;
 
-import jakarta.ws.rs.PathParam;
-import org.okstar.cloud.entity.AppDetailEntity;
-import org.okstar.cloud.entity.AppEntities;
-import org.okstar.cloud.entity.AppEntity;
+import lombok.Builder;
+import lombok.Data;
 import org.okstar.cloud.entity.AppMetaEntity;
-import org.okstar.platform.common.core.web.page.OkPageable;
 
-public interface WorkAppService {
-    AppEntities page(OkPageable pageable);
+@Data
+@Builder
+public class AppMetaDTO {
 
-    AppEntity get(@PathParam("id") Long id);
+    private Long appId;
 
-    AppDetailEntity detail(@PathParam("id") Long id);
+    @Data
+    public static class RunOn {
+        String yaml;
+    }
 
-    AppMetaEntity getMeta(Long id);
+    private AppMetaEntity.RunOn runOn;
 }

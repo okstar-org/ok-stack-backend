@@ -13,17 +13,18 @@
 
 package org.okstar.platform.org.domain;
 
-import lombok.Data;
-import org.okstar.platform.common.datasource.domain.OkEntity;
-
 import jakarta.persistence.MappedSuperclass;
+import lombok.Getter;
+import lombok.Setter;
+import org.okstar.platform.common.datasource.domain.OkEntity;
 
 /**
  * Entity基类
  * 
  * 
  */
-@Data
+@Getter
+@Setter
 @MappedSuperclass
 public class BaseEntity extends OkEntity
 {

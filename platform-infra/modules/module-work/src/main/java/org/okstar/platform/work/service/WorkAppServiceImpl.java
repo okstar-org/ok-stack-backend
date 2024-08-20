@@ -16,10 +16,7 @@ package org.okstar.platform.work.service;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.ws.rs.PathParam;
 import org.okstar.cloud.OkCloudApiClient;
-import org.okstar.cloud.entity.AppDetailEntity;
-import org.okstar.cloud.entity.AppEntities;
-import org.okstar.cloud.entity.AppEntity;
-import org.okstar.cloud.entity.AuthenticationToken;
+import org.okstar.cloud.entity.*;
 import org.okstar.platform.common.core.defined.OkCloudDefines;
 import org.okstar.platform.common.core.web.page.OkPageable;
 
@@ -46,5 +43,10 @@ public class WorkAppServiceImpl implements WorkAppService {
     @Override
     public AppDetailEntity detail(@PathParam("id") Long id) {
         return client.getAppChannel().getDetail(id);
+    }
+
+    @Override
+    public AppMetaEntity getMeta(Long id) {
+        return client.getAppChannel().getMeta(id);
     }
 }
