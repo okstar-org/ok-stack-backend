@@ -13,9 +13,15 @@
 
 package org.okstar.platform.tenant.os;
 
+import de.gesellix.docker.compose.ComposeFileReader;
+import io.quarkus.logging.Log;
 import io.quarkus.test.junit.QuarkusTest;
 import jakarta.inject.Inject;
 import org.junit.jupiter.api.Test;
+
+import java.io.ByteArrayInputStream;
+import java.util.HashMap;
+import java.util.Map;
 
 @QuarkusTest
 class DockerServiceImplTest {
@@ -28,8 +34,17 @@ class DockerServiceImplTest {
 
     @Test
     void startContainer() {
-
         String id="f8969f164d7c476a051fdfa4925ad159c82edbcf58750090e0cbba454dad00ab";
         dockerService.startContainer(id);
+    }
+
+    @Test
+    public void parseDockerCompose( ){
+//        int localPort = PortFinder.findAvailablePort();
+        String dc = "services:\n   appsmith:\n     image: index.docker.io/appsmith/appsmith-ce\n     container_name: appsmith\n     ports:\n         - 180:80\n         - 1443:443\n     volumes:\n         - ./stacks:/appsmith-stacks\n     restart: unless-stopped\n";
+        ComposeFileReader composeFileReader = new ComposeFileReader();
+        HashMap<String, Map<String, Map<String, Object>>> map
+                = composeFileReader.loadYaml(new ByteArrayInputStream(dc.getBytes()));
+        Log.infof("map=%s", map);
     }
 }

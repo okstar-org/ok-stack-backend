@@ -13,18 +13,11 @@
 
 package org.okstar.platform.work.dto;
 
-import lombok.Builder;
-import lombok.Data;
-
-@Data
-@Builder
-public class AppMetaDTO {
-
-    private String uuid;
-
-    private RunModality runModality;
-
-    private String runOn;
-
-    private String appUuid;
+/**
+ * 运行形态
+ */
+public enum RunModality {
+    //Docker compose
+    DockerCompose,
+    Url,
 }

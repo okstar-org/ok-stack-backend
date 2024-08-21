@@ -27,4 +27,9 @@ public interface DockerService {
     void startContainer(String containerId);
 
     void stopContainer(String containerId);
+
+    boolean up(String yml);
+
+
+    boolean down(String yml);
 }

@@ -18,7 +18,8 @@ import org.okstar.platform.common.core.constant.Constants;
 import java.net.Inet4Address;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
-import java.util.Objects;
+import java.security.SecureRandom;
+import java.util.Random;
 import java.util.regex.Pattern;
 
 /**
@@ -77,6 +78,25 @@ public class OkStringUtil extends org.apache.commons.lang3.StringUtils {
             }
         }
         return true;
+    }
+
+    static String characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+    public static String makeSecureRandom(int length) {
+        StringBuilder sb = new StringBuilder(length);
+        SecureRandom random = new SecureRandom();
+        for (int i = 0; i < length; i++) {
+            sb.append(characters.charAt(random.nextInt(characters.length())));
+        }
+        return sb.toString();
+    }
+
+    public static String makeRandom(int length) {
+        StringBuilder sb = new StringBuilder(length);
+        Random random = new Random();
+        for (int i = 0; i < length; i++) {
+            sb.append(characters.charAt(random.nextInt(characters.length())));
+        }
+        return sb.toString();
     }
 
     /**
@@ -226,8 +246,7 @@ public class OkStringUtil extends org.apache.commons.lang3.StringUtils {
             //其他都加空格
             fmt = "%s %s";
         }
-        return fmt.formatted(Objects.requireNonNullElse(firstName, ""),
-                Objects.requireNonNullElse(lastName, ""));
+        return fmt.formatted(firstName, lastName);
     }
 
 

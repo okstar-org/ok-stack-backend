@@ -16,6 +16,7 @@ package org.okstar.platform.tenant.web;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.POST;
+import jakarta.ws.rs.PUT;
 import jakarta.ws.rs.Path;
 import org.eclipse.microprofile.rest.client.inject.RestClient;
 import org.okstar.platform.billing.dto.OrderDTO;
@@ -50,6 +51,35 @@ public class InstanceResource extends BaseResource {
     @Inject
     @RestClient
     BillingOrderRpc billingOrderRpc;
+
+
+    @PUT
+    @Path("start")
+    public Res<Boolean> start(Long id) {
+        instanceManager.start(id);
+        return Res.ok(true);
+    }
+
+    @PUT
+    @Path("stop")
+    public Res<Boolean> stop(Long id) {
+        instanceManager.stop(id);
+        return Res.ok(true);
+    }
+
+    @PUT
+    @Path("disable")
+    public Res<Boolean> disable(Long id) {
+        tenantService.disable(id);
+        return Res.ok(true);
+    }
+
+    @PUT
+    @Path("enable")
+    public Res<Boolean> enable(Long id) {
+        tenantService.enable(id);
+        return Res.ok(true);
+    }
 
     @POST
     @Path("page")

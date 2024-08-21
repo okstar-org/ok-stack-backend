@@ -15,7 +15,6 @@ package org.okstar.platform.tenant.task;
 
 import com.github.dockerjava.api.model.Container;
 import io.quarkus.logging.Log;
-import io.quarkus.scheduler.Scheduled;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
@@ -28,10 +27,8 @@ import org.okstar.platform.tenant.entity.TenantEntity;
 import org.okstar.platform.tenant.os.DockerService;
 import org.okstar.platform.tenant.repo.MetaDocMapper;
 import org.okstar.platform.tenant.service.TenantService;
-import org.okstar.platform.tenant.utils.TenantUtil;
 
 import java.util.List;
-import java.util.concurrent.ExecutorService;
 
 @ApplicationScoped
 public class TenantTask {
@@ -42,20 +39,20 @@ public class TenantTask {
     DockerService dockerService;
     @Inject
     MetaDocMapper metaService;
-    @Inject
-    TenantUtil tenantUtil;
-    @Inject
-    ExecutorService executorService;
+//    @Inject
+//    TenantUtil tenantUtil;
+//    @Inject
+//    ExecutorService executorService;
 
-
-    @Scheduled(every = "1m")
-    public void statusSyncTask() {
-        executorService.execute(() -> {
-            for (TenantEntity tenant : tenantService.findAll()) {
-                statusSync(tenant.id);
-            }
-        });
-    }
+//
+//    @Scheduled(every = "1m")
+//    public void statusSyncTask() {
+//        executorService.execute(() -> {
+//            for (TenantEntity tenant : tenantService.findAll()) {
+//                statusSync(tenant.id);
+//            }
+//        });
+//    }
 
     /**
      * 状态同步

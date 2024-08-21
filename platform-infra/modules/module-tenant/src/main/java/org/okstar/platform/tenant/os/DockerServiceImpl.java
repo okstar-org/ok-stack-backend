@@ -24,6 +24,9 @@ import com.github.dockerjava.core.DockerClientImpl;
 import com.github.dockerjava.core.RemoteApiVersion;
 import com.github.dockerjava.httpclient5.ApacheDockerHttpClient;
 import com.github.dockerjava.transport.DockerHttpClient;
+import com.google.common.io.Files;
+import com.obsidiandynamics.dockercompose.DockerCompose;
+import de.gesellix.docker.compose.ComposeFileReader;
 import io.quarkus.logging.Log;
 import io.quarkus.runtime.Startup;
 import io.quarkus.runtime.StartupEvent;
@@ -32,7 +35,13 @@ import jakarta.enterprise.event.Observes;
 import lombok.SneakyThrows;
 import org.okstar.platform.common.string.OkStringUtil;
 
+import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.time.Duration;
+import java.util.HashMap;
+import java.util.Map;
 
 @Startup
 @ApplicationScoped
@@ -65,11 +74,11 @@ public class DockerServiceImpl implements DockerService {
 
     @Override
     public String findContainerByName(String name) {
-        DockerClient dockerClient = DockerClientImpl.getInstance(config,createClient());
+        DockerClient dockerClient = DockerClientImpl.getInstance(config, createClient());
         var attached = dockerClient.listContainersCmd();
         var response = attached.withShowAll(true).exec();
         for (Container c : response) {
-            if (OkStringUtil.containsAny("/"+name, c.getNames())) {
+            if (OkStringUtil.containsAny("/" + name, c.getNames())) {
                 return c.getId();
             }
         }
@@ -126,15 +135,67 @@ public class DockerServiceImpl implements DockerService {
     @Override
     public void stopContainer(String containerId) {
         Log.infof("Stopping container: %s", containerId);
-        DockerClient dockerClient = DockerClientImpl.getInstance(config, createClient());
         Container container = getContainer(containerId);
         if (container == null) {
             Log.warnf("container not found: %s", containerId);
             return;
         }
 
+        DockerClient dockerClient = DockerClientImpl.getInstance(config, createClient());
         StopContainerCmd stopped = dockerClient.stopContainerCmd(containerId);
         stopped.exec();
         Log.infof("Stopped container[%s]", containerId);
     }
+
+    @Override
+    public boolean up(String yml) {
+        Log.infof("Up docker-compose...");
+        try {
+            File ymlFile = makeYamlFile(yml);
+
+            DockerCompose compose = new DockerCompose();
+            compose.withComposeFile(ymlFile.toPath().toString());
+
+            compose.up();
+
+            Log.infof("Up docker-compose successfully");
+        } catch (Exception e) {
+            Log.errorf(e, "Unable to up the docker compose!");
+            return false;
+        }
+
+        return true;
+    }
+
+    @Override
+    public boolean down(String yml) {
+        Log.infof("Down docker-compose...");
+        try {
+
+            File ymlFile = makeYamlFile(yml);
+            DockerCompose compose = new DockerCompose();
+            compose.withComposeFile(ymlFile.toPath().toString());
+            compose.down(false);
+
+            Log.infof("Down docker-compose successfully");
+        } catch (Exception e) {
+            Log.errorf(e, "Unable to up the docker compose!");
+            return false;
+        }
+
+        return true;
+    }
+
+    private File makeYamlFile(String yml) throws IOException {
+        var ymlContent = yml.replace("\\n", "\n");
+
+        File ymlFile = File.createTempFile("docker-compose-" + OkStringUtil.makeRandom(10), ".yml");
+        Log.infof("docker-compose:%s", ymlFile.getAbsolutePath());
+
+        //写入文件
+        Files.write(ymlContent.getBytes(StandardCharsets.UTF_8), ymlFile);
+        return ymlFile;
+    }
+
+
 }

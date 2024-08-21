@@ -22,14 +22,15 @@ import jakarta.ws.rs.NotFoundException;
 import org.eclipse.microprofile.rest.client.inject.RestClient;
 import org.okstar.platform.billing.rpc.BillingOrderRpc;
 import org.okstar.platform.common.asserts.OkAssert;
-import org.okstar.platform.common.id.OkIdUtils;
 import org.okstar.platform.common.rpc.RpcAssert;
 import org.okstar.platform.system.vo.SysAccount0;
 import org.okstar.platform.tenant.defines.TenantDefined;
 import org.okstar.platform.tenant.dto.InstanceCreateDTO;
 import org.okstar.platform.tenant.entity.InstanceEntity;
+import org.okstar.platform.tenant.os.DockerService;
 import org.okstar.platform.tenant.service.InstanceService;
 import org.okstar.platform.work.dto.AppMetaDTO;
+import org.okstar.platform.work.dto.RunModality;
 import org.okstar.platform.work.rpc.WorkAppRpc;
 
 import java.util.concurrent.ExecutorService;
@@ -37,7 +38,8 @@ import java.util.concurrent.ExecutorService;
 @Transactional
 @ApplicationScoped
 public class InstanceManagerImpl implements InstanceManager {
-
+    @Inject
+    DockerService dockerService;
     @Inject
     InstanceService instanceService;
     @Inject
@@ -51,28 +53,28 @@ public class InstanceManagerImpl implements InstanceManager {
     @Override
     public Long create(InstanceCreateDTO createDTO, SysAccount0 account) {
 
-        Log.infof("Create tenant: %s", createDTO);
+        Log.infof("Create instance: %s", createDTO);
 
         var orderDTO = RpcAssert.isTrue(billingOrderRpc.get(createDTO.getOrderId()));
         Log.infof("order: %s", orderDTO);
 
-        AppMetaDTO meta = RpcAssert.isTrue(workAppRpc.meta(createDTO.getAppId()));
-        Log.infof("meta: %s", meta);
+        AppMetaDTO appMeta = RpcAssert.isTrue(workAppRpc.meta(createDTO.getAppId()));
+        Log.infof("meta: %s", appMeta);
 
         InstanceEntity instanceEntity = new InstanceEntity();
         instanceEntity.setTenantId(createDTO.getTenantId());
         instanceEntity.setAppId(createDTO.getAppId());
         instanceEntity.setOrderId(createDTO.getOrderId());
-        instanceEntity.setUuid(OkIdUtils.makeUuid());
         instanceEntity.setDisabled(false);
         instanceEntity.setName(orderDTO.getName());
+        instanceEntity.setStatus(TenantDefined.TenantStatus.Created);
         instanceService.create(instanceEntity, account.getId());
 
 
         //初始化实例环境
         ExecutorService executorService = Arc.container().getExecutorService();
         executorService.execute(() -> {
-            createInstance(instanceEntity.id);
+            createInstance(instanceEntity.id, appMeta);
         });
 
         return instanceEntity.id;
@@ -84,13 +86,13 @@ public class InstanceManagerImpl implements InstanceManager {
         if (entity == null) {
             throw new NotFoundException("不存在租户！");
         }
-//
-//        TenantMetaDoc metaDTO = metaDocMapper.getMetaDoc(entity.id);
-//        OkAssert.notNull(metaDTO, "没有资源元数据！");
-//        for (var db : metaDTO.getDbs()) {
-//            startContainer(db.getContainerId());
-//        }
 
+        AppMetaDTO appMeta = RpcAssert.isTrue(workAppRpc.meta(entity.getAppId()));
+        Log.infof("meta: %s", appMeta);
+        if (appMeta.getRunModality() == RunModality.DockerCompose) {
+            boolean up = dockerService.up(appMeta.getRunOn());
+            Log.infof("Up the instance=>%s", up);
+        }
         entity.setStatus(TenantDefined.TenantStatus.Started);
     }
 
@@ -106,12 +108,13 @@ public class InstanceManagerImpl implements InstanceManager {
             return;
         }
 //
-//        TenantMetaDoc metaDTO = metaDocMapper.getMetaDoc(entity.id);
-//        OkAssert.notNull(metaDTO, "没有资源元数据！");
-//
-//        for (var db : metaDTO.getDbs()) {
-//            stopContainer(db.getContainerId());
-//        }
+        AppMetaDTO appMeta = RpcAssert.isTrue(workAppRpc.meta(entity.getAppId()));
+        Log.infof("meta: %s", appMeta);
+        if (appMeta.getRunModality() == RunModality.DockerCompose) {
+            boolean up = dockerService.down(appMeta.getRunOn());
+            Log.infof("Down the instance=>%s", up);
+        }
+
         entity.setStatus(TenantDefined.TenantStatus.Stopped);
     }
 
@@ -119,11 +122,20 @@ public class InstanceManagerImpl implements InstanceManager {
      * 创建实例服务
      *
      * @param instanceId 实例ID
+     * @param appMeta
      */
-    private void createInstance(Long instanceId) {
+    private void createInstance(Long instanceId, AppMetaDTO appMeta) {
         InstanceEntity instance = instanceService.get(instanceId);
         OkAssert.notNull(instance, "实例信息不存在，无法创建服务！");
 
+        RunModality runModality = appMeta.getRunModality();
+        switch (runModality) {
+            case DockerCompose -> {
+                dockerService.up(appMeta.getRunOn());
+            }
+            case Url -> {
 
+            }
+        }
     }
 }

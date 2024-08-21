@@ -117,11 +117,11 @@ public class TenantManagerImpl implements TenantManager {
             throw new NotFoundException("不存在租户！");
         }
 
-        TenantMetaDoc metaDTO = metaDocMapper.getMetaDoc(entity.id);
-        OkAssert.notNull(metaDTO, "没有资源元数据！");
-        for (var db : metaDTO.getDbs()) {
-            startContainer(db.getContainerId());
-        }
+//        TenantMetaDoc metaDTO = metaDocMapper.getMetaDoc(entity.id);
+//        OkAssert.notNull(metaDTO, "没有资源元数据！");
+//        for (var db : metaDTO.getDbs()) {
+//            startContainer(db.getContainerId());
+//        }
 
         entity.setStatus(TenantDefined.TenantStatus.Started);
     }
