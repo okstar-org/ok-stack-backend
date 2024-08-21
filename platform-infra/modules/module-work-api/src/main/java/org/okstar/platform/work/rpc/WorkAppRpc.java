@@ -23,14 +23,15 @@ import org.okstar.platform.work.dto.AppMetaDTO;
 
 import java.util.List;
 
-@Path("rpc/WorkAppRpc")
 @RegisterRestClient
+@Path("rpc/WorkAppRpc")
 public interface WorkAppRpc {
+
     @GET
     @Path("list")
     RpcResult<List<AppDTO>> list();
 
     @GET
-    @Path("meta/{id}")
-    RpcResult<AppMetaDTO> meta(@PathParam("id") Long id);
+    @Path("{uuid}/meta")
+    RpcResult<AppMetaDTO> meta(@PathParam("uuid") String uuid);
 }

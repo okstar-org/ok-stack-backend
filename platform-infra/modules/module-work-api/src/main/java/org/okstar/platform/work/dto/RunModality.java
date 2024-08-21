@@ -13,13 +13,11 @@
 
 package org.okstar.platform.work.dto;
 
-import lombok.Builder;
-import lombok.Data;
-
-@Data
-@Builder
-public class AppDTO {
-    private String uuid;
-    private String no;
-    private String name;
+/**
+ * 运行形态
+ */
+public enum RunModality {
+    //Docker compose
+    DockerCompose,
+    Url,
 }

@@ -14,7 +14,6 @@
 package org.okstar.platform.work.service;
 
 import jakarta.enterprise.context.ApplicationScoped;
-import jakarta.ws.rs.PathParam;
 import org.okstar.cloud.OkCloudApiClient;
 import org.okstar.cloud.entity.*;
 import org.okstar.platform.common.core.defined.OkCloudDefines;
@@ -27,7 +26,8 @@ public class WorkAppServiceImpl implements WorkAppService {
 
     public WorkAppServiceImpl() {
         client = new OkCloudApiClient(OkCloudDefines.OK_CLOUD_API_STACK,
-                new AuthenticationToken(OkCloudDefines.OK_CLOUD_USERNAME, OkCloudDefines.OK_CLOUD_PASSWORD));
+                new AuthenticationToken(OkCloudDefines.OK_CLOUD_USERNAME,
+                        OkCloudDefines.OK_CLOUD_PASSWORD));
     }
 
     @Override
@@ -36,17 +36,17 @@ public class WorkAppServiceImpl implements WorkAppService {
     }
 
     @Override
-    public AppEntity get(@PathParam("id") Long id) {
-        return client.getAppChannel().getApp(id);
+    public AppEntity get(String uuid) {
+        return client.getAppChannel().getApp(uuid);
     }
 
     @Override
-    public AppDetailEntity detail(@PathParam("id") Long id) {
-        return client.getAppChannel().getDetail(id);
+    public AppDetailEntity detail(String uuid) {
+        return client.getAppChannel().getDetail(uuid);
     }
 
     @Override
-    public AppMetaEntity getMeta(Long id) {
-        return client.getAppChannel().getMeta(id);
+    public AppMetaEntity getMeta(String uuid) {
+        return client.getAppChannel().getMeta(uuid);
     }
 }

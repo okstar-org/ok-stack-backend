@@ -15,18 +15,16 @@ package org.okstar.platform.work.dto;
 
 import lombok.Builder;
 import lombok.Data;
-import org.okstar.cloud.entity.AppMetaEntity;
 
 @Data
 @Builder
 public class AppMetaDTO {
 
-    private Long appId;
+    private String uuid;
 
-    @Data
-    public static class RunOn {
-        String yaml;
-    }
+    private RunModality runModality;
 
-    private AppMetaEntity.RunOn runOn;
+    private String runOn;
+
+    private String appUuid;
 }

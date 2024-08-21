@@ -21,6 +21,7 @@ import org.okstar.platform.common.core.web.page.OkPageable;
 import org.okstar.platform.common.rpc.RpcResult;
 import org.okstar.platform.work.dto.AppDTO;
 import org.okstar.platform.work.dto.AppMetaDTO;
+import org.okstar.platform.work.dto.RunModality;
 import org.okstar.platform.work.rpc.WorkAppRpc;
 import org.okstar.platform.work.service.WorkAppService;
 
@@ -32,21 +33,23 @@ public class WorkAppRpcImpl implements WorkAppRpc {
     @Inject
     WorkAppService workAppService;
 
-    @Inject
     @Override
     public RpcResult<List<AppDTO>> list() {
         AppEntities entities = workAppService.page(OkPageable.builder().pageIndex(0).pageSize(100).build());
         List<AppDTO> list = entities.getList().stream().map(e -> AppDTO.builder()
-                .id(e.getId()).no(e.getNo())
+                .uuid(e.getUuid()).no(e.getNo())
                 .name(e.getName()).build()).toList();
         return RpcResult.success(list);
     }
 
     @Override
-    public RpcResult<AppMetaDTO> meta(Long id) {
-        AppMetaEntity meta =  workAppService.getMeta(id);
+    public RpcResult<AppMetaDTO> meta(String uuid) {
+        AppMetaEntity meta = workAppService.getMeta(uuid);
         return RpcResult.success(AppMetaDTO.builder()
-                .appId(meta.getAppId()).runOn(meta.getRunOn())
+                .appUuid(meta.getAppUuid())
+                .uuid(meta.getUuid())
+                .runOn(meta.getRunOn())
+                .runModality(RunModality.valueOf(meta.getRunModality().toString()))
                 .build());
     }
 }

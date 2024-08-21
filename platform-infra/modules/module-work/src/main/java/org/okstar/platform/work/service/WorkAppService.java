@@ -13,7 +13,6 @@
 
 package org.okstar.platform.work.service;
 
-import jakarta.ws.rs.PathParam;
 import org.okstar.cloud.entity.AppDetailEntity;
 import org.okstar.cloud.entity.AppEntities;
 import org.okstar.cloud.entity.AppEntity;
@@ -23,9 +22,9 @@ import org.okstar.platform.common.core.web.page.OkPageable;
 public interface WorkAppService {
     AppEntities page(OkPageable pageable);
 
-    AppEntity get(@PathParam("id") Long id);
+    AppEntity get(String uuid);
 
-    AppDetailEntity detail(@PathParam("id") Long id);
+    AppDetailEntity detail(String uuid);
 
-    AppMetaEntity getMeta(Long id);
+    AppMetaEntity getMeta(String uuid);
 }
