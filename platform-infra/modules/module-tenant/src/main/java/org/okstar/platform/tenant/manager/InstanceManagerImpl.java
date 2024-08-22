@@ -13,12 +13,14 @@
 
 package org.okstar.platform.tenant.manager;
 
-import io.quarkus.arc.Arc;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.quarkus.logging.Log;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 import jakarta.ws.rs.NotFoundException;
+import lombok.SneakyThrows;
 import org.eclipse.microprofile.rest.client.inject.RestClient;
 import org.okstar.platform.billing.rpc.BillingOrderRpc;
 import org.okstar.platform.common.asserts.OkAssert;
@@ -33,8 +35,6 @@ import org.okstar.platform.work.dto.AppMetaDTO;
 import org.okstar.platform.work.dto.RunModality;
 import org.okstar.platform.work.rpc.WorkAppRpc;
 
-import java.util.concurrent.ExecutorService;
-
 @Transactional
 @ApplicationScoped
 public class InstanceManagerImpl implements InstanceManager {
@@ -48,7 +48,8 @@ public class InstanceManagerImpl implements InstanceManager {
     @Inject
     @RestClient
     WorkAppRpc workAppRpc;
-
+    @Inject
+    ObjectMapper objectMapper;
 
     @Override
     public Long create(InstanceCreateDTO createDTO, SysAccount0 account) {
@@ -69,18 +70,11 @@ public class InstanceManagerImpl implements InstanceManager {
         instanceEntity.setName(orderDTO.getName());
         instanceEntity.setStatus(TenantDefined.TenantStatus.Created);
         instanceService.create(instanceEntity, account.getId());
-
-
-        //初始化实例环境
-        ExecutorService executorService = Arc.container().getExecutorService();
-        executorService.execute(() -> {
-            createInstance(instanceEntity.id, appMeta);
-        });
-
         return instanceEntity.id;
     }
 
     @Override
+    @SneakyThrows(JsonProcessingException.class)
     public void start(Long id) {
         InstanceEntity entity = instanceService.get(id);
         if (entity == null) {
@@ -90,8 +84,9 @@ public class InstanceManagerImpl implements InstanceManager {
         AppMetaDTO appMeta = RpcAssert.isTrue(workAppRpc.meta(entity.getAppId()));
         Log.infof("meta: %s", appMeta);
         if (appMeta.getRunModality() == RunModality.DockerCompose) {
-            boolean up = dockerService.up(appMeta.getRunOn());
+            var up = dockerService.up(appMeta.getRunOn(), entity.getUuid());
             Log.infof("Up the instance=>%s", up);
+            entity.setRunning(objectMapper.writeValueAsString(up));
         }
         entity.setStatus(TenantDefined.TenantStatus.Started);
     }
@@ -111,10 +106,10 @@ public class InstanceManagerImpl implements InstanceManager {
         AppMetaDTO appMeta = RpcAssert.isTrue(workAppRpc.meta(entity.getAppId()));
         Log.infof("meta: %s", appMeta);
         if (appMeta.getRunModality() == RunModality.DockerCompose) {
-            boolean up = dockerService.down(appMeta.getRunOn());
+            boolean up = dockerService.down(appMeta.getRunOn(), entity.getUuid());
             Log.infof("Down the instance=>%s", up);
+            entity.setRunning(null);
         }
-
         entity.setStatus(TenantDefined.TenantStatus.Stopped);
     }
 
@@ -127,15 +122,5 @@ public class InstanceManagerImpl implements InstanceManager {
     private void createInstance(Long instanceId, AppMetaDTO appMeta) {
         InstanceEntity instance = instanceService.get(instanceId);
         OkAssert.notNull(instance, "实例信息不存在，无法创建服务！");
-
-        RunModality runModality = appMeta.getRunModality();
-        switch (runModality) {
-            case DockerCompose -> {
-                dockerService.up(appMeta.getRunOn());
-            }
-            case Url -> {
-
-            }
-        }
     }
 }

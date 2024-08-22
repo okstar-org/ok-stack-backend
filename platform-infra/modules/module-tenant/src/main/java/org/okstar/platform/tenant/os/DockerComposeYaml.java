@@ -13,24 +13,31 @@
 
 package org.okstar.platform.tenant.os;
 
-import com.github.dockerjava.api.model.Container;
-import org.okstar.platform.tenant.dto.InstanceRunningDTO;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.Data;
 
-public interface DockerService {
+import java.util.List;
+import java.util.Map;
+
+/**
+ * docker-compose.yaml 文件的封装
+ * 有些字段没有实现
+ */
+@Data
+public class DockerComposeYaml {
+    @JsonIgnore
+    private String version;
+
+    private Map<String, Service> services;
+
+    @Data
+    public static class Service {
+        private String image;
+        private String container_name;
+        private String restart;
+        private List<String> ports;
+        private List<String> volumes;
+    }
 
 
-    String findContainerByName(String name);
-
-    Container getContainer(String containerId);
-
-    String createContainer(String name, String image, String port, String portBinds, String... env);
-
-    void startContainer(String containerId);
-
-    void stopContainer(String containerId);
-
-    InstanceRunningDTO up(String yml, String uuid);
-
-
-    boolean down(String yml, String uuid);
 }

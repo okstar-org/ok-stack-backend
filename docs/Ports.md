@@ -7,5 +7,5 @@
 9400 - billing
 9500 - work
 9800 - bus
-9810 - tenant
+tenant - [10000~11000]
 ```

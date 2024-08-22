@@ -13,6 +13,7 @@
 
 package org.okstar.platform.tenant.entity;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.MappedSuperclass;
@@ -33,5 +34,11 @@ public abstract class RunnableEntity extends BaseEntity {
      */
     @Enumerated(EnumType.STRING)
     private TenantDefined.TenantStatus status;
+
+    /**
+     * 运行数据
+     */
+    @Column(columnDefinition = "text")
+    private String running;
 
 }

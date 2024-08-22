@@ -13,6 +13,9 @@
 
 package org.okstar.platform.tenant.os;
 
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import com.github.dockerjava.api.DockerClient;
 import com.github.dockerjava.api.command.*;
 import com.github.dockerjava.api.model.Container;
@@ -26,26 +29,28 @@ import com.github.dockerjava.httpclient5.ApacheDockerHttpClient;
 import com.github.dockerjava.transport.DockerHttpClient;
 import com.google.common.io.Files;
 import com.obsidiandynamics.dockercompose.DockerCompose;
-import de.gesellix.docker.compose.ComposeFileReader;
 import io.quarkus.logging.Log;
 import io.quarkus.runtime.Startup;
 import io.quarkus.runtime.StartupEvent;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.event.Observes;
 import lombok.SneakyThrows;
+import org.okstar.platform.common.core.exception.OkRuntimeException;
+import org.okstar.platform.common.os.PortFinder;
 import org.okstar.platform.common.string.OkStringUtil;
+import org.okstar.platform.tenant.dto.InstanceRunningDTO;
 
-import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
-import java.util.HashMap;
-import java.util.Map;
 
 @Startup
 @ApplicationScoped
 public class DockerServiceImpl implements DockerService {
+
+    YAMLFactory yamlFactory = new YAMLFactory();
+    ObjectMapper yamlMapper = new ObjectMapper(yamlFactory);
 
     DockerClientConfig config;
 
@@ -148,35 +153,36 @@ public class DockerServiceImpl implements DockerService {
     }
 
     @Override
-    public boolean up(String yml) {
-        Log.infof("Up docker-compose...");
+    public InstanceRunningDTO up(String yml, String uuid) {
+        Log.infof("Up docker-compose:%s...", uuid);
         try {
-            File ymlFile = makeYamlFile(yml);
+            InstanceRunningDTO runningDTO = new InstanceRunningDTO();
+            File ymlFile = filterYaml(yml, uuid, runningDTO);
 
             DockerCompose compose = new DockerCompose();
             compose.withComposeFile(ymlFile.toPath().toString());
-
             compose.up();
 
             Log.infof("Up docker-compose successfully");
+            return runningDTO;
         } catch (Exception e) {
-            Log.errorf(e, "Unable to up the docker compose!");
-            return false;
+            Throwable cause = e.getCause() != null ? e.getCause() : e;
+            Log.errorf(cause, "Unable to up the docker compose!");
+            throw new OkRuntimeException(cause.getMessage());
         }
 
-        return true;
+
     }
 
+
     @Override
-    public boolean down(String yml) {
+    public boolean down(String yml, String uuid) {
         Log.infof("Down docker-compose...");
         try {
-
-            File ymlFile = makeYamlFile(yml);
+            File ymlFile = filterYaml(yml, uuid, null);
             DockerCompose compose = new DockerCompose();
             compose.withComposeFile(ymlFile.toPath().toString());
             compose.down(false);
-
             Log.infof("Down docker-compose successfully");
         } catch (Exception e) {
             Log.errorf(e, "Unable to up the docker compose!");
@@ -198,4 +204,46 @@ public class DockerServiceImpl implements DockerService {
     }
 
 
+    @SneakyThrows
+    private File filterYaml(String yml, String uuid, InstanceRunningDTO runningDTO) {
+        //替换\\n->\n
+        var ymlContent = yml.replace("\\n", "\n");
+        //${HOME}/okstar/ok-stack/saas/tenant/instance/{实例uuid}
+        String home = System.getenv().get("HOME");
+        String volume = "%s/okstar/ok-stack/saas/tenant/instance/%s".formatted(home, uuid);
+        Log.infof("volume:%s", volume);
+
+        //yml file -> object
+        yamlMapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
+
+        DockerComposeYaml yaml = yamlMapper.readValue(ymlContent, DockerComposeYaml.class);
+        yaml.getServices().forEach((s, v) -> {
+            v.setContainer_name("tenant_%s_%s".formatted(uuid, v.getContainer_name()));
+            for (int i = 0; i < v.getPorts().size(); i++) {
+                var pair = v.getPorts().get(i);
+                var p = pair.split(":");
+                int port = PortFinder.findAvailablePort();
+                String newPort = port + ":" + p[1];
+                v.getPorts().set(i, newPort);
+                if (runningDTO != null) {
+                    runningDTO.addPort(newPort);
+                }
+            }
+            for (int i = 0; i < v.getVolumes().size(); i++) {
+                String pair = v.getVolumes().get(i);
+                var p = pair.split(":");
+                var nv = volume + ":" + p[1];
+                v.getVolumes().set(i, nv);
+                if (runningDTO != null) {
+                    runningDTO.addVolume(nv);
+                }
+            }
+        });
+
+        File ymlFile = File.createTempFile("docker-compose-" + OkStringUtil.makeRandom(10), ".yml");
+        Log.infof("docker-compose:%s", ymlFile.getAbsolutePath());
+        yamlMapper.writeValue(ymlFile, yaml);
+
+        return ymlFile;
+    }
 }

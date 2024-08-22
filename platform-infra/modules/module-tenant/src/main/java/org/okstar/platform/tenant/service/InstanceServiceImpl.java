@@ -13,12 +13,17 @@
 
 package org.okstar.platform.tenant.service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.quarkus.panache.common.Sort;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 import org.okstar.platform.common.core.web.page.OkPageResult;
 import org.okstar.platform.common.core.web.page.OkPageable;
+import org.okstar.platform.common.string.OkStringUtil;
+import org.okstar.platform.tenant.dto.InstanceDTO;
+import org.okstar.platform.tenant.dto.InstanceRunningDTO;
 import org.okstar.platform.tenant.entity.InstanceEntity;
 import org.okstar.platform.tenant.repo.InstanceMapper;
 
@@ -29,6 +34,8 @@ import java.util.List;
 public class InstanceServiceImpl implements InstanceService {
     @Inject
     InstanceMapper instanceMapper;
+    @Inject
+    ObjectMapper objectMapper;
 
 
     @Override
@@ -48,6 +55,59 @@ public class InstanceServiceImpl implements InstanceService {
                 .page(page.getPageIndex(), page.getPageSize());
         return OkPageResult.build(paged.list(), paged.count(), paged.pageCount());
     }
+
+    @Override
+    public OkPageResult<InstanceDTO> findPageDTO(OkPageable page) {
+
+        var paged = instanceMapper
+                .findAll(Sort.descending("id"))
+                .page(page.getPageIndex(), page.getPageSize());
+
+        List<InstanceDTO> list = paged.list().stream().map(e -> {
+            InstanceDTO dto = InstanceDTO.builder()
+                    .id(e.id)
+                    .no(e.getNo())
+                    .uuid(e.getUuid())
+                    .name(e.getName())
+                    .status(e.getStatus())
+                    .appId(e.getAppId())
+                    .description(e.getDescription())
+                    .createAt(e.getCreateAt())
+                    .updateAt(e.getUpdateAt())
+                    .build();
+
+            var r = e.getRunning();
+            if (r != null) {
+                try {
+                    InstanceRunningDTO runningDTO = objectMapper.readValue(r, InstanceRunningDTO.class);
+                    if (runningDTO.getPorts() != null) {
+                        for (String port : runningDTO.getPorts()) {
+                            String localPort = port.split(":")[0];
+                            if (port.endsWith("80")) {
+                                dto.addUrl("http://localhost:%s".formatted(localPort));
+                            } else if (port.endsWith("443")) {
+                                dto.addUrl("https://localhost:%s".formatted(localPort));
+                            }
+                        }
+                    }
+                    if (runningDTO.getVolumes() != null) {
+                        for (String v : runningDTO.getVolumes()) {
+                            if (OkStringUtil.isNoneEmpty(v)) {
+                                dto.addVolumes(v.split(":")[0]);
+                            }
+                        }
+                    }
+                } catch (JsonProcessingException ex) {
+                    throw new RuntimeException(ex);
+                }
+            }
+
+            return dto;
+        }).toList();
+
+        return OkPageResult.build(list, paged.count(), paged.pageCount());
+    }
+
 
     @Override
     public InstanceEntity get(Long id) {

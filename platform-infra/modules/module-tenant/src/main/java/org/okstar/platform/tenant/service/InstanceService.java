@@ -13,9 +13,13 @@
 
 package org.okstar.platform.tenant.service;
 
+import org.okstar.platform.common.core.web.page.OkPageResult;
+import org.okstar.platform.common.core.web.page.OkPageable;
 import org.okstar.platform.common.datasource.OkJpaService;
+import org.okstar.platform.tenant.dto.InstanceDTO;
 import org.okstar.platform.tenant.entity.InstanceEntity;
 
 public interface InstanceService extends OkJpaService<InstanceEntity> {
 
+    OkPageResult<InstanceDTO> findPageDTO(OkPageable page);
 }

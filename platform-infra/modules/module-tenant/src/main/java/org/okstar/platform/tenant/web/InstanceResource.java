@@ -26,8 +26,8 @@ import org.okstar.platform.common.core.web.page.OkPageResult;
 import org.okstar.platform.common.core.web.page.OkPageable;
 import org.okstar.platform.common.rpc.RpcAssert;
 import org.okstar.platform.tenant.dto.InstanceCreateDTO;
+import org.okstar.platform.tenant.dto.InstanceDTO;
 import org.okstar.platform.tenant.dto.TenantDTO;
-import org.okstar.platform.tenant.entity.InstanceEntity;
 import org.okstar.platform.tenant.entity.TenantEntity;
 import org.okstar.platform.tenant.manager.InstanceManager;
 import org.okstar.platform.tenant.service.InstanceService;
@@ -83,8 +83,8 @@ public class InstanceResource extends BaseResource {
 
     @POST
     @Path("page")
-    public Res<OkPageResult<InstanceEntity>> page(OkPageable page){
-        OkPageResult<InstanceEntity> result = instanceService.findPage(page);
+    public Res<OkPageResult<InstanceDTO>> page(OkPageable page){
+        OkPageResult<InstanceDTO> result = instanceService.findPageDTO(page);
         return Res.ok(result);
     }
 
