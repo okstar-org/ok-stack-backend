@@ -16,12 +16,15 @@ package org.okstar.platform.billing.order.schedule;
 import io.quarkus.scheduler.Scheduled;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
+import jakarta.transaction.Transactional;
 import org.okstar.cloud.OkCloudApiClient;
 import org.okstar.cloud.entity.AuthenticationToken;
 import org.okstar.cloud.entity.PayOrderEntity;
+import org.okstar.platform.billing.order.domain.BillingOrder;
 import org.okstar.platform.billing.order.service.BillingOrderService;
 import org.okstar.platform.common.core.defined.OkCloudDefines;
 
+@Transactional
 @ApplicationScoped
 public class Schedule {
     private final OkCloudApiClient client;
@@ -44,16 +47,20 @@ public class Schedule {
             /**
              * 从云端获取订单状态
              */
-            PayOrderEntity order = client.getOrderChannel().get(bo.getNo());
-            if (order != null && order.getPaymentStatus() != null) {
-                //避免空对象的情况
-                bo.setPaymentStatus(order.getPaymentStatus());
-                bo.setOrderStatus(order.getOrderStatus());
-                bo.setIsExpired(order.getIsExpired());
-                //同步标志设置成功
-                bo.setSync(true);
-            }
+            syncPaymentStatus(bo);
         });
+    }
+
+    private void syncPaymentStatus(BillingOrder bo) {
+        PayOrderEntity order = client.getOrderChannel().get(bo.getNo());
+        if (order != null && order.getPaymentStatus() != null) {
+            //避免空对象的情况
+            bo.setPaymentStatus(order.getPaymentStatus());
+            bo.setOrderStatus(order.getOrderStatus());
+            bo.setIsExpired(order.getIsExpired());
+            //同步标志设置成功
+            bo.setSync(true);
+        }
     }
 
 }

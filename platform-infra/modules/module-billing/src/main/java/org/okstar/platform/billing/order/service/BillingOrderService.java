@@ -24,7 +24,7 @@ public interface BillingOrderService extends OkJpaService<BillingOrder> {
 
     void saveResult(OrderResultEntity result, Long createBy);
 
-    OrderResultEntity createOrder(Long planId, Long createBy);
+    OrderResultEntity createOrder(String planId, Long createBy);
 
     boolean closeOrder(String no, Long createBy);
 

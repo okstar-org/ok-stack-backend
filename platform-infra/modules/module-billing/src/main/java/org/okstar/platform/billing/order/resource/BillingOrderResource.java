@@ -41,7 +41,7 @@ public class BillingOrderResource extends BillingBaseResource {
      */
     @POST
     @Path("create")
-    public Res<OrderResultEntity> create(Long planId) {
+    public Res<OrderResultEntity> create(String planId) {
         var order = orderService.createOrder(planId, loadUserId());
         return Res.ok(order);
     }
