@@ -6,7 +6,7 @@
   <img src="https://img.shields.io/badge/JDK-17-blue.svg">
   <img src="https://img.shields.io/badge/Quarkus-blue.svg">
 <a href="https://github.com/okstar-org/ok-stack-backend/actions">
-  <img src="https://github.com/okstar-org/ok-stack-backend/actions/workflows/ubuntu-22.04.yml/badge.svg">
+  <img src="https://github.com/okstar-org/ok-stack-backend/actions/workflows/ubuntu-22.04.yml/badge.svg?event=push">
 </a>
 <a href="https://github.com/okstar-org/ok-stack-backend/releases">
     <img src="https://img.shields.io/docker/pulls/okstarorg/ok-stack-backend?color=4591df&style=for-the-badge">
@@ -42,7 +42,7 @@
 # 🖥️ 支持平台
 - 🐧 Linux
 - 🪟 Windows
-- Java 17
+- ☕ Java 17
 
 # ⚙️ 部署文档
 > 具体参考：[docs/deployment.md](docs/deployment.md)
