@@ -9,6 +9,7 @@ on:
     branches: [ develop, main ]
     tags:
       - "v*.*.*"
+      - "v*.*.*-*"
     paths-ignore:
       - '**.md'
       - 'changelog.txt'
