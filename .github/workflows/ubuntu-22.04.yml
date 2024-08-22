@@ -9,6 +9,14 @@ on:
     branches: [ develop, main ]
     tags:
       - "v*.*.*"
+    paths-ignore:
+      - '**.md'
+      - 'changelog.txt'
+      - 'LEGAL'
+      - 'LICENSE'
+      - '.gitignore'
+      - '.github/**'
+      - 'docs/**'
   pull_request:
     branches: [ develop ]
 
