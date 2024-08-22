@@ -37,6 +37,11 @@
         </fileSet>
 
         <fileSet>
+            <directory>../platform-infra/modules/module-work/target/quarkus-app</directory>
+            <outputDirectory>./infra/module-work</outputDirectory>
+        </fileSet>
+
+        <fileSet>
             <directory>../platform-app/app-open/target/quarkus-app</directory>
             <outputDirectory>./app/app-open</outputDirectory>
         </fileSet>

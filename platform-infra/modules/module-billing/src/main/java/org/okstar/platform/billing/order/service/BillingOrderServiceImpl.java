@@ -126,9 +126,11 @@ public class BillingOrderServiceImpl implements BillingOrderService {
     }
 
     @Override
-    public OrderResultEntity createOrder(Long planId, Long createBy) {
+    public OrderResultEntity createOrder(String planId, Long createBy) {
+        Log.infof("Create order planId: %s", planId);
         OrderChannel orderChannel = client.getOrderChannel();
         OrderResultEntity result = orderChannel.create(planId);
+        Log.infof("Create order successfully=>%s", result);
         result.setUrl(OkCloudDefines.OK_CLOUD_API + result.getUrl());
         saveResult(result, createBy);
         return result;
