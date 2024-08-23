@@ -13,6 +13,7 @@
 
 package org.okstar.platform.billing.order.schedule;
 
+import io.quarkus.logging.Log;
 import io.quarkus.scheduler.Scheduled;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
@@ -43,17 +44,18 @@ public class Schedule {
          * 查询未同步的订单
          */
         var list = billingOrderService.notSyncList();
-        list.filter(e -> e.getNo() != null).forEach(bo -> {
-            /**
-             * 从云端获取订单状态
-             */
-            syncPaymentStatus(bo);
-        });
+        list.filter(e -> e.getNo() != null).forEach(this::syncPaymentStatus);
     }
 
     private void syncPaymentStatus(BillingOrder bo) {
+        Log.infof("Sync order[%s] payment status...", bo.getNo());
         PayOrderEntity order = client.getOrderChannel().get(bo.getNo());
-        if (order != null && order.getPaymentStatus() != null) {
+        if (order == null) {
+            Log.warnf("order[%s] not found", bo.getNo());
+            return;
+        }
+        if (order.getPaymentStatus() != null) {
+            Log.infof("Order[%s] payment status is [%s]", bo.getNo(), order.getPaymentStatus());
             //避免空对象的情况
             bo.setPaymentStatus(order.getPaymentStatus());
             bo.setOrderStatus(order.getOrderStatus());

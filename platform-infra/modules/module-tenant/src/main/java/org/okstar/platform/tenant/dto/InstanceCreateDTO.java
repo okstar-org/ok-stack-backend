@@ -26,12 +26,7 @@ public class InstanceCreateDTO extends DTO {
     private Long tenantId;
 
     /**
-     * 应用ID
-     */
-    private String appId;
-
-    /**
      * 订单编号
      */
-    private Long orderId;
+    private String orderUuid;
 }

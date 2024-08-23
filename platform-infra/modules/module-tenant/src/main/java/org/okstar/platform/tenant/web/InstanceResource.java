@@ -118,7 +118,8 @@ public class InstanceResource extends BaseResource {
     @GET
     @Path("orders")
     public Res<List<OrderDTO>> orders() {
-        List<OrderDTO> list = RpcAssert.isTrue(billingOrderRpc.list());
+        //列出完成的订单
+        List<OrderDTO> list = RpcAssert.isTrue(billingOrderRpc.list("completed"));
         return Res.ok(list);
     }
 

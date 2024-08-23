@@ -41,7 +41,7 @@ public class TenantServiceImpl implements TenantService {
 
     @Override
     public List<TenantEntity> findAll() {
-        return tenantMapper.findAll().stream().toList();
+        return tenantMapper.findAll(Sort.descending("id")).stream().toList();
     }
 
     @Override

@@ -37,15 +37,14 @@ public class InstanceEntity extends RunnableEntity{
     private Long tenantId;
 
     /**
-     * 应用ID
+     * 应用UUID
      */
-    private String appId;
+    private String appUuid;
 
     /**
-     * 订单编号
-     * @see org.okstar.platform.billing.order.domain.BillingOrder
+     * 订单UUID
      */
-    private Long orderId;
+    private String orderUuid;
 
     /**
      * 实例名称=租户名称+应用名称+订单名词

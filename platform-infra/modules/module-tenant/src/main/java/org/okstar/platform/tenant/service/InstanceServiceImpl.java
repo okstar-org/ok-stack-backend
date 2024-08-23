@@ -70,7 +70,7 @@ public class InstanceServiceImpl implements InstanceService {
                     .uuid(e.getUuid())
                     .name(e.getName())
                     .status(e.getStatus())
-                    .appId(e.getAppId())
+                    .appUuid(e.getAppUuid())
                     .description(e.getDescription())
                     .createAt(e.getCreateAt())
                     .updateAt(e.getUpdateAt())

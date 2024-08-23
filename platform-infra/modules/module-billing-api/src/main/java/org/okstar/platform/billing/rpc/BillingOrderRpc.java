@@ -31,6 +31,10 @@ public interface BillingOrderRpc {
     RpcResult<OrderDTO> get(@PathParam("id") Long id);
 
     @GET
-    @Path("list")
-    RpcResult<List<OrderDTO>> list();
+    @Path("get/uuid:{uuid}")
+    RpcResult<OrderDTO> get(@PathParam("uuid") String uuid);
+
+    @GET
+    @Path("list/{status}")
+    RpcResult<List<OrderDTO>> list(@PathParam("status") String status);
 }

@@ -75,4 +75,11 @@ public class BillingOrder extends OkEntity implements SyncEntity {
      * 结束时间
      */
     private Date periodEnd;
+
+
+    /** 应用UUID */
+    private String appUuid;
+
+    /** 套餐UUID */
+    private String planUuid;
 }

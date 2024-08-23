@@ -56,7 +56,7 @@ public class InstanceDTO extends DTO {
     /**
      * 应用ID
      */
-    private String appId;
+    private String appUuid;
 
     /**
      * 订单编号

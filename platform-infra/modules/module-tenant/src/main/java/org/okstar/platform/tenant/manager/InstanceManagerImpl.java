@@ -25,6 +25,7 @@ import org.eclipse.microprofile.rest.client.inject.RestClient;
 import org.okstar.platform.billing.rpc.BillingOrderRpc;
 import org.okstar.platform.common.asserts.OkAssert;
 import org.okstar.platform.common.rpc.RpcAssert;
+import org.okstar.platform.common.string.OkStringUtil;
 import org.okstar.platform.system.vo.SysAccount0;
 import org.okstar.platform.tenant.defines.TenantDefined;
 import org.okstar.platform.tenant.dto.InstanceCreateDTO;
@@ -56,19 +57,21 @@ public class InstanceManagerImpl implements InstanceManager {
 
         Log.infof("Create instance: %s", createDTO);
 
-        var orderDTO = RpcAssert.isTrue(billingOrderRpc.get(createDTO.getOrderId()));
+        OkAssert.hasText(createDTO.getOrderUuid(), "参数有误！");
+        var orderDTO = RpcAssert.isTrue(billingOrderRpc.get(createDTO.getOrderUuid()));
         Log.infof("order: %s", orderDTO);
 
-        AppMetaDTO appMeta = RpcAssert.isTrue(workAppRpc.meta(createDTO.getAppId()));
+        OkAssert.hasText(orderDTO.getAppUuid(), "参数有误！");
+        AppMetaDTO appMeta = RpcAssert.isTrue(workAppRpc.meta(orderDTO.getAppUuid()));
         Log.infof("meta: %s", appMeta);
 
         InstanceEntity instanceEntity = new InstanceEntity();
         instanceEntity.setTenantId(createDTO.getTenantId());
-        instanceEntity.setAppId(createDTO.getAppId());
-        instanceEntity.setOrderId(createDTO.getOrderId());
-        instanceEntity.setDisabled(false);
+        instanceEntity.setOrderUuid(orderDTO.getUuid());
+        instanceEntity.setAppUuid(appMeta.getAppUuid());
         instanceEntity.setName(orderDTO.getName());
         instanceEntity.setStatus(TenantDefined.TenantStatus.Created);
+        instanceEntity.setDisabled(false);
         instanceService.create(instanceEntity, account.getId());
         return instanceEntity.id;
     }
@@ -81,13 +84,16 @@ public class InstanceManagerImpl implements InstanceManager {
             throw new NotFoundException("不存在租户！");
         }
 
-        AppMetaDTO appMeta = RpcAssert.isTrue(workAppRpc.meta(entity.getAppId()));
+        AppMetaDTO appMeta = RpcAssert.isTrue(workAppRpc.meta(entity.getAppUuid()));
         Log.infof("meta: %s", appMeta);
-        if (appMeta.getRunModality() == RunModality.DockerCompose) {
-            var up = dockerService.up(appMeta.getRunOn(), entity.getUuid());
-            Log.infof("Up the instance=>%s", up);
-            entity.setRunning(objectMapper.writeValueAsString(up));
-        }
+
+        OkAssert.isTrue(appMeta.getRunModality() == RunModality.DockerCompose, "目前仅支持DockerCompose应用！");
+        OkAssert.isTrue(OkStringUtil.isNotEmpty(appMeta.getRunOn()), "运行配置不能为空！");
+
+        var up = dockerService.up(appMeta.getRunOn(), entity.getUuid());
+        Log.infof("Up the instance=>%s", up);
+
+        entity.setRunning(objectMapper.writeValueAsString(up));
         entity.setStatus(TenantDefined.TenantStatus.Started);
     }
 
@@ -102,8 +108,8 @@ public class InstanceManagerImpl implements InstanceManager {
             Log.warnf("Instance is already stopped!");
             return;
         }
-//
-        AppMetaDTO appMeta = RpcAssert.isTrue(workAppRpc.meta(entity.getAppId()));
+
+        AppMetaDTO appMeta = RpcAssert.isTrue(workAppRpc.meta(entity.getAppUuid()));
         Log.infof("meta: %s", appMeta);
         if (appMeta.getRunModality() == RunModality.DockerCompose) {
             boolean up = dockerService.down(appMeta.getRunOn(), entity.getUuid());

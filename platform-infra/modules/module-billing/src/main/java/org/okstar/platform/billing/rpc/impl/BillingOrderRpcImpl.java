@@ -16,8 +16,11 @@ package org.okstar.platform.billing.rpc.impl;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
+import org.apache.commons.lang3.EnumUtils;
+import org.okstar.cloud.defines.PayDefines;
 import org.okstar.platform.billing.dto.GoodsDTO;
 import org.okstar.platform.billing.dto.OrderDTO;
+import org.okstar.platform.billing.order.domain.BillingOrder;
 import org.okstar.platform.billing.order.service.BillingGoodsService;
 import org.okstar.platform.billing.order.service.BillingOrderService;
 import org.okstar.platform.billing.rpc.BillingOrderRpc;
@@ -40,32 +43,36 @@ public class BillingOrderRpcImpl implements BillingOrderRpc {
     public RpcResult<OrderDTO> get(Long id) {
         var order = billingOrderService.get(id);
         OkAssert.notNull(order, "order is null");
-
-        //goods
-        var goods = billingGoodsService.findByOrderId(order.id).stream()
-                .map(g -> GoodsDTO.builder().no(g.getNo()).name(g.getName()).build())
-                .toList();
-        // order
-        var goodsDTO = OrderDTO.builder().id(order.id).no(order.getNo()).name(order.getName())
-                .goods(goods).build();
-
-        return RpcResult.success(goodsDTO);
+        return RpcResult.success(toOrderDTO(order));
     }
 
     @Override
-    public RpcResult<List<OrderDTO>> list() {
-        List<OrderDTO> list = billingOrderService.findAll().stream()
-                .map(e -> {
-                            //goods
-                            var goods = billingGoodsService.findByOrderId(e.id).stream()
-                                    .map(g -> GoodsDTO.builder().no(g.getNo()).name(g.getName()).build())
-                                    .toList();
-                            //order
-                            return OrderDTO.builder().id(e.id).no(e.getNo()).name(e.getName())
-                                    .goods(goods).build();
-                        }
+    public RpcResult<OrderDTO> get(String uuid) {
+        var order = billingOrderService.get(uuid);
+        OkAssert.notNull(order, "order is null");
+        return RpcResult.success(toOrderDTO(order));
+    }
 
-                ).toList();
+    @Override
+    public RpcResult<List<OrderDTO>> list(String status) {
+        PayDefines.OrderStatus orderStatus = EnumUtils.getEnum(PayDefines.OrderStatus.class, status);
+        List<OrderDTO> list = billingOrderService.find(orderStatus).stream().map(this::toOrderDTO).toList();
         return RpcResult.success(list);
+    }
+
+    private OrderDTO toOrderDTO(BillingOrder e) {
+        var goods = billingGoodsService.findByOrderId(e.id).stream()
+                .map(g -> GoodsDTO.builder().no(g.getNo()).name(g.getName()).build())
+                .toList();
+        //order
+        return OrderDTO.builder()
+                .id(e.id)
+                .no(e.getNo())
+                .name(e.getName())
+                .uuid(e.getUuid())
+                .appUuid(e.getAppUuid())
+                .planUuid(e.getPlanUuid())
+                .goods(goods)
+                .build();
     }
 }
