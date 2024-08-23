@@ -16,7 +16,6 @@ package org.okstar.platform.common.handler;
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.ext.ExceptionMapper;
 import jakarta.ws.rs.ext.Provider;
-import org.okstar.platform.common.core.exception.OkRuntimeException;
 import org.okstar.platform.common.core.web.bean.Req;
 import org.okstar.platform.common.core.web.bean.Res;
 
@@ -24,10 +23,10 @@ import org.okstar.platform.common.core.web.bean.Res;
  * 全局异常处理器
  */
 @Provider
-public class OkGlobalExceptionHandler implements ExceptionMapper<OkRuntimeException> {
+public class IllegalArgumentExceptionHandler implements ExceptionMapper<IllegalArgumentException> {
     @Override
-    public Response toResponse(OkRuntimeException throwable) {
+    public Response toResponse(IllegalArgumentException throwable) {
         Res<Object> error = Res.error(Req.empty(), throwable.getMessage());
-        return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(error).build();
+        return Response.status(Response.Status.BAD_REQUEST).entity(error).build();
     }
 }
