@@ -16,7 +16,6 @@ on:
       - 'LEGAL'
       - 'LICENSE'
       - '.gitignore'
-      - '.github/**'
       - 'docs/**'
   pull_request:
     branches: [ develop ]
