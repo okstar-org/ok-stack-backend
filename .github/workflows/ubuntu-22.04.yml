@@ -36,6 +36,9 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
+        with:
+          submodules: "recursive"
+
 
       - name: Set up variables if we're on main
         if: ${{ github.ref == 'refs/heads/main' }}
