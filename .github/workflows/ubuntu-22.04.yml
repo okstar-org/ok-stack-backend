@@ -74,7 +74,7 @@ jobs:
           git submodule update --remote --init
 
       - name: Build with Maven
-        run: mvn clean package -P docker -Dquarkus.profile=prod -Dmaven.test.skip=true
+        run: mvn clean package -P docker -U -Dquarkus.profile=prod -Dmaven.test.skip=true
 
       - name: Fix file permissions
         run: find distribution/target -type f -name '*.sh' -exec chmod +x {} \;
