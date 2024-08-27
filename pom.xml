@@ -593,18 +593,6 @@
     </repositories>
 
     <pluginRepositories>
-
-        <pluginRepository>
-            <id>repo1</id>
-            <url>https://repo1.maven.org/maven2</url>
-            <releases>
-                <enabled>true</enabled>
-            </releases>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
-        </pluginRepository>
-
         <pluginRepository>
             <id>repo1</id>
             <url>https://repo1.maven.org/maven2</url>
