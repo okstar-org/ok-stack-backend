@@ -80,6 +80,11 @@ public class OrgDeptServiceImpl implements OrgDeptService {
     }
 
     @Override
+    public OrgDept get(String uuid) {
+        return orgDeptMapper.find("uuid", uuid).firstResult();
+    }
+
+    @Override
     public List<OrgDept> children(Long parentId) {
         return orgDeptMapper.list("parentId", parentId).stream().toList();
     }

@@ -99,6 +99,11 @@ public class OrgPostServiceImpl implements OrgPostService {
     }
 
     @Override
+    public OrgPost get(String uuid) {
+        return postMapper.find("uuid", uuid).firstResult();
+    }
+
+    @Override
     public List<OrgPost> findByDept(Long deptId) {
         return postMapper.find("deptId", deptId).stream().toList();
     }

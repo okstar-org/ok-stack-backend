@@ -70,6 +70,11 @@ public class BillingGoodsServiceImpl implements BillingGoodsService {
     }
 
     @Override
+    public BillingGoods get(String uuid) {
+        return billingGoodsMapper.find("uuid", uuid).firstResult();
+    }
+
+    @Override
     public List<BillingGoods> findByOrderId(Long orderId) {
         return billingGoodsMapper.find(BillingGoods_.ORDER_ID, orderId).stream().toList();
     }

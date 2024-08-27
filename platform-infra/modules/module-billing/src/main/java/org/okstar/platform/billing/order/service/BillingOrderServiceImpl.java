@@ -13,6 +13,7 @@
 
 package org.okstar.platform.billing.order.service;
 
+import io.quarkus.hibernate.orm.panache.PanacheQuery;
 import io.quarkus.logging.Log;
 import io.quarkus.panache.common.Sort;
 import jakarta.enterprise.context.ApplicationScoped;
@@ -20,12 +21,14 @@ import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 import org.okstar.cloud.OkCloudApiClient;
 import org.okstar.cloud.channel.OrderChannel;
+import org.okstar.cloud.defines.PayDefines;
 import org.okstar.cloud.entity.AuthenticationToken;
 import org.okstar.cloud.entity.OrderResultEntity;
 import org.okstar.cloud.entity.PayGoodsEntity;
 import org.okstar.cloud.entity.PayOrderEntity;
 import org.okstar.platform.billing.order.domain.BillingGoods;
 import org.okstar.platform.billing.order.domain.BillingOrder;
+import org.okstar.platform.billing.order.domain.BillingOrder_;
 import org.okstar.platform.billing.order.mapper.BillingOrderMapper;
 import org.okstar.platform.common.bean.OkBeanUtils;
 import org.okstar.platform.common.core.defined.OkCloudDefines;
@@ -72,9 +75,16 @@ public class BillingOrderServiceImpl implements BillingOrderService {
     @Override
     public OkPageResult<BillingOrder> findPage(OkPageable page) {
         var paged = orderMapper
-                .findAll(Sort.descending("id"))
+                .findAll(Sort.descending(BillingOrder_.ID))
                 .page(page.getPageIndex(), page.getPageSize());
         return OkPageResult.build(paged.list(), paged.count(), paged.pageCount());
+    }
+
+    @Override
+    public List<BillingOrder> find(PayDefines.OrderStatus orderStatus) {
+        PanacheQuery<BillingOrder> query = orderMapper
+                .find(BillingOrder_.ORDER_STATUS, Sort.descending(BillingOrder_.ID), orderStatus);
+        return query.stream().toList();
     }
 
     @Override
@@ -90,6 +100,11 @@ public class BillingOrderServiceImpl implements BillingOrderService {
     @Override
     public void delete(BillingOrder billingOrder) {
         orderMapper.delete(billingOrder);
+    }
+
+    @Override
+    public BillingOrder get(String uuid) {
+        return orderMapper.find("uuid", uuid).firstResult();
     }
 
     /**
@@ -115,7 +130,7 @@ public class BillingOrderServiceImpl implements BillingOrderService {
             BillingGoods d = new BillingGoods();
             OkBeanUtils.copyPropertiesTo(e, d);
             d.setOrderId(order.id);
-            billingGoodsService.save(d);
+            billingGoodsService.create(d, createBy);
             Log.infof("Create goods=>%s", d.id);
         });
     }
@@ -136,4 +151,6 @@ public class BillingOrderServiceImpl implements BillingOrderService {
         OrderChannel orderChannel = client.getOrderChannel();
         return orderChannel.close(no);
     }
+
+
 }

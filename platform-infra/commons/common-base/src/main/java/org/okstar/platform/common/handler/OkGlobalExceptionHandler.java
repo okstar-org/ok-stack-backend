@@ -26,8 +26,8 @@ import org.okstar.platform.common.core.web.bean.Res;
 @Provider
 public class OkGlobalExceptionHandler implements ExceptionMapper<OkRuntimeException> {
     @Override
-    public Response toResponse(OkRuntimeException throwable) {
-        Res<Object> error = Res.error(Req.empty(), throwable.getMessage());
+    public Response toResponse(OkRuntimeException e) {
+        Res<Object> error = Res.error(Req.empty(), e.getMessage());
         return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(error).build();
     }
 }

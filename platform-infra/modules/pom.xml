@@ -4,7 +4,7 @@
     <parent>
         <groupId>org.okstar.platform</groupId>
         <artifactId>platform-infra</artifactId>
-        <version>${revision}</version>
+        <version>1.0-SNAPSHOT</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
 
@@ -19,7 +19,6 @@
         <module>module-auth-api</module>
         <module>module-org</module>
         <module>module-org-api</module>
-<!--        <module>module-org-sync-api</module>-->
         <module>module-chat</module>
         <module>module-chat-api</module>
         <module>module-billing</module>

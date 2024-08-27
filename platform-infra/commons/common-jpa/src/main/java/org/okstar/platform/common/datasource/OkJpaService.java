@@ -20,6 +20,7 @@ import org.okstar.platform.common.core.web.page.OkPageResult;
 import org.okstar.platform.common.core.web.page.OkPageable;
 import org.okstar.platform.common.datasource.domain.OkEntity;
 import org.okstar.platform.common.date.OkDateUtils;
+import org.okstar.platform.common.id.OkIdUtils;
 
 import java.util.List;
 
@@ -33,15 +34,30 @@ public interface OkJpaService<T extends OkEntity> extends OkService {
     default void update(T t, Long updateBy){
         T exist = get(t.id);
         OkBeanUtils.copyPropertiesTo(t, exist);
-        exist.setUpdateAt(OkDateUtils.now());
         exist.setUpdateBy(updateBy);
+        if (exist.getUpdateAt() == null)
+            exist.setUpdateAt(OkDateUtils.now());
+        if (t.getUuid() == null) {
+            t.setUuid(OkIdUtils.makeUuid());
+        }
         save(exist);
     }
 
+    /**
+     *
+     * @param t
+     * @param createBy
+     */
     default void create(T t, Long createBy){
         t.id = null;
-        t.setCreateAt(OkDateUtils.now());
-        t.setUpdateBy(createBy);
+        t.setCreateBy(createBy);
+        if (t.getCreateAt() == null) {
+            t.setCreateAt(OkDateUtils.now());
+        }
+        if (t.getUuid() == null) {
+            t.setUuid(OkIdUtils.makeUuid());
+        }
+
         save(t);
     }
 
@@ -49,11 +65,18 @@ public interface OkJpaService<T extends OkEntity> extends OkService {
 
     List<T> findAll();
 
-    OkPageResult<T> findPage( OkPageable page);
+    OkPageResult<T> findPage(OkPageable page);
 
     T get(Long id);
 
     void deleteById(Long id);
 
     void delete(T t);
+
+    /**
+     * find by uuid
+     * @param uuid
+     * @return T
+     */
+    T get(String uuid);
 }

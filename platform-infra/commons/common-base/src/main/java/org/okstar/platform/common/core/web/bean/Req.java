@@ -23,9 +23,6 @@ import org.okstar.platform.common.date.OkDateUtils;
 @Data
 @EqualsAndHashCode(callSuper = true)
 public class Req extends VO {
-    //请求时间戳
-    protected Long ts = OkDateUtils.getTime();
-
     public static Req empty(){
         return new Req();
     }

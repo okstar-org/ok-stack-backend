@@ -18,5 +18,7 @@ import java.io.Serializable;
 /**
  * 数据传输实体，代表`输出数据`
  */
+
 public abstract class DTO implements Serializable {
+
 }

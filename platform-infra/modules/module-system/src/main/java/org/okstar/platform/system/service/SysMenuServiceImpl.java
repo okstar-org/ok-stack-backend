@@ -67,4 +67,9 @@ public class SysMenuServiceImpl implements SysMenuService {
     public void delete(SysMenu sysMenu) {
         sysMenuMapper.delete(sysMenu);
     }
+
+    @Override
+    public SysMenu get(String uuid) {
+        return null;
+    }
 }

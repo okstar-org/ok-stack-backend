@@ -60,4 +60,9 @@ public class SysLogininforServiceImpl implements ISysLogininforService
     public void delete(SysLogininfor sysLogininfor) {
 
     }
+
+    @Override
+    public SysLogininfor get(String uuid) {
+        return null;
+    }
 }

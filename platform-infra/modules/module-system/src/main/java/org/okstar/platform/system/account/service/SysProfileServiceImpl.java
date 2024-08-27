@@ -16,6 +16,7 @@ package org.okstar.platform.system.account.service;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.quarkus.logging.Log;
+import io.quarkus.runtime.ShutdownEvent;
 import io.quarkus.runtime.StartupEvent;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.event.Observes;
@@ -54,18 +55,23 @@ public class SysProfileServiceImpl implements SysProfileService {
     @Inject
     ConnectionFactory connectionFactory;
 
+    JMSContext context;
     JMSProducer producer;
     Topic topic;
 
     static final String topicName = ModuleSystemApplication.class.getSimpleName()
             + "." + SysProfile.class.getSimpleName();
 
-
-
-    public void init(@Observes StartupEvent e){
-        JMSContext context = connectionFactory.createContext();
+    public void startup(@Observes StartupEvent e){
+        Log.infof("Initialize....");
+        context = connectionFactory.createContext();
         producer = context.createProducer();
         topic = context.createTopic(topicName);
+    }
+
+    public void shutdown(@Observes ShutdownEvent e){
+        Log.infof("Shutdown....");
+        context.close();
     }
 
     @SneakyThrows(JsonProcessingException.class)
@@ -130,6 +136,11 @@ public class SysProfileServiceImpl implements SysProfileService {
     @Override
     public void delete(SysProfile sysProfile) {
         mapper.delete(sysProfile);
+    }
+
+    @Override
+    public SysProfile get(String uuid) {
+        return mapper.find("uuid", uuid).firstResult();
     }
 
     @Override

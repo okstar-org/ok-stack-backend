@@ -46,7 +46,7 @@ public class OkCommonResource {
         try (InputStream stream = getClass().getResourceAsStream(GIT_PROPERTIES)) {
             return objectMapper.readTree(stream);
         } catch (Exception e) {
-            Log.warnf(e, "Read git: %s", GIT_PROPERTIES);
+            Log.warnf("Read git: %s", GIT_PROPERTIES);
             return null;
         }
 

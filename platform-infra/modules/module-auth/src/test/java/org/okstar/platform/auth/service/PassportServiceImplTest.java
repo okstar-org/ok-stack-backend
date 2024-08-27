@@ -43,7 +43,6 @@ class PassportServiceImplTest {
     void signUp() {
         String uuid = OkIdUtils.makeUuid();
         SignUpForm form = new SignUpForm();
-        form.setTs(1L);
 
         //采用邮箱注册
         form.setAccountType(AccountDefines.BindType.email);

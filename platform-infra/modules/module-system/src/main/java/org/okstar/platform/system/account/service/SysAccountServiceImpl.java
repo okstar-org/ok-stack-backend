@@ -259,6 +259,11 @@ public class SysAccountServiceImpl extends OkAbsService implements SysAccountSer
         sysAccountMapper.delete(sysUser);
     }
 
+    @Override
+    public SysAccount get(String uuid) {
+        return sysAccountMapper.find("uuid", uuid).firstResult();
+    }
+
 
     @Override
     public OkPageResult<SysAccount> findPage(OkPageable pageable) {

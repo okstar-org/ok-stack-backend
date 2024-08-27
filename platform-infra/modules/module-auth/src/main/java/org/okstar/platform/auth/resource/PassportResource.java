@@ -39,7 +39,6 @@ public class PassportResource extends OkCommonResource {
     public Res<SignUpResult> signUp(SignUpForm signUpForm) {
         Log.infof("signUp:%s", signUpForm);
         var resultDto = passportService.signUp(signUpForm);
-        Log.infof("resultDto=>%s", resultDto);
         return Res.ok(signUpForm, resultDto);
     }
 
@@ -48,19 +47,13 @@ public class PassportResource extends OkCommonResource {
     public Res<AuthorizationResult> signIn(SignInForm signInForm) {
         Log.infof("signIn:%s", signInForm);
         var resultDto = passportService.signIn(signInForm);
-        Log.infof("signIn=>%s", resultDto);
         return Res.ok(signInForm, resultDto);
     }
 
     @POST
     @Path("signOut")
     public Res<Boolean> signOut(@HeaderParam("Authorization")String accessToken) {
-        Log.infof("signOut...");
-
-        String username = getUsername();
-        Log.infof("username:%s", username);
-
-        Log.infof("accessToken=>%s", accessToken);
+        Log.infof("signOut:%s", accessToken);
         passportService.signOut(accessToken);
         return Res.ok(Req.empty(), true);
     }
@@ -68,14 +61,9 @@ public class PassportResource extends OkCommonResource {
     @POST
     @Path("refresh")
     public Res<AuthorizationResult> refresh(RefreshForm refreshForm) {
-        Log.infof("refreshToken:%s", refreshForm.getRefreshToken());
         AuthorizationResult result = passportService.refresh(refreshForm.getRefreshToken());
-        Log.infof("refresh accessToken=>%s", result);
         return Res.ok(refreshForm, result);
     }
-
-
-
 
     /**
      * 忘记密码

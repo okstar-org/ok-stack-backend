@@ -18,8 +18,8 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>org.okstar.platform</groupId>
-    <artifactId>ok-stack</artifactId>
-    <version>${revision}</version>
+    <artifactId>ok-stack-backend</artifactId>
+    <version>1.0-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <modules>
@@ -31,7 +31,7 @@
 
     <properties>
 
-        <revision>1.0-SNAPSHOT</revision>
+        <revision>${project.version}</revision>
 
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
@@ -42,9 +42,9 @@
         <surefire-plugin.version>3.1.2</surefire-plugin.version>
         <resources-plugin.version>3.3.1</resources-plugin.version>
 
-        <quarkus.platform.artifact-id>quarkus-bom</quarkus.platform.artifact-id>
-        <quarkus.platform.group-id>io.quarkus.platform</quarkus.platform.group-id>
         <quarkus.platform.version>3.5.3</quarkus.platform.version>
+        <quarkus.platform.group-id>io.quarkus.platform</quarkus.platform.group-id>
+        <quarkus.platform.artifact-id>quarkus-bom</quarkus.platform.artifact-id>
 
         <maven.compiler.release>17</maven.compiler.release>
         <maven.compiler.source>17</maven.compiler.source>
@@ -103,7 +103,8 @@
                 <quarkus.datasource.username>okstar</quarkus.datasource.username>
                 <quarkus.datasource.password>Encrypt=>YOzFYCG4evdiWnDP8vGdLw==</quarkus.datasource.password>
                 <quarkus.datasource.jdbc.url>jdbc:mariadb://okstar.org.cn:3307</quarkus.datasource.jdbc.url>
-                <quarkus.datasource.jdbc.args>autoReconnect=true&amp;connectTimeout=60000&amp;socketTimeout=50000</quarkus.datasource.jdbc.args>
+                <quarkus.datasource.jdbc.args>autoReconnect=true&amp;connectTimeout=60000&amp;socketTimeout=50000
+                </quarkus.datasource.jdbc.args>
                 <quarkus.datasource.jdbc.driver>org.mariadb.jdbc.Driver</quarkus.datasource.jdbc.driver>
                 <quarkus.hibernate-orm.dialect>org.hibernate.dialect.MariaDBDialect</quarkus.hibernate-orm.dialect>
                 <quarkus.oidc.auth-server-url>https://kc.okstar.org.cn/realms/okstar</quarkus.oidc.auth-server-url>
@@ -155,11 +156,11 @@
             </exclusions>
         </dependency>
 
-<!--        <dependency>-->
-<!--            <groupId>io.rest-assured</groupId>-->
-<!--            <artifactId>rest-assured</artifactId>-->
-<!--            <scope>test</scope>-->
-<!--        </dependency>-->
+        <!--        <dependency>-->
+        <!--            <groupId>io.rest-assured</groupId>-->
+        <!--            <artifactId>rest-assured</artifactId>-->
+        <!--            <scope>test</scope>-->
+        <!--        </dependency>-->
 
         <dependency>
             <groupId>org.projectlombok</groupId>
@@ -216,13 +217,13 @@
             <dependency>
                 <groupId>org.projectlombok</groupId>
                 <artifactId>lombok</artifactId>
-                <version>1.18.30</version>
+                <version>1.18.34</version>
                 <optional>true</optional>
             </dependency>
             <dependency>
                 <groupId>org.aspectj</groupId>
                 <artifactId>aspectjweaver</artifactId>
-                <version>1.9.9.1</version>
+                <version>1.9.22.1</version>
             </dependency>
             <dependency>
                 <groupId>${quarkus.platform.group-id}</groupId>
@@ -293,6 +294,75 @@
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
+
+            <dependency>
+                <groupId>org.okstar.platform</groupId>
+                <artifactId>commons</artifactId>
+                <version>${revision}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.okstar.platform</groupId>
+                <artifactId>common-base</artifactId>
+                <version>${revision}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.okstar.platform</groupId>
+                <artifactId>common-jpa</artifactId>
+                <version>${revision}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.okstar.platform</groupId>
+                <artifactId>common-cache</artifactId>
+                <version>${revision}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.okstar.platform</groupId>
+                <artifactId>common-security</artifactId>
+                <version>${revision}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.okstar.platform</groupId>
+                <artifactId>modules</artifactId>
+                <version>${revision}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.okstar.platform</groupId>
+                <artifactId>module-billing-api</artifactId>
+                <version>${revision}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.okstar.platform</groupId>
+                <artifactId>module-work-api</artifactId>
+                <version>${revision}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.okstar.platform.auth</groupId>
+                <artifactId>module-auth-api</artifactId>
+                <version>${revision}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.okstar.platform</groupId>
+                <artifactId>module-org-api</artifactId>
+                <version>${revision}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.okstar.platform</groupId>
+                <artifactId>module-system-api</artifactId>
+                <version>${revision}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.okstar.platform</groupId>
+                <artifactId>OkCloud-API-Client</artifactId>
+                <version>${revision}</version>
+            </dependency>
+
+
         </dependencies>
     </dependencyManagement>
 
@@ -413,14 +483,14 @@
                         </goals>
                         <configuration>
                             <systemPropertyVariables>
-                                <native.image.path>${project.build.directory}/${project.build.finalName}-runner</native.image.path>
+                                <native.image.path>${project.build.directory}/${project.build.finalName}-runner
+                                </native.image.path>
                                 <java.util.logging.manager>org.jboss.logmanager.LogManager</java.util.logging.manager>
                             </systemPropertyVariables>
                         </configuration>
                     </execution>
                 </executions>
             </plugin>
-
             <plugin>
                 <groupId>io.quarkus.platform</groupId>
                 <artifactId>quarkus-maven-plugin</artifactId>
@@ -449,75 +519,65 @@
                     </parentFirstArtifacts>
                 </configuration>
             </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>versions-maven-plugin</artifactId>
+                <version>2.17.1</version>
+                <configuration>
+                    <generateBackupPoms>false</generateBackupPoms>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+                <version>3.3.1</version>
+                <executions>
+                    <execution>
+                        <id>attach-sources</id>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
         </plugins>
     </build>
 
     <repositories>
-        <!-- 配置阿里云仓库 -->
         <repository>
-            <id>AliYun Public Repository</id>
-            <url>https://maven.aliyun.com/repository/public/</url>
+            <id>OkStar Central</id>
+            <url>https://nexus.okstar.org.cn/repository/maven-public/</url>
             <releases>
                 <enabled>true</enabled>
             </releases>
             <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
-        </repository>
-        <repository>
-            <id>Liferay Public Repository</id>
-            <url>https://repository.liferay.com/nexus/content/repositories/public/</url>
-            <releases>
                 <enabled>true</enabled>
-            </releases>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
-        </repository>
-        <repository>
-            <id>Typesafe Repository</id>
-            <url>https://repo.typesafe.com/typesafe/maven-releases/</url>
-            <releases>
-                <enabled>true</enabled>
-            </releases>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
-        </repository>
-        <repository>
-            <id>repo1</id>
-            <url>https://repo1.maven.org/maven2</url>
-            <releases>
-                <enabled>true</enabled>
-            </releases>
-            <snapshots>
-                <enabled>false</enabled>
             </snapshots>
         </repository>
     </repositories>
+
     <pluginRepositories>
-        <!-- 配置阿里云仓库 -->
         <pluginRepository>
-            <id>AliYun Public Repository</id>
-            <url>https://maven.aliyun.com/repository/public/</url>
+            <id>OkStar Central</id>
+            <url>http://nexus.okstar.org.cn/repository/maven-public/</url>
             <releases>
                 <enabled>true</enabled>
             </releases>
             <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
-        </pluginRepository>
-
-        <pluginRepository>
-            <id>repo1</id>
-            <url>https://repo1.maven.org/maven2</url>
-            <releases>
                 <enabled>true</enabled>
-            </releases>
-            <snapshots>
-                <enabled>false</enabled>
             </snapshots>
         </pluginRepository>
-
     </pluginRepositories>
+
+    <distributionManagement>
+        <repository>
+            <id>okstar-nexus-releases</id>
+            <url>https://nexus.okstar.org.cn/repository/maven-releases/</url>
+        </repository>
+        <snapshotRepository>
+            <id>okstar-nexus-snapshots</id>
+            <url>https://nexus.okstar.org.cn/repository/maven-snapshots/</url>
+        </snapshotRepository>
+    </distributionManagement>
+
 </project>

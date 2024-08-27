@@ -29,7 +29,7 @@ public class BaseResource extends OkCommonResource {
 
     /**
      * 获取自己
-     * @return
+     * @return SysAccount0
      */
     protected SysAccount0 self() {
         return RpcAssert.isTrue(sysAccountRpc.findByUsername(getUsername()));

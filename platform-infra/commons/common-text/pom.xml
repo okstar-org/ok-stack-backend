@@ -19,7 +19,7 @@
     <parent>
         <groupId>org.okstar.platform</groupId>
         <artifactId>commons</artifactId>
-        <version>${revision}</version>
+        <version>1.0-SNAPSHOT</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
 

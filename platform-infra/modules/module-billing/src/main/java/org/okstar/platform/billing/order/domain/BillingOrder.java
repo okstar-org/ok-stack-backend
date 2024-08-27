@@ -54,6 +54,7 @@ public class BillingOrder extends OkEntity implements SyncEntity {
     /** 到期时间 */
     private Date expire;
 
+    /** 是否过期 */
     private Boolean isExpired;
 
     /** 支付方式名称 */
@@ -74,4 +75,11 @@ public class BillingOrder extends OkEntity implements SyncEntity {
      * 结束时间
      */
     private Date periodEnd;
+
+
+    /** 应用UUID */
+    private String appUuid;
+
+    /** 套餐UUID */
+    private String planUuid;
 }

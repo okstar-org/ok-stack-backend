@@ -13,10 +13,12 @@
 
 package org.okstar.platform.billing.order.service;
 
+import org.okstar.cloud.defines.PayDefines;
 import org.okstar.cloud.entity.OrderResultEntity;
 import org.okstar.platform.billing.order.domain.BillingOrder;
 import org.okstar.platform.common.datasource.OkJpaService;
 
+import java.util.List;
 import java.util.stream.Stream;
 
 public interface BillingOrderService extends OkJpaService<BillingOrder> {
@@ -28,4 +30,5 @@ public interface BillingOrderService extends OkJpaService<BillingOrder> {
 
     boolean closeOrder(String no, Long createBy);
 
+    List<BillingOrder> find(PayDefines.OrderStatus orderStatus);
 }

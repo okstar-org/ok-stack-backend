@@ -31,11 +31,18 @@ public class TokenFilters {
     JsonWebToken jwt;
 
     @RouteFilter(100)
-    void jwtFilter(RoutingContext rc) {
+    void filter(RoutingContext rc) {
         String uri = rc.request().uri();
-        Log.infof("jwtFilter: %s", uri);
+        Log.infof("Filter url: %s", uri);
 
-        if (uri.contains("/passport") || uri.contains("/q/") || uri.contains("/rpc") || uri.contains("/_well-known") || uri.contains("/staff")) {
+        if (uri.contains("/passport")
+                || uri.contains("/q/")
+                || uri.contains("/rpc")
+                || uri.contains("/_well-known")
+                || uri.contains("/open")
+                || uri.contains("/webjars")
+                || uri.contains("/staff")   //TODO 客户端获取员工
+        ) {
             Log.infof("bypass the uri.");
             rc.next();
             return;

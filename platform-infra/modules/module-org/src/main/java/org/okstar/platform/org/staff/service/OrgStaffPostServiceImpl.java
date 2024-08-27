@@ -102,6 +102,11 @@ public class OrgStaffPostServiceImpl implements OrgStaffPostService {
         orgStaffPostMapper.delete(sysDept);
     }
 
+    @Override
+    public OrgStaffPost get(String uuid) {
+        return orgStaffPostMapper.find("uuid", uuid).firstResult();
+    }
+
 
     @Override
     public List<OrgStaffPost> findByPostIds(Set<Long> posIds) {

@@ -6,7 +6,7 @@
   <img src="https://img.shields.io/badge/JDK-17-blue.svg">
   <img src="https://img.shields.io/badge/Quarkus-blue.svg">
 <a href="https://github.com/okstar-org/ok-stack-backend/actions">
-  <img src="https://github.com/okstar-org/ok-stack-backend/actions/workflows/ubuntu-22.04.yml/badge.svg?event=push">
+  <img src="https://github.com/okstar-org/ok-stack-backend/actions/workflows/ubuntu-22.04.yml/badge.svg">
 </a>
 <a href="https://github.com/okstar-org/ok-stack-backend/releases">
     <img src="https://img.shields.io/docker/pulls/okstarorg/ok-stack-backend?color=4591df&style=for-the-badge">
@@ -15,7 +15,7 @@
 
 # 🎁 项目介绍
 
-**OkStack是由OkStar(okstar.org)社区开发和维护的支持企业业务的通用管理平台，管理者拥有对所有数据、业务和产品的完全管控能力,同时拥有更新的技术和性能。**
+**OkStack是由OkStar(okstar.org)社区开发和维护的支持企业业务的通用管理平台，OkMSG相关所有数据操作统一由OkStack服务端（OkStack）管理，企业管理人员在OkMSG管理端中拥有对所有数据、业务和产品的完全管控能力,同时拥有更新的技术和性能。**
 - 具备跨平台、拓展性。
 - 可独立部署私有化系统。
 - 兼容Windows、Linux等平台。

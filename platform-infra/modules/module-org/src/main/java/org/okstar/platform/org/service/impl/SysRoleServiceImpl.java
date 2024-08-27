@@ -67,4 +67,9 @@ public class SysRoleServiceImpl implements SysRoleService {
     public void delete(OrgRbacRole orgRbacRole) {
 
     }
+
+    @Override
+    public OrgRbacRole get(String uuid) {
+        return null;
+    }
 }

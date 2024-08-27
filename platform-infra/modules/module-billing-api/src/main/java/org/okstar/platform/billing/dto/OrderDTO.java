@@ -23,6 +23,9 @@ import java.util.List;
 @Builder
 public class OrderDTO {
     private Long id;
+    private String uuid;
+    private String appUuid;
+    private String planUuid;
     private String no;
     private String name;
     private List<GoodsDTO> goods;

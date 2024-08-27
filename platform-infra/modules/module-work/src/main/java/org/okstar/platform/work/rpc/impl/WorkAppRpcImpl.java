@@ -45,11 +45,15 @@ public class WorkAppRpcImpl implements WorkAppRpc {
     @Override
     public RpcResult<AppMetaDTO> meta(String uuid) {
         AppMetaEntity meta = workAppService.getMeta(uuid);
-        return RpcResult.success(AppMetaDTO.builder()
+        return RpcResult.success(toDTO(meta));
+    }
+
+    private AppMetaDTO toDTO(AppMetaEntity meta) {
+        return AppMetaDTO.builder()
                 .appUuid(meta.getAppUuid())
                 .uuid(meta.getUuid())
                 .runOn(meta.getRunOn())
                 .runModality(RunModality.valueOf(meta.getRunModality().toString()))
-                .build());
+                .build();
     }
 }
