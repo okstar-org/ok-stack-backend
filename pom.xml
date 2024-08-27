@@ -544,40 +544,71 @@
     </build>
 
     <repositories>
+        <!-- 配置阿里云仓库 -->
         <repository>
-            <id>OkStar Central</id>
-            <url>https://nexus.okstar.org.cn/repository/maven-public/</url>
+            <id>AliYun Public Repository</id>
+            <url>https://maven.aliyun.com/repository/public/</url>
             <releases>
                 <enabled>true</enabled>
             </releases>
             <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </repository>
+        <repository>
+            <id>Liferay Public Repository</id>
+            <url>https://repository.liferay.com/nexus/content/repositories/public/</url>
+            <releases>
                 <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </repository>
+        <repository>
+            <id>Typesafe Repository</id>
+            <url>https://repo.typesafe.com/typesafe/maven-releases/</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </repository>
+        <repository>
+            <id>repo1</id>
+            <url>https://repo1.maven.org/maven2</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>false</enabled>
             </snapshots>
         </repository>
     </repositories>
-
     <pluginRepositories>
+        <!-- 配置阿里云仓库 -->
         <pluginRepository>
-            <id>OkStar Central</id>
-            <url>http://nexus.okstar.org.cn/repository/maven-public/</url>
+            <id>AliYun Public Repository</id>
+            <url>https://maven.aliyun.com/repository/public/</url>
             <releases>
                 <enabled>true</enabled>
             </releases>
             <snapshots>
-                <enabled>true</enabled>
+                <enabled>false</enabled>
             </snapshots>
         </pluginRepository>
+
+        <pluginRepository>
+            <id>repo1</id>
+            <url>https://repo1.maven.org/maven2</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </pluginRepository>
+
     </pluginRepositories>
-
-    <distributionManagement>
-        <repository>
-            <id>okstar-nexus-releases</id>
-            <url>https://nexus.okstar.org.cn/repository/maven-releases/</url>
-        </repository>
-        <snapshotRepository>
-            <id>okstar-nexus-snapshots</id>
-            <url>https://nexus.okstar.org.cn/repository/maven-snapshots/</url>
-        </snapshotRepository>
-    </distributionManagement>
-
 </project>
