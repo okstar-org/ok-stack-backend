@@ -13,11 +13,8 @@
 
 package org.okstar.platform.work.service;
 
-import org.okstar.cloud.entity.AppDetailEntity;
-import org.okstar.cloud.entity.AppEntities;
-import org.okstar.cloud.entity.AppEntity;
-import org.okstar.cloud.entity.AppMetaEntity;
-import org.okstar.platform.common.core.web.page.OkPageable;
+import org.okstar.cloud.entity.*;
+
 
 public interface WorkAppService {
     AppEntities page(OkPageable pageable);

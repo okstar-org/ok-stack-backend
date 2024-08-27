@@ -22,8 +22,8 @@ import jakarta.ws.rs.PathParam;
 import org.okstar.cloud.entity.AppDetailEntity;
 import org.okstar.cloud.entity.AppEntities;
 import org.okstar.cloud.entity.AppEntity;
+import org.okstar.cloud.entity.OkPageable;
 import org.okstar.platform.common.core.web.bean.Res;
-import org.okstar.platform.common.core.web.page.OkPageable;
 import org.okstar.platform.common.resource.OkCommonResource;
 import org.okstar.platform.work.service.WorkAppService;
 

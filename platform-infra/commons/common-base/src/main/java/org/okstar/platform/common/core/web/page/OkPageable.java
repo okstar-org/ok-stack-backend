@@ -13,7 +13,6 @@
 
 package org.okstar.platform.common.core.web.page;
 
-import jakarta.ws.rs.FormParam;
 import lombok.*;
 import org.okstar.platform.common.core.web.bean.VO;
 
@@ -24,10 +23,8 @@ import org.okstar.platform.common.core.web.bean.VO;
 @EqualsAndHashCode(callSuper = true)
 public class OkPageable extends VO {
 
-    @FormParam("pageNumber")
     int pageIndex;
 
-    @FormParam("pageSize")
     int pageSize;
 
     public static OkPageable of(int index, int size) {

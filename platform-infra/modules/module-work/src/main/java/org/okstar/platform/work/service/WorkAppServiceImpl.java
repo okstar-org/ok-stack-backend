@@ -17,7 +17,7 @@ import jakarta.enterprise.context.ApplicationScoped;
 import org.okstar.cloud.OkCloudApiClient;
 import org.okstar.cloud.entity.*;
 import org.okstar.platform.common.core.defined.OkCloudDefines;
-import org.okstar.platform.common.core.web.page.OkPageable;
+
 
 @ApplicationScoped
 public class WorkAppServiceImpl implements WorkAppService {

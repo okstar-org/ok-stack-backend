@@ -17,7 +17,7 @@ import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import org.okstar.cloud.entity.AppEntities;
 import org.okstar.cloud.entity.AppMetaEntity;
-import org.okstar.platform.common.core.web.page.OkPageable;
+import org.okstar.cloud.entity.OkPageable;
 import org.okstar.platform.common.rpc.RpcResult;
 import org.okstar.platform.work.dto.AppDTO;
 import org.okstar.platform.work.dto.AppMetaDTO;
