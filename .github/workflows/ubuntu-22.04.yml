@@ -60,8 +60,7 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           files: |
-            ${{ github.workspace }}/distribution/target/ok-stack-assembly.zip
-            ${{ github.workspace }}/distribution/target/ok-stack-assembly.tar.gz
+            ${{ github.workspace }}/distribution/target/ok-stack-backend-assembly.zip
 
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v1

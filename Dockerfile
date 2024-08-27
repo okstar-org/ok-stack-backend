@@ -3,10 +3,10 @@ FROM eclipse-temurin:17-jdk
 LABEL maintainer="cto@chuanshaninfo.com"
 
 ENV OK_STAR_USER=okstar
-ENV OK_STACK_DIR=/home/okstar/ok-stack
+ENV OK_PROJECT=ok-stack
+ENV OK_STACK_DIR=/home/okstar/${OK_PROJECT}
 ENV OK_STAR_DIR=/home/okstar
-ENV OK_STACK_DATA_DIR=/home/okstar/ok-stack
-ENV OK_STACK_LOG_DIR=/home/okstar/ok-stack/logs
+ENV OK_STACK_LOG_DIR=/home/okstar/${OK_PROJECT}/logs
 
 RUN apt-get update -qq && apt-get dist-upgrade -y
 RUN cat /etc/apt/sources.list
@@ -20,7 +20,7 @@ COPY ./build/docker/entrypoint.sh /sbin/entrypoint.sh
 RUN chmod 755 /sbin/entrypoint.sh
 
 COPY platform-infra/commons/common-base/src/main/resources/lib/libsigar-amd64-linux-1.6.4.so /lib
-ADD distribution/target/ok-stack-assembly.tar.gz ${OK_STAR_DIR}
+ADD distribution/target/ok-stack-backend-assembly.zip ${OK_STAR_DIR}
 
 # UI
 COPY build/docker/default /etc/nginx/sites-enabled
