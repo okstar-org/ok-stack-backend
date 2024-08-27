@@ -561,6 +561,16 @@
 
     <repositories>
         <repository>
+            <id>repo1</id>
+            <url>https://repo1.maven.org/maven2</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </repository>
+        <repository>
             <id>Liferay Public Repository</id>
             <url>https://repository.liferay.com/nexus/content/repositories/public/</url>
             <releases>
@@ -573,16 +583,6 @@
         <repository>
             <id>Typesafe Repository</id>
             <url>https://repo.typesafe.com/typesafe/maven-releases/</url>
-            <releases>
-                <enabled>true</enabled>
-            </releases>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
-        </repository>
-        <repository>
-            <id>repo1</id>
-            <url>https://repo1.maven.org/maven2</url>
             <releases>
                 <enabled>true</enabled>
             </releases>
