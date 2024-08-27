@@ -141,6 +141,22 @@
                 <quarkus.package.type>native</quarkus.package.type>
             </properties>
         </profile>
+
+        <profile>
+            <id>china</id>
+            <repositories>
+                <repository>
+                    <id>AliYun Public Repository</id>
+                    <url>https://maven.aliyun.com/repository/public/</url>
+                    <releases>
+                        <enabled>true</enabled>
+                    </releases>
+                    <snapshots>
+                        <enabled>false</enabled>
+                    </snapshots>
+                </repository>
+            </repositories>
+        </profile>
     </profiles>
 
     <dependencies>
@@ -544,17 +560,6 @@
     </build>
 
     <repositories>
-        <!-- 配置阿里云仓库 -->
-        <repository>
-            <id>AliYun Public Repository</id>
-            <url>https://maven.aliyun.com/repository/public/</url>
-            <releases>
-                <enabled>true</enabled>
-            </releases>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
-        </repository>
         <repository>
             <id>Liferay Public Repository</id>
             <url>https://repository.liferay.com/nexus/content/repositories/public/</url>
@@ -586,11 +591,12 @@
             </snapshots>
         </repository>
     </repositories>
+
     <pluginRepositories>
-        <!-- 配置阿里云仓库 -->
+
         <pluginRepository>
-            <id>AliYun Public Repository</id>
-            <url>https://maven.aliyun.com/repository/public/</url>
+            <id>repo1</id>
+            <url>https://repo1.maven.org/maven2</url>
             <releases>
                 <enabled>true</enabled>
             </releases>

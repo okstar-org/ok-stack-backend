@@ -72,10 +72,6 @@ jobs:
           architecture: ${{ matrix.arch }}
           cache: maven
 
-      - name: Pull submodules
-        run: |
-          git submodule update --remote --init
-
       - name: Build with Maven
         run: mvn clean package -P docker -U -Dquarkus.profile=prod -Dmaven.test.skip=true
 
