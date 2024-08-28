@@ -72,4 +72,8 @@ public interface SysAccountRpc {
     @GET
     @Path("getBinds/{id}")
     RpcResult<List<SysAccountBindDTO>> getBinds(@PathParam("id") Long id);
+
+    @POST
+    @Path("search")
+    List<SysAccount0> search(String query);
 }

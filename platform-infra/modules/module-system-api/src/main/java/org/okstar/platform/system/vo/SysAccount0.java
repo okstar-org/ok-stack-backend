@@ -14,6 +14,7 @@
 package org.okstar.platform.system.vo;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import org.okstar.platform.common.core.defined.AccountDefines;
 import org.okstar.platform.common.core.web.bean.DTO;
 
@@ -23,6 +24,7 @@ import java.util.Optional;
  * 简单帐号对象
  */
 @Data
+@EqualsAndHashCode(callSuper = true)
 public class SysAccount0 extends DTO {
     private Long id;
     //国家

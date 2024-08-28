@@ -100,7 +100,7 @@ public class SysAccountServiceImpl extends OkAbsService implements SysAccountSer
      * @return
      */
     @Override
-    public SysAccount findByBind(AccountDefines.BindType type,String iso, String value) {
+    public Optional<SysAccount> findByBind(AccountDefines.BindType type, String iso, String value) {
         Log.infof("findByBind type:%s value:%s", type, value);
 
         String bindValue = value;
@@ -116,19 +116,24 @@ public class SysAccountServiceImpl extends OkAbsService implements SysAccountSer
 
         if (list.isEmpty()) {
             Log.warnf("Unable to find account bind:%s!", value);
-            return null;
+            return Optional.empty();
         }
 
         SysAccountBind accountBind = list.get(0);
         Log.infof("bind=>%s", accountBind);
 
-        return get(accountBind.getAccountId());
+        return Optional.ofNullable(get(accountBind.getAccountId()));
     }
 
     @Override
-    public SysAccount findByAccount(String account) {
+    public List<SysAccount> findByNickname(String nickname) {
+        return sysAccountMapper.find("nickname", nickname).list();
+    }
+
+    @Override
+    public Optional<SysAccount> findByAccount(String account) {
         if (OkStringUtil.isEmpty(account)) {
-            return null;
+            return Optional.empty();
         }
         AccountDefines.BindType bindType = account.indexOf("@") > 0 ? email : phone;  //
         return findByBind(bindType, AccountDefines.DefaultISO, account);

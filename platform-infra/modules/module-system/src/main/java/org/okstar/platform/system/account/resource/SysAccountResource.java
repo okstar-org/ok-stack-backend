@@ -58,7 +58,7 @@ public class SysAccountResource extends OkCommonResource {
                 Optional.ofNullable(iso).orElse(AccountDefines.DefaultISO),
                 value);
 
-        return account == null ? Res.error(Req.empty()) : Res.ok(Req.empty(), account.getUsername());
+        return Res.ok(account.map(SysAccount::getUsername).orElse(null)) ;
     }
 
 }

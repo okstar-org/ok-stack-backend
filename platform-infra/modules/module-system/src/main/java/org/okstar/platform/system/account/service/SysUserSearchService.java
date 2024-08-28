@@ -13,22 +13,10 @@
 
 package org.okstar.platform.system.account.service;
 
-
-import org.okstar.platform.common.datasource.OkJpaService;
-import org.okstar.platform.system.account.domain.SysAccount;
-import org.okstar.platform.system.account.domain.SysProfile;
+import org.okstar.platform.system.vo.SysAccount0;
 
 import java.util.List;
 
-public interface SysProfileService extends OkJpaService<SysProfile> {
-
-    SysProfile loadByUsername(String username);
-
-    SysProfile loadByAccount(Long accountId);
-
-    List<SysAccount> loadByFirstName(String firstName);
-
-    List<SysAccount> loadByLastName(String lastName);
-
-    List<SysAccount> loadByPersonalName(String personalName);
+public interface SysUserSearchService {
+    List<SysAccount0> search(String query);
 }

@@ -13,22 +13,23 @@
 
 package org.okstar.platform.system.account.service;
 
-
-import org.okstar.platform.common.datasource.OkJpaService;
-import org.okstar.platform.system.account.domain.SysAccount;
-import org.okstar.platform.system.account.domain.SysProfile;
+import io.quarkus.test.junit.QuarkusTest;
+import io.smallrye.common.constraint.Assert;
+import jakarta.inject.Inject;
+import org.junit.jupiter.api.Test;
+import org.okstar.platform.system.vo.SysAccount0;
 
 import java.util.List;
 
-public interface SysProfileService extends OkJpaService<SysProfile> {
+@QuarkusTest
+class SysUserSearchServiceImplTest {
 
-    SysProfile loadByUsername(String username);
+    @Inject
+    SysUserSearchService sysUserSearchService;
 
-    SysProfile loadByAccount(Long accountId);
-
-    List<SysAccount> loadByFirstName(String firstName);
-
-    List<SysAccount> loadByLastName(String lastName);
-
-    List<SysAccount> loadByPersonalName(String personalName);
+    @Test
+    void search() {
+        List<SysAccount0> list = sysUserSearchService.search("杰");
+        Assert.assertNotNull(list);
+    }
 }

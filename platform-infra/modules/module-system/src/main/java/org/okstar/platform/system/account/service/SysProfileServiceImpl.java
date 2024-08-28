@@ -35,6 +35,7 @@ import org.okstar.platform.system.ModuleSystemApplication;
 import org.okstar.platform.system.account.domain.SysAccount;
 import org.okstar.platform.system.account.domain.SysAccountBind;
 import org.okstar.platform.system.account.domain.SysProfile;
+import org.okstar.platform.system.account.domain.SysProfile_;
 import org.okstar.platform.system.account.mapper.SysProfileMapper;
 
 import java.util.List;
@@ -61,15 +62,16 @@ public class SysProfileServiceImpl implements SysProfileService {
 
     static final String topicName = ModuleSystemApplication.class.getSimpleName()
             + "." + SysProfile.class.getSimpleName();
+    private Map map;
 
-    public void startup(@Observes StartupEvent e){
+    public void startup(@Observes StartupEvent e) {
         Log.infof("Initialize....");
         context = connectionFactory.createContext();
         producer = context.createProducer();
         topic = context.createTopic(topicName);
     }
 
-    public void shutdown(@Observes ShutdownEvent e){
+    public void shutdown(@Observes ShutdownEvent e) {
         Log.infof("Shutdown....");
         context.close();
     }
@@ -156,6 +158,26 @@ public class SysProfileServiceImpl implements SysProfileService {
         OkAssert.notNull(account, "Invalid id");
         return getProfile(account);
     }
+
+    @Override
+    public List<SysAccount> loadByFirstName(String firstName) {
+        List<SysProfile> list = mapper.find(SysProfile_.FIRST_NAME, firstName).stream().toList();
+        return list.stream().map(e -> accountService.get(e.getAccountId())).toList();
+    }
+
+    @Override
+    public List<SysAccount> loadByLastName(String lastName) {
+        List<SysProfile> list = mapper.find(SysProfile_.LAST_NAME, lastName).stream().toList();
+        return list.stream().map(e -> accountService.get(e.getAccountId())).toList();
+    }
+
+    @Override
+    public List<SysAccount> loadByPersonalName(String personalName) {
+        List<SysProfile> list = mapper.find( SysProfile_.FIRST_NAME+" || "+ SysProfile_.LAST_NAME, personalName)
+                .stream().toList();
+        return list.stream().map(e -> accountService.get(e.getAccountId())).toList();
+    }
+
 
     private SysProfile getProfile(SysAccount account) {
         Optional<SysProfile> first = mapper.find("accountId", account.id).stream().findFirst();

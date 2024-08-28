@@ -13,10 +13,13 @@
 
 package org.okstar.platform.system.account.service;
 
+import io.quarkus.logging.Log;
 import io.quarkus.test.junit.QuarkusTest;
 import jakarta.inject.Inject;
 import org.junit.jupiter.api.Test;
 import org.okstar.platform.system.account.domain.SysAccount;
+
+import java.util.Optional;
 
 @QuarkusTest
 class SysAccountServiceImplTest {
@@ -25,7 +28,7 @@ class SysAccountServiceImplTest {
 
     @Test
     void findByAccount() {
-        SysAccount account = sysAccountService.findByAccount("189102215101e");
-        System.out.printf("=>%s\n", sysAccountService.toAccount0(account));
+        Optional<SysAccount> account = sysAccountService.findByAccount("189102215101e");
+        Log.infof("%s", account);
     }
 }

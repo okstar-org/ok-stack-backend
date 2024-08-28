@@ -15,12 +15,13 @@ package org.okstar.platform.system.rpc.impl;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
-import org.okstar.platform.common.core.defined.AccountDefines;
 import org.okstar.platform.common.bean.OkBeanUtils;
+import org.okstar.platform.common.core.defined.AccountDefines;
 import org.okstar.platform.common.rpc.RpcResult;
 import org.okstar.platform.system.account.domain.SysAccount;
 import org.okstar.platform.system.account.domain.SysAccountBind;
 import org.okstar.platform.system.account.service.SysAccountService;
+import org.okstar.platform.system.account.service.SysUserSearchService;
 import org.okstar.platform.system.dto.SysAccountBindDTO;
 import org.okstar.platform.system.rpc.SysAccountRpc;
 import org.okstar.platform.system.sign.SignUpForm;
@@ -28,6 +29,7 @@ import org.okstar.platform.system.sign.SignUpResult;
 import org.okstar.platform.system.vo.SysAccount0;
 
 import java.util.List;
+import java.util.Optional;
 
 
 @ApplicationScoped
@@ -35,6 +37,8 @@ public class SysAccountRpcImpl implements SysAccountRpc {
 
     @Inject
     SysAccountService accountService;
+    @Inject
+    private SysUserSearchService sysUserSearchService;
 
     @Override
     public RpcResult<String> lastPassword(Long accountId) {
@@ -69,45 +73,40 @@ public class SysAccountRpcImpl implements SysAccountRpc {
 
     @Override
     public RpcResult<SysAccount0> getByAccount(String account) {
-        SysAccount sysAccount = accountService.findByAccount(account);
-        return RpcResult.success(accountService.toAccount0(sysAccount));
+        Optional<SysAccount> sysAccount = accountService.findByAccount(account);
+        if (sysAccount.isPresent()) {
+            return RpcResult.success(accountService.toAccount0(sysAccount.get()));
+        }
+        return RpcResult.<SysAccount0>builder().success(true).build();
     }
 
     @Override
     public RpcResult<SysAccount0> findByBind(AccountDefines.BindType type, String iso, String bindValue) {
-        try {
-            var sysAccount = accountService.findByBind(type, iso, bindValue);
-            if (sysAccount == null)
-                return RpcResult.<SysAccount0>builder().success(true).build();
-
-            SysAccount0 dto = accountService.toAccount0(sysAccount);
+        var sysAccount = accountService.findByBind(type, iso, bindValue);
+        return sysAccount.map(e -> {
+            SysAccount0 dto = accountService.toAccount0(sysAccount.get());
             return RpcResult.<SysAccount0>builder().data(dto).success(true).build();
-        } catch (Exception e) {
-            return RpcResult.<SysAccount0>builder().success(false).msg(e.getMessage()).build();
-        }
+        }).orElse(RpcResult.<SysAccount0>builder().success(true).build());
     }
 
     @Override
     public RpcResult<SysAccount0> findByEmail(AccountDefines.BindType type, String email) {
-        return findByBind(type,null, email);
+        return findByBind(type, null, email);
     }
 
     @Override
     public RpcResult<SysAccount0> findByUsername(String username) {
-        var sysUser = accountService.findByUsername(username);
-        if (sysUser.isEmpty())
-            return RpcResult.<SysAccount0>builder().success(true).build();
-
-        SysAccount0 dto = new SysAccount0();
-        OkBeanUtils.copyPropertiesTo(sysUser.get(), dto);
-        return RpcResult.<SysAccount0>builder().data(dto).success(true).build();
+        var sysAccount = accountService.findByUsername(username);
+        return sysAccount.map(e -> {
+            SysAccount0 dto = accountService.toAccount0(sysAccount.get());
+            return RpcResult.<SysAccount0>builder().data(dto).success(true).build();
+        }).orElse(RpcResult.<SysAccount0>builder().success(true).build());
     }
 
     @Override
     public RpcResult<SysAccount0> findById(Long id) {
         SysAccount account = accountService.get(id);
-        SysAccount0 dto = new SysAccount0();
-        OkBeanUtils.copyPropertiesTo(account, dto);
+        SysAccount0 dto = accountService.toAccount0(account);
         return RpcResult.success(dto);
     }
 
@@ -127,4 +126,10 @@ public class SysAccountRpcImpl implements SysAccountRpc {
         }).toList();
         return RpcResult.success(list);
     }
+
+    @Override
+    public List<SysAccount0> search(String query) {
+        return sysUserSearchService.search(query);
+    }
+
 }

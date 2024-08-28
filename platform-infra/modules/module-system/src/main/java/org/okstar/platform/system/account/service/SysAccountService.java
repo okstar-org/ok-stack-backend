@@ -32,9 +32,19 @@ import java.util.Optional;
 public interface SysAccountService extends OkJpaService<SysAccount> {
 
 
-    SysAccount findByBind(AccountDefines.BindType bindType, String iso, String bindValue);
+    /**
+     * //通过帐号（邮箱、手机号）搜索
+     *
+     * @param account
+     * @return
+     */
+    Optional<SysAccount> findByAccount(String account);
 
-    SysAccount findByAccount(String account);
+    Optional<SysAccount> findByUsername(String username);
+
+    Optional<SysAccount> findByBind(AccountDefines.BindType bindType, String iso, String bindValue);
+
+    List<SysAccount> findByNickname(String nickname);
 
     SysAccount0 toAccount0(SysAccount account);
 
@@ -46,8 +56,6 @@ public interface SysAccountService extends OkJpaService<SysAccount> {
 
 
     Optional<SysAccountPassword> lastPassword(Long accountId);
-
-    Optional<SysAccount> findByUsername(String username);
 
     SysAccount loadByUsername(String username);
 
