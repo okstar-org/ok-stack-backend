@@ -18,6 +18,7 @@ import com.fasterxml.jackson.databind.json.JsonMapper;
 import io.quarkus.test.junit.QuarkusTest;
 import jakarta.inject.Inject;
 import org.junit.jupiter.api.Test;
+import org.okstar.platform.org.domain.Org;
 import org.okstar.platform.org.dto.Org0;
 
 @QuarkusTest
@@ -39,7 +40,7 @@ class OrgServiceImplTest {
                 "cert": "d9b3d4f0-5552-4d76-ac22-1126e249a104" }
                 """;
         Org0 org0 = new JsonMapper().readValue(json, Org0.class);
-        Boolean save = orgService.save(org0);
+        Org save = orgService.save(org0);
         System.out.printf("save: %s%n", save);
     }
 }

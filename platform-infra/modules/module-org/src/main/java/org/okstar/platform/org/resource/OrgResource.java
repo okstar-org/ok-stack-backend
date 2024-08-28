@@ -19,12 +19,17 @@ import jakarta.ws.rs.GET;
 import jakarta.ws.rs.PUT;
 import jakarta.ws.rs.Path;
 import org.eclipse.microprofile.rest.client.inject.RestClient;
+import org.okstar.cloud.OkCloudApiClient;
+import org.okstar.cloud.OkCloudFactory;
+import org.okstar.cloud.channel.FederalChannel;
+import org.okstar.platform.common.core.defined.OkCloudDefines;
 import org.okstar.platform.common.core.web.bean.Res;
 import org.okstar.platform.common.resource.OkCommonResource;
 import org.okstar.platform.common.rpc.RpcAssert;
 import org.okstar.platform.org.domain.Org;
 import org.okstar.platform.org.domain.OrgDept;
 import org.okstar.platform.org.domain.OrgPost;
+import org.okstar.platform.org.service.FederalService;
 import org.okstar.platform.org.staff.domain.OrgStaff;
 import org.okstar.platform.org.dto.*;
 import org.okstar.platform.org.service.OrgDeptService;
@@ -63,6 +68,9 @@ public class OrgResource extends OkCommonResource {
     @Inject
     @RestClient
     SysAccountRpc sysAccountRpc;
+    @Inject
+    FederalService federalService;
+
 
     @GET
     @Path("current")
@@ -73,7 +81,13 @@ public class OrgResource extends OkCommonResource {
     @PUT
     @Path("save")
     public Res<Boolean> save(Org0 org0){
-        return Res.ok(orgService.save(org0));
+        Org saved = orgService.save(org0);
+
+
+        federalService.save(saved);
+
+
+        return Res.ok(saved!=null);
     }
 
     @GET

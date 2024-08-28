@@ -16,6 +16,8 @@ package org.okstar.platform.system.settings.service;
 
 import org.okstar.platform.common.core.OkService;
 import org.okstar.platform.system.settings.domain.SysConfIntegration;
+import org.okstar.platform.system.settings.domain.SysConfIntegrationIm;
+import org.okstar.platform.system.settings.domain.SysConfIntegrationStack;
 
 /**
  *集成配置
@@ -25,4 +27,6 @@ public interface SysConfIntegrationService extends OkService
     SysConfIntegration find();
 
     void save(SysConfIntegration integration);
+
+    void uploadConf(SysConfIntegration integration);
 }

@@ -47,4 +47,10 @@ public class SysConfIntegrationRpcImpl implements SysConfIntegrationRpc {
 
         return dto;
     }
+
+    @Override
+    public void uploadConf() {
+        SysConfIntegration integration = service.find();
+        service.uploadConf(integration);
+    }
 }

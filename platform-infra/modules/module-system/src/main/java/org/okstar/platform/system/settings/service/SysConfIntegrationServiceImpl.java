@@ -17,9 +17,22 @@ import io.quarkus.logging.Log;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
+import org.eclipse.microprofile.rest.client.inject.RestClient;
+import org.okstar.cloud.OkCloudApiClient;
+import org.okstar.cloud.OkCloudFactory;
+import org.okstar.cloud.channel.FederalChannel;
+import org.okstar.cloud.entity.FederalStateConfEntity;
+import org.okstar.platform.common.core.defined.OkCloudDefines;
+import org.okstar.platform.common.core.exception.OkRuntimeException;
+import org.okstar.platform.common.rpc.RpcAssert;
+import org.okstar.platform.common.rpc.RpcResult;
+import org.okstar.platform.common.string.OkStringUtil;
+import org.okstar.platform.org.dto.Org0;
+import org.okstar.platform.org.rpc.OrgRpc;
 import org.okstar.platform.system.settings.domain.*;
 import org.okstar.platform.system.settings.mapper.SysSetKvMapper;
 
+import java.io.IOException;
 import java.util.List;
 
 @Transactional
@@ -28,6 +41,9 @@ public class SysConfIntegrationServiceImpl implements SysConfIntegrationService 
 
     @Inject
     SysSetKvMapper kvMapper;
+    @Inject
+    @RestClient
+    OrgRpc orgRpc;
 
     @Override
     public SysConfIntegration find() {
@@ -82,5 +98,47 @@ public class SysConfIntegrationServiceImpl implements SysConfIntegrationService 
                 p.setV(keycloak.getServerUrl());
             }
         });
+
+
+        uploadConf(integration);
+
+
+    }
+
+    /**
+     * 上传配置
+     */
+    @Override
+    public void uploadConf(SysConfIntegration integration) {
+        /**
+         * 保存到Cloud
+         */
+        RpcResult<Org0> current = orgRpc.current();
+        Org0 org0 = RpcAssert.isTrue(current);
+
+        if (org0 == null || OkStringUtil.isEmpty(org0.getCert())) {
+            return;
+        }
+
+        SysConfIntegrationIm im = integration.getIm();
+        var x = new FederalStateConfEntity();
+        x.setImHost(im.getHost());
+        x.setImPort(im.getAdminPort());
+
+        SysConfIntegrationStack stack = integration.getStack();
+        x.setStackUrl(stack.getFqdn());
+
+        try {
+            OkCloudApiClient client = OkCloudFactory.makeClient(OkCloudDefines.OK_CLOUD_API_STACK,
+                    OkCloudDefines.OK_CLOUD_USERNAME,
+                    OkCloudDefines.OK_CLOUD_PASSWORD);
+
+            FederalChannel channel = client.getFederalChannel();
+            String putConfig = channel.putConfig(org0.getCert(), x);
+            Log.infof("Put config=>%s", putConfig);
+
+        } catch (IOException e) {
+            throw new OkRuntimeException("连接到社区网络异常，请稍后再试！");
+        }
     }
 }

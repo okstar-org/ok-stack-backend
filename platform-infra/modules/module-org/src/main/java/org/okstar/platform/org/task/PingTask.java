@@ -21,14 +21,15 @@ import org.eclipse.microprofile.rest.client.inject.RestClient;
 import org.okstar.cloud.OkCloudApiClient;
 import org.okstar.cloud.channel.FederalChannel;
 import org.okstar.cloud.entity.AuthenticationToken;
-import org.okstar.cloud.entity.FederalStateEntity;
+import org.okstar.cloud.entity.FederalStatePingEntity;
+import org.okstar.cloud.entity.FederalStatePongEntity;
 import org.okstar.platform.common.core.defined.OkCloudDefines;
+import org.okstar.platform.common.date.OkDateUtils;
 import org.okstar.platform.common.os.HostInfo;
 import org.okstar.platform.common.os.HostUtils;
 import org.okstar.platform.common.string.OkStringUtil;
 import org.okstar.platform.org.domain.Org;
 import org.okstar.platform.org.service.OrgService;
-import org.okstar.platform.system.dto.SysConfIntegrationDTO;
 import org.okstar.platform.system.rpc.SysConfIntegrationRpc;
 
 @ApplicationScoped
@@ -39,7 +40,7 @@ public class PingTask {
 
     @Inject
     @RestClient
-    SysConfIntegrationRpc settingsRpc;
+    SysConfIntegrationRpc integrationRpc;
 
 
     @Scheduled(every = "1m")
@@ -51,67 +52,37 @@ public class PingTask {
                             OkCloudDefines.OK_CLOUD_PASSWORD));
             doPing(client);
         } catch (Exception e) {
-             Log.warnf("Task execute error: %s", e.getMessage());
+            Log.warnf("Task execute error: %s", e.getMessage());
         }
     }
 
     public void doPing(OkCloudApiClient client) {
         Org org = orgService.loadCurrent();
-        String orgNo = org.getNo();
-        if (OkStringUtil.isEmpty(orgNo)) {
+        String cert = org.getCert();
+        if (OkStringUtil.isEmpty(cert)) {
             return;
         }
 
-        String orgName = org.getName();
-        if (OkStringUtil.isEmpty(orgName)) {
-            return;
-        }
-
-        /**
-         * 获取全局配置
-         */
-        SysConfIntegrationDTO integrationDTO;
-        try {
-            integrationDTO = settingsRpc.getIntegrationConf();
-            if (integrationDTO == null) {
-                return;
-            }
-        } catch (Exception e) {
-            Log.warnf("Fetch integration configuration failed, error: %s", e.getMessage());
-            return;
-        }
-
-        if (OkStringUtil.isEmpty(integrationDTO.getStack().getFqdn())
-                || OkStringUtil.isEmpty(integrationDTO.getIm().getHost())) {
-            return;
-        }
-
-        FederalStateEntity ex = new FederalStateEntity();
-        ex.setNo(org.getNo());
-        ex.setName(org.getName());
-        ex.setStackUrl(integrationDTO.getStack().getFqdn());
-        ex.setXmppHost(integrationDTO.getIm().getHost());
-
-        HostInfo info = null;
         try {
             //获取主机信息
-            info = HostUtils.getHostInfo();
+            HostInfo info = HostUtils.getHostInfo();
+
+            var ex = new FederalStatePingEntity();
             ex.setPublicIp(info.getPublicIp());
             ex.setHostName(info.getHostName());
             ex.setPublicIp(info.getPublicIp());
             ex.setFqdn(info.getFqdn());
-        } catch (Throwable e) {
-            Log.warnf("getHostInfo:%s", e.getMessage());
-            return;
-        }
+            ex.setPid(info.getPid());
+            ex.setTs(OkDateUtils.now());
 
-        try {
             //获取提交通道
             FederalChannel channel = client.getFederalChannel();
-            String cert = channel.ping(ex);
-            Log.infof("Org cert=>%s", cert);
-            if (cert != null) {
-                orgService.setCert(org.id, cert);
+            FederalStatePongEntity pongEntity = channel.ping(cert, ex);
+            Log.infof("Pong=>%s", pongEntity);
+
+            if (pongEntity.getSignals() != null && !pongEntity.getSignals().isConf()) {
+                //没有上传配置
+                integrationRpc.uploadConf();
             }
         } catch (Exception e) {
             Log.warnf(e.getMessage());

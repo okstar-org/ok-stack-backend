@@ -114,13 +114,13 @@ public class OrgServiceImpl implements OrgService {
     }
 
     @Override
-    public Boolean save(Org0 org0) {
+    public Org save(Org0 org0) {
         OkAssert.isTrue(org0 != null && org0.getId() != null, "Invalid parameter!");
         Org org = get(org0.getId());
         org.setName(org0.getName());
         org.setUrl(org0.getUrl());
         org.setLocation(org0.getLocation());
         org.setAvatar(org0.getAvatar());
-        return true;
+        return org;
     }
 }

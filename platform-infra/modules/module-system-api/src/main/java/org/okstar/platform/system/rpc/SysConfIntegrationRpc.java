@@ -30,4 +30,6 @@ public interface SysConfIntegrationRpc {
     @GET
     @Path("getIntegrationConf")
     SysConfIntegrationDTO getIntegrationConf() throws ProcessingException;
+
+    void uploadConf();
 }

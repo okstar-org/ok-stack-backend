@@ -13,25 +13,8 @@
 
 package org.okstar.platform.org.service;
 
-
-import org.okstar.platform.common.datasource.OkJpaService;
 import org.okstar.platform.org.domain.Org;
-import org.okstar.platform.org.dto.Org0;
 
-public interface OrgService extends OkJpaService<Org>
-{
-    /**
-     * 获取当前组织
-     * 没有则初始化
-     * @return
-     */
-    Org loadCurrent();
-
-    Org0 loadCurrent0();
-
-    Org setDefault();
-
-    void setCert(Long id, String cert);
-
-    Org save(Org0 org0);
+public interface FederalService {
+    void save(Org saved);
 }

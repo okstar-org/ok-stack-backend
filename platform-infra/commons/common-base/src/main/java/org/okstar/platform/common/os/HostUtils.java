@@ -33,11 +33,11 @@ public class HostUtils {
     public static HostInfo getHostInfo() throws SigarException {
         Sigar sigar = new Sigar();
         NetInfo netInfo = sigar.getNetInfo();
-        String publicIp = OkWebUtil.getPublicIp();
         return HostInfo.builder()
                 .fqdn(sigar.getFQDN())
                 .hostName(netInfo.getHostName())
-                .publicIp(publicIp)
+                .publicIp(OkWebUtil.getPublicIp())
+                .pid(sigar.getPid())
                 .build();
     }
 

@@ -34,4 +34,6 @@ public class HostInfo {
     private String hostName;
     //公网ip
     private String publicIp;
+
+    private Long pid;
 }
