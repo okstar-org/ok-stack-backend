@@ -8,12 +8,13 @@ ENV OK_STAR_DIR=/home/${OK_STAR_USER}
 ENV OK_STACK_DIR=${OK_STAR_DIR}/${OK_PROJECT}
 ENV OK_STACK_LOG_DIR=${OK_STAR_DIR}/${OK_PROJECT}/logs
 
+WORKDIR ${OK_STACK_DIR}
+
 RUN apt-get update -qq && apt-get dist-upgrade -y
 RUN cat /etc/apt/sources.list
 
 RUN apt install -y nginx-full zip unzip
 RUN rm -rf /var/lib/apt/lists/*
-
 
 
 COPY platform-infra/commons/common-base/src/main/resources/lib/libsigar-amd64-linux-1.6.4.so /lib
@@ -26,7 +27,7 @@ COPY build/docker/default /etc/nginx/sites-enabled
 ADD ok-stack-ui/dist/ok-stack-ui.zip ${OK_STAR_DIR}
 RUN unzip ${OK_STAR_DIR}/ok-stack-ui.zip -d /usr/share/nginx/html/
 
-WORKDIR ${OK_STACK_DIR}
+
 
 EXPOSE 80
 VOLUME ["${OK_STACK_LOG_DIR}"]
