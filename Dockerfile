@@ -18,7 +18,7 @@ RUN rm -rf /var/lib/apt/lists/*
 
 
 COPY platform-infra/commons/common-base/src/main/resources/lib/libsigar-amd64-linux-1.6.4.so /lib
-ADD distribution/target/ok-stack-backend-assembly.zip ${OK_STAR_DIR}
+ADD distribution/target/ok-stack-backend-assembly.tar.gz ${OK_STAR_DIR}
 
 # UI
 COPY build/docker/default /etc/nginx/sites-enabled
