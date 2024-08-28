@@ -3,7 +3,7 @@ FROM eclipse-temurin:17-jdk
 LABEL maintainer="cto@chuanshaninfo.com"
 
 ENV OK_STAR_USER=okstar
-ENV OK_PROJECT=ok-stack-bac
+ENV OK_PROJECT=ok-stack-backend
 ENV OK_STACK_DIR=/home/okstar/${OK_PROJECT}
 ENV OK_STAR_DIR=/home/okstar
 ENV OK_STACK_LOG_DIR=/home/okstar/${OK_PROJECT}/logs
