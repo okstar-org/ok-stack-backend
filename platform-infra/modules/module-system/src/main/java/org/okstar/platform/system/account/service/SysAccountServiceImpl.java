@@ -44,7 +44,7 @@ import org.okstar.platform.system.account.mapper.SysAccountMapper;
 import org.okstar.platform.system.account.mapper.SysAccountPasswordMapper;
 import org.okstar.platform.system.sign.SignUpForm;
 import org.okstar.platform.system.sign.SignUpResult;
-import org.okstar.platform.system.vo.SysAccount0;
+import org.okstar.platform.system.dto.SysAccountDTO;
 
 import java.util.Comparator;
 import java.util.List;
@@ -106,7 +106,9 @@ public class SysAccountServiceImpl extends OkAbsService implements SysAccountSer
         String bindValue = value;
         if (type == AccountDefines.BindType.phone) {
             bindValue = OkPhoneUtils.canonical(value, iso);
-            Log.infof("bindValue=%S", bindValue);
+            if (bindValue == null) {
+                return Optional.empty();
+            }
         }
 
         List<SysAccountBind> list = sysAccountBindMapper.list(
@@ -140,11 +142,11 @@ public class SysAccountServiceImpl extends OkAbsService implements SysAccountSer
     }
 
     @Override
-    public SysAccount0 toAccount0(SysAccount account) {
+    public SysAccountDTO toAccount0(SysAccount account) {
         if (account == null) {
             return null;
         }
-        SysAccount0 dto = new SysAccount0();
+        SysAccountDTO dto = new SysAccountDTO();
         OkBeanUtils.copyPropertiesTo(account, dto);
         return dto;
     }

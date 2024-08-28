@@ -33,12 +33,15 @@ import org.okstar.platform.system.dto.BackUser;
 import org.okstar.platform.system.rpc.SysAccountRpc;
 import org.okstar.platform.system.rpc.SysBackUserManagerRpc;
 import org.okstar.platform.system.sign.*;
-import org.okstar.platform.system.vo.SysAccount0;
+import org.okstar.platform.system.dto.SysAccountDTO;
 
+import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
 import static org.okstar.platform.common.core.defined.AccountDefines.BindType.email;
+import static org.okstar.platform.common.core.defined.AccountDefines.BindType.phone;
 
 @Slf4j
 @ApplicationScoped
@@ -101,7 +104,7 @@ public class PassportServiceImpl implements PassportService {
     public void signDown(Long accountId) {
         log.info("signDown:{}", accountId);
 
-        SysAccount0 account0 = RpcAssert.isTrue(sysAccountRpc.findById(accountId));
+        SysAccountDTO account0 = RpcAssert.isTrue(sysAccountRpc.findById(accountId));
 
         //删除认证信息
         boolean backUser = backUserManager.delete(account0.getUsername());
@@ -120,7 +123,7 @@ public class PassportServiceImpl implements PassportService {
         String account = signInForm.getAccount();
 
         //获取帐号
-        SysAccount0 account0 = getAccount(account);
+        SysAccountDTO account0 = getAccount(account);
         Log.debugf("getAccount=>%s", account0);
         if (account0 == null) {
             throw new NotFoundException("帐号不存在！");
@@ -137,6 +140,11 @@ public class PassportServiceImpl implements PassportService {
             BackUser addUser = new BackUser();
             addUser.setId(String.valueOf(account0.getId()));
             addUser.setUsername(account0.getUsername());
+            if (signInForm.getType() == email) {
+                addUser.setEmail(signInForm.getAccount());
+            } else if (signInForm.getType() == phone) {
+                addUser.setAttributes(Map.of("phone", List.of(signInForm.getAccount())));
+            }
             addUser.setPassword(pwd);
 
             BackUser added = backUserManager.add(addUser);
@@ -158,7 +166,7 @@ public class PassportServiceImpl implements PassportService {
     }
 
     @Override
-    public SysAccount0 getAccount(String account) {
+    public SysAccountDTO getAccount(String account) {
         return RpcAssert.isTrue(sysAccountRpc.getByAccount(account));
     }
 
@@ -174,7 +182,7 @@ public class PassportServiceImpl implements PassportService {
     public void forgot(ForgotForm form) {
         OkAssert.notNull(form.getAccountType(), "帐号类型不能为空！");
         OkAssert.hasText(form.getAccount(), "帐号不能为空！");
-        SysAccount0 account = getAccount(form.getAccount());
+        SysAccountDTO account = getAccount(form.getAccount());
         OkAssert.notNull(account, "帐号不存在！");
         backUserManager.forgot(account.getUsername());
     }

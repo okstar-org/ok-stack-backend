@@ -17,7 +17,7 @@ import org.eclipse.microprofile.rest.client.inject.RegisterRestClient;
 import org.okstar.platform.common.rpc.RpcResult;
 import org.okstar.platform.system.sign.SignUpForm;
 import org.okstar.platform.system.sign.SignUpResult;
-import org.okstar.platform.system.vo.SysAccount0;
+import org.okstar.platform.system.dto.SysAccountDTO;
 
 import jakarta.ws.rs.*;
 
@@ -36,5 +36,5 @@ public interface PassportRpc {
 
     @GET
     @Path("getAccount/{account}")
-    RpcResult<SysAccount0> getAccount(@PathParam("account") String account);
+    RpcResult<SysAccountDTO> getAccount(@PathParam("account") String account);
 }

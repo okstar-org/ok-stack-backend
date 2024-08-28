@@ -13,10 +13,9 @@
 
 package org.okstar.platform.common.phone;
 
-import com.google.i18n.phonenumbers.NumberParseException;
 import com.google.i18n.phonenumbers.PhoneNumberUtil;
 import com.google.i18n.phonenumbers.Phonenumber;
-import org.okstar.platform.common.core.exception.user.OkUserException;
+import io.quarkus.logging.Log;
 
 import static com.google.i18n.phonenumbers.PhoneNumberUtil.PhoneNumberFormat.INTERNATIONAL;
 
@@ -31,9 +30,10 @@ public class OkPhoneUtils {
         try {
             PhoneNumberUtil util = PhoneNumberUtil.getInstance();
             Phonenumber.PhoneNumber number = util.parse(phoneNumber, iso);
-            return (util.format(number, INTERNATIONAL));
-        } catch (NumberParseException e) {
-            throw new OkUserException("Is not a phone number", e);
+            return util.format(number, INTERNATIONAL);
+        } catch (Exception e) {
+            Log.warnf("Invalid phone number:%s", iso);
+            return null;
         }
     }
 }

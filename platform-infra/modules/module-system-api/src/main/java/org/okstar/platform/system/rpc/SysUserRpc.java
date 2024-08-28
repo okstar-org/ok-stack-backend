@@ -11,28 +11,19 @@
  * /
  */
 
-package org.okstar.platform.auth.service;
+package org.okstar.platform.system.rpc;
 
-
-import org.okstar.platform.system.sign.*;
+import jakarta.ws.rs.POST;
+import jakarta.ws.rs.Path;
+import org.eclipse.microprofile.rest.client.inject.RegisterRestClient;
 import org.okstar.platform.system.dto.SysAccountDTO;
 
+import java.util.List;
 
-public interface PassportService {
-
-    SignUpResult signUp(SignUpForm signUpForm);
-
-    void signDown(Long accountId);
-
-    AuthorizationResult signIn(SignInForm signInForm);
-
-    AuthorizationResult refresh(String refreshToken);
-
-    void signOut(String accessToken);
-
-    SysAccountDTO getAccount(String account);
-
-    void updatePassword(PasswordUpdateForm updateForm);
-
-    void forgot(ForgotForm form);
+@RegisterRestClient
+@Path("rpc/SysUserRpc")
+public interface SysUserRpc {
+    @POST
+    @Path("search")
+    List<SysAccountDTO> search(String query);
 }

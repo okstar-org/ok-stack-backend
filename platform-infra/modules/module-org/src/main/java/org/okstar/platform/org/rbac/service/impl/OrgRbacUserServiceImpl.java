@@ -13,7 +13,7 @@ import org.okstar.platform.org.rbac.mapper.OrgRbacUserRoleMapper;
 import org.okstar.platform.org.rbac.resource.vo.OrgRbacUserResponseVo;
 import org.okstar.platform.org.rbac.service.OrgRbacUserService;
 import org.okstar.platform.system.rpc.SysAccountRpc;
-import org.okstar.platform.system.vo.SysAccount0;
+import org.okstar.platform.system.dto.SysAccountDTO;
 
 import java.util.List;
 import java.util.Objects;
@@ -38,7 +38,7 @@ public class OrgRbacUserServiceImpl implements OrgRbacUserService, PanacheReposi
         query.setParameter("roleId", roleId);
         return query.getResultList().stream().map(orgRbacUserRole -> {
             OrgRbacUser user = orgRbacUserRole.getUser();
-            SysAccount0 account = getAccount(user.getAccountId());
+            SysAccountDTO account = getAccount(user.getAccountId());
             if (account != null) {
                 OrgRbacUserResponseVo orgRbacUserResponseVo = new OrgRbacUserResponseVo();
                 orgRbacUserResponseVo.setNickname(account.getNickname());
@@ -54,8 +54,8 @@ public class OrgRbacUserServiceImpl implements OrgRbacUserService, PanacheReposi
     @Override
     public List<OrgRbacUserResponseVo> queryUserList() {
         return orgRbacUserMapper.listAll().stream().map(ids -> {
-            RpcResult<SysAccount0> sysAccount0RpcResult = sysAccountRpc.findById(ids.getAccountId());
-            SysAccount0 sysAccount = sysAccount0RpcResult.getData();
+            RpcResult<SysAccountDTO> sysAccount0RpcResult = sysAccountRpc.findById(ids.getAccountId());
+            SysAccountDTO sysAccount = sysAccount0RpcResult.getData();
             if (sysAccount != null) {
                 OrgRbacUserResponseVo user = new OrgRbacUserResponseVo();
                 OkBeanUtils.copyPropertiesTo(sysAccount, user);
@@ -65,8 +65,8 @@ public class OrgRbacUserServiceImpl implements OrgRbacUserService, PanacheReposi
         }).filter(Objects::nonNull).collect(Collectors.toList());
     }
 
-    public SysAccount0 getAccount(Long accountId) {
-        RpcResult<SysAccount0> sysAccount0RpcResult = sysAccountRpc.findById(accountId);
+    public SysAccountDTO getAccount(Long accountId) {
+        RpcResult<SysAccountDTO> sysAccount0RpcResult = sysAccountRpc.findById(accountId);
         return sysAccount0RpcResult.getData();
     }
 }

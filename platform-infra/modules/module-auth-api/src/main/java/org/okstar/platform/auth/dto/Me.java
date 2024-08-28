@@ -17,13 +17,13 @@ import lombok.Builder;
 import lombok.Data;
 import org.okstar.platform.common.string.OkStringUtil;
 import org.okstar.platform.system.dto.SysProfileDTO;
-import org.okstar.platform.system.vo.SysAccount0;
+import org.okstar.platform.system.dto.SysAccountDTO;
 
 @Data
 @Builder
 public class Me {
     //帐号信息
-    SysAccount0 account;
+    SysAccountDTO account;
     //个人信息
     SysProfileDTO profile;
 

@@ -23,7 +23,7 @@ import org.eclipse.microprofile.rest.client.inject.RestClient;
 import org.okstar.platform.common.core.web.bean.Res;
 import org.okstar.platform.common.rpc.RpcAssert;
 import org.okstar.platform.system.rpc.SysAccountRpc;
-import org.okstar.platform.system.vo.SysAccount0;
+import org.okstar.platform.system.dto.SysAccountDTO;
 
 /**
  * 通行
@@ -38,7 +38,7 @@ public class PassportResource {
 
     @GET
     @Path("account/{account}")
-    public Res<SysAccount0> getAccount(@PathParam("account") String account) {
+    public Res<SysAccountDTO> getAccount(@PathParam("account") String account) {
         var sysAccount0 = RpcAssert.isTrue(sysAccountRpc.getByAccount(account));
         if (sysAccount0 == null) {
             //返回404错误

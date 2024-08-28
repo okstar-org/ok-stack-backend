@@ -11,47 +11,35 @@
  * /
  */
 
-package org.okstar.platform.org.dto;
+package org.okstar.platform.system.dto;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import org.okstar.platform.common.core.defined.AccountDefines;
 import org.okstar.platform.common.core.web.bean.DTO;
-import org.okstar.platform.system.dto.SysProfileDTO;
-import org.okstar.platform.system.dto.SysAccountDTO;
 
-import java.util.List;
+import java.util.Optional;
 
 /**
- * 我的组织信息
+ * 简单帐号对象
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class MyOrgInfo extends DTO {
+public class SysAccountDTO extends DTO {
+    private Long id;
+    //国家
+    private String iso;
+    //语言
+    private String lang;
+    //用户名
+    private String username;
+    //昵称
+    private String nickname;
+    //头像
+    private String avatar;
 
-    /**
-     * 帐号信息
-     */
-    private SysAccountDTO account;
-
-    /**
-     * profile
-     */
-    private SysProfileDTO profile;
-
-    /**
-     * 组织信息
-     */
-    private Org0 org;
-
-    /**
-     * 员工信息
-     */
-    private OrgStaff0 staff;
-
-    /**
-     * 岗位信息
-     */
-    private List<MyPostInfo> postInfo;
-
+    public String getAvatar() {
+        return Optional.ofNullable(avatar).orElse(AccountDefines.DefaultAvatar);
+    }
 
 }

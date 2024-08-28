@@ -35,7 +35,7 @@ public class SignInForm extends Req {
      * password : "123456"
      * remember_me: true
      */
-
+    private AccountDefines.BindType type = AccountDefines.BindType.email;
     private String iso = AccountDefines.DefaultISO;
     private String grantType;
     private String account;

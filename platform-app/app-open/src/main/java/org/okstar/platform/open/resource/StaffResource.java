@@ -24,7 +24,7 @@ import org.okstar.platform.common.rpc.RpcAssert;
 import org.okstar.platform.org.dto.OrgStaff0;
 import org.okstar.platform.org.rpc.OrgStaffRpc;
 import org.okstar.platform.system.rpc.SysAccountRpc;
-import org.okstar.platform.system.vo.SysAccount0;
+import org.okstar.platform.system.dto.SysAccountDTO;
 
 import java.util.List;
 
@@ -46,7 +46,7 @@ public class StaffResource {
         var list = RpcAssert.isTrue(orgStaffRpc.search(query));
         list.forEach(e -> {
             if (e.getAccountId() != null) {
-                SysAccount0 account0 = RpcAssert.isTrue(sysAccountRpc.findById(e.getAccountId()));
+                SysAccountDTO account0 = RpcAssert.isTrue(sysAccountRpc.findById(e.getAccountId()));
                 e.setUsername(account0.getUsername());
             }
         });

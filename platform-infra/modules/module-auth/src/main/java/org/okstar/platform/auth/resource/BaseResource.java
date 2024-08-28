@@ -18,7 +18,7 @@ import org.eclipse.microprofile.rest.client.inject.RestClient;
 import org.okstar.platform.common.resource.OkCommonResource;
 import org.okstar.platform.common.rpc.RpcAssert;
 import org.okstar.platform.system.rpc.SysAccountRpc;
-import org.okstar.platform.system.vo.SysAccount0;
+import org.okstar.platform.system.dto.SysAccountDTO;
 
 
 public class BaseResource extends OkCommonResource {
@@ -31,7 +31,7 @@ public class BaseResource extends OkCommonResource {
      * 获取自己
      * @return SysAccount0
      */
-    protected SysAccount0 self() {
+    protected SysAccountDTO self() {
         return RpcAssert.isTrue(sysAccountRpc.findByUsername(getUsername()));
     }
 }

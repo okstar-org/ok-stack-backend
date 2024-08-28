@@ -20,7 +20,7 @@ import org.okstar.platform.common.rpc.RpcResult;
 import org.okstar.platform.system.dto.SysAccountBindDTO;
 import org.okstar.platform.system.sign.SignUpForm;
 import org.okstar.platform.system.sign.SignUpResult;
-import org.okstar.platform.system.vo.SysAccount0;
+import org.okstar.platform.system.dto.SysAccountDTO;
 
 import java.util.List;
 
@@ -43,26 +43,26 @@ public interface SysAccountRpc {
 
     @GET
     @Path("findByAccount/{account}")
-    RpcResult<SysAccount0> getByAccount(@PathParam("account") String account);
+    RpcResult<SysAccountDTO> getByAccount(@PathParam("account") String account);
 
     @GET
     @Path("findByBind")
-    RpcResult<SysAccount0> findByBind(@QueryParam("type") AccountDefines.BindType type,
-                                      @QueryParam("iso") String iso,
-                                      @QueryParam("bindValue") String bindValue);
+    RpcResult<SysAccountDTO> findByBind(@QueryParam("type") AccountDefines.BindType type,
+                                        @QueryParam("iso") String iso,
+                                        @QueryParam("bindValue") String bindValue);
 
     @GET
     @Path("findByEmail")
-    RpcResult<SysAccount0> findByEmail(@QueryParam("type") AccountDefines.BindType type,
-                                      @QueryParam("email") String email);
+    RpcResult<SysAccountDTO> findByEmail(@QueryParam("type") AccountDefines.BindType type,
+                                         @QueryParam("email") String email);
 
     @GET
     @Path("findByUsername")
-    RpcResult<SysAccount0> findByUsername(@QueryParam("username") String username);
+    RpcResult<SysAccountDTO> findByUsername(@QueryParam("username") String username);
 
     @GET
     @Path("findById/{id}")
-    RpcResult<SysAccount0> findById(@PathParam("id") Long id);
+    RpcResult<SysAccountDTO> findById(@PathParam("id") Long id);
 
 
     @POST
@@ -73,7 +73,5 @@ public interface SysAccountRpc {
     @Path("getBinds/{id}")
     RpcResult<List<SysAccountBindDTO>> getBinds(@PathParam("id") Long id);
 
-    @POST
-    @Path("search")
-    List<SysAccount0> search(String query);
+
 }

@@ -37,7 +37,7 @@ if [ ! -z "$pid" ] ; then
 fi
 
 PIDS=()
-MODULES=("module-bus" "module-system" "module-org" "module-auth" "module-chat" "module-billing" "module-work")
+MODULES=("module-bus" "module-system" "module-org" "module-chat" "module-billing" "module-work" "module-auth")
 for item in ${MODULES[@]}
 do
 #  start-stop-daemon --start --background --exec /path/to/daemon --pidfile /var/run/daemon.pid

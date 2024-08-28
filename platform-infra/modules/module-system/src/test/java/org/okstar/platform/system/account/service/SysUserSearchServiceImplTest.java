@@ -13,11 +13,12 @@
 
 package org.okstar.platform.system.account.service;
 
+import io.quarkus.logging.Log;
 import io.quarkus.test.junit.QuarkusTest;
 import io.smallrye.common.constraint.Assert;
 import jakarta.inject.Inject;
 import org.junit.jupiter.api.Test;
-import org.okstar.platform.system.vo.SysAccount0;
+import org.okstar.platform.system.dto.SysAccountDTO;
 
 import java.util.List;
 
@@ -29,7 +30,9 @@ class SysUserSearchServiceImplTest {
 
     @Test
     void search() {
-        List<SysAccount0> list = sysUserSearchService.search("杰");
+        String s = "杰";
+        List<SysAccountDTO> list = sysUserSearchService.search(s);
         Assert.assertNotNull(list);
+        Log.infof("search%s=>%d", s, list.size());
     }
 }

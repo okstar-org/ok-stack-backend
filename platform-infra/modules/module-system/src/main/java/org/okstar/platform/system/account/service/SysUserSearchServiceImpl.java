@@ -16,7 +16,7 @@ package org.okstar.platform.system.account.service;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import org.okstar.platform.system.account.domain.SysAccount;
-import org.okstar.platform.system.vo.SysAccount0;
+import org.okstar.platform.system.dto.SysAccountDTO;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,8 +30,8 @@ public class SysUserSearchServiceImpl implements SysUserSearchService {
     private SysProfileService profileService;
 
     @Override
-    public List<SysAccount0> search(String query) {
-        List<SysAccount0> list = new ArrayList<>();
+    public List<SysAccountDTO> search(String query) {
+        List<SysAccountDTO> list = new ArrayList<>();
 
         //帐号搜索
         Optional<SysAccount> account = accountService.findByAccount(query);

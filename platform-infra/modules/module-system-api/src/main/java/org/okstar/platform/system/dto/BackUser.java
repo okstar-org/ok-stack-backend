@@ -18,8 +18,12 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+
 /**
- * 后端认证用户
+ * 后端认证用户(keycloak)
  */
 @Builder
 @Data
@@ -32,4 +36,5 @@ public class BackUser {
    String lastName;
    String email;
    String password;
+   Map<String, List<String>> attributes = new LinkedHashMap<>();
 }

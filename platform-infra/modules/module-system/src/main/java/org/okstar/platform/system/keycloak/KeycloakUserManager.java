@@ -110,7 +110,11 @@ public class KeycloakUserManager implements BackUserManager {
 
     @Override
     public BackUser addUser(BackUser user) {
-        Log.infof("Add user:%s", user.getUsername());
+        Log.infof("Add user:%s", user);
+
+        OkAssert.hasText(user.getUsername(), "username is required");
+        OkAssert.hasText(user.getPassword(), "password is required");
+
         try (Keycloak keycloak = keycloakService.openKeycloak()) {
             UsersResource usersResource = keycloakService.getUsersResource(keycloak);
             try {
@@ -129,7 +133,8 @@ public class KeycloakUserManager implements BackUserManager {
                 UserResource userResource = usersResource.get(userRepresentation.getId());
                 userResource.resetPassword(cr);
             }).findFirst().map(KeycloakUserManager::toBackend).orElse(null);
-            Log.debugf("User is:%s", u);
+
+            Log.infof("User is:%s", u);
             return u;
         }
     }
@@ -171,6 +176,7 @@ public class KeycloakUserManager implements BackUserManager {
         userRepresentation.setLastName(user.getLastName());
         userRepresentation.setEmail(user.getEmail());
         userRepresentation.setId(user.getId());
+        userRepresentation.setAttributes(user.getAttributes());
         userRepresentation.setEnabled(true);
         return userRepresentation;
     }

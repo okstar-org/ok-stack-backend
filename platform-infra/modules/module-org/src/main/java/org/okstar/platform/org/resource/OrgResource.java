@@ -36,7 +36,7 @@ import org.okstar.platform.system.dto.SysAccountBindDTO;
 import org.okstar.platform.system.dto.SysProfileDTO;
 import org.okstar.platform.system.rpc.SysAccountRpc;
 import org.okstar.platform.system.rpc.SysProfileRpc;
-import org.okstar.platform.system.vo.SysAccount0;
+import org.okstar.platform.system.dto.SysAccountDTO;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -85,7 +85,7 @@ public class OrgResource extends OkCommonResource {
         String username = getUsername();
         Log.infof("username=> %s", username);
 
-        SysAccount0 account0 = RpcAssert.isTrue(sysAccountRpc.findByUsername(username));
+        SysAccountDTO account0 = RpcAssert.isTrue(sysAccountRpc.findByUsername(username));
         Log.infof("SysAccount0=> %s", account0);
 
         SysProfileDTO profile = sysProfileRpc.getByAccount(account0.getId());

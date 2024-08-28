@@ -31,7 +31,7 @@ import org.okstar.platform.org.rpc.OrgRpc;
 import org.okstar.platform.system.dto.SysProfileDTO;
 import org.okstar.platform.system.rpc.SysAccountRpc;
 import org.okstar.platform.system.rpc.SysProfileRpc;
-import org.okstar.platform.system.vo.SysAccount0;
+import org.okstar.platform.system.dto.SysAccountDTO;
 
 import java.util.concurrent.ExecutorService;
 
@@ -69,7 +69,7 @@ public class MeResource extends BaseResource {
 //        }
 //        String name = jwt.getName();
 //        Log.infof("name:%s", name);
-        SysAccount0 account0 = self();
+        SysAccountDTO account0 = self();
         SysProfileDTO profileDTO = sysProfileRpc.getByAccount(account0.getId());
 
 //      var account0 = RpcAssert.isTrue(sysAccountRpc.findByUsername(sysAccount0.getUsername()));
@@ -83,7 +83,7 @@ public class MeResource extends BaseResource {
         return Res.ok(me);
     }
 
-    private void detach(SysAccount0 account0) {
+    private void detach(SysAccountDTO account0) {
 
         FederalChannel channel = client.getFederalChannel();
         FederalCitizenEntity ex = new FederalCitizenEntity();

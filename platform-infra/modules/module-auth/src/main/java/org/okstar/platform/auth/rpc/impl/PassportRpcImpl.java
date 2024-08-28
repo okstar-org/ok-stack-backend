@@ -20,7 +20,7 @@ import org.okstar.platform.auth.service.PassportService;
 import org.okstar.platform.common.rpc.RpcResult;
 import org.okstar.platform.system.sign.SignUpForm;
 import org.okstar.platform.system.sign.SignUpResult;
-import org.okstar.platform.system.vo.SysAccount0;
+import org.okstar.platform.system.dto.SysAccountDTO;
 
 
 
@@ -53,12 +53,12 @@ public class PassportRpcImpl implements PassportRpc {
     }
 
     @Override
-    public RpcResult<SysAccount0> getAccount(String account) {
+    public RpcResult<SysAccountDTO> getAccount(String account) {
         try {
-            SysAccount0 account0 = passportService.getAccount(account);
-            return RpcResult.<SysAccount0>builder().success(true).data(account0).build();
+            SysAccountDTO account0 = passportService.getAccount(account);
+            return RpcResult.<SysAccountDTO>builder().success(true).data(account0).build();
         } catch (Exception e) {
-            return RpcResult.<SysAccount0>builder().success(false).msg(e.getMessage()).build();
+            return RpcResult.<SysAccountDTO>builder().success(false).msg(e.getMessage()).build();
         }
     }
 }

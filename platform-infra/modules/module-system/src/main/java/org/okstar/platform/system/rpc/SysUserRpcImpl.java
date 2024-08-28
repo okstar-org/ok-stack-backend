@@ -11,28 +11,23 @@
  * /
  */
 
-package org.okstar.platform.auth.service;
+package org.okstar.platform.system.rpc;
 
-
-import org.okstar.platform.system.sign.*;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
+import org.okstar.platform.system.account.service.SysUserSearchService;
 import org.okstar.platform.system.dto.SysAccountDTO;
 
+import java.util.List;
 
-public interface PassportService {
+@ApplicationScoped
+public class SysUserRpcImpl implements SysUserRpc {
 
-    SignUpResult signUp(SignUpForm signUpForm);
+    @Inject
+    SysUserSearchService sysUserSearchService;
 
-    void signDown(Long accountId);
-
-    AuthorizationResult signIn(SignInForm signInForm);
-
-    AuthorizationResult refresh(String refreshToken);
-
-    void signOut(String accessToken);
-
-    SysAccountDTO getAccount(String account);
-
-    void updatePassword(PasswordUpdateForm updateForm);
-
-    void forgot(ForgotForm form);
+    @Override
+    public List<SysAccountDTO> search(String query) {
+        return sysUserSearchService.search(query);
+    }
 }

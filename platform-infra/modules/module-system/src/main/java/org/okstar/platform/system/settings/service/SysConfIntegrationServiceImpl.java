@@ -13,6 +13,7 @@
 
 package org.okstar.platform.system.settings.service;
 
+import io.quarkus.logging.Log;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
@@ -51,36 +52,35 @@ public class SysConfIntegrationServiceImpl implements SysConfIntegrationService 
 
     @Override
     public void save(SysConfIntegration integration) {
+        Log.infof("Save integration [%s]", integration);
+
+        //im
         SysConfIntegrationIm im = integration.getIm();
-        List<SysProperty> imProperties = List.of(
-                SysProperty.builder()
-                        .grouping(im.getGroup())
-                        .k("host")
-                        .v(im.getHost())
-                        .build(),
-
-                SysProperty.builder()
-                        .grouping(im.getGroup())
-                        .k("api-secret")
-                        .v(im.getApiSecret())
-                        .build(),
-
-                SysProperty.builder()
-                        .grouping(im.getGroup())
-                        .k("admin-port")
-                        .v(String.valueOf(im.getAdminPort()))
-                        .build()
-        );
-        kvMapper.persist(imProperties);
+        kvMapper.findByGroup(im.getGroup()).forEach(p -> {
+            if ("host".equals(p.getK())) {
+                p.setV(im.getHost());
+            } else if ("admin-port".equals(p.getK())) {
+                p.setV(String.valueOf(im.getAdminPort()));
+            } else if ("api-secret".equals(p.getK())) {
+                p.setV(im.getApiSecret());
+            }
+        });
 
         //stack
         SysConfIntegrationStack stack = integration.getStack();
-        List<SysProperty> stackProperties = List.of(
-                SysProperty.builder()
-                        .grouping(stack.getGroup())
-                        .k("fqdn")
-                        .v(stack.getFqdn())
-                        .build());
-        kvMapper.persist(stackProperties);
+        kvMapper.findByGroup(stack.getGroup()).forEach(sp -> {
+            if ("fqdn".equals(sp.getK())) {
+                sp.setV(stack.getFqdn());
+            }
+        });
+
+        //keycloak
+        SysConfIntegrationKeycloak keycloak = integration.getKeycloak();
+        List<SysProperty> kcList = kvMapper.findByGroup(keycloak.getGroup());
+        kcList.forEach(p -> {
+            if ("server-url".equals(p.getK())) {
+                p.setV(keycloak.getServerUrl());
+            }
+        });
     }
 }

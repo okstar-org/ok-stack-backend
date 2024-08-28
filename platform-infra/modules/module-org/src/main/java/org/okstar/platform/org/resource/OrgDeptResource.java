@@ -23,7 +23,7 @@ import org.okstar.platform.org.domain.OrgDept;
 import org.okstar.platform.org.dto.OrgDeptAdd;
 import org.okstar.platform.org.service.OrgDeptService;
 import org.okstar.platform.org.service.OrgService;
-import org.okstar.platform.system.vo.SysAccount0;
+import org.okstar.platform.system.dto.SysAccountDTO;
 
 import java.util.List;
 
@@ -70,7 +70,7 @@ public class OrgDeptResource extends BaseResource {
         dept.setNo(add.getNo());
         dept.setName(add.getName());
 
-        SysAccount0 account0 = self();
+        SysAccountDTO account0 = self();
         deptService.update(dept, account0.getId());
 
         return Res.ok(true);

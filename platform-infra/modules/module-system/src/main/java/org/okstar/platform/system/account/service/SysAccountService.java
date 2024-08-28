@@ -21,7 +21,7 @@ import org.okstar.platform.system.account.domain.SysAccountBind;
 import org.okstar.platform.system.account.domain.SysAccountPassword;
 import org.okstar.platform.system.sign.SignUpForm;
 import org.okstar.platform.system.sign.SignUpResult;
-import org.okstar.platform.system.vo.SysAccount0;
+import org.okstar.platform.system.dto.SysAccountDTO;
 
 import java.util.List;
 import java.util.Optional;
@@ -46,7 +46,7 @@ public interface SysAccountService extends OkJpaService<SysAccount> {
 
     List<SysAccount> findByNickname(String nickname);
 
-    SysAccount0 toAccount0(SysAccount account);
+    SysAccountDTO toAccount0(SysAccount account);
 
     SignUpResult signUp(SignUpForm signUpForm);
 

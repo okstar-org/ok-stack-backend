@@ -18,7 +18,7 @@ import org.eclipse.microprofile.rest.client.inject.RestClient;
 import org.okstar.platform.common.resource.OkCommonResource;
 import org.okstar.platform.common.rpc.RpcAssert;
 import org.okstar.platform.system.rpc.SysAccountRpc;
-import org.okstar.platform.system.vo.SysAccount0;
+import org.okstar.platform.system.dto.SysAccountDTO;
 
 public class BillingBaseResource extends OkCommonResource {
 
@@ -26,7 +26,7 @@ public class BillingBaseResource extends OkCommonResource {
     SysAccountRpc sysAccountRpc;
 
     protected Long loadUserId() {
-        SysAccount0 account0 = RpcAssert.isTrue(sysAccountRpc.findByUsername(getUsername()));
+        SysAccountDTO account0 = RpcAssert.isTrue(sysAccountRpc.findByUsername(getUsername()));
         return account0.getId();
     }
 }

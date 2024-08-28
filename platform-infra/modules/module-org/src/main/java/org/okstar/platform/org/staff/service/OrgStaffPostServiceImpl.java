@@ -38,7 +38,7 @@ import org.okstar.platform.org.service.OrgPostService;
 import org.okstar.platform.system.rpc.SysAccountRpc;
 import org.okstar.platform.system.sign.SignUpForm;
 import org.okstar.platform.system.sign.SignUpResult;
-import org.okstar.platform.system.vo.SysAccount0;
+import org.okstar.platform.system.dto.SysAccountDTO;
 
 import java.util.List;
 import java.util.Set;
@@ -150,12 +150,12 @@ public class OrgStaffPostServiceImpl implements OrgStaffPostService {
          * 注销其帐号
          */
         AccountDefines.BindType emailType= AccountDefines.BindType.email;
-        RpcResult<SysAccount0> bind = sysAccountRpc.findByBind(
+        RpcResult<SysAccountDTO> bind = sysAccountRpc.findByBind(
                 emailType,
                 AccountDefines.DefaultISO,
                 staff.getFragment().getEmail());
 
-        SysAccount0 account0 = RpcAssert.isTrue(bind);
+        SysAccountDTO account0 = RpcAssert.isTrue(bind);
         if (account0 != null) {
             Log.debugf("注销帐号:%s", account0.getUsername());
             Boolean result = RpcAssert.isTrue(passportRpc.signDown(account0.getId()));
@@ -213,12 +213,12 @@ public class OrgStaffPostServiceImpl implements OrgStaffPostService {
         String email = staff.getFragment().getEmail();
         Assert.isTrue(OkStringUtil.isNoneBlank(email), "email is invalid!");
 
-        RpcResult<SysAccount0> bind = sysAccountRpc.findByBind(
+        RpcResult<SysAccountDTO> bind = sysAccountRpc.findByBind(
                 emailType,
                 AccountDefines.DefaultISO,
                 email);
 
-        SysAccount0 account0 = RpcAssert.isTrue(bind);
+        SysAccountDTO account0 = RpcAssert.isTrue(bind);
         if (account0 == null) {
             SignUpForm form = new SignUpForm();
             form.setPassword(AccountDefines.DefaultPWD);

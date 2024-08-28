@@ -13,10 +13,10 @@
 
 package org.okstar.platform.system.account.service;
 
-import org.okstar.platform.system.vo.SysAccount0;
+import org.okstar.platform.system.dto.SysAccountDTO;
 
 import java.util.List;
 
 public interface SysUserSearchService {
-    List<SysAccount0> search(String query);
+    List<SysAccountDTO> search(String query);
 }

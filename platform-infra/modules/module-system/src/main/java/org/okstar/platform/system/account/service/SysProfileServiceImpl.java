@@ -173,7 +173,7 @@ public class SysProfileServiceImpl implements SysProfileService {
 
     @Override
     public List<SysAccount> loadByPersonalName(String personalName) {
-        List<SysProfile> list = mapper.find( SysProfile_.FIRST_NAME+" || "+ SysProfile_.LAST_NAME, personalName)
+        List<SysProfile> list = mapper.find( SysProfile_.FIRST_NAME+" || "+ SysProfile_.LAST_NAME +" = ?1", personalName)
                 .stream().toList();
         return list.stream().map(e -> accountService.get(e.getAccountId())).toList();
     }
