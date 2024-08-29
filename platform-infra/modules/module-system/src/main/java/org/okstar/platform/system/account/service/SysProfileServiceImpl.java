@@ -62,18 +62,24 @@ public class SysProfileServiceImpl implements SysProfileService {
 
     static final String topicName = ModuleSystemApplication.class.getSimpleName()
             + "." + SysProfile.class.getSimpleName();
-    private Map map;
 
     public void startup(@Observes StartupEvent e) {
         Log.infof("Initialize....");
-        context = connectionFactory.createContext();
-        producer = context.createProducer();
-        topic = context.createTopic(topicName);
+
+        try {
+            context = connectionFactory.createContext();
+            producer = context.createProducer();
+            topic = context.createTopic(topicName);
+        } catch (Exception ex) {
+            Log.warnf(ex, "Unable to connect system bus service.");
+        }
     }
 
     public void shutdown(@Observes ShutdownEvent e) {
         Log.infof("Shutdown....");
-        context.close();
+        if (context != null) {
+            context.close();
+        }
     }
 
     @SneakyThrows(JsonProcessingException.class)
@@ -107,10 +113,14 @@ public class SysProfileServiceImpl implements SysProfileService {
             exist.setBirthday(entity.getBirthday());
             exist.setLanguage(entity.getLanguage());
             mapper.persist(exist);
-            producer.send(topic, Map.of("UPDATED", objectMapper.writeValueAsString(exist)));
+            if (producer != null) {
+                producer.send(topic, Map.of("UPDATED", objectMapper.writeValueAsString(exist)));
+            }
         } else {
             mapper.persist(entity);
-            producer.send(topic, Map.of("INSERTED", objectMapper.writeValueAsString(exist)));
+            if (producer != null) {
+                producer.send(topic, Map.of("INSERTED", objectMapper.writeValueAsString(exist)));
+            }
         }
         Log.infof("saved: %s", entity);
     }
@@ -173,7 +183,7 @@ public class SysProfileServiceImpl implements SysProfileService {
 
     @Override
     public List<SysAccount> loadByPersonalName(String personalName) {
-        List<SysProfile> list = mapper.find( SysProfile_.FIRST_NAME+" || "+ SysProfile_.LAST_NAME +" = ?1", personalName)
+        List<SysProfile> list = mapper.find(SysProfile_.FIRST_NAME + " || " + SysProfile_.LAST_NAME + " = ?1", personalName)
                 .stream().toList();
         return list.stream().map(e -> accountService.get(e.getAccountId())).toList();
     }

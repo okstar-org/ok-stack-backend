@@ -18,15 +18,12 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>org.okstar.platform.app</groupId>
+        <groupId>org.okstar.platform</groupId>
         <artifactId>platform-app</artifactId>
         <version>1.0-SNAPSHOT</version>
     </parent>
 
     <artifactId>app-open</artifactId>
-    <build>
-        <finalName>${project.artifactId}</finalName>
-    </build>
 
     <dependencies>
         <dependency>

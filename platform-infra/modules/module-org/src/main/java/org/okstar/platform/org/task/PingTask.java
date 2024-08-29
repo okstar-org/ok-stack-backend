@@ -74,6 +74,8 @@ public class PingTask {
             ex.setFqdn(info.getFqdn());
             ex.setPid(info.getPid());
             ex.setTs(OkDateUtils.now());
+            ex.setNo(org.getNo());
+            ex.setName(org.getName());
 
             //获取提交通道
             FederalChannel channel = client.getFederalChannel();

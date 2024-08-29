@@ -24,7 +24,8 @@ import java.util.Optional;
 @QuarkusTest
 class SysAccountServiceImplTest {
 
-    @Inject SysAccountService sysAccountService;
+    @Inject
+    SysAccountService sysAccountService;
 
     @Test
     void findByAccount() {

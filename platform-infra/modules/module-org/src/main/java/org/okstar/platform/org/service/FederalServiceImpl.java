@@ -21,8 +21,6 @@ import org.okstar.cloud.OkCloudFactory;
 import org.okstar.cloud.channel.FederalChannel;
 import org.okstar.cloud.entity.FederalStateEntity;
 import org.okstar.platform.common.core.defined.OkCloudDefines;
-import org.okstar.platform.common.os.HostInfo;
-import org.okstar.platform.common.os.HostUtils;
 import org.okstar.platform.common.string.OkStringUtil;
 import org.okstar.platform.org.domain.Org;
 
@@ -50,12 +48,8 @@ public class FederalServiceImpl implements FederalService {
             FederalStateEntity stateEntity = new FederalStateEntity();
             stateEntity.setNo(org.getNo());
             stateEntity.setName(org.getName());
-
-            //获取主机信息
-            HostInfo info = HostUtils.getHostInfo();
-            stateEntity.setPublicIp(info.getPublicIp());
-            stateEntity.setHostName(info.getHostName());
-            stateEntity.setFqdn(info.getFqdn());
+            stateEntity.setUrl(org.getUrl());
+            stateEntity.setLocation(org.getLocation());
 
             //获取提交通道
             FederalChannel channel = client.getFederalChannel();

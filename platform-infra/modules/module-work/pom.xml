@@ -48,8 +48,6 @@
         <dependency>
             <groupId>org.okstar.platform</groupId>
             <artifactId>OkCloud-API-Client</artifactId>
-            <version>${revision}</version>
-            <scope>compile</scope>
             <exclusions>
                 <exclusion>
                     <groupId>org.slf4j</groupId>

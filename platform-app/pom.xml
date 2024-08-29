@@ -24,7 +24,6 @@
     </parent>
 
     <packaging>pom</packaging>
-    <groupId>org.okstar.platform.app</groupId>
     <artifactId>platform-app</artifactId>
 
     <modules>
