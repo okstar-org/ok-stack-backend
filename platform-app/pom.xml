@@ -28,6 +28,5 @@
 
     <modules>
         <module>app-open</module>
-        <module>app-okmsg</module>
     </modules>
 </project>
