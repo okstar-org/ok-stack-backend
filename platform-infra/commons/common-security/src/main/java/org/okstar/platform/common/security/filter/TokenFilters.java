@@ -33,7 +33,7 @@ public class TokenFilters {
     @RouteFilter(100)
     void filter(RoutingContext rc) {
         String uri = rc.request().uri();
-        Log.infof("Filter url: %s", uri);
+        Log.infof("Filter uri: %s", uri);
 
         if (uri.contains("/passport")
                 || uri.contains("/q/")
