@@ -262,6 +262,7 @@ public class SysKeycloakServiceImpl implements SysKeycloakService {
         SysConfIntegrationKeycloak conf = new SysConfIntegrationKeycloak();
         List<SysProperty> kvs = kvMapper.findByGroup(conf.getGroup());
         conf.addProperties(kvs);
+        conf.setServerUrl(serverUrl);
         return conf;
     }
 

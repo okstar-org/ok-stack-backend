@@ -17,7 +17,6 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.quarkus.logging.Log;
 import io.quarkus.runtime.ShutdownEvent;
-import io.quarkus.runtime.StartupEvent;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.event.Observes;
 import jakarta.inject.Inject;
@@ -55,24 +54,26 @@ public class SysProfileServiceImpl implements SysProfileService {
 
     @Inject
     ConnectionFactory connectionFactory;
-
     JMSContext context;
-    JMSProducer producer;
-    Topic topic;
 
     static final String topicName = ModuleSystemApplication.class.getSimpleName()
             + "." + SysProfile.class.getSimpleName();
 
-    public void startup(@Observes StartupEvent e) {
-        Log.infof("Initialize....");
-
-        try {
+    public JMSContext ensureContext() {
+        if (context == null) {
             context = connectionFactory.createContext();
-            producer = context.createProducer();
-            topic = context.createTopic(topicName);
-        } catch (Exception ex) {
-            Log.warnf(ex, "Unable to connect system bus service.");
         }
+        return context;
+    }
+
+    public JMSProducer ensureProducer() {
+        Log.infof("Ensure producer....");
+        return ensureContext().createProducer();
+    }
+
+    public Topic ensureTopic() {
+        Log.infof("Ensure topic....");
+        return ensureContext().createTopic(topicName);
     }
 
     public void shutdown(@Observes ShutdownEvent e) {
@@ -112,15 +113,12 @@ public class SysProfileServiceImpl implements SysProfileService {
             exist.setWebsite(entity.getWebsite());
             exist.setBirthday(entity.getBirthday());
             exist.setLanguage(entity.getLanguage());
+
             mapper.persist(exist);
-            if (producer != null) {
-                producer.send(topic, Map.of("UPDATED", objectMapper.writeValueAsString(exist)));
-            }
+            ensureProducer().send(ensureTopic(), Map.of("UPDATED", objectMapper.writeValueAsString(exist)));
         } else {
             mapper.persist(entity);
-            if (producer != null) {
-                producer.send(topic, Map.of("INSERTED", objectMapper.writeValueAsString(exist)));
-            }
+            ensureProducer().send(ensureTopic(), Map.of("INSERTED", objectMapper.writeValueAsString(exist)));
         }
         Log.infof("saved: %s", entity);
     }

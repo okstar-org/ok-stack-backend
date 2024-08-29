@@ -103,8 +103,7 @@
                 <quarkus.datasource.username>okstar</quarkus.datasource.username>
                 <quarkus.datasource.password>Encrypt=>YOzFYCG4evdiWnDP8vGdLw==</quarkus.datasource.password>
                 <quarkus.datasource.jdbc.url>jdbc:mariadb://okstar.org.cn:3307</quarkus.datasource.jdbc.url>
-                <quarkus.datasource.jdbc.args>autoReconnect=true&amp;connectTimeout=60000&amp;socketTimeout=50000
-                </quarkus.datasource.jdbc.args>
+                <quarkus.datasource.jdbc.args>autoReconnect=true&amp;connectTimeout=60000&amp;socketTimeout=50000</quarkus.datasource.jdbc.args>
                 <quarkus.datasource.jdbc.driver>org.mariadb.jdbc.Driver</quarkus.datasource.jdbc.driver>
                 <quarkus.hibernate-orm.dialect>org.hibernate.dialect.MariaDBDialect</quarkus.hibernate-orm.dialect>
                 <quarkus.oidc.auth-server-url>https://kc.okstar.org.cn/realms/ok-star</quarkus.oidc.auth-server-url>
@@ -121,7 +120,7 @@
                 <quarkus.datasource.db-kind>mariadb</quarkus.datasource.db-kind>
                 <quarkus.datasource.username>root</quarkus.datasource.username>
                 <quarkus.datasource.password>okstar</quarkus.datasource.password>
-                <quarkus.datasource.jdbc.url>jdbc:mariadb://db:3306</quarkus.datasource.jdbc.url>
+                <quarkus.datasource.jdbc.url>jdbc:mariadb://db:3307</quarkus.datasource.jdbc.url>
                 <quarkus.datasource.jdbc.driver>org.mariadb.jdbc.Driver</quarkus.datasource.jdbc.driver>
                 <quarkus.hibernate-orm.dialect>org.hibernate.dialect.MariaDBDialect</quarkus.hibernate-orm.dialect>
                 <quarkus.oidc.auth-server-url>http://keycloak:8080/realms/ok-star</quarkus.oidc.auth-server-url>

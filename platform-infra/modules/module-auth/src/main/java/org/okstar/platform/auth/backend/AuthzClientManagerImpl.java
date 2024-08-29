@@ -17,19 +17,16 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.quarkus.logging.Log;
-import io.quarkus.oidc.client.OidcClient;
 import io.quarkus.oidc.client.OidcClientConfig;
 import io.quarkus.oidc.client.OidcClients;
 import io.quarkus.oidc.client.Tokens;
 import io.quarkus.oidc.client.runtime.OidcClientRecorder;
 import io.quarkus.oidc.client.runtime.OidcClientsConfig;
 import io.quarkus.oidc.common.runtime.OidcCommonConfig;
-import io.quarkus.runtime.StartupEvent;
 import io.quarkus.runtime.TlsConfig;
 import io.smallrye.mutiny.Uni;
 import io.vertx.core.Vertx;
 import jakarta.enterprise.context.ApplicationScoped;
-import jakarta.enterprise.event.Observes;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.BadRequestException;
 import jakarta.ws.rs.ForbiddenException;
@@ -65,15 +62,11 @@ class AuthzClientManagerImpl implements AuthzClientManager {
     @RestClient
     SysKeycloakRpc sysKeycloakRpc;
 
-    OidcClient oidcClient;
-
-    AuthzClient authzClient;
-
     /**
-     * 2.初始化oidcClient
+     * 1.初始化 Authz Client(登录认证)
      */
-    public void startup(@Observes StartupEvent event) {
-
+    public AuthzClient ensureAuthzClient() {
+        Log.debugf("EnsureAuthzClient ...");
         SysKeycloakConfDTO conf = sysKeycloakRpc.getKeycloakConf();
         Log.infof("Get keycloak conf: %s", conf);
 
@@ -84,7 +77,17 @@ class AuthzClientManagerImpl implements AuthzClientManager {
                 Map.of("secret", conf.getClientSecret()),
                 null
         );
-        authzClient = AuthzClient.create(configuration);
+        return AuthzClient.create(configuration);
+    }
+
+    /**
+     * 2.初始化 OidcClients
+     */
+    public OidcClients ensureOidcClient() {
+        Log.debugf("EnsureOidcClient ...");
+
+        SysKeycloakConfDTO conf = sysKeycloakRpc.getKeycloakConf();
+        Log.infof("Get keycloak conf: %s", conf);
 
         OidcClientConfig cc = new OidcClientConfig();
         cc.setClientId(conf.getClientId());
@@ -101,19 +104,17 @@ class AuthzClientManagerImpl implements AuthzClientManager {
         csc.defaultClient = cc;
         csc.namedClients = Map.of();
 
-        OidcClients oidcClients = recorder.setup(csc, tls, () -> vertx);
-        oidcClient = oidcClients.getClient();
+        return recorder.setup(csc, tls, () -> vertx);
     }
-
 
     @Override
     public AuthorizationResult authorization(String username, String password) {
         OkAssert.hasText(username, "username is empty");
         OkAssert.hasText(password, "password is empty");
 
-        AuthorizationRequest request = new AuthorizationRequest();
         try {
-            AuthorizationResponse response = authzClient.authorization(username.toLowerCase(), password).authorize(request);
+            AuthzClient authzClient = ensureAuthzClient();
+            AuthorizationResponse response = authzClient.authorization(username.toLowerCase(), password).authorize(new AuthorizationRequest());
             return AuthorizationResult.builder()
                     .session_state(response.getSessionState())
                     .accessToken(response.getToken())
@@ -161,8 +162,9 @@ class AuthzClientManagerImpl implements AuthzClientManager {
     @Override
     public AuthorizationResult refresh(String refreshToken) {
         Log.infof("refresh:%s", refreshToken);
-        Uni<Tokens> uni = oidcClient.refreshTokens(refreshToken);
-        try {
+
+        try (var clients = ensureOidcClient(); var client = clients.getClient()) {
+            Uni<Tokens> uni = client.refreshTokens(refreshToken);
             Tokens tokens = uni.subscribeAsCompletionStage().get();
             long expiresIn = (tokens.getAccessTokenExpiresAt() * 1000 - OkDateUtils.getTime()) / 1000;
             return AuthorizationResult.builder()
@@ -171,23 +173,22 @@ class AuthzClientManagerImpl implements AuthzClientManager {
                     .refreshToken(tokens.getRefreshToken())
                     .refreshExpiresIn(tokens.getRefreshTokenTimeSkew())
                     .build();
-        } catch (InterruptedException | ExecutionException e) {
-            throw new RuntimeException(e);
+        } catch (InterruptedException | ExecutionException | IOException e) {
+            Log.errorf(e, "Refresh token error!");
+            throw new OkRuntimeException("Refresh token error:" + e.getMessage());
         }
     }
 
     @Override
     public Boolean revoke(String accessToken) {
         Log.infof("Revoke access token:%s", accessToken);
-        Uni<Boolean> uni = oidcClient.revokeAccessToken(accessToken);
-        try {
+        try (var clients = ensureOidcClient(); var client = clients.getClient()) {
+            Uni<Boolean> uni = client.revokeAccessToken(accessToken);
             Boolean aBoolean = uni.subscribe().asCompletionStage().get();
             Log.infof("revoke:%s=>%s", accessToken, aBoolean);
             return aBoolean;
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        } catch (ExecutionException e) {
-            throw new RuntimeException(e);
+        } catch (InterruptedException | ExecutionException | IOException e) {
+            throw new OkRuntimeException("Revoke token error:" + e.getMessage());
         }
     }
 }
