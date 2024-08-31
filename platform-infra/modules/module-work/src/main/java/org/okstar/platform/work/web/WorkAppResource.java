@@ -24,7 +24,6 @@ import org.okstar.cloud.entity.AppEntities;
 import org.okstar.cloud.entity.AppEntity;
 import org.okstar.cloud.entity.OkPageable;
 import org.okstar.platform.common.core.web.bean.Res;
-import org.okstar.platform.common.resource.OkCommonResource;
 import org.okstar.platform.work.service.WorkAppService;
 
 /**
@@ -32,7 +31,7 @@ import org.okstar.platform.work.service.WorkAppService;
  */
 @Authenticated
 @Path("/app")
-public class WorkAppResource extends OkCommonResource {
+public class WorkAppResource extends BaseResource {
 
     @Inject
     WorkAppService workAppService;

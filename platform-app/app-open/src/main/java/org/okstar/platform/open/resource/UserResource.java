@@ -17,9 +17,9 @@ import jakarta.inject.Inject;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.QueryParam;
-import lombok.extern.slf4j.Slf4j;
+import ok.okstar.stack.api.dto.UserDTO;
+import ok.okstar.stack.api.dto.UserDTOs;
 import org.eclipse.microprofile.rest.client.inject.RestClient;
-import org.okstar.platform.common.core.web.bean.Res;
 import org.okstar.platform.system.dto.SysAccountDTO;
 import org.okstar.platform.system.rpc.SysUserRpc;
 
@@ -28,7 +28,6 @@ import java.util.List;
 /**
  * 开放平台-帐号信息
  */
-@Slf4j
 @Path("user")
 public class UserResource {
 
@@ -38,8 +37,14 @@ public class UserResource {
 
     @GET
     @Path("search")
-    public Res<List<SysAccountDTO>> search(@QueryParam("q") String query) {
+    public UserDTOs search(@QueryParam("q") String query) {
         List<SysAccountDTO> list = userRpc.search(query);
-        return Res.ok(list);
+        UserDTOs d = new UserDTOs();
+        d.setData(list.stream().map(e->{
+            var d1 = new UserDTO();
+            d1.setUsername(e.getUsername());
+            return d1;
+        }).toList());
+        return d;
     }
 }

@@ -65,5 +65,9 @@
             <version>${revision}</version>
             <scope>compile</scope>
         </dependency>
+        <dependency>
+            <groupId>org.okstar.platform</groupId>
+            <artifactId>module-system-api</artifactId>
+        </dependency>
     </dependencies>
 </project>

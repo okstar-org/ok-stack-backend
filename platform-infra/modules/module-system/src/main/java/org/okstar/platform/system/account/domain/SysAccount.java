@@ -16,7 +16,6 @@ package org.okstar.platform.system.account.domain;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
-import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 import org.okstar.platform.common.core.defined.AccountDefines;

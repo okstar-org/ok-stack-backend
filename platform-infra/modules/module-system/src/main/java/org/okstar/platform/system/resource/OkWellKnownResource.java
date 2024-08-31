@@ -18,12 +18,11 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;
-import org.okstar.platform.common.resource.OkCommonResource;
 import org.okstar.platform.system.settings.domain.SysConfIntegration;
 import org.okstar.platform.system.settings.service.SysConfIntegrationService;
 
 @Path(".well-known")
-public class OkWellKnownResource extends OkCommonResource {
+public class OkWellKnownResource extends BaseResource {
 
     @Inject
     SysConfIntegrationService service;

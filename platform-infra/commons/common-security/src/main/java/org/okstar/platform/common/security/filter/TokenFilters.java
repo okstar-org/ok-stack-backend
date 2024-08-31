@@ -16,6 +16,7 @@ package org.okstar.platform.common.security.filter;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import io.quarkus.logging.Log;
 import io.quarkus.vertx.web.RouteFilter;
+import io.vertx.core.http.HttpServerRequest;
 import io.vertx.ext.web.RoutingContext;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
@@ -32,8 +33,17 @@ public class TokenFilters {
 
     @RouteFilter(100)
     void filter(RoutingContext rc) {
-        String uri = rc.request().uri();
-        Log.infof("Filter uri: %s", uri);
+        HttpServerRequest request = rc.request();
+        String uri = request.uri();
+        Log.infof("Filter method:%s uri:%s", request.method(), uri);
+        String from = request.getHeader(SystemDefines.Header_X_OK_from);
+        Log.infof("from:%s", from);
+
+        if (OkStringUtil.isNotEmpty(from)) {
+            Log.infof("bypass the uri.");
+            rc.next();
+            return;
+        }
 
         if (uri.contains("/passport")
                 || uri.contains("/q/")

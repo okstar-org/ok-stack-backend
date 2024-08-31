@@ -11,18 +11,8 @@
  * /
  */
 
-package org.okstar.platform.common.resource;
+package org.okstar.platform.common.core.defined;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import jakarta.ws.rs.GET;
-import jakarta.ws.rs.Path;
+public interface OkStackDefines {
 
-@Path(".well-known")
-public class OkWellKnownResource extends OkCommonResource {
-
-    @GET
-    @Path("git.json")
-    public JsonNode git() {
-        return gitVersion();
-    }
 }

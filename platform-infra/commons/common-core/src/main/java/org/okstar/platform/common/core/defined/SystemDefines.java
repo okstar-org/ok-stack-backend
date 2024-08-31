@@ -23,6 +23,11 @@ public interface SystemDefines {
     String Header_X_OK_username="X-OK-username";
 
     /**
+     * 来自应用，格式："ok-app://{app uuid}"
+     */
+    String Header_X_OK_from="X-OK-from";
+
+    /**
      * 数据状态
      */
     @Getter

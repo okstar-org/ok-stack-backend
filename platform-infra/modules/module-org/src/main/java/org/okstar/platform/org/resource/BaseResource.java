@@ -15,10 +15,10 @@ package org.okstar.platform.org.resource;
 
 import jakarta.inject.Inject;
 import org.eclipse.microprofile.rest.client.inject.RestClient;
-import org.okstar.platform.common.resource.OkCommonResource;
+import org.okstar.platform.common.core.resource.OkCommonResource;
 import org.okstar.platform.common.rpc.RpcAssert;
-import org.okstar.platform.system.rpc.SysAccountRpc;
 import org.okstar.platform.system.dto.SysAccountDTO;
+import org.okstar.platform.system.rpc.SysAccountRpc;
 
 
 public class BaseResource extends OkCommonResource {

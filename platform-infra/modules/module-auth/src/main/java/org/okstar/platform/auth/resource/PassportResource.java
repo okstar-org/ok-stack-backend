@@ -21,14 +21,13 @@ import jakarta.ws.rs.Path;
 import org.okstar.platform.auth.service.PassportService;
 import org.okstar.platform.common.core.web.bean.Req;
 import org.okstar.platform.common.core.web.bean.Res;
-import org.okstar.platform.common.resource.OkCommonResource;
 import org.okstar.platform.system.sign.*;
 
 /**
  * 通行
  */
 @Path("passport")
-public class PassportResource extends OkCommonResource {
+public class PassportResource extends BaseResource {
 
 
     @Inject

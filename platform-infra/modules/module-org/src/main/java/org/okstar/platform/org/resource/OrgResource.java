@@ -19,29 +19,24 @@ import jakarta.ws.rs.GET;
 import jakarta.ws.rs.PUT;
 import jakarta.ws.rs.Path;
 import org.eclipse.microprofile.rest.client.inject.RestClient;
-import org.okstar.cloud.OkCloudApiClient;
-import org.okstar.cloud.OkCloudFactory;
-import org.okstar.cloud.channel.FederalChannel;
-import org.okstar.platform.common.core.defined.OkCloudDefines;
 import org.okstar.platform.common.core.web.bean.Res;
-import org.okstar.platform.common.resource.OkCommonResource;
 import org.okstar.platform.common.rpc.RpcAssert;
 import org.okstar.platform.org.domain.Org;
 import org.okstar.platform.org.domain.OrgDept;
 import org.okstar.platform.org.domain.OrgPost;
-import org.okstar.platform.org.service.FederalService;
-import org.okstar.platform.org.staff.domain.OrgStaff;
 import org.okstar.platform.org.dto.*;
+import org.okstar.platform.org.service.FederalService;
 import org.okstar.platform.org.service.OrgDeptService;
 import org.okstar.platform.org.service.OrgPostService;
 import org.okstar.platform.org.service.OrgService;
+import org.okstar.platform.org.staff.domain.OrgStaff;
 import org.okstar.platform.org.staff.service.OrgStaffPostService;
 import org.okstar.platform.org.staff.service.OrgStaffService;
 import org.okstar.platform.system.dto.SysAccountBindDTO;
+import org.okstar.platform.system.dto.SysAccountDTO;
 import org.okstar.platform.system.dto.SysProfileDTO;
 import org.okstar.platform.system.rpc.SysAccountRpc;
 import org.okstar.platform.system.rpc.SysProfileRpc;
-import org.okstar.platform.system.dto.SysAccountDTO;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -50,7 +45,7 @@ import java.util.stream.Collectors;
  * 组织
  */
 @Path("")
-public class OrgResource extends OkCommonResource {
+public class OrgResource extends BaseResource {
 
     @Inject
     OrgService orgService;

@@ -11,7 +11,7 @@
  * /
  */
 
-package org.okstar.platform.common.resource;
+package org.okstar.platform.common.core.resource;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;

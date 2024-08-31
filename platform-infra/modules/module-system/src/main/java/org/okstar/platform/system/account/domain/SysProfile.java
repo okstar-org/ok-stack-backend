@@ -14,7 +14,6 @@
 package org.okstar.platform.system.account.domain;
 
 import jakarta.persistence.*;
-import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 import org.okstar.platform.common.core.defined.UserDefines;

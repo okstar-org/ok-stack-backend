@@ -34,6 +34,15 @@
             <groupId>org.okstar.platform</groupId>
             <artifactId>module-org-api</artifactId>
         </dependency>
+        <dependency>
+            <groupId>org.okstar.stack.api</groupId>
+            <artifactId>OkStack-API-Client</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.okstar.stack.api</groupId>
+            <artifactId>OkStack-API-Client</artifactId>
+        </dependency>
     </dependencies>
 
 </project>

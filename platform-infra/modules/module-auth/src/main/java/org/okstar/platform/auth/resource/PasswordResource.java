@@ -19,14 +19,13 @@ import jakarta.ws.rs.PUT;
 import jakarta.ws.rs.Path;
 import org.okstar.platform.auth.service.PassportService;
 import org.okstar.platform.common.core.web.bean.Res;
-import org.okstar.platform.common.resource.OkCommonResource;
 import org.okstar.platform.system.sign.PasswordUpdateForm;
 
 /**
  * 密码
  */
 @Path("password")
-public class PasswordResource extends OkCommonResource {
+public class PasswordResource extends BaseResource {
 
 
     @Inject

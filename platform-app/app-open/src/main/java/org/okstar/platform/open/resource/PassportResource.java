@@ -18,17 +18,15 @@ import jakarta.ws.rs.GET;
 import jakarta.ws.rs.NotFoundException;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.PathParam;
-import lombok.extern.slf4j.Slf4j;
 import org.eclipse.microprofile.rest.client.inject.RestClient;
 import org.okstar.platform.common.core.web.bean.Res;
 import org.okstar.platform.common.rpc.RpcAssert;
-import org.okstar.platform.system.rpc.SysAccountRpc;
 import org.okstar.platform.system.dto.SysAccountDTO;
+import org.okstar.platform.system.rpc.SysAccountRpc;
 
 /**
  * 通行
  */
-@Slf4j
 @Path("passport")
 public class PassportResource {
 
