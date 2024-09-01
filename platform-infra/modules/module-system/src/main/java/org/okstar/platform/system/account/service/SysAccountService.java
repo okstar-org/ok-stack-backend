@@ -42,7 +42,7 @@ public interface SysAccountService extends OkJpaService<SysAccount> {
 
     Optional<SysAccount> findByUsername(String username);
 
-    Optional<SysAccount> findByBind(AccountDefines.BindType bindType, String iso, String bindValue);
+    Optional<SysAccount> findByBind(AccountDefines.BindType bindType, String bindValue);
 
     List<SysAccount> findByNickname(String nickname);
 
@@ -52,8 +52,7 @@ public interface SysAccountService extends OkJpaService<SysAccount> {
 
     void signDown(Long accountId);
 
-    void save(SysAccount sysUser);
-
+    void save(SysAccount sysAccount);
 
     Optional<SysAccountPassword> lastPassword(Long accountId);
 

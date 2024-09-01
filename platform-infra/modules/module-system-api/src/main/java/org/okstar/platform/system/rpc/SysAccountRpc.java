@@ -48,7 +48,6 @@ public interface SysAccountRpc {
     @GET
     @Path("findByBind")
     RpcResult<SysAccountDTO> findByBind(@QueryParam("type") AccountDefines.BindType type,
-                                        @QueryParam("iso") String iso,
                                         @QueryParam("bindValue") String bindValue);
 
     @GET

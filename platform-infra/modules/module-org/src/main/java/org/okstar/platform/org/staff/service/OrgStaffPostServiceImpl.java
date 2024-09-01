@@ -149,10 +149,9 @@ public class OrgStaffPostServiceImpl implements OrgStaffPostService {
         /**
          * 注销其帐号
          */
-        AccountDefines.BindType emailType= AccountDefines.BindType.email;
+        AccountDefines.BindType emailType = AccountDefines.BindType.email;
         RpcResult<SysAccountDTO> bind = sysAccountRpc.findByBind(
                 emailType,
-                AccountDefines.DefaultISO,
                 staff.getFragment().getEmail());
 
         SysAccountDTO account0 = RpcAssert.isTrue(bind);
@@ -205,28 +204,24 @@ public class OrgStaffPostServiceImpl implements OrgStaffPostService {
             save(staffPost);
         }
 
+        //如果员工没有对应帐号，则为其生成帐号信息
+        var account0 = RpcAssert.isTrue(sysAccountRpc.findById(staff.getAccountId()));
 
-        /**
-         * 注册其帐号(邮箱号)
-         */
-        AccountDefines.BindType emailType = AccountDefines.BindType.email;
-        String email = staff.getFragment().getEmail();
-        Assert.isTrue(OkStringUtil.isNoneBlank(email), "email is invalid!");
 
-        RpcResult<SysAccountDTO> bind = sysAccountRpc.findByBind(
-                emailType,
-                AccountDefines.DefaultISO,
-                email);
-
-        SysAccountDTO account0 = RpcAssert.isTrue(bind);
         if (account0 == null) {
             SignUpForm form = new SignUpForm();
             form.setPassword(AccountDefines.DefaultPWD);
             form.setIso(AccountDefines.DefaultISO);
 
             //设置邮箱为帐号
+            /**
+             * 注册其帐号(邮箱号)
+             */
+            String email = staff.getFragment().getEmail();
+            Assert.isTrue(OkStringUtil.isNoneBlank(email), "email is invalid!");
+
             form.setAccount(email);
-            form.setAccountType(emailType);
+            form.setAccountType(AccountDefines.BindType.email);
             form.setFirstName(staff.getFragment().getFirstName());
             form.setLastName(staff.getFragment().getLastName());
 

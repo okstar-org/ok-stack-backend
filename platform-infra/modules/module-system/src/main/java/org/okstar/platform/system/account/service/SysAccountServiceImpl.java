@@ -75,6 +75,9 @@ public class SysAccountServiceImpl extends OkAbsService implements SysAccountSer
 
     @Override
     public Optional<SysAccount> findByUsername(String username) {
+        if (username == null) {
+            return Optional.empty();
+        }
         return sysAccountMapper.find("username = ?1", username).stream().findFirst();
     }
 
@@ -89,29 +92,20 @@ public class SysAccountServiceImpl extends OkAbsService implements SysAccountSer
     }
 
     /**
-     * 通过用户名查询用户
+     * 通过BindType和Account查询用户
      *
-     * @param iso
      * @param type
      * @param value
      * @return
      */
     @Override
-    public Optional<SysAccount> findByBind(AccountDefines.BindType type, String iso, String value) {
+    public Optional<SysAccount> findByBind(AccountDefines.BindType type, String value) {
         Log.infof("findByBind type:%s value:%s", type, value);
-
-        String bindValue = value;
-        if (type == AccountDefines.BindType.phone) {
-            bindValue = OkPhoneUtils.canonical(value, iso);
-            if (bindValue == null) {
-                return Optional.empty();
-            }
-        }
 
         List<SysAccountBind> list = sysAccountBindMapper.list(
                 "bindType = ?1 and bindValue = ?2",
                 type,
-                bindValue);
+                value);
 
         if (list.isEmpty()) {
             Log.warnf("Unable to find account bind:%s!", value);
@@ -131,11 +125,23 @@ public class SysAccountServiceImpl extends OkAbsService implements SysAccountSer
 
     @Override
     public Optional<SysAccount> findByAccount(String account) {
+        Log.infof("findByAccount:%s", account);
+
         if (OkStringUtil.isEmpty(account)) {
             return Optional.empty();
         }
-        AccountDefines.BindType bindType = account.indexOf("@") > 0 ? AccountDefines.BindType.email : AccountDefines.BindType.phone;  //
-        return findByBind(bindType, AccountDefines.DefaultISO, account);
+
+        boolean validEmail = OkMailUtil.isValidEmail(account);
+        if (validEmail) {
+            return findByBind(AccountDefines.BindType.email, account);
+        }
+
+        boolean validPhone = OkPhoneUtils.isValidPhone(account, AccountDefines.DefaultISO);
+        if (validPhone) {
+            return findByBind(AccountDefines.BindType.phone, account);
+        }
+
+        return findByUsername(account);
     }
 
     @Override
@@ -280,8 +286,8 @@ public class SysAccountServiceImpl extends OkAbsService implements SysAccountSer
     }
 
     @Override
-    public void save(SysAccount sysUser) {
-        sysAccountMapper.persist(sysUser);
+    public void save(SysAccount sysAccount) {
+        sysAccountMapper.persist(sysAccount);
     }
 
 

@@ -19,10 +19,11 @@ import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.QueryParam;
-import org.okstar.platform.core.web.resource.OkCommonResource;
 import org.okstar.platform.common.core.web.bean.Req;
 import org.okstar.platform.common.core.web.bean.Res;
+import org.okstar.platform.common.phone.OkPhoneUtils;
 import org.okstar.platform.core.account.AccountDefines;
+import org.okstar.platform.core.web.resource.OkCommonResource;
 import org.okstar.platform.system.account.domain.SysAccount;
 import org.okstar.platform.system.account.service.SysAccountService;
 
@@ -52,13 +53,14 @@ public class SysAccountResource extends OkCommonResource {
     public Res<String> getUsername(@PathParam("bindType") AccountDefines.BindType bindType,
                                    @PathParam("value") String value,
                                    @QueryParam("iso") String iso) {
-
-        var account = sysAccountService.findByBind(
-                bindType,
-                Optional.ofNullable(iso).orElse(AccountDefines.DefaultISO),
-                value);
-
-        return Res.ok(account.map(SysAccount::getUsername).orElse(null)) ;
+        Optional<SysAccount> account;
+        if (bindType == AccountDefines.BindType.phone) {
+            String phoneNumber = OkPhoneUtils.canonical(value, iso);
+            account = sysAccountService.findByBind(bindType, phoneNumber);
+        } else {
+            account = sysAccountService.findByBind(bindType, value);
+        }
+        return Res.ok(account.map(SysAccount::getUsername).orElse(null));
     }
 
 }

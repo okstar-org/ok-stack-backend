@@ -36,4 +36,8 @@ public class OkPhoneUtils {
             return null;
         }
     }
+
+    public static boolean isValidPhone(String phoneNumber, String iso) {
+        return canonical(phoneNumber, iso) != null;
+    }
 }

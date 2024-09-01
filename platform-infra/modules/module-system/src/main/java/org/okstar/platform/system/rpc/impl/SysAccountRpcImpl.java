@@ -78,8 +78,8 @@ public class SysAccountRpcImpl implements SysAccountRpc {
     }
 
     @Override
-    public RpcResult<SysAccountDTO> findByBind(AccountDefines.BindType type, String iso, String bindValue) {
-        var sysAccount = accountService.findByBind(type, iso, bindValue);
+    public RpcResult<SysAccountDTO> findByBind(AccountDefines.BindType type, String bindValue) {
+        var sysAccount = accountService.findByBind(type,   bindValue);
         return sysAccount.map(e -> {
             SysAccountDTO dto = accountService.toAccount0(sysAccount.get());
             return RpcResult.<SysAccountDTO>builder().data(dto).success(true).build();
@@ -88,7 +88,7 @@ public class SysAccountRpcImpl implements SysAccountRpc {
 
     @Override
     public RpcResult<SysAccountDTO> findByEmail(AccountDefines.BindType type, String email) {
-        return findByBind(type, null, email);
+        return findByBind(type, email);
     }
 
     @Override
