@@ -20,8 +20,8 @@ import org.okstar.cloud.OkCloudApiClient;
 import org.okstar.cloud.OkCloudFactory;
 import org.okstar.cloud.channel.FederalChannel;
 import org.okstar.cloud.entity.FederalStateEntity;
-import org.okstar.platform.common.core.defined.OkCloudDefines;
 import org.okstar.platform.common.string.OkStringUtil;
+import org.okstar.platform.core.OkCloudDefines;
 import org.okstar.platform.org.domain.Org;
 
 @ApplicationScoped

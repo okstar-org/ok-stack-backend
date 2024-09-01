@@ -11,37 +11,12 @@
  * /
  */
 
-package org.okstar.platform.common.core.defined;
+package org.okstar.platform.core;
 
-import lombok.Getter;
+public interface OkCloudDefines {
+    String OK_CLOUD_API = "https://cloud.okstar.org.cn/api";
+    String OK_CLOUD_API_STACK = OK_CLOUD_API + "/open/stack";
 
-/**
- * 系统相关定义
- */
-public interface SystemDefines {
-
-    String Header_X_OK_username="X-OK-username";
-
-    /**
-     * 来自应用，格式："ok-app://{app uuid}"
-     */
-    String Header_X_OK_from="X-OK-from";
-
-    /**
-     * 数据状态
-     */
-    @Getter
-    enum DataFlag {
-        OK, //正常
-        DELETED,//删除
-    }
-
-    @Getter
-    enum Endpoint {
-        PC, //电脑
-        MOBILE,//移动
-        PAD//平板
-    }
-
-
+    String OK_CLOUD_USERNAME = "okstar";
+    String OK_CLOUD_PASSWORD = "okstar.123#";
 }

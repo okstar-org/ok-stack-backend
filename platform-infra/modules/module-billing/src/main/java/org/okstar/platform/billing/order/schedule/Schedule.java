@@ -23,7 +23,7 @@ import org.okstar.cloud.entity.AuthenticationToken;
 import org.okstar.cloud.entity.PayOrderEntity;
 import org.okstar.platform.billing.order.domain.BillingOrder;
 import org.okstar.platform.billing.order.service.BillingOrderService;
-import org.okstar.platform.common.core.defined.OkCloudDefines;
+import org.okstar.platform.core.OkCloudDefines;
 
 @Transactional
 @ApplicationScoped

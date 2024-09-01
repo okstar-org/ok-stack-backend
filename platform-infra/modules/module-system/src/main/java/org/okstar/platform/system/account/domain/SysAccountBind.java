@@ -18,8 +18,8 @@ import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import lombok.Getter;
 import lombok.Setter;
-import org.okstar.platform.common.core.defined.AccountDefines;
 import org.okstar.platform.common.datasource.domain.OkEntity;
+import org.okstar.platform.core.account.AccountDefines;
 
 /**
  * 用户绑定

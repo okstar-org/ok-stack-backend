@@ -16,7 +16,7 @@ package org.okstar.platform.system.settings.service;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
-import org.okstar.platform.common.core.defined.AccountDefines;
+import org.okstar.platform.core.account.AccountDefines;
 import org.okstar.platform.system.account.domain.SysAccount;
 import org.okstar.platform.system.settings.SysConfDefines;
 import org.okstar.platform.system.settings.domain.SysConfPersonal;

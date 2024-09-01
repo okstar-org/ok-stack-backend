@@ -14,7 +14,7 @@
 package org.okstar.platform.system.resource;
 
 import jakarta.inject.Inject;
-import org.okstar.platform.common.core.resource.OkCommonResource;
+import org.okstar.platform.core.web.resource.OkCommonResource;
 import org.okstar.platform.system.account.domain.SysAccount;
 import org.okstar.platform.system.account.service.SysAccountService;
 

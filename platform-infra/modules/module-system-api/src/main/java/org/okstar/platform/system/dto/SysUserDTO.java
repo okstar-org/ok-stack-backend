@@ -15,7 +15,7 @@ package org.okstar.platform.system.dto;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import org.okstar.platform.common.core.defined.UserDefines;
+import org.okstar.platform.core.user.UserDefines;
 
 /**
  * 用户信息（继承SysAccount，包含SysProfile）

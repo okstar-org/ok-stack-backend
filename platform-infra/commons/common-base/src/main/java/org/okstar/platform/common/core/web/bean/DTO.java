@@ -16,9 +16,8 @@ package org.okstar.platform.common.core.web.bean;
 import java.io.Serializable;
 
 /**
- * 数据传输实体，代表`输出数据`
+ * 数据传输实体
  */
-
 public abstract class DTO implements Serializable {
-
+    private String uuid;
 }

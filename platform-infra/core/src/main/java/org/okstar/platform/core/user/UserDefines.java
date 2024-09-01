@@ -11,48 +11,25 @@
  * /
  */
 
-package org.okstar.platform.common.core.defined;
+package org.okstar.platform.core.user;
 
 import lombok.Getter;
 
 /**
- * 帐号相关定义
+ * 用户相关定义
  */
-public interface AccountDefines {
+public interface UserDefines {
 
-    @Getter
-    enum BindType {
-        /**
-         * 手机号
-         * 邮箱
-         * 微信
-         * QQ
-         * 钉钉
-         * 飞书
-         */
-        phone,
-        email,
-        wx,
-        qq,
-        dingding,
-        feishu
-    }
 
     /**
-     * 帐号状态
+     * 性别
      */
     @Getter
-    enum Status {
-        NONE,
-        OK,
-        DISABLED,
+    enum Gender {
+        none,
+        male,
+        female,
     }
 
-    String DefaultISO = "CN";
 
-    String DefaultLanguage = "zh-CN";
-
-    String DefaultPWD = "okstar.123456#";
-
-    String DefaultAvatar = "/assets/images/avatar.jpg";
 }

@@ -11,12 +11,8 @@
  * /
  */
 
-package org.okstar.platform.common.core.defined;
+package org.okstar.platform.core;
 
-public interface OkCloudDefines {
-    String OK_CLOUD_API = "https://cloud.okstar.org.cn/api";
-    String OK_CLOUD_API_STACK = OK_CLOUD_API + "/open/stack";
+public interface OkStackDefines {
 
-    String OK_CLOUD_USERNAME = "okstar";
-    String OK_CLOUD_PASSWORD = "okstar.123#";
 }

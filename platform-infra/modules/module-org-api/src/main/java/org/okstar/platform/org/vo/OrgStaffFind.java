@@ -16,8 +16,8 @@ package org.okstar.platform.org.vo;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
-import org.okstar.platform.common.core.defined.JobDefines;
 import org.okstar.platform.common.core.web.page.OkPageable;
+import org.okstar.platform.core.org.JobDefines;
 
 @Data
 @ToString(callSuper = true)

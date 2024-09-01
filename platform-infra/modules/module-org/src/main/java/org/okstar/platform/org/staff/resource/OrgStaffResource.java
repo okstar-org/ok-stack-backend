@@ -18,7 +18,7 @@ import jakarta.ws.rs.GET;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.PathParam;
-import org.okstar.platform.common.core.resource.OkCommonResource;
+import org.okstar.platform.core.web.resource.OkCommonResource;
 import org.okstar.platform.common.core.web.bean.Res;
 import org.okstar.platform.org.staff.domain.OrgStaff;
 import org.okstar.platform.org.staff.service.OrgStaffService;

@@ -16,9 +16,9 @@ package org.okstar.platform.system.account.service;
 import io.quarkus.test.junit.QuarkusTest;
 import jakarta.inject.Inject;
 import org.junit.jupiter.api.Test;
-import org.okstar.platform.common.core.defined.UserDefines;
 import org.okstar.platform.common.date.OkDateUtils;
 import org.okstar.platform.common.id.OkIdUtils;
+import org.okstar.platform.core.user.UserDefines;
 import org.okstar.platform.system.account.domain.SysProfile;
 
 @QuarkusTest

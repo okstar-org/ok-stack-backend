@@ -15,8 +15,8 @@ package org.okstar.platform.work.web;
 
 import jakarta.inject.Inject;
 import org.eclipse.microprofile.rest.client.inject.RestClient;
-import org.okstar.platform.common.core.resource.OkCommonResource;
 import org.okstar.platform.common.rpc.RpcAssert;
+import org.okstar.platform.core.web.resource.OkCommonResource;
 import org.okstar.platform.system.dto.SysAccountDTO;
 import org.okstar.platform.system.rpc.SysAccountRpc;
 

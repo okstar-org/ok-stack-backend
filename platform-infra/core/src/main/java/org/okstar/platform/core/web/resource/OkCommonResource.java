@@ -11,7 +11,7 @@
  * /
  */
 
-package org.okstar.platform.common.core.resource;
+package org.okstar.platform.core.web.resource;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -21,7 +21,7 @@ import io.vertx.core.http.HttpServerResponse;
 import io.vertx.ext.web.RoutingContext;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.core.Context;
-import org.okstar.platform.common.core.defined.SystemDefines;
+import org.okstar.platform.core.web.OkHttpDefines;
 
 import java.io.InputStream;
 
@@ -39,7 +39,7 @@ public class OkCommonResource {
     protected ObjectMapper objectMapper;
 
     protected String getUsername() {
-        return rc.get(SystemDefines.Header_X_OK_username);
+        return rc.get(OkHttpDefines.Header_X_OK_username);
     }
 
     protected JsonNode gitVersion() {
@@ -49,6 +49,5 @@ public class OkCommonResource {
             Log.warnf("Read git: %s", GIT_PROPERTIES);
             return null;
         }
-
     }
 }

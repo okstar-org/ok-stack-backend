@@ -11,8 +11,10 @@
  * /
  */
 
-package org.okstar.platform.common.core.defined;
+package org.okstar.platform.core.user;
 
-public interface OkStackDefines {
+
+public interface UserBindDefined {
+
 
 }

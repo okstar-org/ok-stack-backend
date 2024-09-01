@@ -17,7 +17,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.okstar.platform.common.core.defined.AccountDefines;
+import org.okstar.platform.core.account.AccountDefines;
+
 
 @Data
 @Builder
@@ -28,7 +29,6 @@ public class SysAccountBindDTO {
     /**
      * 绑定类型
      */
-
     AccountDefines.BindType bindType;
 
     /**

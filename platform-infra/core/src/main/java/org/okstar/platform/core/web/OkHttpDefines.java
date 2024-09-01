@@ -11,35 +11,19 @@
  * /
  */
 
-package org.okstar.platform.common.core.defined;
+package org.okstar.platform.core.web;
+
 
 /**
- * 消息 系统来源
- *
- * 
+ * HttpDefines，主要针对http定义OkStar相关业务
  */
-public enum MessageSource {
+public interface OkHttpDefines {
+
+    //用户名字段
+    String Header_X_OK_username="X-OK-username";
 
     /**
-     * 本机
+     * 来自应用，格式："ok-app://{app uuid}"
      */
-    INNER_SYSTEM("1", "本系统");
-    private final String code;
-    private final String info;
-
-    MessageSource(String code, String info)
-    {
-        this.code = code;
-        this.info = info;
-    }
-
-    public String getCode()
-    {
-        return code;
-    }
-
-    public String getInfo()
-    {
-        return info;
-    }
+    String Header_X_OK_from="X-OK-from";
 }

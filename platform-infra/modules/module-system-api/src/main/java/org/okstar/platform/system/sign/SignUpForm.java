@@ -14,9 +14,9 @@
 package org.okstar.platform.system.sign;
 
 import lombok.*;
-import org.okstar.platform.common.core.defined.AccountDefines;
-import org.okstar.platform.common.string.OkStringUtil;
 import org.okstar.platform.common.core.web.bean.Req;
+import org.okstar.platform.common.string.OkStringUtil;
+import org.okstar.platform.core.account.AccountDefines;
 
 /**
  * 注册实体

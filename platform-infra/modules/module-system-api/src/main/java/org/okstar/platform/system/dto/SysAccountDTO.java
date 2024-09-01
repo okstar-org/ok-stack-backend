@@ -15,8 +15,8 @@ package org.okstar.platform.system.dto;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import org.okstar.platform.common.core.defined.AccountDefines;
 import org.okstar.platform.common.core.web.bean.DTO;
+import org.okstar.platform.core.account.AccountDefines;
 
 import java.util.Optional;
 

@@ -17,8 +17,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.okstar.platform.common.core.defined.AccountDefines;
 import org.okstar.platform.common.core.web.bean.Req;
+import org.okstar.platform.core.account.AccountDefines;
 
 /**
  * 注册实体

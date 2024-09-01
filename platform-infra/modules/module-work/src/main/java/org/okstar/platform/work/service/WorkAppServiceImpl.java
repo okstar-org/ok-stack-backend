@@ -16,7 +16,7 @@ package org.okstar.platform.work.service;
 import jakarta.enterprise.context.ApplicationScoped;
 import org.okstar.cloud.OkCloudApiClient;
 import org.okstar.cloud.entity.*;
-import org.okstar.platform.common.core.defined.OkCloudDefines;
+import org.okstar.platform.core.OkCloudDefines;
 
 
 @ApplicationScoped

@@ -23,36 +23,33 @@ import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.okstar.platform.common.asserts.OkAssert;
-import org.okstar.platform.common.core.defined.AccountDefines;
+import org.okstar.platform.common.bean.OkBeanUtils;
+import org.okstar.platform.common.core.OkAbsService;
 import org.okstar.platform.common.core.exception.OkRuntimeException;
 import org.okstar.platform.common.core.exception.user.OkUserException;
-
+import org.okstar.platform.common.core.web.page.OkPageResult;
+import org.okstar.platform.common.core.web.page.OkPageable;
+import org.okstar.platform.common.datasource.domain.OkEntity;
 import org.okstar.platform.common.date.OkDateUtils;
 import org.okstar.platform.common.mail.OkMailUtil;
 import org.okstar.platform.common.phone.OkPhoneUtils;
 import org.okstar.platform.common.string.OkStringUtil;
-import org.okstar.platform.common.bean.OkBeanUtils;
-import org.okstar.platform.common.core.web.page.OkPageResult;
-import org.okstar.platform.common.core.web.page.OkPageable;
-import org.okstar.platform.common.core.OkAbsService;
-import org.okstar.platform.common.datasource.domain.OkEntity;
+import org.okstar.platform.core.account.AccountDefines;
 import org.okstar.platform.system.account.domain.SysAccount;
 import org.okstar.platform.system.account.domain.SysAccountBind;
 import org.okstar.platform.system.account.domain.SysAccountPassword;
 import org.okstar.platform.system.account.mapper.SysAccountBindMapper;
 import org.okstar.platform.system.account.mapper.SysAccountMapper;
 import org.okstar.platform.system.account.mapper.SysAccountPasswordMapper;
+import org.okstar.platform.system.dto.SysAccountDTO;
 import org.okstar.platform.system.sign.SignUpForm;
 import org.okstar.platform.system.sign.SignUpResult;
-import org.okstar.platform.system.dto.SysAccountDTO;
 
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
 import static com.google.i18n.phonenumbers.PhoneNumberUtil.PhoneNumberFormat.INTERNATIONAL;
-import static org.okstar.platform.common.core.defined.AccountDefines.BindType.email;
-import static org.okstar.platform.common.core.defined.AccountDefines.BindType.phone;
 
 
 /**
@@ -137,7 +134,7 @@ public class SysAccountServiceImpl extends OkAbsService implements SysAccountSer
         if (OkStringUtil.isEmpty(account)) {
             return Optional.empty();
         }
-        AccountDefines.BindType bindType = account.indexOf("@") > 0 ? email : phone;  //
+        AccountDefines.BindType bindType = account.indexOf("@") > 0 ? AccountDefines.BindType.email : AccountDefines.BindType.phone;  //
         return findByBind(bindType, AccountDefines.DefaultISO, account);
     }
 

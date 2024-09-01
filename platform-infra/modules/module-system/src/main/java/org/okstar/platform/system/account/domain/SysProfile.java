@@ -16,7 +16,7 @@ package org.okstar.platform.system.account.domain;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
-import org.okstar.platform.common.core.defined.UserDefines;
+import org.okstar.platform.core.user.UserDefines;
 import org.okstar.platform.system.domain.BaseEntity;
 
 import java.util.Date;

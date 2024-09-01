@@ -20,28 +20,27 @@ import jakarta.ws.rs.NotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.eclipse.microprofile.rest.client.inject.RestClient;
 import org.okstar.platform.auth.backend.AuthzClientManager;
-
-import org.okstar.platform.common.core.defined.AccountDefines;
-import org.okstar.platform.common.core.exception.OkRuntimeException;
 import org.okstar.platform.common.asserts.OkAssert;
-import org.okstar.platform.common.string.OkStringUtil;
+import org.okstar.platform.common.core.exception.OkRuntimeException;
 import org.okstar.platform.common.rpc.RpcAssert;
 import org.okstar.platform.common.rpc.RpcResult;
+import org.okstar.platform.common.string.OkStringUtil;
 import org.okstar.platform.org.dto.OrgStaffFragment;
 import org.okstar.platform.org.rpc.OrgStaffRpc;
 import org.okstar.platform.system.dto.BackUser;
+import org.okstar.platform.system.dto.SysAccountDTO;
 import org.okstar.platform.system.rpc.SysAccountRpc;
 import org.okstar.platform.system.rpc.SysBackUserManagerRpc;
 import org.okstar.platform.system.sign.*;
-import org.okstar.platform.system.dto.SysAccountDTO;
 
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
-import static org.okstar.platform.common.core.defined.AccountDefines.BindType.email;
-import static org.okstar.platform.common.core.defined.AccountDefines.BindType.phone;
+import static org.okstar.platform.core.account.AccountDefines.BindType.email;
+import static org.okstar.platform.core.account.AccountDefines.BindType.phone;
+
 
 @Slf4j
 @ApplicationScoped
@@ -193,10 +192,10 @@ public class PassportServiceImpl implements PassportService {
      * @param signUpForm
      */
     public void validateParam(SignUpForm signUpForm) {
-        if (signUpForm.getAccountType() == AccountDefines.BindType.email && !signUpForm.getAccount().matches("^\\w+([-+.]\\w+)*@\\w+([-.]\\w+)*\\.\\w+([-.]\\w+)*$")) {
+        if (signUpForm.getAccountType() == email && !signUpForm.getAccount().matches("^\\w+([-+.]\\w+)*@\\w+([-.]\\w+)*\\.\\w+([-.]\\w+)*$")) {
             throw new OkRuntimeException("邮箱格式错误");
         }
-        if (signUpForm.getAccountType() == AccountDefines.BindType.phone && !signUpForm.getAccount().matches("^1[3456789]{1}[0-9]{9}$")) {
+        if (signUpForm.getAccountType() == phone && !signUpForm.getAccount().matches("^1[3456789]{1}[0-9]{9}$")) {
             throw new OkRuntimeException("手机号格式错误");
         }
     }

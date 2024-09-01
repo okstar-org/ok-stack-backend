@@ -11,25 +11,18 @@
  * /
  */
 
-package org.okstar.platform.common.core.defined;
+package org.okstar.platform.core.web.resource;
 
-import lombok.Getter;
+import com.fasterxml.jackson.databind.JsonNode;
+import jakarta.ws.rs.GET;
+import jakarta.ws.rs.Path;
 
-/**
- * 用户相关定义
- */
-public interface UserDefines {
+@Path(".well-known")
+public class OkWellKnownResource extends OkCommonResource {
 
-
-    /**
-     * 性别
-     */
-    @Getter
-    enum Gender {
-        none,
-        male,
-        female,
+    @GET
+    @Path("git.json")
+    public JsonNode git() {
+        return gitVersion();
     }
-
-
 }

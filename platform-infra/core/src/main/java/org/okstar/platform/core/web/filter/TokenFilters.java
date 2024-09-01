@@ -11,7 +11,7 @@
  * /
  */
 
-package org.okstar.platform.common.security.filter;
+package org.okstar.platform.core.web.filter;
 
 import io.netty.handler.codec.http.HttpResponseStatus;
 import io.quarkus.logging.Log;
@@ -21,8 +21,8 @@ import io.vertx.ext.web.RoutingContext;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import org.eclipse.microprofile.jwt.JsonWebToken;
-import org.okstar.platform.common.core.defined.SystemDefines;
 import org.okstar.platform.common.string.OkStringUtil;
+import org.okstar.platform.core.web.OkHttpDefines;
 
 
 @ApplicationScoped
@@ -36,7 +36,7 @@ public class TokenFilters {
         HttpServerRequest request = rc.request();
         String uri = request.uri();
         Log.infof("Filter method:%s uri:%s", request.method(), uri);
-        String from = request.getHeader(SystemDefines.Header_X_OK_from);
+        String from = request.getHeader(OkHttpDefines.Header_X_OK_from);
         Log.infof("from:%s", from);
 
         if (OkStringUtil.isNotEmpty(from)) {
@@ -67,7 +67,7 @@ public class TokenFilters {
         }
 
         Log.infof("username:%s", username);
-        rc.put(SystemDefines.Header_X_OK_username, username);
+        rc.put(OkHttpDefines.Header_X_OK_username, username);
         rc.next();
     }
 }

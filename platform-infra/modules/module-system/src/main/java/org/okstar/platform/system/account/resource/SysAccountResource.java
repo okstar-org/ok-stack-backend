@@ -19,10 +19,10 @@ import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.QueryParam;
-import org.okstar.platform.common.core.defined.AccountDefines;
-import org.okstar.platform.common.core.resource.OkCommonResource;
+import org.okstar.platform.core.web.resource.OkCommonResource;
 import org.okstar.platform.common.core.web.bean.Req;
 import org.okstar.platform.common.core.web.bean.Res;
+import org.okstar.platform.core.account.AccountDefines;
 import org.okstar.platform.system.account.domain.SysAccount;
 import org.okstar.platform.system.account.service.SysAccountService;
 
