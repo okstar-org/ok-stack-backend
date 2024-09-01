@@ -1,7 +1,11 @@
-[submodule "thirdparty/REST-Api-Client"]
+[submodule "thirdparty/REST-API-Client"]
 	path = thirdparty/REST-API-Client
 	url = https://github.com/okstar-org/ok-openfire-REST-API-Client.git
 
-[submodule "thirdparty/OkCloud-Api-Client"]
+[submodule "thirdparty/OkCloud-API-Client"]
 	path = thirdparty/OkCloud-API-Client
 	url = https://github.com/okstar-org/ok-cloud-API-Client.git
+
+[submodule "thirdparty/OkStack-API-Client"]
+	path = thirdparty/OkStack-API-Client
+	url = https://github.com/okstar-org/ok-stack-api-client.git
