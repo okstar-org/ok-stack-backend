@@ -13,11 +13,16 @@
 
 package org.okstar.platform.common.core.web.bean;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import java.io.Serializable;
 
 /**
  * 数据传输实体
  */
+@Setter
+@Getter
 public abstract class DTO implements Serializable {
     private String uuid;
 }

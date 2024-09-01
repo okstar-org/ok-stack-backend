@@ -40,11 +40,15 @@ public class UserResource {
     public UserDTOs search(@QueryParam("q") String query) {
         List<SysAccountDTO> list = userRpc.search(query);
         UserDTOs d = new UserDTOs();
-        d.setData(list.stream().map(e-> UserDTO.builder()
-                .avatar(e.getAvatar())
-                .username(e.getUsername())
-                .nickname(e.getNickname())
-                .build()).toList());
+        d.setData(list.stream().map(e-> {
+            UserDTO dto = UserDTO.builder()
+                    .avatar(e.getAvatar())
+                    .username(e.getUsername())
+                    .nickname(e.getNickname())
+                    .build();
+            dto.setUuid(e.getUuid());
+            return dto;
+        }).toList());
         return d;
     }
 }
