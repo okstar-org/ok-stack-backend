@@ -9,3 +9,7 @@
 [submodule "thirdparty/OkStack-API-Client"]
 	path = thirdparty/OkStack-API-Client
 	url = https://github.com/okstar-org/ok-stack-api-client.git
+
+[submodule "thirdparty/ok-commons"]
+	path = thirdparty/ok-commons
+	url = https://github.com/okstar-org/ok-commons.git

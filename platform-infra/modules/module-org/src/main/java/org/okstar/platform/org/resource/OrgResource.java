@@ -20,7 +20,7 @@ import jakarta.ws.rs.PUT;
 import jakarta.ws.rs.Path;
 import org.eclipse.microprofile.rest.client.inject.RestClient;
 import org.okstar.platform.common.core.web.bean.Res;
-import org.okstar.platform.common.rpc.RpcAssert;
+import org.okstar.platform.core.rpc.RpcAssert;
 import org.okstar.platform.org.domain.Org;
 import org.okstar.platform.org.domain.OrgDept;
 import org.okstar.platform.org.domain.OrgPost;

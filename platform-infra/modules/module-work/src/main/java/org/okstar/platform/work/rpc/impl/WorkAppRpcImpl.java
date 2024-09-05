@@ -18,7 +18,7 @@ import jakarta.inject.Inject;
 import org.okstar.cloud.entity.AppEntities;
 import org.okstar.cloud.entity.AppMetaEntity;
 import org.okstar.cloud.entity.OkPageable;
-import org.okstar.platform.common.rpc.RpcResult;
+import org.okstar.platform.core.rpc.RpcResult;
 import org.okstar.platform.work.dto.AppDTO;
 import org.okstar.platform.work.dto.AppMetaDTO;
 import org.okstar.platform.work.dto.RunModality;

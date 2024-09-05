@@ -24,7 +24,7 @@ import jakarta.transaction.Transactional;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.okstar.platform.common.asserts.OkAssert;
 import org.okstar.platform.common.bean.OkBeanUtils;
-import org.okstar.platform.common.core.OkAbsService;
+import org.okstar.platform.core.service.OkAbsService;
 import org.okstar.platform.common.core.exception.OkRuntimeException;
 import org.okstar.platform.common.core.exception.user.OkUserException;
 import org.okstar.platform.common.core.web.page.OkPageResult;

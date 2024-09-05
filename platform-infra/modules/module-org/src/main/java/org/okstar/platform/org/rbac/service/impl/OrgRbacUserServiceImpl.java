@@ -5,7 +5,7 @@ import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import org.eclipse.microprofile.rest.client.inject.RestClient;
 import org.okstar.platform.common.bean.OkBeanUtils;
-import org.okstar.platform.common.rpc.RpcResult;
+import org.okstar.platform.core.rpc.RpcResult;
 import org.okstar.platform.org.rbac.domain.OrgRbacUser;
 import org.okstar.platform.org.rbac.domain.OrgRbacUserRole;
 import org.okstar.platform.org.rbac.mapper.OrgRbacUserMapper;

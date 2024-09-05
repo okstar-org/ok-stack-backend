@@ -16,7 +16,7 @@ package org.okstar.platform.org.rpc.impl;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
-import org.okstar.platform.common.rpc.RpcResult;
+import org.okstar.platform.core.rpc.RpcResult;
 import org.okstar.platform.org.dto.Org0;
 import org.okstar.platform.org.rpc.OrgRpc;
 import org.okstar.platform.org.service.OrgService;

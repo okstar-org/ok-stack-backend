@@ -17,7 +17,7 @@ import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.PathParam;
 import org.eclipse.microprofile.rest.client.inject.RegisterRestClient;
-import org.okstar.platform.common.rpc.RpcResult;
+import org.okstar.platform.core.rpc.RpcResult;
 import org.okstar.platform.work.dto.AppDTO;
 import org.okstar.platform.work.dto.AppMetaDTO;
 

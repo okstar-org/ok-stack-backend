@@ -16,7 +16,7 @@ package org.okstar.platform.org.rpc;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;
 import org.eclipse.microprofile.rest.client.inject.RegisterRestClient;
-import org.okstar.platform.common.rpc.RpcResult;
+import org.okstar.platform.core.rpc.RpcResult;
 import org.okstar.platform.org.dto.Org0;
 
 @Path("rpc/OrgRpc")

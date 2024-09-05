@@ -17,7 +17,7 @@ import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import org.okstar.platform.auth.rpc.PassportRpc;
 import org.okstar.platform.auth.service.PassportService;
-import org.okstar.platform.common.rpc.RpcResult;
+import org.okstar.platform.core.rpc.RpcResult;
 import org.okstar.platform.system.sign.SignUpForm;
 import org.okstar.platform.system.sign.SignUpResult;
 import org.okstar.platform.system.dto.SysAccountDTO;

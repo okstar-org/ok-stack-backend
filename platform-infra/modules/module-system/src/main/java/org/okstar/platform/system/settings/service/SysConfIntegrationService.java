@@ -14,10 +14,8 @@
 package org.okstar.platform.system.settings.service;
 
 
-import org.okstar.platform.common.core.OkService;
+import org.okstar.platform.core.service.OkService;
 import org.okstar.platform.system.settings.domain.SysConfIntegration;
-import org.okstar.platform.system.settings.domain.SysConfIntegrationIm;
-import org.okstar.platform.system.settings.domain.SysConfIntegrationStack;
 
 /**
  *集成配置

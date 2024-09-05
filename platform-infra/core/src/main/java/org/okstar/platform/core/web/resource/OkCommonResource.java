@@ -21,7 +21,7 @@ import io.vertx.core.http.HttpServerResponse;
 import io.vertx.ext.web.RoutingContext;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.core.Context;
-import org.okstar.platform.core.web.OkHttpDefines;
+import org.okstar.platform.common.core.web.OkHttpDefines;
 
 import java.io.InputStream;
 

@@ -16,7 +16,7 @@ package org.okstar.platform.system.rpc.impl;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import org.okstar.platform.common.bean.OkBeanUtils;
-import org.okstar.platform.common.rpc.RpcResult;
+import org.okstar.platform.core.rpc.RpcResult;
 import org.okstar.platform.core.account.AccountDefines;
 import org.okstar.platform.system.account.domain.SysAccount;
 import org.okstar.platform.system.account.domain.SysAccountBind;

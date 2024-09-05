@@ -19,7 +19,7 @@ import jakarta.ws.rs.Path;
 import jakarta.ws.rs.QueryParam;
 import org.eclipse.microprofile.rest.client.inject.RestClient;
 import org.okstar.platform.common.core.web.bean.Res;
-import org.okstar.platform.common.rpc.RpcAssert;
+import org.okstar.platform.core.rpc.RpcAssert;
 import org.okstar.platform.org.dto.OrgStaff0;
 import org.okstar.platform.org.rpc.OrgStaffRpc;
 import org.okstar.platform.system.dto.SysAccountDTO;

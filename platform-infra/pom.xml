@@ -27,8 +27,8 @@
     <artifactId>platform-infra</artifactId>
 
     <modules>
-        <module>commons</module>
         <module>core</module>
         <module>modules</module>
+        <module>framework</module>
     </modules>
 </project>

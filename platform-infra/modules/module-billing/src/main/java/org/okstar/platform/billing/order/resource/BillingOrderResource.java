@@ -22,14 +22,14 @@ import jakarta.ws.rs.PathParam;
 import org.okstar.cloud.entity.OrderResultEntity;
 import org.okstar.platform.billing.order.domain.BillingOrder;
 import org.okstar.platform.billing.order.service.BillingOrderService;
-import org.okstar.platform.billing.resource.BillingBaseResource;
+import org.okstar.platform.billing.resource.BaseResource;
 import org.okstar.platform.common.core.web.bean.Res;
 import org.okstar.platform.common.core.web.page.OkPageResult;
 import org.okstar.platform.common.core.web.page.OkPageable;
 
 @Authenticated
 @Path("order")
-public class BillingOrderResource extends BillingBaseResource {
+public class BillingOrderResource extends BaseResource {
 
 
     @Inject
@@ -42,9 +42,10 @@ public class BillingOrderResource extends BillingBaseResource {
     @POST
     @Path("create")
     public Res<OrderResultEntity> create(String planId) {
-        var order = orderService.createOrder(planId, loadUserId());
+        var order = orderService.createOrder(planId, self().getId());
         return Res.ok(order);
     }
+
     /**
      * 关闭订单
      * @return
@@ -52,10 +53,9 @@ public class BillingOrderResource extends BillingBaseResource {
     @POST
     @Path("close")
     public Res<Boolean> close(String no) {
-        boolean closeOrder = orderService.closeOrder(no, loadUserId());
+        boolean closeOrder = orderService.closeOrder(no, self().getId());
         return Res.ok(closeOrder);
     }
-
 
     /**
      * 列表查询

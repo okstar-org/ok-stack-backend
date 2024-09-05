@@ -79,9 +79,11 @@
             <version>3.8.1</version>
             <scope>test</scope>
         </dependency>
+
         <dependency>
             <groupId>org.okstar.platform</groupId>
             <artifactId>common-base</artifactId>
         </dependency>
+
     </dependencies>
 </project>

@@ -14,7 +14,7 @@
 package org.okstar.platform.system.settings.service;
 
 
-import org.okstar.platform.common.core.OkService;
+import org.okstar.platform.core.service.OkService;
 import org.okstar.platform.system.account.domain.SysAccount;
 import org.okstar.platform.system.settings.domain.SysConfPersonal;
 import org.okstar.platform.system.settings.domain.SysProperty;

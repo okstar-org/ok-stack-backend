@@ -23,6 +23,9 @@ import org.okstar.platform.common.datasource.domain.OkEntity;
 import java.math.BigDecimal;
 import java.util.Date;
 
+/**
+ * 费用中心-订单
+ */
 @Setter
 @Getter
 @Entity

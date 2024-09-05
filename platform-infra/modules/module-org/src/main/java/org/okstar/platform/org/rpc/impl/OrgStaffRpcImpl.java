@@ -15,7 +15,7 @@ package org.okstar.platform.org.rpc.impl;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
-import org.okstar.platform.common.rpc.RpcResult;
+import org.okstar.platform.core.rpc.RpcResult;
 import org.okstar.platform.org.dto.OrgStaff0;
 import org.okstar.platform.org.dto.OrgStaffFragment;
 import org.okstar.platform.org.rpc.OrgStaffRpc;

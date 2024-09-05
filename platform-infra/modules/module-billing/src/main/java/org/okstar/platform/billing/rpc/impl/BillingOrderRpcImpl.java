@@ -25,7 +25,7 @@ import org.okstar.platform.billing.order.service.BillingGoodsService;
 import org.okstar.platform.billing.order.service.BillingOrderService;
 import org.okstar.platform.billing.rpc.BillingOrderRpc;
 import org.okstar.platform.common.asserts.OkAssert;
-import org.okstar.platform.common.rpc.RpcResult;
+import org.okstar.platform.core.rpc.RpcResult;
 
 import java.util.List;
 
