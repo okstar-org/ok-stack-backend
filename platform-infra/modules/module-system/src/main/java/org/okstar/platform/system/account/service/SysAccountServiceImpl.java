@@ -30,6 +30,7 @@ import org.okstar.platform.common.core.web.page.OkPageResult;
 import org.okstar.platform.common.core.web.page.OkPageable;
 import org.okstar.platform.common.datasource.domain.OkEntity;
 import org.okstar.platform.common.date.OkDateUtils;
+import org.okstar.platform.common.id.OkIdUtils;
 import org.okstar.platform.common.mail.OkMailUtil;
 import org.okstar.platform.common.phone.OkPhoneUtils;
 import org.okstar.platform.common.string.OkStringUtil;
@@ -214,8 +215,8 @@ public class SysAccountServiceImpl extends OkAbsService implements SysAccountSer
                 }
             }
         }
+        bind.setUuid(OkIdUtils.makeUuid());
         sysAccountBindMapper.persist(bind);
-
         /*
           保存密码
          */
@@ -223,6 +224,7 @@ public class SysAccountServiceImpl extends OkAbsService implements SysAccountSer
         pwd.setAccountId(sysAccount.id);
         pwd.setCreateAt(sysAccount.getCreateAt());
         pwd.setPassword(signUpForm.getPassword());
+        pwd.setUuid(OkIdUtils.makeUuid());
         sysAccountPasswordMapper.persist(pwd);
 
         return SignUpResult.builder()
