@@ -45,6 +45,7 @@ public class UserResource {
                     .avatar(e.getAvatar())
                     .username(e.getUsername())
                     .nickname(e.getNickname())
+                    .email(e.getEmail())
                     .build();
             dto.setUuid(e.getUuid());
             return dto;
