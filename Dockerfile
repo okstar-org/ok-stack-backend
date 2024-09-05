@@ -17,7 +17,7 @@ RUN apt install -y nginx-full zip unzip
 RUN rm -rf /var/lib/apt/lists/*
 
 
-COPY platform-infra/commons/common-base/src/main/resources/lib/libsigar-amd64-linux-1.6.4.so /lib
+COPY common-base/src/main/resources/lib/libsigar-amd64-linux-1.6.4.so /lib
 ADD distribution/target/ok-stack-backend-assembly.tar.gz ${OK_STAR_DIR}
 
 # UI
