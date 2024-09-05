@@ -24,7 +24,6 @@ import jakarta.transaction.Transactional;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.okstar.platform.common.asserts.OkAssert;
 import org.okstar.platform.common.bean.OkBeanUtils;
-import org.okstar.platform.core.service.OkAbsService;
 import org.okstar.platform.common.core.exception.OkRuntimeException;
 import org.okstar.platform.common.core.exception.user.OkUserException;
 import org.okstar.platform.common.core.web.page.OkPageResult;
@@ -35,6 +34,7 @@ import org.okstar.platform.common.mail.OkMailUtil;
 import org.okstar.platform.common.phone.OkPhoneUtils;
 import org.okstar.platform.common.string.OkStringUtil;
 import org.okstar.platform.core.account.AccountDefines;
+import org.okstar.platform.core.service.OkAbsService;
 import org.okstar.platform.system.account.domain.SysAccount;
 import org.okstar.platform.system.account.domain.SysAccountBind;
 import org.okstar.platform.system.account.domain.SysAccountPassword;
@@ -151,6 +151,11 @@ public class SysAccountServiceImpl extends OkAbsService implements SysAccountSer
         }
         SysAccountDTO dto = new SysAccountDTO();
         OkBeanUtils.copyPropertiesTo(account, dto);
+
+        sysAccountBindMapper.find("accountId = ?1 and bindType = ?2", account.id, AccountDefines.BindType.email)
+                .firstResultOptional().ifPresent(email->{
+                    dto.setEmail(email.getBindValue());
+                });
         return dto;
     }
 
@@ -190,7 +195,7 @@ public class SysAccountServiceImpl extends OkAbsService implements SysAccountSer
                         + Optional.ofNullable(signUpForm.getLastName()).orElse("")
         );
 
-        sysAccountMapper.persist(sysAccount);
+        create(sysAccount, 1L);
         Log.infof("User have been saved successfully.=>%s", sysAccount.getUsername());
 
         SysAccountBind bind = new SysAccountBind();

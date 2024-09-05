@@ -16,9 +16,6 @@ package org.okstar.platform.system.dto;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.okstar.platform.common.core.web.bean.DTO;
-import org.okstar.platform.core.account.AccountDefines;
-
-import java.util.Optional;
 
 /**
  * 简单帐号对象
@@ -37,9 +34,7 @@ public class SysAccountDTO extends DTO {
     private String nickname;
     //头像
     private String avatar;
-
-    public String getAvatar() {
-        return Optional.ofNullable(avatar).orElse(AccountDefines.DefaultAvatar);
-    }
+    //邮箱
+    private String email;
 
 }
