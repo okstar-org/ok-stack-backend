@@ -37,7 +37,7 @@
         <dependency>
             <groupId>io.github.joy1024</groupId>
             <artifactId>OkStack-API-Client</artifactId>
-            <version>24.09.00-1-SNAPSHOT</version>
+            <version>24.09.00-2</version>
         </dependency>
     </dependencies>
 
