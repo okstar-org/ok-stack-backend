@@ -246,7 +246,7 @@
         </dependency>
 
         <dependency>
-            <groupId>org.okstar.platform</groupId>
+            <groupId>io.github.joy1024</groupId>
             <artifactId>common-base</artifactId>
         </dependency>
     </dependencies>
@@ -341,9 +341,9 @@
             </dependency>
 
             <dependency>
-                <groupId>org.okstar.platform</groupId>
+                <groupId>io.github.joy1024</groupId>
                 <artifactId>common-base</artifactId>
-                <version>1.0-SNAPSHOT</version>
+                <version>1.0</version>
             </dependency>
 
             <dependency>

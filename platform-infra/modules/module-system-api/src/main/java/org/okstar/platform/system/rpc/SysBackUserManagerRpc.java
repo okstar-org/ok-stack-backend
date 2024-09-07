@@ -39,7 +39,7 @@ public interface SysBackUserManagerRpc {
     @Path("resetPassword/{username}")
     void resetPassword(@PathParam("username") String username, String password);
 
-    @GET
+    @PUT
     @Path("forgot/{username}")
     void forgot(@PathParam("username") String username);
 }
