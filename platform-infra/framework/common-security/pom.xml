@@ -28,11 +28,6 @@
 
         <dependency>
             <groupId>org.okstar.platform</groupId>
-            <artifactId>common-base</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.okstar.platform</groupId>
             <artifactId>common-cache</artifactId>
         </dependency>
 

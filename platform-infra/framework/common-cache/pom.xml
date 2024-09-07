@@ -32,10 +32,5 @@
             <artifactId>quarkus-redis-client</artifactId>
         </dependency>
 
-        <dependency>
-            <groupId>org.okstar.platform</groupId>
-            <artifactId>common-base</artifactId>
-        </dependency>
-
     </dependencies>
 </project>

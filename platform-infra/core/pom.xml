@@ -80,10 +80,6 @@
             <scope>test</scope>
         </dependency>
 
-        <dependency>
-            <groupId>org.okstar.platform</groupId>
-            <artifactId>common-base</artifactId>
-        </dependency>
 
     </dependencies>
 </project>
