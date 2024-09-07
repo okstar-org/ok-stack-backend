@@ -1,11 +1,11 @@
 server {
     listen 80;
     server_name _;
-    root /usr/share/nginx/html/ok-stack;
+    root /usr/share/nginx/html/ok-stack-ui;
 
     location / {
       try_files $uri $uri/ /index.html;
-      root /usr/share/nginx/html/ok-stack;
+      root /usr/share/nginx/html/ok-stack-ui;
     }
 
      location /api/open/ {
