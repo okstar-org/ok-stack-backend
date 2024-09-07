@@ -245,7 +245,10 @@
             <artifactId>commons-beanutils</artifactId>
         </dependency>
 
-
+        <dependency>
+            <groupId>io.github.joy1024</groupId>
+            <artifactId>common-base</artifactId>
+        </dependency>
     </dependencies>
 
     <dependencyManagement>
@@ -338,9 +341,9 @@
             </dependency>
 
             <dependency>
-                <groupId>org.okstar.platform</groupId>
+                <groupId>io.github.joy1024</groupId>
                 <artifactId>common-base</artifactId>
-                <version>${revision}</version>
+                <version>1.1</version>
             </dependency>
 
             <dependency>

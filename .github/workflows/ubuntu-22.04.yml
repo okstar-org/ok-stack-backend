@@ -136,7 +136,7 @@ jobs:
         with:
           context: .
           push: true
-          tags: ${{ secrets.DOCKERHUB_OKSTACK_BACKEND }}:${{ env.SOURCE_TAG }}
+          tags: ${{ vars.DOCKERHUB_OKSTACK_CE }}:${{ env.SOURCE_TAG }}
           platforms: linux/amd64,linux/arm64
           cache-from: type=local,src=/tmp/.buildx-cache
           cache-to: type=local,dest=/tmp/.buildx-cache-new
