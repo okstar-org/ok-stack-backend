@@ -35,5 +35,6 @@
         <module>REST-API-Client</module>
         <module>OkCloud-API-Client</module>
         <module>OkStack-API-Client</module>
+        <module>ok-commons</module>
     </modules>
 </project>
