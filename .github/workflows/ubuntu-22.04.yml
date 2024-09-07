@@ -99,7 +99,7 @@ jobs:
           npm install
           npm run build
           cd dist
-          zip -r ok-stack-ui.zip  ok-stack
+          zip -r ok-stack-ui.zip  ok-stack-ui
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
