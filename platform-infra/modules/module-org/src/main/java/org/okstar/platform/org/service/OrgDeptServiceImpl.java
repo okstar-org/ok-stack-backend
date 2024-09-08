@@ -40,7 +40,7 @@ public class OrgDeptServiceImpl implements OrgDeptService {
 
     @Override
     public void save(OrgDept dept) {
-        create(dept, 1L);
+        orgDeptMapper.persist(dept);
     }
 
     @Override
@@ -113,7 +113,7 @@ public class OrgDeptServiceImpl implements OrgDeptService {
         root.setLevel(0);
         root.setName("默认部门");
         root.setDisabled(false);
-        save(root);
+        create(root, 1L);
         return List.of(root);
     }
 

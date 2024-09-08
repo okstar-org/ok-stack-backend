@@ -297,7 +297,6 @@ public class SysAccountServiceImpl extends OkAbsService implements SysAccountSer
         sysAccountMapper.persist(sysAccount);
     }
 
-
     @Override
     public List<SysAccountBind> listBind(Long id) {
         return sysAccountBindMapper.find("accountId", id).list();

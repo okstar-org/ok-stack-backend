@@ -28,6 +28,8 @@ import java.util.List;
 public interface OrgPostService extends OkJpaService<OrgPost>
 {
 
+    void saveOrUpdate(OrgPost orgPost);
+
     List<OrgPost> findByDept(Long deptId);
 
     /**

@@ -19,7 +19,6 @@ import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 import org.apache.commons.lang3.BooleanUtils;
 import org.okstar.platform.common.asserts.OkAssert;
-import org.okstar.platform.common.date.OkDateUtils;
 import org.okstar.platform.common.bean.OkBeanUtils;
 import org.okstar.platform.common.core.web.page.OkPageResult;
 import org.okstar.platform.common.core.web.page.OkPageable;
@@ -101,9 +100,7 @@ public class OrgServiceImpl implements OrgService {
         org.setUrl("");
         org.setNo(UUID.randomUUID().toString());
         org.setParentId(0L);
-        org.setCreateBy(0L);
-        org.setCreateAt(OkDateUtils.now());
-        save(org);
+        create(org, 1L);
         return org;
     }
 

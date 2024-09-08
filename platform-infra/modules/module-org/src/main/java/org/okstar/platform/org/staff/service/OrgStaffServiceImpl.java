@@ -256,7 +256,7 @@ public class OrgStaffServiceImpl implements OrgStaffService {
         entity.setFragment(req.getFragment());
         entity.setAccountId(req.getAccountId());
 
-        save(entity);
+        create(entity, 1L);
         return true;
     }
 

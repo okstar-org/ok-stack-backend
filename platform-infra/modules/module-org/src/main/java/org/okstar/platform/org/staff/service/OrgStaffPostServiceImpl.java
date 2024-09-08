@@ -25,12 +25,11 @@ import org.okstar.platform.common.asserts.OkAssert;
 import org.okstar.platform.common.core.web.page.OkPageResult;
 import org.okstar.platform.common.core.web.page.OkPageable;
 import org.okstar.platform.common.date.OkDateUtils;
-import org.okstar.platform.core.rpc.RpcAssert;
-import org.okstar.platform.core.rpc.RpcResult;
 import org.okstar.platform.common.string.OkStringUtil;
 import org.okstar.platform.core.account.AccountDefines;
 import org.okstar.platform.core.org.JobDefines;
-import org.okstar.platform.org.domain.OrgPost;
+import org.okstar.platform.core.rpc.RpcAssert;
+import org.okstar.platform.core.rpc.RpcResult;
 import org.okstar.platform.org.mapper.OrgStaffPostMapper;
 import org.okstar.platform.org.service.OrgPostService;
 import org.okstar.platform.org.staff.domain.OrgStaff;
@@ -135,16 +134,8 @@ public class OrgStaffPostServiceImpl implements OrgStaffPostService {
 
         //删除全部岗位关联
         var staffPosts = findByStaffIds(Set.of(staff.id));
-        staffPosts.forEach(sp -> {
-
-            //清除分配标识
-            OrgPost post = postService.get(sp.getPostId());
-            post.setAssignFor(null);
-
-            //删除关联
-            delete(sp);
-        });
-
+        //删除关联
+        staffPosts.forEach(this::delete);
 
         /**
          * 注销其帐号
@@ -193,15 +184,11 @@ public class OrgStaffPostServiceImpl implements OrgStaffPostService {
                 continue;
             }
 
-            OrgPost post = postService.get(postId);
-            //设置分配标识
-            post.setAssignFor(String.valueOf(staff.id));
-
             //保存关联
             OrgStaffPost staffPost = new OrgStaffPost();
             staffPost.setPostId(postId);
             staffPost.setStaffId(staffId);
-            save(staffPost);
+            create(staffPost, 1L);
         }
 
         //如果员工没有对应帐号，则为其生成帐号信息

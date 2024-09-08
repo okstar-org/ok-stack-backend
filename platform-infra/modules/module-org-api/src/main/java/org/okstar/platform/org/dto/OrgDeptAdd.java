@@ -33,5 +33,8 @@ public class OrgDeptAdd {
      */
     private Long parentId;
 
-
+    /**
+     * 是否禁用
+     */
+    private Boolean disabled;
 }

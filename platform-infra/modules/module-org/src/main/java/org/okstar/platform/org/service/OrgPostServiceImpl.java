@@ -19,6 +19,7 @@ import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 import org.locationtech.jts.util.Assert;
+import org.okstar.platform.common.asserts.OkAssert;
 import org.okstar.platform.common.date.OkDateUtils;
 import org.okstar.platform.common.bean.OkBeanUtils;
 import org.okstar.platform.common.core.web.page.OkPageResult;
@@ -43,28 +44,31 @@ public class OrgPostServiceImpl implements OrgPostService {
     OrgDeptMapper deptMapper;
 
     @Override
-    public void save(OrgPost orgPost) {
+    public void saveOrUpdate(OrgPost orgPost) {
         Log.debugf("save=%s", orgPost);
-
-        if (orgPost.id == 0) {
-            orgPost.id = null;
-        }
 
         if (orgPost.id != null && orgPost.id > 0) {
             //update
             OrgPost post = postMapper.findById(orgPost.id);
+            OkAssert.notNull(post, "数据有误！");
+
             post.setName(orgPost.getName());
             post.setNo(orgPost.getNo());
             post.setDescr(orgPost.getDescr());
             post.setRecruit(orgPost.getRecruit());
             post.setUpdateAt(OkDateUtils.now());
-            postMapper.persist(post);
+            update(post, 1L);
             return;
         }
 
         //add
         Assert.isTrue(orgPost.getDeptId() != null && orgPost.getDeptId() > 0, "请选择部门");
         orgPost.setCreateAt(OkDateUtils.now());
+        create(orgPost, 1L);
+    }
+
+    @Override
+    public void save(OrgPost orgPost) {
         postMapper.persist(orgPost);
     }
 

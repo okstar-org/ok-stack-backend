@@ -24,6 +24,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class Org0 {
     private Long id;
+    private String uuid;
     private String no;
     private String name;
     private String url;

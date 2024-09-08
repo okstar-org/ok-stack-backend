@@ -43,7 +43,7 @@ public class SysProfileResource extends BaseResource {
     public Res<Boolean> put(SysProfile profile){
         SysAccount self = self();
         profile.setAccountId(self.id);
-        profileService.save( profile);
+        profileService.create(profile, 1L);
         return Res.ok(true);
     }
 }

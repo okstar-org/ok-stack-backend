@@ -16,7 +16,6 @@ package org.okstar.platform.org.domain;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
-import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -50,11 +49,6 @@ public class OrgPost extends BaseEntity
      * 所在部门
      */
     private Long deptId;
-
-    /**
-     * 分配给（是否分配）
-     */
-    private String assignFor;
 
     /**
      * 招聘链接

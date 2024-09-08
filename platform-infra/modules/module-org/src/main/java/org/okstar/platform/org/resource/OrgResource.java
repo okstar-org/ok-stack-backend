@@ -77,11 +77,7 @@ public class OrgResource extends BaseResource {
     @Path("save")
     public Res<Boolean> save(Org0 org0){
         Org saved = orgService.save(org0);
-
-
         federalService.save(saved);
-
-
         return Res.ok(saved!=null);
     }
 
