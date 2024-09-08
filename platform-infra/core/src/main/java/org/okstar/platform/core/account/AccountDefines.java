@@ -55,4 +55,13 @@ public interface AccountDefines {
     String DefaultPWD = "okstar.123456#";
 
     String DefaultAvatar = "/assets/images/avatar.jpg";
+
+    /**
+     * 登录设备类型
+     */
+    enum DeviceType {
+        PC,
+        Mobile,
+    }
+
 }

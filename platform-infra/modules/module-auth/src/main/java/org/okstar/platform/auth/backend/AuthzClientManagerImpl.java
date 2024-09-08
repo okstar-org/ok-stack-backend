@@ -114,7 +114,8 @@ class AuthzClientManagerImpl implements AuthzClientManager {
 
         try {
             AuthzClient authzClient = ensureAuthzClient();
-            AuthorizationResponse response = authzClient.authorization(username.toLowerCase(), password).authorize(new AuthorizationRequest());
+            AuthorizationRequest request = new AuthorizationRequest();
+            AuthorizationResponse response = authzClient.authorization(username.toLowerCase(), password).authorize(request);
             return AuthorizationResult.builder()
                     .session_state(response.getSessionState())
                     .accessToken(response.getToken())

@@ -63,8 +63,9 @@ class PassportServiceImplTest {
         SignInForm form = new SignInForm();
         form.setIso(AccountDefines.DefaultISO);
         form.setGrantType("password");
-        form.setAccount("18910221510");
+        form.setAccount("18510248810@wo.cn");
         form.setPassword("123456");
+        form.setDeviceType(AccountDefines.DeviceType.PC);
         AuthorizationResult result = passportService.signIn(form);
         Log.infof("result=>%s", result);
         Assert.assertNotNull(result);

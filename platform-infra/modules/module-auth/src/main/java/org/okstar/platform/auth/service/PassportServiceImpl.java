@@ -20,6 +20,7 @@ import jakarta.ws.rs.NotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.eclipse.microprofile.rest.client.inject.RestClient;
 import org.okstar.platform.auth.backend.AuthzClientManager;
+import org.okstar.platform.auth.domain.AuthSession;
 import org.okstar.platform.common.asserts.OkAssert;
 import org.okstar.platform.common.core.exception.OkRuntimeException;
 import org.okstar.platform.core.rpc.RpcAssert;
@@ -57,7 +58,8 @@ public class PassportServiceImpl implements PassportService {
     SysBackUserManagerRpc backUserManager;
     @Inject
     AuthzClientManager authzClientManager;
-
+    @Inject
+    AuthSessionService authSessionService;
 
     @Override
     public synchronized SignUpResult signUp(SignUpForm form) {
@@ -151,7 +153,23 @@ public class PassportServiceImpl implements PassportService {
         }
         AuthorizationResult result = authzClientManager.authorization(account0.getUsername(), signInForm.getPassword());
         result.setUsername(account0.getUsername());
+        AuthSession sess = buildAuthSession(signInForm, account0, result);
+        authSessionService.create(sess, 1L);
         return result;
+    }
+
+    private static AuthSession buildAuthSession(SignInForm signInForm, SysAccountDTO account0, AuthorizationResult result) {
+        AuthSession sess = new AuthSession();
+        sess.setUsername(account0.getUsername());
+        sess.setDeviceType(signInForm.getDeviceType());
+        sess.setLoginType(signInForm.getType());
+        sess.setGrantType(signInForm.getGrantType());
+        sess.setAccessToken(result.getAccessToken());
+        sess.setExpiresIn(result.getExpiresIn());
+        sess.setRefreshToken(result.getRefreshToken());
+        sess.setRefreshExpiresIn(result.getRefreshExpiresIn());
+        sess.setSessionState(result.getSession_state());
+        return sess;
     }
 
     @Override

@@ -36,6 +36,7 @@ public class SignInForm extends Req {
      * remember_me: true
      */
     private AccountDefines.BindType type = AccountDefines.BindType.email;
+    private AccountDefines.DeviceType deviceType = AccountDefines.DeviceType.PC;
     private String iso = AccountDefines.DefaultISO;
     private String grantType;
     private String account;
