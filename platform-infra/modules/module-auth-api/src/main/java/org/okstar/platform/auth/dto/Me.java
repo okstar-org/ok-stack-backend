@@ -16,7 +16,6 @@ package org.okstar.platform.auth.dto;
 import lombok.Builder;
 import lombok.Data;
 import org.okstar.platform.common.string.OkStringUtil;
-import org.okstar.platform.system.dto.SysProfileDTO;
 import org.okstar.platform.system.dto.SysAccountDTO;
 
 @Data
@@ -25,7 +24,7 @@ public class Me {
     //帐号信息
     SysAccountDTO account;
     //个人信息
-    SysProfileDTO profile;
+//    SysProfileDTO profile;
 
     /**
      * 用户显示名称
@@ -38,10 +37,10 @@ public class Me {
             return nickname;
         }
         //真实名称
-        var personalName = profile.getPersonalName();
-        if (OkStringUtil.isNoneBlank(personalName)) {
-            return personalName;
-        }
+//        var personalName = profile.getPersonalName();
+//        if (OkStringUtil.isNoneBlank(personalName)) {
+//            return personalName;
+//        }
         return account.getUsername();
     }
 
