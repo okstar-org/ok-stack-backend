@@ -40,7 +40,7 @@ public class OrgDeptServiceImpl implements OrgDeptService {
 
     @Override
     public void save(OrgDept dept) {
-        orgDeptMapper.persist(dept);
+        create(dept, 1L);
     }
 
     @Override

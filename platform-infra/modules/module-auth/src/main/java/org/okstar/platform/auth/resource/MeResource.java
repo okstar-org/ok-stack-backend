@@ -14,18 +14,17 @@
 package org.okstar.platform.auth.resource;
 
 import io.quarkus.logging.Log;
+import io.quarkus.security.Authenticated;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;
-import lombok.extern.slf4j.Slf4j;
 import org.eclipse.microprofile.rest.client.inject.RestClient;
 import org.okstar.platform.auth.dto.Me;
 import org.okstar.platform.common.core.web.bean.Res;
 import org.okstar.platform.system.dto.SysAccountDTO;
-import org.okstar.platform.system.dto.SysProfileDTO;
 import org.okstar.platform.system.rpc.SysProfileRpc;
 
-@Slf4j
+@Authenticated
 @Path("me")
 public class MeResource extends BaseResource {
 
@@ -44,9 +43,11 @@ public class MeResource extends BaseResource {
     @GET
     public Res<Me> get() {
         SysAccountDTO account0 = self();
-        SysProfileDTO profileDTO = sysProfileRpc.getByAccount(account0.getId());
-        Me me = Me.builder().account(account0).profile(profileDTO).build();
-        Log.infof("My info is:%s", me);
+//        SysProfileDTO profileDTO = sysProfileRpc.getByAccount(account0.getId());
+        Me me = Me.builder().account(account0)
+//                .profile(profileDTO)
+                .build();
+        Log.infof("My info is: %s", me);
         return Res.ok(me);
     }
 
