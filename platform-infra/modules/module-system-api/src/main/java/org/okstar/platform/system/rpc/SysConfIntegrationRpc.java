@@ -14,6 +14,7 @@
 package org.okstar.platform.system.rpc;
 
 import jakarta.ws.rs.GET;
+import jakarta.ws.rs.PUT;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.ProcessingException;
 import org.eclipse.microprofile.rest.client.inject.RegisterRestClient;
@@ -31,5 +32,7 @@ public interface SysConfIntegrationRpc {
     @Path("getIntegrationConf")
     SysConfIntegrationDTO getIntegrationConf() throws ProcessingException;
 
+    @PUT
+    @Path("updateConf")
     void uploadConf();
 }
