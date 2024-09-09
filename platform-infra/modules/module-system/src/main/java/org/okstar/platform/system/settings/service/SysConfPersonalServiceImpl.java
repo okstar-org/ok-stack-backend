@@ -21,7 +21,7 @@ import org.okstar.platform.system.account.domain.SysAccount;
 import org.okstar.platform.system.settings.SysConfDefines;
 import org.okstar.platform.system.settings.domain.SysConfPersonal;
 import org.okstar.platform.system.settings.domain.SysProperty;
-import org.okstar.platform.system.settings.mapper.SysSetKvMapper;
+import org.okstar.platform.system.settings.mapper.SysPropertyMapper;
 
 import java.util.List;
 
@@ -30,7 +30,7 @@ import java.util.List;
 public class SysConfPersonalServiceImpl implements SysConfPersonalService {
 
     @Inject
-    SysSetKvMapper kvMapper;
+    SysPropertyMapper kvMapper;
 
     @Override
     public synchronized SysConfPersonal findDefault(SysAccount account) {

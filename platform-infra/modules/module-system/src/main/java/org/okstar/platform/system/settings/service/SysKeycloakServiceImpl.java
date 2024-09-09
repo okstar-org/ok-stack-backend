@@ -37,8 +37,6 @@ import org.okstar.platform.common.string.OkStringUtil;
 import org.okstar.platform.system.kv.rpc.SysKeycloakConfDTO;
 import org.okstar.platform.system.settings.domain.SysConfIntegrationKeycloak;
 import org.okstar.platform.system.settings.domain.SysProperty;
-import org.okstar.platform.system.settings.domain.SysProperty_;
-import org.okstar.platform.system.settings.mapper.SysSetKvMapper;
 
 import java.net.URI;
 import java.util.List;
@@ -57,7 +55,7 @@ public class SysKeycloakServiceImpl implements SysKeycloakService {
     public static final String ADMIN_CLIENT_CLI = "admin-cli";
 
     @Inject
-    SysSetKvMapper kvMapper;
+    SysPropertyService propertyService;
 
     @Inject
     ObjectMapper objectMapper;
@@ -269,14 +267,14 @@ public class SysKeycloakServiceImpl implements SysKeycloakService {
     @Override
     public void clearConfig() {
         SysConfIntegrationKeycloak keycloak = new SysConfIntegrationKeycloak();
-        kvMapper.delete(SysProperty_.GROUPING, keycloak.getGroup());
+        propertyService.deleteByGroup(keycloak.getGroup());
     }
 
 
     @Override
     public SysConfIntegrationKeycloak getConfig() {
         SysConfIntegrationKeycloak conf = new SysConfIntegrationKeycloak();
-        List<SysProperty> kvs = kvMapper.findByGroup(conf.getGroup());
+        List<SysProperty> kvs = propertyService.findByGroup(conf.getGroup());
         conf.addProperties(kvs);
         conf.setServerUrl(serverUrl);
         return conf;
@@ -294,7 +292,7 @@ public class SysKeycloakServiceImpl implements SysKeycloakService {
         conf.setRealm(MASTER_REALM);
         conf.setClientId(ADMIN_CLIENT_CLI);
 
-        var serverUrl = kvMapper.findByKey(conf.getGroup(), conf.getRealm(), "server-url");
+        var serverUrl = propertyService.findByKey(conf.getGroup(), conf.getRealm(), "server-url");
         if (serverUrl.isEmpty()) {
             SysProperty kv = SysProperty.builder()
                     .grouping(conf.getGroup())
@@ -302,10 +300,10 @@ public class SysKeycloakServiceImpl implements SysKeycloakService {
                     .v(conf.getServerUrl())
                     .domain(conf.getRealm())
                     .build();
-            kvMapper.persist(kv);
+            propertyService.create(kv, 1L);
         }
         String realmKey = "realm";
-        var realm = kvMapper.findByKey(conf.getGroup(), conf.getRealm(), realmKey);
+        var realm = propertyService.findByKey(conf.getGroup(), conf.getRealm(), realmKey);
         if (realm.isEmpty()) {
             SysProperty kv = SysProperty.builder()
                     .grouping(conf.getGroup())
@@ -313,10 +311,10 @@ public class SysKeycloakServiceImpl implements SysKeycloakService {
                     .v(conf.getRealm())
                     .domain(conf.getRealm())
                     .build();
-            kvMapper.persist(kv);
+            propertyService.create(kv, 1L);
         }
         String clientIdKey = "client-id";
-        var clientId = kvMapper.findByKey(conf.getGroup(), conf.getRealm(), clientIdKey);
+        var clientId = propertyService.findByKey(conf.getGroup(), conf.getRealm(), clientIdKey);
         if (clientId.isEmpty()) {
             SysProperty kv = SysProperty.builder()
                     .grouping(conf.getGroup())
@@ -324,11 +322,11 @@ public class SysKeycloakServiceImpl implements SysKeycloakService {
                     .v(conf.getClientId())
                     .domain(conf.getRealm())
                     .build();
-            kvMapper.persist(kv);
+            propertyService.create(kv, 1L);
         }
 
         String usernameKey = "username";
-        var username = kvMapper.findByKey(conf.getGroup(), conf.getRealm(), usernameKey);
+        var username = propertyService.findByKey(conf.getGroup(), conf.getRealm(), usernameKey);
         if (username.isEmpty()) {
             SysProperty kv = SysProperty.builder()
                     .grouping(conf.getGroup())
@@ -336,11 +334,11 @@ public class SysKeycloakServiceImpl implements SysKeycloakService {
                     .v(conf.getUsername())
                     .domain(conf.getRealm())
                     .build();
-            kvMapper.persist(kv);
+            propertyService.create(kv, 1L);
         }
 
         String passwordKey = "password";
-        var pwd = kvMapper.findByKey(conf.getGroup(), conf.getRealm(), passwordKey);
+        var pwd = propertyService.findByKey(conf.getGroup(), conf.getRealm(), passwordKey);
         if (pwd.isEmpty()) {
             SysProperty kv = SysProperty.builder()
                     .grouping(conf.getGroup())
@@ -348,11 +346,11 @@ public class SysKeycloakServiceImpl implements SysKeycloakService {
                     .v(conf.getPassword())
                     .domain(conf.getRealm())
                     .build();
-            kvMapper.persist(kv);
+            propertyService.create(kv, 1L);
         }
 
         String clientSecretKey = "client-secret";
-        var clientSecret = kvMapper.findByKey(conf.getGroup(), conf.getRealm(), clientSecretKey);
+        var clientSecret = propertyService.findByKey(conf.getGroup(), conf.getRealm(), clientSecretKey);
         if (clientSecret.isEmpty()) {
             //为客户端生成的密码
             String secret = OkIdUtils.makeUuid();
@@ -363,7 +361,7 @@ public class SysKeycloakServiceImpl implements SysKeycloakService {
                     .v(secret)
                     .domain(conf.getRealm())
                     .build();
-            kvMapper.persist(kv);
+            propertyService.create(kv, 1L);
         } else {
             conf.setClientSecret(clientSecret.stream().findFirst().get().getV());
         }
