@@ -44,6 +44,8 @@ import java.net.URI;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.TimeUnit;
 
 @Transactional
 @ApplicationScoped
@@ -57,6 +59,11 @@ public class SysKeycloakServiceImpl implements SysKeycloakService {
     @Inject
     SysSetKvMapper kvMapper;
 
+    @Inject
+    ObjectMapper objectMapper;
+
+    @Inject
+    ExecutorService executorService;
 
     @ConfigProperty(name = "quarkus.oidc.auth-server-url",
             defaultValue = "http://localhost:18080/realms/okstar")
@@ -67,8 +74,6 @@ public class SysKeycloakServiceImpl implements SysKeycloakService {
     @ConfigProperty(name = "quarkus.oidc.client-id", defaultValue = "okstack")
     private String clientId;
 
-    @Inject
-    ObjectMapper objectMapper;
 
     void startup(@Observes StartupEvent event) {
 
@@ -101,14 +106,25 @@ public class SysKeycloakServiceImpl implements SysKeycloakService {
             throw new RuntimeException("Unable to resolve auth server url", e);
         }
 
-//        confGroup = realm + "/" + clientId + "-quarkus.keycloak.admin-client";
-//        Log.debugf("Keycloak config prefix: %s", confGroup);
-
         SysConfIntegrationKeycloak conf = initConfig();
-        initRealm(conf, realm);
-        Log.infof("Initialized realm=>%s", realm);
-    }
+        executorService.execute(() -> {
+            String value = null;
+            do {
+                try {
+                    Log.infof("Initializing realm: %s", realm);
+                    value = initRealm(conf, realm);
+                    Log.infof("Initialized realm=>%s", realm);
+                } catch (Exception e) {
+                    Log.warnf("Unable to initialize realm: %s, Try again in 1 minute.", realm);
+                    try {
+                        TimeUnit.MINUTES.sleep(1);
+                    } catch (InterruptedException ignored) {
 
+                    }
+                }
+            } while (value == null);
+        });
+    }
 
     public void initClient(SysConfIntegrationKeycloak conf, RealmRepresentation realm, String clientId) {
         Log.infof("Initialize client: %s for realm:%s", clientId, realm.getRealm());
@@ -348,7 +364,7 @@ public class SysKeycloakServiceImpl implements SysKeycloakService {
                     .domain(conf.getRealm())
                     .build();
             kvMapper.persist(kv);
-        }else {
+        } else {
             conf.setClientSecret(clientSecret.stream().findFirst().get().getV());
         }
 
