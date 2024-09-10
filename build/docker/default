@@ -1,11 +1,11 @@
 server {
     listen 80;
     server_name _;
-    root /usr/share/nginx/html/ok-stack-ui;
+    root /usr/share/nginx/html/ok-stack;
 
     location / {
       try_files $uri $uri/ /index.html;
-      root /usr/share/nginx/html/ok-stack-ui;
+      root /usr/share/nginx/html/ok-stack;
     }
 
      location /api/open/ {
@@ -13,7 +13,7 @@ server {
         proxy_set_header Host $proxy_host;
         proxy_set_header X-Real-IP $remote_addr;
         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-        proxy_pass http://localhost:8000/open/;
+        proxy_pass http://localhost:8000/;
     }
 
     location /api/auth/ {
@@ -56,7 +56,7 @@ server {
         proxy_pass http://localhost:9400/;
     }
 
-     location /api/work/ {
+    location /api/work/ {
         proxy_cache off;
         proxy_set_header Host $proxy_host;
         proxy_set_header X-Real-IP $remote_addr;
