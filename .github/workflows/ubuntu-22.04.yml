@@ -97,7 +97,7 @@ jobs:
           git clone -b ${{ env.BRANCH }} https://github.com/okstar-org/ok-stack-ui.git
           cd ok-stack-ui
           npm install
-          npm run build
+          npm run release
           cd dist
           zip -r ok-stack-ui.zip  ok-stack-ui
 
