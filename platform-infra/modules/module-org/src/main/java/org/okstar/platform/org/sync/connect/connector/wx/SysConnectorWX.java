@@ -37,7 +37,7 @@ import java.util.List;
 import java.util.Map;
 
 @Slf4j
-@ApplicationScoped
+//@ApplicationScoped
 public class SysConnectorWX extends SysConnectorAbstract {
 
 

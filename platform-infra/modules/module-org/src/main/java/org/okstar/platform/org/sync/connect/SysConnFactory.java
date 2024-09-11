@@ -14,7 +14,6 @@
 package org.okstar.platform.org.sync.connect;
 
 import com.google.common.collect.Maps;
-import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
 import org.okstar.platform.common.asserts.OkAssert;
@@ -25,7 +24,7 @@ import java.util.List;
 import java.util.Map;
 
 @Slf4j
-@ApplicationScoped
+//@ApplicationScoped
 public class SysConnFactory {
 
     @Inject

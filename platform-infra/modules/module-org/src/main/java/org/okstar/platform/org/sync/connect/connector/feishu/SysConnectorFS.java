@@ -33,7 +33,7 @@ import org.okstar.platform.org.sync.connect.proto.SysConnUserInfo;
 import java.util.List;
 
 @Slf4j
-@ApplicationScoped
+//@ApplicationScoped
 public class SysConnectorFS extends SysConnectorAbstract {
 
 

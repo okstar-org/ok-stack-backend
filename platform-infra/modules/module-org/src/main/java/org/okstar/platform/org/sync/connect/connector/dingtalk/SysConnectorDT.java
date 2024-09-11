@@ -26,7 +26,6 @@ import com.dingtalk.api.response.OapiV2UserListbypageResponse;
 import com.google.common.collect.Lists;
 import com.taobao.api.ApiException;
 import com.taobao.api.TaobaoResponse;
-import jakarta.enterprise.context.ApplicationScoped;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.BooleanUtils;
 import org.okstar.platform.common.asserts.OkAssert;
@@ -46,7 +45,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Slf4j
-@ApplicationScoped
+//@ApplicationScoped
 public class SysConnectorDT extends SysConnectorAbstract {
 
     @Override

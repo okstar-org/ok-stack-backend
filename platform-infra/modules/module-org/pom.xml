@@ -63,12 +63,6 @@
             <groupId>io.quarkus</groupId>
             <artifactId>quarkus-oidc</artifactId>
         </dependency>
-        <dependency>
-            <groupId>org.okstar.platform</groupId>
-            <artifactId>common-base</artifactId>
-            <version>1.0</version>
-            <scope>compile</scope>
-        </dependency>
 
         <dependency>
             <groupId>com.aliyun</groupId>
