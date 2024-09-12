@@ -19,6 +19,7 @@ import org.okstar.platform.common.web.OkRestUtil;
 import org.okstar.platform.common.web.rest.transport.ClientFactory;
 import org.okstar.platform.common.web.rest.transport.RestClient;
 import org.okstar.platform.org.sync.connect.SysConnector;
+import org.okstar.platform.org.sync.connect.domain.OrgIntegrateConf;
 import org.okstar.platform.org.sync.connect.proto.SysConnAccessToken;
 
 @Data
@@ -26,6 +27,8 @@ import org.okstar.platform.org.sync.connect.proto.SysConnAccessToken;
 public abstract class SysConnectorAbstract implements SysConnector {
 
     protected SysConnAccessToken accessToken;
+
+    protected OrgIntegrateConf conf;
 
     @Override
     public String getRequestUrl(String url) {

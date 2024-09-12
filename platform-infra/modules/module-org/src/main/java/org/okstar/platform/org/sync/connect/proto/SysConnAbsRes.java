@@ -16,7 +16,7 @@ package org.okstar.platform.org.sync.connect.proto;
 
 import lombok.Data;
 import org.okstar.platform.common.date.OkDateUtils;
-import org.okstar.platform.org.sync.connect.SysConEnums;
+import org.okstar.platform.org.connect.ConnectorDefines;
 
 import java.time.Instant;
 
@@ -27,7 +27,7 @@ public abstract class SysConnAbsRes implements SysConnRes {
      * 连接类型
      *
      */
-    SysConEnums.SysConType type;
+    ConnectorDefines.Type type;
 
     String appId;
 

@@ -14,6 +14,8 @@
 package org.okstar.platform.org.sync.connect;
 
 
+import org.okstar.platform.org.connect.ConnectorDefines;
+
 public interface SysConAppClientService {
 
     /**
@@ -22,7 +24,7 @@ public interface SysConAppClientService {
      * @param type
      * @return
      */
-    String test(SysConEnums.SysConType type);
+    String test(ConnectorDefines.Type type);
 
     /**
      * 同步方法
@@ -30,7 +32,7 @@ public interface SysConAppClientService {
      * @param type
      * @return
      */
-    Boolean sync(SysConEnums.SysConType type);
+    Boolean sync(ConnectorDefines.Type type);
 
     /**
      * 同步人员
@@ -38,5 +40,5 @@ public interface SysConAppClientService {
      * @param type
      * @return
      */
-    Boolean syncUser(SysConEnums.SysConType type);
+    Boolean syncUser(ConnectorDefines.Type type);
 }

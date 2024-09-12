@@ -14,10 +14,7 @@
 package org.okstar.platform.org.sync.connect.proto;
 
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.okstar.platform.common.date.OkDateUtils;
 
 
@@ -25,8 +22,10 @@ import java.time.temporal.ChronoUnit;
 
 @Data
 @Builder
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
+@ToString(callSuper = true)
+@EqualsAndHashCode(callSuper = true)
 public class SysConnAccessToken extends SysConnAbsRes {
 
     /**

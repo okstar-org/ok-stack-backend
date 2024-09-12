@@ -23,34 +23,42 @@ import com.dingtalk.api.response.OapiGettokenResponse;
 import com.dingtalk.api.response.OapiV2DepartmentListidsResponse;
 import com.dingtalk.api.response.OapiV2UserGetResponse;
 import com.dingtalk.api.response.OapiV2UserListbypageResponse;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.google.common.collect.Lists;
 import com.taobao.api.ApiException;
 import com.taobao.api.TaobaoResponse;
+import io.quarkus.logging.Log;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.BooleanUtils;
 import org.okstar.platform.common.asserts.OkAssert;
 import org.okstar.platform.common.bean.OkBeanUtils;
 import org.okstar.platform.common.core.exception.OkRuntimeException;
 import org.okstar.platform.common.date.OkDateUtils;
+import org.okstar.platform.common.json.OkJsonUtils;
+import org.okstar.platform.org.connect.ConnectorDefines;
+import org.okstar.platform.org.connect.exception.ConnectorException;
 import org.okstar.platform.org.defined.StaffDefines;
-import org.okstar.platform.org.sync.connect.SysConEnums;
 import org.okstar.platform.org.sync.connect.connector.SysConnectorAbstract;
 import org.okstar.platform.org.sync.connect.domain.OrgIntegrateConf;
 import org.okstar.platform.org.sync.connect.dto.SysConUser;
 import org.okstar.platform.org.sync.connect.proto.SysConnAccessToken;
-import org.okstar.platform.org.sync.connect.proto.SysConnDepartment;
+import org.okstar.platform.org.connect.api.Department;
 import org.okstar.platform.org.sync.connect.proto.SysConnUserInfo;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Slf4j
-//@ApplicationScoped
 public class SysConnectorDT extends SysConnectorAbstract {
 
+
+    public SysConnectorDT(OrgIntegrateConf conf) {
+        this.conf = conf;
+    }
+
     @Override
-    public SysConEnums.SysConType getType() {
-        return SysConEnums.SysConType.DD;
+    public ConnectorDefines.Type getType() {
+        return conf.getType();
     }
 
     @Override
@@ -60,15 +68,15 @@ public class SysConnectorDT extends SysConnectorAbstract {
 
 
     @Override
-    public SysConnAccessToken getAccessToken(OrgIntegrateConf app) {
+    public SysConnAccessToken fetchAccessToken() throws ConnectorException {
+        String url = "/gettoken";
         try {
+            log.info("Configuration: {}", conf);
 
-            log.info("Get access token: {}", app);
-
-            DingTalkClient client = new DefaultDingTalkClient(getRequestUrl("/gettoken"));
+            DingTalkClient client = new DefaultDingTalkClient(getRequestUrl(url));
             OapiGettokenRequest request = new OapiGettokenRequest();
-            request.setAppkey(app.getCertKey());
-            request.setAppsecret(app.getCertSecret());
+            request.setAppkey(conf.getCertKey());
+            request.setAppsecret(conf.getCertSecret());
             request.setHttpMethod("GET");
             OapiGettokenResponse response = client.execute(request);
             OkAssert.notNull(response, "response is null");
@@ -83,47 +91,48 @@ public class SysConnectorDT extends SysConnectorAbstract {
                     .build();
 
             accessToken.setCreatedAt(OkDateUtils.instant());
-            accessToken.setAppId(app.getAppId());
-            accessToken.setType(SysConEnums.SysConType.DD);
+            accessToken.setAppId(conf.getAppId());
+            accessToken.setType(ConnectorDefines.Type.DD);
 
             return accessToken;
         } catch (ApiException e) {
-            throw new OkRuntimeException("获取钉钉token异常！", e);
+            throw new ConnectorException(conf.getType(), url, e.getCause());
         }
     }
 
     @Override
-    public List<SysConnDepartment> getDepartmentList(OrgIntegrateConf app, String parentId) {
+    public List<Department> getDepartmentList(String parentId) throws ConnectorException {
+        String url = "/topapi/v2/department/listsub";
+        List<Department> list = Lists.newArrayList();
         try {
             log.info("getDepartmentList...");
             log.info("parentId:{}", parentId);
 
 
-            DingTalkClient client = new DefaultDingTalkClient(getRequestUrl("/topapi/v2/department/listsub"));
+            DingTalkClient client = new DefaultDingTalkClient(getRequestUrl(url));
             OapiV2DepartmentListidsRequest req = new OapiV2DepartmentListidsRequest();
             req.setId(Long.valueOf(parentId));
 
             OapiV2DepartmentListidsResponse response = client.execute(req, accessToken.getAccessToken());
-            log.info("getDepartmentList=>{}", response);
+            log.info("getDepartmentList=>{}", OkJsonUtils.asString(response));
 
             assertResponse(response);
-
-            var result = response.getSubDeptIdList();
-
-            return result.stream()
-                    .map(e -> {
-                                var x = SysConnDepartment.builder()   //
-                                        .id(String.valueOf(e))    //
-                                        .build();
-                                x.setType(SysConEnums.SysConType.DD);
-                                x.setAppId(app.getAppId());
-                                return x;
-                            }
-                    ).collect(Collectors.toList());
-
+            String body = response.getBody();
+            ObjectNode node = OkJsonUtils.asObject(body, ObjectNode.class);
+            node.get("result").elements().forEachRemaining(e -> {
+                //{"auto_add_user":true,"create_dept_group":true,"dept_id":551835489,"name":"研发部","parent_id":1}
+                Log.infof("item:%s", e);
+                Department dept = Department.builder()
+                        .id(e.get("dept_id").asText())
+                        .name(e.get("name").asText())
+                        .parentId(e.get("parent_id").asText())
+                        .build();
+                list.add(dept);
+            });
         } catch (ApiException e) {
-            throw new OkRuntimeException("获取钉钉部门用户ID异常！", e);
+            throw new ConnectorException(conf.getType(), url, e.getCause());
         }
+        return list;
     }
 
     @Override
@@ -202,7 +211,7 @@ public class SysConnectorDT extends SysConnectorAbstract {
                     .mobilePhone(e.getMobile())
                     .build();
 
-            x.setType(SysConEnums.SysConType.DD);
+            x.setType(ConnectorDefines.Type.DD);
             x.setAppId(app.getAppId());
             return x;
         } catch (RuntimeException | ApiException e) {

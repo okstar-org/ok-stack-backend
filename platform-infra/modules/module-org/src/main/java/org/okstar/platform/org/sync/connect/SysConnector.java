@@ -14,17 +14,19 @@
 package org.okstar.platform.org.sync.connect;
 
 
+import org.okstar.platform.org.connect.ConnectorDefines;
+import org.okstar.platform.org.connect.exception.ConnectorException;
 import org.okstar.platform.org.sync.connect.domain.OrgIntegrateConf;
 import org.okstar.platform.org.sync.connect.dto.SysConUser;
 import org.okstar.platform.org.sync.connect.proto.SysConnAccessToken;
-import org.okstar.platform.org.sync.connect.proto.SysConnDepartment;
+import org.okstar.platform.org.connect.api.Department;
 import org.okstar.platform.org.sync.connect.proto.SysConnUserInfo;
 
 import java.util.List;
 
 public interface SysConnector {
 
-    SysConEnums.SysConType getType();
+    ConnectorDefines.Type getType();
 
     String getBaseUrl();
 
@@ -32,18 +34,16 @@ public interface SysConnector {
 
     /**
      * 获取AccessToken
-     * @param app
-     * @return
+     * @return SysConnAccessToken
      */
-    SysConnAccessToken getAccessToken(OrgIntegrateConf app);
+    SysConnAccessToken fetchAccessToken() throws ConnectorException;
 
     /**
      * 获取部门列表
-     * @param app
      * @param parentId
      * @return
      */
-    List<SysConnDepartment> getDepartmentList(OrgIntegrateConf app, String parentId);
+    List<Department> getDepartmentList(String parentId) throws ConnectorException;
 
     /**
      * 获取部门下的用户

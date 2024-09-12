@@ -14,12 +14,11 @@
 package org.okstar.platform.org.sync.connect.connector.wx;
 
 
-import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.ws.rs.NotSupportedException;
 import lombok.extern.slf4j.Slf4j;
 import org.okstar.platform.common.asserts.OkAssert;
 import org.okstar.platform.common.web.rest.transport.RestClient;
-import org.okstar.platform.org.sync.connect.SysConEnums;
+import org.okstar.platform.org.connect.ConnectorDefines;
 import org.okstar.platform.org.sync.connect.connector.SysConnectorAbstract;
 import org.okstar.platform.org.sync.connect.connector.common.OkAssertConnector;
 import org.okstar.platform.org.sync.connect.connector.wx.proto.access.req.WXAccessTokenReq;
@@ -29,7 +28,7 @@ import org.okstar.platform.org.sync.connect.connector.wx.proto.department.res.WX
 import org.okstar.platform.org.sync.connect.domain.OrgIntegrateConf;
 import org.okstar.platform.org.sync.connect.dto.SysConUser;
 import org.okstar.platform.org.sync.connect.proto.SysConnAccessToken;
-import org.okstar.platform.org.sync.connect.proto.SysConnDepartment;
+import org.okstar.platform.org.connect.api.Department;
 import org.okstar.platform.org.sync.connect.proto.SysConnUserInfo;
 
 import java.util.LinkedHashMap;
@@ -37,13 +36,16 @@ import java.util.List;
 import java.util.Map;
 
 @Slf4j
-//@ApplicationScoped
 public class SysConnectorWX extends SysConnectorAbstract {
 
 
+    public SysConnectorWX(OrgIntegrateConf conf) {
+        this.conf = conf;
+    }
+
     @Override
-    public SysConEnums.SysConType getType() {
-        return SysConEnums.SysConType.WX;
+    public ConnectorDefines.Type getType() {
+        return ConnectorDefines.Type.WX;
     }
 
     @Override
@@ -62,19 +64,19 @@ public class SysConnectorWX extends SysConnectorAbstract {
      * @return
      */
     @Override
-    public SysConnAccessToken getAccessToken(OrgIntegrateConf app) {
+    public SysConnAccessToken fetchAccessToken( ) {
 
         log.info("getAccessToken...");
-        log.info("app:{}", app);
 
-        OkAssert.notNull(app, "appCert is null!");
+
+        OkAssert.notNull(conf, "appCert is null!");
 
 
         if (accessToken != null && accessToken.isValid()) {
             return accessToken;
         }
 
-        WXAccessTokenReq req = WXAccessTokenReq.builder().build().fromAppCert(app);
+        WXAccessTokenReq req = WXAccessTokenReq.builder().build().fromAppCert(conf);
 
         log.info("getAccessToken:{}...", req);
 
@@ -91,7 +93,7 @@ public class SysConnectorWX extends SysConnectorAbstract {
         log.info("res=>{}", res);
 
         OkAssertConnector.success(getType(), res, "获取认证信息！");
-        SysConnAccessToken r = res.to(app);
+        SysConnAccessToken r = res.to(conf);
 
         log.info("getAccessToken=>{}", r);
 
@@ -121,7 +123,7 @@ public class SysConnectorWX extends SysConnectorAbstract {
      * @return
      */
     @Override
-    public List<SysConnDepartment> getDepartmentList(OrgIntegrateConf app, String parentId) {
+    public List<Department> getDepartmentList(String parentId) {
         log.info("getDepartmentList...");
         log.info("parentId:{}", parentId);
 
@@ -142,7 +144,7 @@ public class SysConnectorWX extends SysConnectorAbstract {
 
         OkAssertConnector.success(getType(), res, "获取部门信息");
 
-        return res.to(app);
+        return res.to(conf);
     }
 
     @Override

@@ -13,11 +13,13 @@
 
 package org.okstar.platform.org.sync.connect.service;
 
-import org.okstar.platform.org.sync.connect.SysConEnums;
+import jakarta.enterprise.context.ApplicationScoped;
+import org.okstar.platform.org.connect.ConnectorDefines;
 import org.okstar.platform.org.sync.connect.domain.OrgIntegrateConf;
 
 import java.util.List;
 
+@ApplicationScoped
 public class SysConAppServiceImpl implements SysConAppService {
 
 
@@ -34,7 +36,7 @@ public class SysConAppServiceImpl implements SysConAppService {
     }
 
     @Override
-    public OrgIntegrateConf findOne(SysConEnums.SysConType type) {
+    public OrgIntegrateConf findOne(ConnectorDefines.Type type) {
         return null;
     }
 }

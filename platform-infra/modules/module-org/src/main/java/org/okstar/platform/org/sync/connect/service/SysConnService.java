@@ -14,16 +14,16 @@
 package org.okstar.platform.org.sync.connect.service;
 
 
-import org.okstar.platform.org.sync.connect.SysConEnums;
+import org.okstar.platform.org.connect.ConnectorDefines;
 import org.okstar.platform.org.sync.connect.proto.SysConnAccessToken;
 
 public interface SysConnService {
 
-    void sync(String orgId, SysConEnums.SysConType type);
+    void sync(String orgId, ConnectorDefines.Type type);
 
-    SysConnAccessToken test(String orgId, SysConEnums.SysConType type);
+    SysConnAccessToken test(String orgId, ConnectorDefines.Type type);
 
     void syncAll();
 
-    void syncUser(String orgId, SysConEnums.SysConType type);
+    void syncUser(String orgId, ConnectorDefines.Type type);
 }

@@ -11,18 +11,21 @@
  * /
  */
 
-package org.okstar.platform.org.sync.connect.proto;
+package org.okstar.platform.org.connect.api;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
-import lombok.ToString;
+import lombok.NoArgsConstructor;
 
-import java.util.Map;
-
+/**
+ * API-部门
+ */
 @Data
 @Builder
-@ToString
-public class SysConnDepartment extends SysConnAbsRes {
+@NoArgsConstructor
+@AllArgsConstructor
+public class Department {
 
 
     /**
@@ -31,17 +34,12 @@ public class SysConnDepartment extends SysConnAbsRes {
     String name;
 
     /**
-     * 部门名称（国际化）
-     * 如：{en: xxx, jp: xxx}
-     */
-    Map<String, String> nameI18n;
-    /**
-     * 源Id
+     * Id
      */
     String id;
 
     /**
-     * 源父Id
+     * 父Id
      */
     String parentId;
 

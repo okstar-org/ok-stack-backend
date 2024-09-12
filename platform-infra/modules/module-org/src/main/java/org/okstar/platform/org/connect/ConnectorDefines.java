@@ -11,17 +11,29 @@
  * /
  */
 
-package org.okstar.platform.org.sync.connect.connector.common;
+package org.okstar.platform.org.connect;
+
+import lombok.Getter;
+
+/**
+ * 连接枚举类
+ */
+public class ConnectorDefines {
+    /**
+     * 连接类型
+     */
+    @Getter
+    public enum Type {
+        WX("企微"),
+        DD("钉钉"),
+        FS("飞书");
 
 
-import org.okstar.platform.common.core.exception.OkRuntimeException;
-import org.okstar.platform.org.sync.connect.SysConEnums;
+        private final String text;
 
-public class SysConnectorException extends OkRuntimeException {
-    private SysConEnums.SysConType type;
+        Type(String text) {
+            this.text = text;
+        }
 
-    public SysConnectorException(SysConEnums.SysConType type, String message) {
-        super(String.format("接口:%s异常，message:%s！", type.getText(), message));
-        this.type = type;
     }
 }

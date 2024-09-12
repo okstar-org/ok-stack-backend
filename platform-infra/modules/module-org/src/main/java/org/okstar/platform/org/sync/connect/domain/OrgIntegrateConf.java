@@ -15,7 +15,7 @@ package org.okstar.platform.org.sync.connect.domain;
 
 
 import lombok.Data;
-import org.okstar.platform.org.sync.connect.SysConEnums;
+import org.okstar.platform.org.connect.ConnectorDefines;
 
 /**
  * 组织-集成配置
@@ -26,8 +26,7 @@ public class OrgIntegrateConf {
     /**
      * 应用类型
      */
-    
-    private SysConEnums.SysConType type;
+    private ConnectorDefines.Type type;
 
     private String appId;
     

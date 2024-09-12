@@ -14,11 +14,11 @@
 package org.okstar.platform.org.sync.connect.connector.common;
 
 
-import org.okstar.platform.org.sync.connect.SysConEnums;
+import org.okstar.platform.org.connect.ConnectorDefines;
 import org.okstar.platform.org.sync.connect.domain.OrgIntegrateConf;
 
 public interface SysConnectorRes<T> {
     boolean success();
     T to(OrgIntegrateConf app);
-    SysConEnums.SysConType getType();
+    ConnectorDefines.Type getType();
 }

@@ -14,12 +14,9 @@
 package org.okstar.platform.org.sync.connect.connector.feishu;
 
 
-import jakarta.enterprise.context.ApplicationScoped;
 import lombok.extern.slf4j.Slf4j;
-import org.okstar.platform.common.web.OkRestUtil;
-import org.okstar.platform.common.web.rest.transport.ClientFactory;
 import org.okstar.platform.common.web.rest.transport.RestClient;
-import org.okstar.platform.org.sync.connect.SysConEnums;
+import org.okstar.platform.org.connect.ConnectorDefines;
 import org.okstar.platform.org.sync.connect.connector.SysConnectorAbstract;
 import org.okstar.platform.org.sync.connect.connector.common.OkAssertConnector;
 import org.okstar.platform.org.sync.connect.connector.feishu.proto.access.req.FSAccessTokenReq;
@@ -27,19 +24,22 @@ import org.okstar.platform.org.sync.connect.connector.feishu.proto.access.res.FS
 import org.okstar.platform.org.sync.connect.domain.OrgIntegrateConf;
 import org.okstar.platform.org.sync.connect.dto.SysConUser;
 import org.okstar.platform.org.sync.connect.proto.SysConnAccessToken;
-import org.okstar.platform.org.sync.connect.proto.SysConnDepartment;
+import org.okstar.platform.org.connect.api.Department;
 import org.okstar.platform.org.sync.connect.proto.SysConnUserInfo;
 
 import java.util.List;
 
 @Slf4j
-//@ApplicationScoped
 public class SysConnectorFS extends SysConnectorAbstract {
 
 
+    public SysConnectorFS(OrgIntegrateConf conf) {
+        this.conf = conf;
+    }
+
     @Override
-    public SysConEnums.SysConType getType() {
-        return SysConEnums.SysConType.FS;
+    public ConnectorDefines.Type getType() {
+        return ConnectorDefines.Type.FS;
     }
 
     @Override
@@ -66,7 +66,7 @@ public class SysConnectorFS extends SysConnectorAbstract {
      * }
      */
     @Override
-    public SysConnAccessToken getAccessToken(OrgIntegrateConf app) {
+    public SysConnAccessToken fetchAccessToken( ) {
         log.info("getAccessToken...");
 
 
@@ -77,10 +77,9 @@ public class SysConnectorFS extends SysConnectorAbstract {
 
 
         FSAccessTokenReq appCert = new FSAccessTokenReq();
-        appCert.setAppId(app.getCertKey());
-        appCert.setAppSecret(app.getCertSecret());
+        appCert.setAppId(conf.getCertKey());
+        appCert.setAppSecret(conf.getCertSecret());
 
-        log.info("请求token:{}", app);
         RestClient client = getClient();
 
         FSAccessTokenRes res = client.post(
@@ -93,14 +92,14 @@ public class SysConnectorFS extends SysConnectorAbstract {
 
         OkAssertConnector.success(getType(), res, "获取AccessToken信息");
 
-        SysConnAccessToken r = res.to(app);
+        SysConnAccessToken r = res.to(conf);
 
 
         return r;
     }
 
     @Override
-    public List<SysConnDepartment> getDepartmentList(OrgIntegrateConf app, String parentId) {
+    public List<Department> getDepartmentList(String parentId) {
         log.info("getDepartmentList...");
 
 

@@ -17,7 +17,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 import org.okstar.platform.org.sync.connect.connector.feishu.proto.FSRes;
 import org.okstar.platform.org.sync.connect.domain.OrgIntegrateConf;
-import org.okstar.platform.org.sync.connect.proto.SysConnDepartment;
+import org.okstar.platform.org.connect.api.Department;
 
 import java.util.Collections;
 import java.util.List;
@@ -33,24 +33,23 @@ import java.util.stream.Collectors;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString(callSuper = true)
-public class FSDepartmentRes extends FSRes<List<SysConnDepartment>> {
+public class FSDepartmentRes extends FSRes<List<Department>> {
 
     FSDepartmentData data;
 
     @Override
-    public List<SysConnDepartment> to(OrgIntegrateConf app) {
+    public List<Department> to(OrgIntegrateConf app) {
         if(data.getItems() == null){
             return Collections.emptyList();
         }
         return data.getItems().stream()
                 .map(e -> {
-                            var x = SysConnDepartment.builder()   //
+                            var x = Department.builder()   //
                                     .name(e.getName())  //
                                     .id(String.valueOf(e.getDepartmentId()))    //
                                     .parentId(String.valueOf(e.getParentDepartmentId()))
                                     .build();
-                            x.setAppId(app.getAppId());
-                            x.setType(getType());
+
                             return x;
                         }
                 ).collect(Collectors.toList());

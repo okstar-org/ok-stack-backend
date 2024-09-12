@@ -14,12 +14,13 @@
 package org.okstar.platform.org.sync.connect.connector.common;
 
 
-import org.okstar.platform.org.sync.connect.SysConEnums;
+import org.okstar.platform.common.core.exception.OkRuntimeException;
+import org.okstar.platform.org.connect.ConnectorDefines;
 
 public class OkAssertConnector {
-    public static void success(SysConEnums.SysConType type, SysConnectorRes res, String message) {
+    public static void success(ConnectorDefines.Type type, SysConnectorRes res, String message) {
         if (res == null || !res.success()) {
-            throw new SysConnectorException(type, message);
+            throw new OkRuntimeException("连接器[%s]异常: %s！".formatted(type, message));
         }
     }
 }

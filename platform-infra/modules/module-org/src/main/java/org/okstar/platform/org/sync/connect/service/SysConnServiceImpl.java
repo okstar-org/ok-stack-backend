@@ -28,7 +28,7 @@
 //import org.okstar.platform.org.sync.connect.dto.SysConUserDTO;
 //import org.okstar.platform.org.sync.connect.dto.SysOrgDTO;
 //import org.okstar.platform.org.sync.connect.proto.SysConnAccessToken;
-//import org.okstar.platform.org.sync.connect.proto.SysConnDepartment;
+//import org.okstar.platform.org.connect.api.SysConnDepartment;
 //
 //import java.util.List;
 //import java.util.Optional;
@@ -50,7 +50,7 @@
 //
 //
 //    @Override
-//    public synchronized void sync(String orgId, SysConEnums.SysConType type) {
+//    public synchronized void sync(String orgId, ConnectorDefines.Type type) {
 //        log.info("sync orgId:{} type:{}", orgId, type);
 //
 //        SysOrgDTO org = null;//sysOrgService.findById(orgId);
@@ -63,7 +63,7 @@
 //
 //
 //    @Override
-//    public synchronized void syncUser(String orgId, SysConEnums.SysConType type) {
+//    public synchronized void syncUser(String orgId, ConnectorDefines.Type type) {
 //        log.info("syncUser orgId:{} type:{}", orgId, type);
 //
 //        SysOrgDTO org = new SysOrgDTO();
@@ -76,7 +76,7 @@
 //
 //
 //    @Override
-//    public SysConnAccessToken test(String orgId, SysConEnums.SysConType type) {
+//    public SysConnAccessToken test(String orgId, ConnectorDefines.Type type) {
 //
 //        SysOrgDTO org = new SysOrgDTO();
 //
@@ -87,7 +87,7 @@
 //        return accessToken;
 //    }
 //
-//    private OrgIntegrateConf loadApp(SysConEnums.SysConType type, SysOrgDTO org) {
+//    private OrgIntegrateConf loadApp(ConnectorDefines.Type type, SysOrgDTO org) {
 //        OrgIntegrateConf q = new OrgIntegrateConf();
 //        q.setOrgId(org.getId());
 //        q.setType(type);
@@ -116,7 +116,7 @@
 ////
 ////            OrgIntegrateConf q = new OrgIntegrateConf();
 ////            q.setOrgId(org.getId());
-////            q.setType(SysConEnums.SysConType.WX);
+////            q.setType(ConnectorDefines.Type.WX);
 ////            List<OrgIntegrateConf> apps = sysConAppService.findAll(q);
 ////            OkAssert.notEmpty(apps, "无数据！");
 ////
@@ -135,7 +135,7 @@
 //        /**
 //         * TODO 飞书部门加载不支持
 //         */
-//        OkAssert.isTrue(app.getType() != SysConEnums.SysConType.FS, "暂不支持飞书！");
+//        OkAssert.isTrue(app.getType() != ConnectorDefines.Type.FS, "暂不支持飞书！");
 //
 //        SysConDeptDTO q2 = new SysConDeptDTO();
 //        q2.setOrgId(orgId);
@@ -188,9 +188,9 @@
 //        /**
 //         * TODO 飞书部门加载不支持
 //         */
-//        OkAssert.isTrue(app.getType() != SysConEnums.SysConType.FS, "暂不支持飞书！");
+//        OkAssert.isTrue(app.getType() != ConnectorDefines.Type.FS, "暂不支持飞书！");
 //
-//        int shitLevel = app.getType() == SysConEnums.SysConType.WX ? -1 : 0;
+//        int shitLevel = app.getType() == ConnectorDefines.Type.WX ? -1 : 0;
 //
 //        getDept(orgId, app, "1", (dept) -> {
 //            log.info("syncDept:{}", dept);

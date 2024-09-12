@@ -15,7 +15,7 @@ package org.okstar.platform.org.sync.connect.connector.feishu.proto;
 
 
 import lombok.Data;
-import org.okstar.platform.org.sync.connect.SysConEnums;
+import org.okstar.platform.org.connect.ConnectorDefines;
 import org.okstar.platform.org.sync.connect.connector.common.SysConnectorRes;
 
 import java.util.Objects;
@@ -31,7 +31,7 @@ public abstract class FSRes<T> implements SysConnectorRes<T> {
     }
 
     @Override
-    public SysConEnums.SysConType getType() {
-        return SysConEnums.SysConType.FS;
+    public ConnectorDefines.Type getType() {
+        return ConnectorDefines.Type.FS;
     }
 }

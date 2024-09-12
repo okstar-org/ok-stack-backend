@@ -13,24 +13,25 @@
 
 package org.okstar.platform.org.sync.connect;
 
-import com.google.common.collect.Maps;
+import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
 import org.okstar.platform.common.asserts.OkAssert;
+import org.okstar.platform.org.connect.ConnectorDefines;
+import org.okstar.platform.org.sync.connect.connector.dingtalk.SysConnectorDT;
+import org.okstar.platform.org.sync.connect.connector.feishu.SysConnectorFS;
+import org.okstar.platform.org.sync.connect.connector.wx.SysConnectorWX;
 import org.okstar.platform.org.sync.connect.domain.OrgIntegrateConf;
 import org.okstar.platform.org.sync.connect.service.SysConAppService;
 
 import java.util.List;
-import java.util.Map;
 
 @Slf4j
-//@ApplicationScoped
-public class SysConnFactory {
+@ApplicationScoped
+public class ConnectorFactory {
 
     @Inject
     private SysConAppService sysConAppService;
-
-    private final Map<SysConEnums.SysConType, SysConnector> map = Maps.newLinkedHashMap();
 
 
     public void initConnectorPool() {
@@ -42,29 +43,18 @@ public class SysConnFactory {
     }
 
 
-    public SysConnector getConnector(OrgIntegrateConf app) {
-        log.info("getConnector:{}", app);
+    public SysConnector getConnector(OrgIntegrateConf conf) {
+        log.info("getConnector:{}", conf);
+        OkAssert.notNull(conf, "Invalid configuration!");
 
-        OkAssert.notNull(app, "app can not be null");
-
-        SysConEnums.SysConType type = app.getType();
-        log.info("SysConType:{}", type);
-        OkAssert.notNull(type, "type is null");
-
-        SysConnector connector;
-        synchronized (map) {
-            connector = map.get(type);
-            log.info("type:{} connector=>{}", type, connector);
-            if (connector == null) {
-                initConnectorPool();
-                connector = map.get(type);
-            }
-        }
-
-//        OkAssert.notNull(String.format("无法获取:%s的连接器:%s，可能不支持！", type, connector));
+        ConnectorDefines.Type appType = conf.getType();
+        var connector = switch (appType) {
+            case DD -> new SysConnectorDT(conf);
+            case FS -> new SysConnectorFS(conf);
+            case WX -> new SysConnectorWX(conf);
+        };
 
         log.info("getConnector=>{}", connector);
-
         return connector;
     }
 }

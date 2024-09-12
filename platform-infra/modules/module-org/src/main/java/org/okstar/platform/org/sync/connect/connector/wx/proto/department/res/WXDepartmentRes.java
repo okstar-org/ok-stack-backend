@@ -17,7 +17,7 @@ package org.okstar.platform.org.sync.connect.connector.wx.proto.department.res;
 import lombok.*;
 import org.okstar.platform.org.sync.connect.connector.wx.proto.WXRes;
 import org.okstar.platform.org.sync.connect.domain.OrgIntegrateConf;
-import org.okstar.platform.org.sync.connect.proto.SysConnDepartment;
+import org.okstar.platform.org.connect.api.Department;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -27,21 +27,20 @@ import java.util.stream.Collectors;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class WXDepartmentRes extends WXRes<List<SysConnDepartment>> {
+public class WXDepartmentRes extends WXRes<List<Department>> {
 
     List<DepartmentItem> department;
 
     @Override
-    public List<SysConnDepartment> to(OrgIntegrateConf app) {
+    public List<Department> to(OrgIntegrateConf app) {
         return department.stream().map(d -> {
 
-                    var x = SysConnDepartment.builder()
+                    var x = Department.builder()
                             .parentId(String.valueOf(d.getParentid()))
                             .id(d.getId())
                             .name(d.getName())
                             .build();
-                    x.setAppId(app.getAppId());
-                    x.setType(app.getType());
+
                     return x;
                 }
         ).collect(Collectors.toList());

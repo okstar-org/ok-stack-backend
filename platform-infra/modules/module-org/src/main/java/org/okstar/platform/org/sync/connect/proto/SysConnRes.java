@@ -14,9 +14,9 @@
 package org.okstar.platform.org.sync.connect.proto;
 
 
-import org.okstar.platform.org.sync.connect.SysConEnums;
+import org.okstar.platform.org.connect.ConnectorDefines;
 
 public interface SysConnRes {
-    SysConEnums.SysConType getType();
-    void setType(SysConEnums.SysConType type);
+    ConnectorDefines.Type getType();
+    void setType(ConnectorDefines.Type type);
 }
