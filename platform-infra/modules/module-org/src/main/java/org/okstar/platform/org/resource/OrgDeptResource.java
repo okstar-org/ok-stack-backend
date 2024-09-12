@@ -45,16 +45,19 @@ public class OrgDeptResource extends BaseResource {
         Org org = orgService.loadCurrent();
         OkAssert.isTrue(org != null, "未初始化组织！");
 
-        var account0 = self();
+        var self = self();
         OrgDept t = new OrgDept();
         t.setName(add.getName());
         t.setNo(add.getNo());
-        t.setParentId(parentId);
+        t.setDisabled(add.getDisabled());
+        //组织
         t.setOrgId(org.id);
+        //父级
+        t.setParentId(parent.id);
         //级别+1
         t.setLevel(parent.getLevel() + 1);
 
-        deptService.create(t, account0.getId());
+        deptService.create(t, self.getId());
 
         return Res.ok(t.id);
     }

@@ -97,7 +97,7 @@
             </activation>
             <properties>
                 <quarkus.profile>dev</quarkus.profile>
-                <quarkus.log.level>INFO</quarkus.log.level>
+                <quarkus.log.level>DEBUG</quarkus.log.level>
                 <quarkus.log.console.enable>true</quarkus.log.console.enable>
                 <quarkus.datasource.db-kind>mariadb</quarkus.datasource.db-kind>
                 <quarkus.datasource.username>okstar</quarkus.datasource.username>
@@ -115,7 +115,7 @@
             <id>docker</id>
             <properties>
                 <quarkus.profile>prod</quarkus.profile>
-                <quarkus.log.level>INFO</quarkus.log.level>
+                <quarkus.log.level>DEBUG</quarkus.log.level>
                 <quarkus.log.console.enable>false</quarkus.log.console.enable>
                 <quarkus.datasource.db-kind>mariadb</quarkus.datasource.db-kind>
                 <quarkus.datasource.username>root</quarkus.datasource.username>

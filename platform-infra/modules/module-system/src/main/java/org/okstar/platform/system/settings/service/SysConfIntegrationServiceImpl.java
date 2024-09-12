@@ -157,7 +157,7 @@ public class SysConfIntegrationServiceImpl implements SysConfIntegrationService 
         SysConfIntegrationIm im = integration.getIm();
         var x = new FederalStateConfEntity();
         x.setImHost(im.getHost());
-        x.setImPort(im.getAdminPort());
+        x.setImPort(im.getPort());
 
         SysConfIntegrationStack stack = integration.getStack();
         x.setStackUrl(stack.getFqdn());

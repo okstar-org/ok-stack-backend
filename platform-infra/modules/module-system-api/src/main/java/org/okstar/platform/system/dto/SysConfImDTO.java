@@ -25,12 +25,17 @@ public class SysConfImDTO {
     private String host;
 
     /**
-     * xmpp服务器管理端口
+     * xmpp IM服务端口
      */
-    private int adminPort;
+    private int port = 5222;
 
     /**
-     * xmpp服务器API SecretKey
+     * xmpp服务器管理端口
+     */
+    private int adminPort = 9090;
+
+    /**
+     * xmpp服务器 API SecretKey
      */
     private String apiSecretKey;
 

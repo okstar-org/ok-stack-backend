@@ -36,8 +36,9 @@ public class SysConfIntegrationRpcImpl implements SysConfIntegrationRpc {
         SysConfIntegrationDTO dto = new SysConfIntegrationDTO();
 
         SysConfImDTO im = new SysConfImDTO();
-        im.setAdminPort(integration.getIm().getAdminPort());
         im.setHost(integration.getIm().getHost());
+        im.setPort(integration.getIm().getPort());
+        im.setAdminPort(integration.getIm().getAdminPort());
         im.setApiSecretKey(integration.getIm().getApiSecret());
         dto.setIm(im);
 

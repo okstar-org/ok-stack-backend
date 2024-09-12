@@ -29,8 +29,13 @@ public class SysConfIntegrationIm implements SysConfItem {
     Map<String, SysProperty> properties = Maps.newHashMap();
 
     String host;
-    String apiSecret;
+
+    //服务端口
+    int port;
+
+    //管理端口
     int adminPort;
+    String apiSecret;
 
     @Override
     public String getGroup() {
