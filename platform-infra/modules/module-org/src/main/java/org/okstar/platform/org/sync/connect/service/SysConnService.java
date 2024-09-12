@@ -15,13 +15,13 @@ package org.okstar.platform.org.sync.connect.service;
 
 
 import org.okstar.platform.org.connect.ConnectorDefines;
-import org.okstar.platform.org.sync.connect.proto.SysConnAccessToken;
+import org.okstar.platform.org.connect.api.AccessToken;
 
 public interface SysConnService {
 
     void sync(String orgId, ConnectorDefines.Type type);
 
-    SysConnAccessToken test(String orgId, ConnectorDefines.Type type);
+    AccessToken test(String orgId, ConnectorDefines.Type type);
 
     void syncAll();
 

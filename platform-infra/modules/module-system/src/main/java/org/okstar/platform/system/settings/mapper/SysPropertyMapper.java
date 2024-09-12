@@ -40,4 +40,10 @@ public class SysPropertyMapper implements OkRepository<SysProperty> {
     public void deleteByGroup(String group) {
         delete(SysProperty_.GROUPING, group);
     }
+
+    public List<SysProperty> findByKey(String group, String k) {
+        return find("%s=?1 and %s=?2"
+                        .formatted(SysProperty_.GROUPING,   SysProperty_.K),
+                group, k).list();
+    }
 }

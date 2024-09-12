@@ -11,22 +11,25 @@
  * /
  */
 
-package org.okstar.platform.org.sync.connect.proto;
+package org.okstar.platform.org.connect.api;
 
 
 import lombok.*;
 import org.okstar.platform.common.date.OkDateUtils;
 
-
+import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString(callSuper = true)
-@EqualsAndHashCode(callSuper = true)
-public class SysConnAccessToken extends SysConnAbsRes {
+@ToString
+public class AccessToken {
+    /**
+     * 消息创建时间
+     */
+    private Instant createdAt = Instant.now();
 
     /**
      * access token

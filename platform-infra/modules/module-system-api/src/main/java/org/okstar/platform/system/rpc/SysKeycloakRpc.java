@@ -11,16 +11,18 @@
  * /
  */
 
-package org.okstar.platform.system.kv.rpc;
+package org.okstar.platform.system.rpc;
 
-import lombok.Data;
-import lombok.ToString;
+import jakarta.ws.rs.GET;
+import jakarta.ws.rs.Path;
+import org.eclipse.microprofile.rest.client.inject.RegisterRestClient;
 
-@Data
-@ToString
-public class SysKeycloakConfDTO {
-    String authServerUrl;
-    String realm;
-    String clientId;
-    String clientSecret;
+@RegisterRestClient
+@Path("rpc/SysKeycloakRpc")
+public interface SysKeycloakRpc {
+
+    @GET
+    @Path("/getKeycloakConf")
+    SysKeycloakConfDTO getKeycloakConf();
+
 }

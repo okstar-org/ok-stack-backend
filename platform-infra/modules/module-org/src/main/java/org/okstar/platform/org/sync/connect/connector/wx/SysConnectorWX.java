@@ -26,10 +26,10 @@ import org.okstar.platform.org.sync.connect.connector.wx.proto.access.res.WXAcce
 import org.okstar.platform.org.sync.connect.connector.wx.proto.department.res.WXDepartmentRes;
 import org.okstar.platform.org.sync.connect.connector.wx.proto.department.res.WXUserListRes;
 import org.okstar.platform.org.sync.connect.domain.OrgIntegrateConf;
-import org.okstar.platform.org.sync.connect.dto.SysConUser;
-import org.okstar.platform.org.sync.connect.proto.SysConnAccessToken;
+import org.okstar.platform.org.connect.api.UserId;
+import org.okstar.platform.org.connect.api.AccessToken;
 import org.okstar.platform.org.connect.api.Department;
-import org.okstar.platform.org.sync.connect.proto.SysConnUserInfo;
+import org.okstar.platform.org.connect.api.UserInfo;
 
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -48,11 +48,6 @@ public class SysConnectorWX extends SysConnectorAbstract {
         return ConnectorDefines.Type.WX;
     }
 
-    @Override
-    public String getBaseUrl() {
-        return "https://qyapi.weixin.qq.com/cgi-bin";
-    }
-
     /**
      * 参考链接：
      * https://work.weixin.qq.com/api/doc/10013#%E7%AC%AC%E4%B8%89%E6%AD%A5%EF%BC%9A%E8%8E%B7%E5%8F%96access_token
@@ -64,7 +59,7 @@ public class SysConnectorWX extends SysConnectorAbstract {
      * @return
      */
     @Override
-    public SysConnAccessToken fetchAccessToken( ) {
+    public AccessToken fetchAccessToken( ) {
 
         log.info("getAccessToken...");
 
@@ -93,7 +88,7 @@ public class SysConnectorWX extends SysConnectorAbstract {
         log.info("res=>{}", res);
 
         OkAssertConnector.success(getType(), res, "获取认证信息！");
-        SysConnAccessToken r = res.to(conf);
+        AccessToken r = res.to(conf);
 
         log.info("getAccessToken=>{}", r);
 
@@ -148,9 +143,9 @@ public class SysConnectorWX extends SysConnectorAbstract {
     }
 
     @Override
-    public List<SysConUser> getUserIdList(OrgIntegrateConf app, String deptId) {
+    public List<UserId> getUserIdList(Department dept) {
         log.info("getUserIdList...");
-        log.info("deptId:{}", deptId);
+        log.info("deptId:{}", dept);
 
         OkAssert.notNull(accessToken, "accessToken");
 
@@ -159,18 +154,18 @@ public class SysConnectorWX extends SysConnectorAbstract {
         log.info("req=>{}", url);
         Map<String, String> ps = new LinkedHashMap<>();
         ps.put("access_token", accessToken.getAccessToken());
-        ps.put("department_id", deptId);
+        ps.put("department_id", dept.getId());
         ps.put("fetch_child", String.valueOf(0));
         WXUserListRes res = getClient().get("/user/list", WXUserListRes.class, ps);
         log.info("res=>{}", res);
 
         OkAssertConnector.success(getType(), res, "获取用户列表信息");
 
-        return res.to(app);
+        return res.to(conf);
     }
 
     @Override
-    public SysConnUserInfo getUserInfoList(OrgIntegrateConf app, String userId) {
+    public UserInfo getUserInfo(String userId) {
         throw new NotSupportedException();
     }
 }

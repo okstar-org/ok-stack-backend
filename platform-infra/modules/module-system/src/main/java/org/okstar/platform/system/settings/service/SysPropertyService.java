@@ -23,5 +23,7 @@ public interface SysPropertyService extends OkJpaService<SysProperty> {
 
     List<SysProperty> findByGroup(String group);
 
+    List<SysProperty> findByKey(String group, String k);
+
     List<SysProperty> findByKey(String group, String domain, String k);
 }

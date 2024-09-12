@@ -22,7 +22,7 @@ import org.okstar.platform.org.sync.connect.connector.dingtalk.SysConnectorDT;
 import org.okstar.platform.org.sync.connect.connector.feishu.SysConnectorFS;
 import org.okstar.platform.org.sync.connect.connector.wx.SysConnectorWX;
 import org.okstar.platform.org.sync.connect.domain.OrgIntegrateConf;
-import org.okstar.platform.org.sync.connect.service.SysConAppService;
+import org.okstar.platform.org.sync.connect.service.ConnectorConfigService;
 
 import java.util.List;
 
@@ -31,12 +31,12 @@ import java.util.List;
 public class ConnectorFactory {
 
     @Inject
-    private SysConAppService sysConAppService;
+    private ConnectorConfigService connectorConfigService;
 
 
     public void initConnectorPool() {
         log.info("初始化连接器...");
-        List<OrgIntegrateConf> sysConApps = sysConAppService.findAll();
+        List<OrgIntegrateConf> sysConApps = connectorConfigService.findAll();
         sysConApps.forEach(conf -> {
             log.info("为连接器:{}查找配置=>{}", conf.getType(), sysConApps);
         });

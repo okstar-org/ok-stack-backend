@@ -17,7 +17,7 @@ import org.keycloak.admin.client.Keycloak;
 import org.keycloak.admin.client.resource.UsersResource;
 import org.keycloak.representations.idm.ClientRepresentation;
 import org.keycloak.representations.idm.RealmRepresentation;
-import org.okstar.platform.system.kv.rpc.SysKeycloakConfDTO;
+import org.okstar.platform.system.rpc.SysKeycloakConfDTO;
 import org.okstar.platform.system.settings.domain.SysConfIntegrationKeycloak;
 
 import java.util.List;

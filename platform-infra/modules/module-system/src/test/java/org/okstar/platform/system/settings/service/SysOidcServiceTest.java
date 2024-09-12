@@ -16,7 +16,7 @@ package org.okstar.platform.system.settings.service;
 import io.quarkus.test.junit.QuarkusTest;
 import jakarta.inject.Inject;
 import org.junit.jupiter.api.Test;
-import org.okstar.platform.system.kv.rpc.SysKeycloakConfDTO;
+import org.okstar.platform.system.rpc.SysKeycloakConfDTO;
 import org.okstar.platform.system.settings.domain.SysConfIntegrationKeycloak;
 
 import java.util.List;

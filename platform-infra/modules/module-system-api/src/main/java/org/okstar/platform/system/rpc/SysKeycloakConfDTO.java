@@ -11,29 +11,16 @@
  * /
  */
 
-package org.okstar.platform.org.sync.connect.proto;
+package org.okstar.platform.system.rpc;
 
-import lombok.Builder;
-import lombok.Getter;
+import lombok.Data;
 import lombok.ToString;
 
-@Getter
-@Builder
+@Data
 @ToString
-public class SysConnUserInfo extends SysConnAbsRes {
-    String id;
-    String name;
-    String unionId;
-    Boolean isBoos;
-    Boolean isActive;
-    Boolean isLeader;
-    String mobilePhone;
-    String linePhone;
-    String remark;
-    String avatar;
-    String mail;
-    String orgMail;
-    String title;
-    String jobNumber;
-    String countryCode;
+public class SysKeycloakConfDTO {
+    String authServerUrl;
+    String realm;
+    String clientId;
+    String clientSecret;
 }

@@ -34,7 +34,7 @@ import org.keycloak.representations.idm.authorization.*;
 import org.okstar.platform.common.asserts.OkAssert;
 import org.okstar.platform.common.id.OkIdUtils;
 import org.okstar.platform.common.string.OkStringUtil;
-import org.okstar.platform.system.kv.rpc.SysKeycloakConfDTO;
+import org.okstar.platform.system.rpc.SysKeycloakConfDTO;
 import org.okstar.platform.system.settings.domain.SysConfIntegrationKeycloak;
 import org.okstar.platform.system.settings.domain.SysProperty;
 

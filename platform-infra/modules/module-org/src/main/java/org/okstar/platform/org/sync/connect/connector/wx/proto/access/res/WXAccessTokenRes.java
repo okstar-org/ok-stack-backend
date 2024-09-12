@@ -17,7 +17,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 import org.okstar.platform.org.sync.connect.connector.wx.proto.WXRes;
 import org.okstar.platform.org.sync.connect.domain.OrgIntegrateConf;
-import org.okstar.platform.org.sync.connect.proto.SysConnAccessToken;
+import org.okstar.platform.org.connect.api.AccessToken;
 
 /**
  * "access_token": "accesstoken000001",
@@ -28,7 +28,7 @@ import org.okstar.platform.org.sync.connect.proto.SysConnAccessToken;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class WXAccessTokenRes extends WXRes<SysConnAccessToken> {
+public class WXAccessTokenRes extends WXRes<AccessToken> {
 
     @JsonProperty("access_token")
     String accessToken;
@@ -36,13 +36,11 @@ public class WXAccessTokenRes extends WXRes<SysConnAccessToken> {
     @JsonProperty("expires_in")
     Long expireIn;
 
-    public SysConnAccessToken to(OrgIntegrateConf app) {
-        SysConnAccessToken r = SysConnAccessToken.builder()
+    public AccessToken to(OrgIntegrateConf app) {
+        AccessToken r = AccessToken.builder()
                 .accessToken(this.getAccessToken())
                 .expiresIn(this.getExpireIn())
                 .build();
-        r.setType(getType());
-        r.setAppId(String.valueOf(app.getAppId()));
         return r;
     }
 }

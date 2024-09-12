@@ -15,8 +15,8 @@ package org.okstar.platform.system.rpc.impl;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
-import org.okstar.platform.system.kv.rpc.SysKeycloakConfDTO;
-import org.okstar.platform.system.kv.rpc.SysKeycloakRpc;
+import org.okstar.platform.system.rpc.SysKeycloakConfDTO;
+import org.okstar.platform.system.rpc.SysKeycloakRpc;
 import org.okstar.platform.system.settings.service.SysKeycloakService;
 
 @ApplicationScoped

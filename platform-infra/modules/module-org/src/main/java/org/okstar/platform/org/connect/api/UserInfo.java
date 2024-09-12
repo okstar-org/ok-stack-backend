@@ -14,31 +14,30 @@
 package org.okstar.platform.org.connect.api;
 
 import lombok.*;
+import org.okstar.platform.core.user.UserDefines;
 
-/**
- * API-部门
- */
 @Data
 @Builder
-@NoArgsConstructor
-@AllArgsConstructor
 @ToString
-public class Department {
-
-
-    /**
-     * 部门名称
-     */
-    String name;
-
-    /**
-     * Id
-     */
-    String id;
-
-    /**
-     * 父Id
-     */
-    String parentId;
-
+@AllArgsConstructor
+@NoArgsConstructor
+public class UserInfo {
+    private String id;
+    private String name;
+    private String nickname;
+    private String unionId;
+    private Boolean isBoos;
+    private Boolean isActive;
+    private Boolean isLeader;
+    private Boolean isAdmin;
+    private String mobilePhone;
+    private String linePhone;
+    private String remark;
+    private String avatar;
+    private String email;
+    private String orgMail;
+    private String title;
+    private String jobNumber;
+    private String countryCode;
+    private UserDefines.Gender gender;
 }

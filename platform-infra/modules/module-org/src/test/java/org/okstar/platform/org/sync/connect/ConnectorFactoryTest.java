@@ -20,10 +20,13 @@ import jakarta.inject.Inject;
 import org.junit.jupiter.api.Test;
 import org.okstar.platform.common.string.OkStringUtil;
 import org.okstar.platform.org.connect.ConnectorDefines;
+import org.okstar.platform.org.connect.api.UserInfo;
 import org.okstar.platform.org.connect.exception.ConnectorException;
 import org.okstar.platform.org.sync.connect.domain.OrgIntegrateConf;
-import org.okstar.platform.org.sync.connect.proto.SysConnAccessToken;
+import org.okstar.platform.org.connect.api.UserId;
+import org.okstar.platform.org.connect.api.AccessToken;
 import org.okstar.platform.org.connect.api.Department;
+import org.okstar.platform.org.sync.connect.service.ConnectorConfigService;
 
 import java.util.List;
 
@@ -32,29 +35,80 @@ class ConnectorFactoryTest {
 
     @Inject
     ConnectorFactory connectorFactory;
+    @Inject
+    ConnectorConfigService connectorConfigService;
+
+    /**
+     *  "https://qyapi.weixin.qq.com/cgi-bin";
+     */
 
     @Test
-    void getConnectorDD() throws ConnectorException {
-
+    void saveConfigDD(){
         OrgIntegrateConf conf = new OrgIntegrateConf();
         conf.setType(ConnectorDefines.Type.DD);
         conf.setAppId("1252072514");
         conf.setCertKey("dingwrdztyvmdk4kpsmk");
         conf.setCertSecret("Fw-Xq3jhYkNxqmSM_-TIkK_JEEucjKtfkprXGL2Zh-xSh2Dzz7vxhF5f8LlQDrNe");
+        conf.setBaseUrl("https://oapi.dingtalk.com");
+        conf.setRootDeptId("1");
+        connectorConfigService.save(conf);
+    }
 
+
+    @Test
+    void getConnectorDD() throws ConnectorException {
+
+        OrgIntegrateConf conf = connectorConfigService.findOne(ConnectorDefines.Type.DD);
+        Assert.assertNotNull(conf);
+
+        getConnector(conf);
+    }
+
+    @Test
+    void saveConfigFs(){
+        OrgIntegrateConf conf = new OrgIntegrateConf();
+        conf.setType(ConnectorDefines.Type.FS);
+        conf.setAppId("cli_a66859d3b83cd00e");
+        conf.setCertSecret("JafMneSQsiitx95dRJ60TbbIOonvHsHg");
+        conf.setBaseUrl("https://open.feishu.cn/open-apis");
+        conf.setRootDeptId("0");
+        connectorConfigService.save(conf);
+    }
+
+
+    @Test
+    void getConnectorFs() throws ConnectorException {
+
+        OrgIntegrateConf conf = connectorConfigService.findOne(ConnectorDefines.Type.FS);
+        Assert.assertNotNull(conf);
+
+        getConnector(conf);
+    }
+
+    private void getConnector(OrgIntegrateConf conf) throws ConnectorException {
         SysConnector connector = connectorFactory.getConnector(conf);
         Assert.assertNotNull(connector);
 
-
-        SysConnAccessToken accessToken = connector.fetchAccessToken();
+        AccessToken accessToken = connector.fetchAccessToken();
         Log.infof("accessToken: %s", accessToken.getAccessToken());
         Assert.assertTrue(OkStringUtil.isNotEmpty(accessToken.getAccessToken()));
 
-        List<Department> list = connector.getDepartmentList("1");
+        listDepartmentUsers(connector, conf.getRootDeptId());
+    }
+
+    private static void listDepartmentUsers(SysConnector connector, String deptId) throws ConnectorException {
+        List<Department> list = connector.getDepartmentList(deptId);
         Assert.assertNotNull(list);
-        list.forEach(e->{
-            Log.infof("dept:%s", e.getName());
-        });
+        for (Department e : list) {
+            Log.infof("dept=> %s", e);
+            List<UserId> userIdList = connector.getUserIdList(e);
+            for (UserId userId : userIdList) {
+                Log.infof("userId=> %s", userId.getUserId());
+                UserInfo info = connector.getUserInfo(userId.getUserId());
+                Log.infof("user info=> %s", info);
+            }
+            listDepartmentUsers(connector, e.getId());
+        }
 
     }
 }

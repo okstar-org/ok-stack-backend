@@ -50,7 +50,11 @@ public class OrgIntegrateConf {
      * 应用凭证(info)
      *
      */
-    
     private String info;
 
+    private String baseUrl;
+    /**
+     * 跟部门ID
+     */
+    private String rootDeptId;
 }

@@ -15,12 +15,12 @@ package org.okstar.platform.org.sync.connect;
 
 
 import org.okstar.platform.org.connect.ConnectorDefines;
-import org.okstar.platform.org.connect.exception.ConnectorException;
-import org.okstar.platform.org.sync.connect.domain.OrgIntegrateConf;
-import org.okstar.platform.org.sync.connect.dto.SysConUser;
-import org.okstar.platform.org.sync.connect.proto.SysConnAccessToken;
 import org.okstar.platform.org.connect.api.Department;
-import org.okstar.platform.org.sync.connect.proto.SysConnUserInfo;
+import org.okstar.platform.org.connect.api.UserId;
+import org.okstar.platform.org.connect.exception.ConnectorException;
+import org.okstar.platform.org.connect.api.AccessToken;
+import org.okstar.platform.org.connect.api.UserInfo;
+import org.okstar.platform.org.sync.connect.domain.OrgIntegrateConf;
 
 import java.util.List;
 
@@ -28,7 +28,7 @@ public interface SysConnector {
 
     ConnectorDefines.Type getType();
 
-    String getBaseUrl();
+    OrgIntegrateConf getConf();
 
     String getRequestUrl(String url);
 
@@ -36,7 +36,7 @@ public interface SysConnector {
      * 获取AccessToken
      * @return SysConnAccessToken
      */
-    SysConnAccessToken fetchAccessToken() throws ConnectorException;
+    AccessToken fetchAccessToken() throws ConnectorException;
 
     /**
      * 获取部门列表
@@ -47,17 +47,16 @@ public interface SysConnector {
 
     /**
      * 获取部门下的用户
-     * @param app
-     * @param deptId
+     *
+     * @param dept
      * @return
      */
-    List<SysConUser> getUserIdList(OrgIntegrateConf app, String deptId);
+    List<UserId> getUserIdList(Department dept) throws ConnectorException;
 
     /**
      * 获取部门用户信息
-     * @param app
      * @param userId
      * @return
      */
-    SysConnUserInfo getUserInfoList(OrgIntegrateConf app, String userId);
+    UserInfo getUserInfo(String userId) throws ConnectorException;
 }

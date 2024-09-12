@@ -14,20 +14,26 @@
 package org.okstar.platform.org.sync.connect.connector.feishu;
 
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import lombok.extern.slf4j.Slf4j;
+import org.okstar.platform.common.asserts.OkAssert;
+import org.okstar.platform.common.json.OkJsonUtils;
+import org.okstar.platform.common.string.OkStringUtil;
+import org.okstar.platform.common.web.auth.AuthenticationToken;
 import org.okstar.platform.common.web.rest.transport.RestClient;
+import org.okstar.platform.core.user.UserDefines;
 import org.okstar.platform.org.connect.ConnectorDefines;
-import org.okstar.platform.org.sync.connect.connector.SysConnectorAbstract;
-import org.okstar.platform.org.sync.connect.connector.common.OkAssertConnector;
-import org.okstar.platform.org.sync.connect.connector.feishu.proto.access.req.FSAccessTokenReq;
-import org.okstar.platform.org.sync.connect.connector.feishu.proto.access.res.FSAccessTokenRes;
-import org.okstar.platform.org.sync.connect.domain.OrgIntegrateConf;
-import org.okstar.platform.org.sync.connect.dto.SysConUser;
-import org.okstar.platform.org.sync.connect.proto.SysConnAccessToken;
+import org.okstar.platform.org.connect.api.AccessToken;
 import org.okstar.platform.org.connect.api.Department;
-import org.okstar.platform.org.sync.connect.proto.SysConnUserInfo;
+import org.okstar.platform.org.connect.api.UserId;
+import org.okstar.platform.org.connect.api.UserInfo;
+import org.okstar.platform.org.connect.exception.ConnectorException;
+import org.okstar.platform.org.sync.connect.connector.SysConnectorAbstract;
+import org.okstar.platform.org.sync.connect.connector.feishu.proto.access.req.FSAccessTokenReq;
+import org.okstar.platform.org.sync.connect.domain.OrgIntegrateConf;
 
-import java.util.List;
+import java.util.*;
 
 @Slf4j
 public class SysConnectorFS extends SysConnectorAbstract {
@@ -40,11 +46,6 @@ public class SysConnectorFS extends SysConnectorAbstract {
     @Override
     public ConnectorDefines.Type getType() {
         return ConnectorDefines.Type.FS;
-    }
-
-    @Override
-    public String getBaseUrl() {
-        return "https://open.feishu.cn/open-apis";
     }
 
     /**
@@ -66,78 +67,198 @@ public class SysConnectorFS extends SysConnectorAbstract {
      * }
      */
     @Override
-    public SysConnAccessToken fetchAccessToken( ) {
-        log.info("getAccessToken...");
+    public AccessToken fetchAccessToken() throws ConnectorException {
+        String url = "auth/v3/app_access_token/internal";
+        try {
+            FSAccessTokenReq req = new FSAccessTokenReq();
+            req.setAppId(conf.getAppId());
+            req.setAppSecret(conf.getCertSecret());
 
+            log.info("getAccessToken: {} {}", req.getAppId(),
+                    OkStringUtil.abbreviate(req.getAppSecret(), 20));
 
-        if (accessToken != null && accessToken.isValid()) {
-            log.info("Get from cache accessToken:{}", accessToken);
+            RestClient client = getClient();
+
+            //https://open.feishu.cn/document/server-docs/authentication-management/access-token/app_access_token_internal
+            String res = client.post(
+                    url,
+                    String.class,
+                    req.asJson(),
+                    null);
+
+            log.info("getAccessToken: {} => {}", req.getAppId(), res);
+            ObjectNode node = OkJsonUtils.asObject(res, ObjectNode.class);
+            OkAssert.isTrue(node.get("code").asInt() == 0, "返回异常！");
+
+            /**
+             * {
+             *     "app_access_token": "t-g1044ghJRUIJJ5ZPPZMOHKWZISL33E4QSS3abcef",
+             *     "code": 0,
+             *     "expire": 7200,
+             *     "msg": "ok",
+             *     "tenant_access_token": "t-g1044ghJRUIJJ5ZPPZMOHKWZISL33E4QSS3abcef"
+             * }
+             */
+
+            accessToken = AccessToken.builder()
+                    .accessToken(node.get("app_access_token").asText())
+                    .expiresIn(node.get("expire").asLong())
+                    .build();
+
             return accessToken;
+        } catch (Exception e) {
+            throw new ConnectorException(conf.getType(), url, e.getCause());
         }
-
-
-        FSAccessTokenReq appCert = new FSAccessTokenReq();
-        appCert.setAppId(conf.getCertKey());
-        appCert.setAppSecret(conf.getCertSecret());
-
-        RestClient client = getClient();
-
-        FSAccessTokenRes res = client.post(
-                getRequestUrl("/auth/v3/app_access_token/internal"),
-                FSAccessTokenRes.class,
-                appCert,
-                null);
-
-        log.info("请求token=>{}", res);
-
-        OkAssertConnector.success(getType(), res, "获取AccessToken信息");
-
-        SysConnAccessToken r = res.to(conf);
-
-
-        return r;
     }
 
     @Override
     public List<Department> getDepartmentList(String parentId) {
-        log.info("getDepartmentList...");
+        log.info("getDepartmentList parentId:{}", parentId);
 
+        String url = "/contact/v3/departments";
+        log.info("url:{}", url);
 
-        log.info("parentId:{}", parentId);
+        Map<String, String> params = new HashMap<>();
+        params.put("parent_department_id", parentId);
+        params.put("fetch_child", "false");
+        params.put("department_id_type", "open_department_id");
 
-//
-//        String url = getRequestUrl(
-//                String.format("/contact/v3/departments?department_id_type=open_department_id&fetch_child=%s＆parent_department_id＝%s",
-//                false, parentId));
-//        log.info("url:{}", url);
-//
-//        // create headers
-//        HttpHeaders headers = new HttpHeaders();
-//        headers.add("Authorization", "Bearer " + accessToken.getAccessToken());
-//
-//        // create request
-//        HttpEntity request = new HttpEntity(headers);
-//
-//        ResponseEntity<FSDepartmentRes> re = restTemplate.exchange(
-//                url,
-//                HttpMethod.GET,
-//                request,
-//                FSDepartmentRes.class);
-//        log.info("请求departments=>{}", re);
-//
-//        FSDepartmentRes res = re.getBody();
-//        OkAssertConnector.success(getType(), res, "获取部门信息");
-        return null;
-//        return res.to(app);
+        RestClient client = getClient();
+        client.setToken(new AuthenticationToken(accessToken.getAccessToken()));
+
+        String res = client.get(url, String.class, params);
+        log.info("response=> {}", res);
+
+        ObjectNode node = OkJsonUtils.asObject(res, ObjectNode.class);
+        OkAssert.isTrue(0 == node.get("code").asInt(), "返回异常！");
+
+        ArrayList<Department> list = new ArrayList<>();
+        JsonNode jsonNode = node.get("data").get("items");
+        if (jsonNode != null) {
+            jsonNode.elements().forEachRemaining(depart -> {
+                Department department = Department.builder()
+                        .id(depart.get("open_department_id").asText())
+                        .name(depart.get("name").asText())
+                        .parentId(depart.get("parent_department_id").asText())
+                        .build();
+                list.add(department);
+            });
+        }
+        return list;
+
     }
 
     @Override
-    public List<SysConUser> getUserIdList(OrgIntegrateConf app, String deptId) {
-        return null;
+    public List<UserId> getUserIdList(Department dept) {
+        log.info("getUserIdList:{}", dept.getName());
+
+        String url = "contact/v3/users/find_by_department";
+        log.info("url:{}", url);
+
+        RestClient client = getClient();
+        client.setToken(new AuthenticationToken(accessToken.getAccessToken()));
+
+        Map<String, String> params = new HashMap<>();
+        params.put("user_id_type", "open_id");
+        params.put("page_size", "10");
+        params.put("department_id_type", "open_department_id");
+        params.put("department_id", dept.getId());
+
+        ArrayList<UserId> list = new ArrayList<>();
+
+        String pageToken = null;
+        ObjectNode node = null;
+        do {
+            if (pageToken != null) {
+                params.put("page_token", pageToken);
+            }
+
+            String res = client.get(url, String.class, params);
+            log.info("response=> {}", res);
+
+            node = OkJsonUtils.asObject(res, ObjectNode.class);
+            OkAssert.isTrue(0 == node.get("code").asInt(), "返回异常！");
+
+            JsonNode items = node.get("data").get("items");
+            if (items != null) {
+                items.elements().forEachRemaining(depart -> {
+                    var department = UserId.builder()
+                            .userId(depart.get("union_id").asText())
+                            .build();
+                    list.add(department);
+                });
+            }
+
+            var tokenNode = node.get("data").get("page_token");
+            if (tokenNode != null) {
+                pageToken = tokenNode.asText();
+            }
+        } while ((node.get("data").get("has_more").asBoolean()));
+
+        return list;
     }
 
     @Override
-    public SysConnUserInfo getUserInfoList(OrgIntegrateConf app, String deptId) {
+    public UserInfo getUserInfo(String userId) {
+
+        log.info("getUserInfo:{}", userId);
+
+        String url = "contact/v3/users/" + userId;
+        log.info("url:{}", url);
+
+        RestClient client = getClient();
+        client.setToken(new AuthenticationToken(accessToken.getAccessToken()));
+
+        Map<String, String> params = new HashMap<>();
+        params.put("user_id_type", "union_id");
+        params.put("department_id_type", "open_department_id");
+
+
+        //https://open.feishu.cn/document/server-docs/contact-v3/user/get
+        String res = client.get(url, String.class, params);
+        log.info("response=> {}", res);
+
+        ObjectNode node = OkJsonUtils.asObject(res, ObjectNode.class);
+        OkAssert.isTrue(0 == node.get("code").asInt(), "返回异常！");
+
+        JsonNode data = node.get("data");
+        JsonNode user;
+        if (data != null && (user = data.get("user")) != null) {
+            UserInfo info = UserInfo.builder()
+                    //获取用户 user ID contact:user.employee_id:readonly
+                    .id(Optional.ofNullable(user.get("user_id")).map(JsonNode::asText).orElse(null))
+
+                    //基本信息 contact:user.base:readonly
+                    .name(user.get("name").asText())
+                    .avatar(user.get("avatar").asText("avatar_origin"))
+                    .nickname(Optional.ofNullable(user.get("nickname")).map(JsonNode::asText).orElse(null))
+                    .unionId(user.get("union_id").asText())
+
+                    //获取用户邮箱信息
+                    .email(user.get("email").asText())
+                    //获取用户手机号
+                    .mobilePhone(user.get("mobile").asText())
+
+                    //获取用户受雇信息 contact:user.employee:readonly
+                    .title(user.get("job_title").asText())
+                    .orgMail(Optional.ofNullable(user.get("enterprise_email")).map(JsonNode::asText).orElse(null))
+                    .isActive(user.get("status").get("is_activated").asBoolean())
+                    .build();
+
+            //获取用户性别 contact:user.gender:readonly 0：保密//1：男//2：女//3：其他
+            var g = switch (user.get("gender").asInt()) {
+                case 1 -> UserDefines.Gender.male;
+                case 2 -> UserDefines.Gender.female;
+                default -> UserDefines.Gender.none;
+            };
+
+            info.setGender(g);
+
+            return info;
+
+        }
+
+
         return null;
     }
 }

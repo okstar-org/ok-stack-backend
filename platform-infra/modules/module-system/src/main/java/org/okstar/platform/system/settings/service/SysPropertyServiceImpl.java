@@ -83,6 +83,11 @@ public class SysPropertyServiceImpl implements SysPropertyService {
     }
 
     @Override
+    public List<SysProperty> findByKey(String group, String k) {
+        return sysPropertyMapper.findByKey(group, k);
+    }
+
+    @Override
     public List<SysProperty> findByKey(String group, String domain, String k) {
         return sysPropertyMapper.findByKey(group, domain, k);
     }

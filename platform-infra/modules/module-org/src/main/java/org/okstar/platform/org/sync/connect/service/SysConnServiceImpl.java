@@ -27,7 +27,7 @@
 //import org.okstar.platform.org.sync.connect.domain.SysConUser;
 //import org.okstar.platform.org.sync.connect.dto.SysConUserDTO;
 //import org.okstar.platform.org.sync.connect.dto.SysOrgDTO;
-//import org.okstar.platform.org.sync.connect.proto.SysConnAccessToken;
+//import org.okstar.platform.org.connect.api.SysConnAccessToken;
 //import org.okstar.platform.org.connect.api.SysConnDepartment;
 //
 //import java.util.List;

@@ -13,32 +13,18 @@
 
 package org.okstar.platform.org.connect.api;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
- * API-部门
+ * API-用户ID
  */
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString
-public class Department {
-
-
-    /**
-     * 部门名称
-     */
-    String name;
-
-    /**
-     * Id
-     */
-    String id;
-
-    /**
-     * 父Id
-     */
-    String parentId;
-
+public class UserId {
+    private String userId;
 }

@@ -15,16 +15,13 @@ package org.okstar.platform.org.sync.connect.connector.wx.proto.department.res;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
-import org.apache.commons.lang3.EnumUtils;
 import org.okstar.platform.common.bean.OkBeanUtils;
 import org.okstar.platform.core.user.UserDefines;
-import org.okstar.platform.org.defined.StaffDefines;
+import org.okstar.platform.org.connect.api.UserId;
 import org.okstar.platform.org.sync.connect.connector.wx.proto.WXRes;
 import org.okstar.platform.org.sync.connect.domain.OrgIntegrateConf;
-import org.okstar.platform.org.sync.connect.dto.SysConUser;
 
 import java.util.List;
-import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Data
@@ -32,22 +29,20 @@ import java.util.stream.Collectors;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class WXUserListRes extends WXRes<List<SysConUser>> {
+public class WXUserListRes extends WXRes<List<UserId>> {
 
     List<UserItem> userlist;
 
     @Override
-    public List<SysConUser> to(OrgIntegrateConf app) {
+    public List<UserId> to(OrgIntegrateConf app) {
         return userlist.stream().map(d -> {
-                    var x = new SysConUser();
+                    var x = new UserId();
                     OkBeanUtils.copyPropertiesTo(d, x);
-                    x.setUnionId(d.getOpen_userid());
-                    x.setHiredDate(d.getHide_mobile());
+//                    x.setUnionId(d.getOpen_userid());
+//                    x.setHiredDate(d.getHide_mobile());
                     x.setUserId(d.getUserid());
-                    x.setActive(Objects.equals(d.getStatus(), Status.ACTIVE));
-                    x.setGender(EnumUtils.getEnum(org.okstar.platform.core.user.UserDefines.Gender.class, d.getGender().name()));
-                    x.setSource(StaffDefines.Source.WX);
-                    x.setAppId(app.getAppId());
+//                    x.setActive(Objects.equals(d.getStatus(), Status.ACTIVE));
+//                    x.setGender(EnumUtils.getEnum(org.okstar.platform.core.user.UserDefines.Gender.class, d.getGender().name()));
                     return x;
                 }
         ).collect(Collectors.toList());

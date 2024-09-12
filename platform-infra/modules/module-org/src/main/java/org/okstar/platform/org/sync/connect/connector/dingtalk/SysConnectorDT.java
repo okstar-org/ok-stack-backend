@@ -18,35 +18,30 @@ import com.dingtalk.api.DingTalkClient;
 import com.dingtalk.api.request.OapiGettokenRequest;
 import com.dingtalk.api.request.OapiV2DepartmentListidsRequest;
 import com.dingtalk.api.request.OapiV2UserGetRequest;
-import com.dingtalk.api.request.OapiV2UserListbypageRequest;
 import com.dingtalk.api.response.OapiGettokenResponse;
 import com.dingtalk.api.response.OapiV2DepartmentListidsResponse;
 import com.dingtalk.api.response.OapiV2UserGetResponse;
-import com.dingtalk.api.response.OapiV2UserListbypageResponse;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.google.common.collect.Lists;
 import com.taobao.api.ApiException;
 import com.taobao.api.TaobaoResponse;
 import io.quarkus.logging.Log;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.BooleanUtils;
 import org.okstar.platform.common.asserts.OkAssert;
-import org.okstar.platform.common.bean.OkBeanUtils;
-import org.okstar.platform.common.core.exception.OkRuntimeException;
-import org.okstar.platform.common.date.OkDateUtils;
 import org.okstar.platform.common.json.OkJsonUtils;
-import org.okstar.platform.org.connect.ConnectorDefines;
+import org.okstar.platform.common.web.OkRestUtil;
+import org.okstar.platform.common.web.rest.transport.RestClient;
+import org.okstar.platform.org.connect.api.AccessToken;
+import org.okstar.platform.org.connect.api.Department;
+import org.okstar.platform.org.connect.api.UserId;
+import org.okstar.platform.org.connect.api.UserInfo;
 import org.okstar.platform.org.connect.exception.ConnectorException;
-import org.okstar.platform.org.defined.StaffDefines;
 import org.okstar.platform.org.sync.connect.connector.SysConnectorAbstract;
 import org.okstar.platform.org.sync.connect.domain.OrgIntegrateConf;
-import org.okstar.platform.org.sync.connect.dto.SysConUser;
-import org.okstar.platform.org.sync.connect.proto.SysConnAccessToken;
-import org.okstar.platform.org.connect.api.Department;
-import org.okstar.platform.org.sync.connect.proto.SysConnUserInfo;
 
+import java.util.HashMap;
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Map;
 
 @Slf4j
 public class SysConnectorDT extends SysConnectorAbstract {
@@ -56,19 +51,9 @@ public class SysConnectorDT extends SysConnectorAbstract {
         this.conf = conf;
     }
 
-    @Override
-    public ConnectorDefines.Type getType() {
-        return conf.getType();
-    }
 
     @Override
-    public String getBaseUrl() {
-        return "https://oapi.dingtalk.com";
-    }
-
-
-    @Override
-    public SysConnAccessToken fetchAccessToken() throws ConnectorException {
+    public AccessToken fetchAccessToken() throws ConnectorException {
         String url = "/gettoken";
         try {
             log.info("Configuration: {}", conf);
@@ -85,14 +70,10 @@ public class SysConnectorDT extends SysConnectorAbstract {
 
             OkAssert.isTrue(response.getErrcode() == 0, "获取token异常！");
 
-            accessToken = SysConnAccessToken.builder()
+            accessToken = AccessToken.builder()
                     .accessToken(response.getAccessToken())
                     .expiresIn(response.getExpiresIn())
                     .build();
-
-            accessToken.setCreatedAt(OkDateUtils.instant());
-            accessToken.setAppId(conf.getAppId());
-            accessToken.setType(ConnectorDefines.Type.DD);
 
             return accessToken;
         } catch (ApiException e) {
@@ -102,12 +83,12 @@ public class SysConnectorDT extends SysConnectorAbstract {
 
     @Override
     public List<Department> getDepartmentList(String parentId) throws ConnectorException {
-        String url = "/topapi/v2/department/listsub";
+        String url = "/topapi/v2/department/listsub?dept_id=" + parentId;
         List<Department> list = Lists.newArrayList();
         try {
-            log.info("getDepartmentList...");
-            log.info("parentId:{}", parentId);
+            log.info("getDepartmentList parentId:{}", parentId);
 
+            //https://open.dingtalk.com/document/orgapp/obtain-the-department-list-v2
 
             DingTalkClient client = new DefaultDingTalkClient(getRequestUrl(url));
             OapiV2DepartmentListidsRequest req = new OapiV2DepartmentListidsRequest();
@@ -117,7 +98,9 @@ public class SysConnectorDT extends SysConnectorAbstract {
             log.info("getDepartmentList=>{}", OkJsonUtils.asString(response));
 
             assertResponse(response);
+
             String body = response.getBody();
+
             ObjectNode node = OkJsonUtils.asObject(body, ObjectNode.class);
             node.get("result").elements().forEachRemaining(e -> {
                 //{"auto_add_user":true,"create_dept_group":true,"dept_id":551835489,"name":"研发部","parent_id":1}
@@ -135,87 +118,77 @@ public class SysConnectorDT extends SysConnectorAbstract {
         return list;
     }
 
+    /**
+     * @param dept
+     * @return
+     * @throws ConnectorException
+     */
     @Override
-    public List<SysConUser> getUserIdList(OrgIntegrateConf app, String deptId) {
+    public List<UserId> getUserIdList(Department dept) throws ConnectorException {
 
-        try {
-            log.info("getUserIdList...");
+        String url = "/topapi/user/listid";
+        List<UserId> list = Lists.newArrayList();
 
-            log.info("deptId:{}", deptId);
+        log.info("getUserIdList dept:{}", dept.getName());
 
+        // 参考： https://open.dingtalk.com/document/orgapp/query-the-list-of-department-userids
 
-            DingTalkClient client = new DefaultDingTalkClient(getRequestUrl("/topapi/v2/user/list"));
+        RestClient restClient = OkRestUtil.getInstance(getRequestUrl("")).getClientFactory().createClient();
 
-            long cursor = 0;
-            long size = 100;
+        Map<String, String> map = new HashMap<>();
+        map.put("dept_id", dept.getId());
+        map.put("access_token", accessToken.getAccessToken());
 
-            List<OapiV2UserListbypageResponse.UserSimpleListResponse> list = Lists.newArrayList();
+        String response = restClient.get(url, String.class, map);
+        Log.infof("response=> %s", response);
 
-            OapiV2UserListbypageResponse.PageResult result;
-            do {
-                var req = new OapiV2UserListbypageRequest();
-                req.setDeptId(Long.valueOf(deptId));
-                req.setOffset(cursor);
-                req.setSize(size);
+        ObjectNode node = OkJsonUtils.asObject(response, ObjectNode.class);
 
-                log.info("Fetch user offset: {} size: {}", cursor, size);
-                var response = client.execute(req, accessToken.getAccessToken());
-                assertResponse(response);
-                result = response.getResult();
+        //check
+        String errcode = node.get("errcode").asText();
+        OkAssert.isTrue("0".equals(errcode), String.format("【%s】连接异常，errcode:%s errmsg:%s", getType().getText(), node.get("errcode").asText(), node.get("errmsg").asText()));
 
-                List<OapiV2UserListbypageResponse.UserSimpleListResponse> resultList = result.getList();
-                list.addAll(resultList);
-            } while (BooleanUtils.isTrue(result.getHasMore()));
+        node.get("result").get("userid_list").elements().forEachRemaining(e -> {
+            list.add(UserId.builder().userId(e.asText()).build());
+        });
 
-            return list.stream().map(s -> {
-                SysConUser d = new SysConUser();
-                OkBeanUtils.copyPropertiesTo(s, d);
-                d.setUserId(s.getUserid());
-                d.setUnionId(s.getUnionid());
-                d.setAppId(app.getAppId());
-                d.setSource(StaffDefines.Source.DD);
-                return d;
-            }).collect(Collectors.toList());
-
-        } catch (ApiException e) {
-            throw new OkRuntimeException("获取钉钉用户异常！", e);
-        }
+        return list;
     }
 
     @Override
-    public SysConnUserInfo getUserInfoList(OrgIntegrateConf app, String userId) {
+    public UserInfo getUserInfo(String userId) throws ConnectorException {
+        String url = "/topapi/v2/user/get";
         try {
             log.info("getUserInfo userId: {}", userId);
 
-            DingTalkClient client = new DefaultDingTalkClient(getRequestUrl(""));
+            DingTalkClient client = new DefaultDingTalkClient(getRequestUrl(url));
             OapiV2UserGetRequest req = new OapiV2UserGetRequest();
             req.setUserid(userId);
 
             OapiV2UserGetResponse rsp = client.execute(req, accessToken.getAccessToken());
 
-
             OapiV2UserGetResponse.PageResult e = rsp.getResult();
+            log.info("getUserInfo:[{}]=> {}", userId, OkJsonUtils.asString(e));
 
-            var x = SysConnUserInfo.builder()
+            return UserInfo.builder()
                     .id(e.getUserid())
+                    .name(e.getName())
+                    .nickname(e.getNickname())
                     .unionId(e.getUnionid())
                     .isBoos(e.getBoss())
                     .isActive(e.getActive())
-                    .mail(e.getEmail())
+                    .isAdmin(e.getAdmin())
+                    .email(e.getEmail())
                     .orgMail(e.getOrgEmail())
-                    .name(e.getName())
+                    .mobilePhone(e.getMobile())
                     .title(e.getPosition())
                     .remark(e.getRemark())
                     .jobNumber(e.getJobNumber())
                     .countryCode(e.getStateCode())
-                    .mobilePhone(e.getMobile())
+                    .avatar(e.getAvatar())
                     .build();
-
-            x.setType(ConnectorDefines.Type.DD);
-            x.setAppId(app.getAppId());
-            return x;
-        } catch (RuntimeException | ApiException e) {
-            throw new RuntimeException(e);
+        } catch (ApiException e) {
+            throw new ConnectorException(getType(), url, e.getCause());
         }
     }
 

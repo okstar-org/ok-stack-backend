@@ -18,12 +18,13 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.okstar.platform.common.json.OkJsonUtils;
 
 /**
  * 获取token请求数据
  * {
- *     "app_id": "cli_slkdjalasdkjasd",
- *     "app_secret": "dskLLdkasdjlasdKK"
+ * "app_id": "cli_slkdjalasdkjasd",
+ * "app_secret": "dskLLdkasdjlasdKK"
  * }
  */
 @Data
@@ -32,7 +33,11 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class FSAccessTokenReq {
     @JsonProperty("app_id")
-    String appId;
+    private String appId;
     @JsonProperty("app_secret")
-    String appSecret;
+    private String appSecret;
+
+    public String asJson() {
+        return OkJsonUtils.asString(this);
+    }
 }
