@@ -13,10 +13,7 @@
 
 package org.okstar.platform.system.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -29,12 +26,13 @@ import java.util.Map;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString
 public class BackUser {
-   String id;
-   String username;
-   String firstName;
-   String lastName;
-   String email;
-   String password;
-   Map<String, List<String>> attributes = new LinkedHashMap<>();
+    private String id;
+    private String username;
+    private String firstName;
+    private String lastName;
+    private String email;
+    private String password;
+    private Map<String, List<String>> attributes = new LinkedHashMap<>();
 }

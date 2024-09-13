@@ -83,7 +83,10 @@ public class PassportServiceImpl implements PassportService {
         }
 
         var added = RpcAssert.isTrue(orgStaffRpc.add(signUpResult.getAccountId(), staff));
-        Log.infof("保存到人员帐号=>%s", added);
+        Log.infof("Add account[%s] to staff=>%s", signUpResult.getUsername(), added);
+        if (added == null) {
+            throw new OkRuntimeException("Unable to save account!");
+        }
 
         BackUser user = BackUser.builder()
                 .username(signUpResult.getUsername())
@@ -97,7 +100,11 @@ public class PassportServiceImpl implements PassportService {
         }
 
         BackUser backUser = backUserManager.add(user);
-        log.info("Added user:{}", backUser.getUsername());
+        log.info("Added user:{}", backUser);
+        if (backUser == null) {
+            throw new OkRuntimeException("Unable to save account to authentication backend server!");
+        }
+
         return signUpResult;
     }
 
