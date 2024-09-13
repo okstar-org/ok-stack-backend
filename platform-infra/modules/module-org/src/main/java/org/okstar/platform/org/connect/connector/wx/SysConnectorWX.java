@@ -11,7 +11,7 @@
  * /
  */
 
-package org.okstar.platform.org.sync.connect.connector.wx;
+package org.okstar.platform.org.connect.connector.wx;
 
 
 import com.fasterxml.jackson.databind.JsonNode;
@@ -25,8 +25,9 @@ import org.okstar.platform.org.connect.api.AccessToken;
 import org.okstar.platform.org.connect.api.Department;
 import org.okstar.platform.org.connect.api.UserId;
 import org.okstar.platform.org.connect.api.UserInfo;
-import org.okstar.platform.org.sync.connect.connector.SysConnectorAbstract;
-import org.okstar.platform.org.sync.connect.domain.OrgIntegrateConf;
+import org.okstar.platform.org.connect.connector.SysConnectorAbstract;
+import org.okstar.platform.org.connect.domain.OrgIntegrateConf;
+import org.okstar.platform.org.connect.exception.ConnectorException;
 
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -78,10 +79,12 @@ public class SysConnectorWX extends SysConnectorAbstract {
         ObjectNode node = OkJsonUtils.asObject(res, ObjectNode.class);
         OkAssert.isTrue(0 == node.get("errcode").asInt(), "返回异常！");
 
-        accessToken = AccessToken.builder()
+        var accessToken = AccessToken.builder()
                 .accessToken(node.get("access_token").asText())
                 .expiresIn(node.get("expires_in").asLong())
                 .build();
+
+        setAccessToken(accessToken);
 
         log.info("getAccessToken=>{}", accessToken);
         return accessToken;
@@ -109,10 +112,9 @@ public class SysConnectorWX extends SysConnectorAbstract {
      * @return
      */
     @Override
-    public List<Department> getDepartmentList(String parentId) {
+    public List<Department> getDepartmentList(String parentId) throws ConnectorException {
         log.info("getDepartmentList parentId:{}", parentId);
 
-        OkAssert.notNull(accessToken, "accessToken");
 
         String url = "/department/list";
         log.info("req=>{}", url);
@@ -121,7 +123,7 @@ public class SysConnectorWX extends SysConnectorAbstract {
 
         Map<String, String> params = new LinkedHashMap<>();
         params.put("id", parentId);
-        params.put("access_token", accessToken.getAccessToken());
+        params.put("access_token", ensureAccessToken().getAccessToken());
 
         var res = client.get(url, String.class, params);
         log.info("res=>{}", res);
@@ -146,17 +148,16 @@ public class SysConnectorWX extends SysConnectorAbstract {
     }
 
     @Override
-    public List<UserId> getUserIdList(Department dept) {
+    public List<UserId> getUserIdList(Department dept) throws ConnectorException {
         log.info("getUserIdList...");
         log.info("deptId:{}", dept);
 
-        OkAssert.notNull(accessToken, "accessToken");
 
         String url = "/user/simplelist";
         log.info("req=>{}", url);
 
         Map<String, String> ps = new LinkedHashMap<>();
-        ps.put("access_token", accessToken.getAccessToken());
+        ps.put("access_token", ensureAccessToken().getAccessToken());
         ps.put("department_id", dept.getId());
         ps.put("fetch_child", String.valueOf(0));
 
@@ -177,10 +178,10 @@ public class SysConnectorWX extends SysConnectorAbstract {
     }
 
     @Override
-    public UserInfo getUserInfo(String userId) {
+    public UserInfo getUserInfo(String userId) throws ConnectorException {
 
         Map<String, String> ps = new LinkedHashMap<>();
-        ps.put("access_token", accessToken.getAccessToken());
+        ps.put("access_token", ensureAccessToken().getAccessToken());
         ps.put("userid", userId);
 
         String url = "/user/get";

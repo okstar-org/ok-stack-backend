@@ -11,7 +11,7 @@
  * /
  */
 
-package org.okstar.platform.org.sync.connect.connector.dingtalk;
+package org.okstar.platform.org.connect.connector.dingtalk;
 
 import com.dingtalk.api.DefaultDingTalkClient;
 import com.dingtalk.api.DingTalkClient;
@@ -36,8 +36,8 @@ import org.okstar.platform.org.connect.api.Department;
 import org.okstar.platform.org.connect.api.UserId;
 import org.okstar.platform.org.connect.api.UserInfo;
 import org.okstar.platform.org.connect.exception.ConnectorException;
-import org.okstar.platform.org.sync.connect.connector.SysConnectorAbstract;
-import org.okstar.platform.org.sync.connect.domain.OrgIntegrateConf;
+import org.okstar.platform.org.connect.connector.SysConnectorAbstract;
+import org.okstar.platform.org.connect.domain.OrgIntegrateConf;
 
 import java.util.HashMap;
 import java.util.List;
@@ -50,7 +50,6 @@ public class SysConnectorDT extends SysConnectorAbstract {
     public SysConnectorDT(OrgIntegrateConf conf) {
         this.conf = conf;
     }
-
 
     @Override
     public AccessToken fetchAccessToken() throws ConnectorException {
@@ -70,11 +69,11 @@ public class SysConnectorDT extends SysConnectorAbstract {
 
             OkAssert.isTrue(response.getErrcode() == 0, "获取token异常！");
 
-            accessToken = AccessToken.builder()
+            var accessToken = AccessToken.builder()
                     .accessToken(response.getAccessToken())
                     .expiresIn(response.getExpiresIn())
                     .build();
-
+            setAccessToken(accessToken);
             return accessToken;
         } catch (ApiException e) {
             throw new ConnectorException(conf.getType(), url, e.getCause());
@@ -94,7 +93,7 @@ public class SysConnectorDT extends SysConnectorAbstract {
             OapiV2DepartmentListidsRequest req = new OapiV2DepartmentListidsRequest();
             req.setId(Long.valueOf(parentId));
 
-            OapiV2DepartmentListidsResponse response = client.execute(req, accessToken.getAccessToken());
+            OapiV2DepartmentListidsResponse response = client.execute(req, ensureAccessToken().getAccessToken());
             log.info("getDepartmentList=>{}", OkJsonUtils.asString(response));
 
             assertResponse(response);
@@ -136,7 +135,7 @@ public class SysConnectorDT extends SysConnectorAbstract {
 
         Map<String, String> map = new HashMap<>();
         map.put("dept_id", dept.getId());
-        map.put("access_token", accessToken.getAccessToken());
+        map.put("access_token", ensureAccessToken().getAccessToken());
 
         String response = restClient.get(url, String.class, map);
         Log.infof("response=> %s", response);
@@ -165,7 +164,7 @@ public class SysConnectorDT extends SysConnectorAbstract {
             OapiV2UserGetRequest req = new OapiV2UserGetRequest();
             req.setUserid(userId);
 
-            OapiV2UserGetResponse rsp = client.execute(req, accessToken.getAccessToken());
+            OapiV2UserGetResponse rsp = client.execute(req, ensureAccessToken().getAccessToken());
 
             OapiV2UserGetResponse.PageResult e = rsp.getResult();
             log.info("getUserInfo:[{}]=> {}", userId, OkJsonUtils.asString(e));

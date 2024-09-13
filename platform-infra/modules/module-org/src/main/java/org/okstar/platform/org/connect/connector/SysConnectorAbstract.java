@@ -11,25 +11,48 @@
  * /
  */
 
-package org.okstar.platform.org.sync.connect.connector;
+package org.okstar.platform.org.connect.connector;
 
-import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.okstar.platform.common.web.OkRestUtil;
 import org.okstar.platform.common.web.rest.transport.ClientFactory;
 import org.okstar.platform.common.web.rest.transport.RestClient;
 import org.okstar.platform.org.connect.ConnectorDefines;
-import org.okstar.platform.org.sync.connect.SysConnector;
-import org.okstar.platform.org.sync.connect.domain.OrgIntegrateConf;
 import org.okstar.platform.org.connect.api.AccessToken;
+import org.okstar.platform.org.connect.domain.OrgIntegrateConf;
+import org.okstar.platform.org.connect.exception.ConnectorException;
 
-@Data
+
 @Slf4j
 public abstract class SysConnectorAbstract implements SysConnector {
 
-    protected AccessToken accessToken;
+    private AccessToken accessToken;
 
     protected OrgIntegrateConf conf;
+
+    @Override
+    public void setAccessToken(AccessToken accessToken) {
+        this.accessToken = accessToken;
+    }
+
+    @Override
+    public AccessToken ensureAccessToken() throws ConnectorException {
+        if (accessToken == null) {
+            //第一次
+            accessToken = fetchAccessToken();
+            return accessToken;
+        }
+
+        //未过期
+        boolean valid = accessToken.isValid();
+        if (valid) {
+            return accessToken;
+        }
+
+        //重新获取
+        accessToken = fetchAccessToken();
+        return accessToken;
+    }
 
     @Override
     public ConnectorDefines.Type getType() {

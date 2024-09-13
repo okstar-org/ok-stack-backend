@@ -11,7 +11,7 @@
  * /
  */
 
-package org.okstar.platform.org.sync.connect.connector.feishu;
+package org.okstar.platform.org.connect.connector.feishu;
 
 
 import com.fasterxml.jackson.databind.JsonNode;
@@ -30,8 +30,8 @@ import org.okstar.platform.org.connect.api.Department;
 import org.okstar.platform.org.connect.api.UserId;
 import org.okstar.platform.org.connect.api.UserInfo;
 import org.okstar.platform.org.connect.exception.ConnectorException;
-import org.okstar.platform.org.sync.connect.connector.SysConnectorAbstract;
-import org.okstar.platform.org.sync.connect.domain.OrgIntegrateConf;
+import org.okstar.platform.org.connect.connector.SysConnectorAbstract;
+import org.okstar.platform.org.connect.domain.OrgIntegrateConf;
 
 import java.util.*;
 
@@ -100,10 +100,12 @@ public class SysConnectorFS extends SysConnectorAbstract {
              * }
              */
 
-            accessToken = AccessToken.builder()
+            var accessToken = AccessToken.builder()
                     .accessToken(node.get("app_access_token").asText())
                     .expiresIn(node.get("expire").asLong())
                     .build();
+
+            setAccessToken(accessToken);
 
             return accessToken;
         } catch (Exception e) {
@@ -112,7 +114,7 @@ public class SysConnectorFS extends SysConnectorAbstract {
     }
 
     @Override
-    public List<Department> getDepartmentList(String parentId) {
+    public List<Department> getDepartmentList(String parentId) throws ConnectorException {
         log.info("getDepartmentList parentId:{}", parentId);
 
         String url = "/contact/v3/departments";
@@ -124,7 +126,7 @@ public class SysConnectorFS extends SysConnectorAbstract {
         params.put("department_id_type", "open_department_id");
 
         RestClient client = getClient();
-        client.setToken(new AuthenticationToken(accessToken.getAccessToken()));
+        client.setToken(new AuthenticationToken(ensureAccessToken().getAccessToken()));
 
         String res = client.get(url, String.class, params);
         log.info("response=> {}", res);
@@ -149,14 +151,14 @@ public class SysConnectorFS extends SysConnectorAbstract {
     }
 
     @Override
-    public List<UserId> getUserIdList(Department dept) {
+    public List<UserId> getUserIdList(Department dept) throws ConnectorException {
         log.info("getUserIdList:{}", dept.getName());
 
         String url = "contact/v3/users/find_by_department";
         log.info("url:{}", url);
 
         RestClient client = getClient();
-        client.setToken(new AuthenticationToken(accessToken.getAccessToken()));
+        client.setToken(new AuthenticationToken(ensureAccessToken().getAccessToken()));
 
         Map<String, String> params = new HashMap<>();
         params.put("user_id_type", "open_id");
@@ -199,7 +201,7 @@ public class SysConnectorFS extends SysConnectorAbstract {
     }
 
     @Override
-    public UserInfo getUserInfo(String userId) {
+    public UserInfo getUserInfo(String userId) throws ConnectorException {
 
         log.info("getUserInfo:{}", userId);
 
@@ -207,7 +209,7 @@ public class SysConnectorFS extends SysConnectorAbstract {
         log.info("url:{}", url);
 
         RestClient client = getClient();
-        client.setToken(new AuthenticationToken(accessToken.getAccessToken()));
+        client.setToken(new AuthenticationToken(ensureAccessToken().getAccessToken()));
 
         Map<String, String> params = new HashMap<>();
         params.put("user_id_type", "union_id");

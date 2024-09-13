@@ -11,16 +11,50 @@
  * /
  */
 
-package org.okstar.platform.org.sync.connect.connector.common;
+package org.okstar.platform.org.connect.domain;
 
 
-import org.okstar.platform.common.core.exception.OkRuntimeException;
+import lombok.Data;
 import org.okstar.platform.org.connect.ConnectorDefines;
 
-public class OkAssertConnector {
-    public static void success(ConnectorDefines.Type type, SysConnectorRes res, String message) {
-        if (res == null || !res.success()) {
-            throw new OkRuntimeException("连接器[%s]异常: %s！".formatted(type, message));
-        }
-    }
+/**
+ * 组织-集成配置
+ */
+@Data
+public class OrgIntegrateConf {
+
+    /**
+     * 应用类型
+     */
+    private ConnectorDefines.Type type;
+
+    private String appId;
+    
+    
+    private String name;
+
+    /**
+     * 应用凭证(key)
+     */
+    
+    private String certKey;
+
+    /**
+     * 应用凭证(secret)
+     *
+     */
+    
+    private String certSecret;
+
+    /**
+     * 应用凭证(info)
+     *
+     */
+    private String info;
+
+    private String baseUrl;
+    /**
+     * 跟部门ID
+     */
+    private String rootDeptId;
 }

@@ -21,12 +21,14 @@ import org.junit.jupiter.api.Test;
 import org.okstar.platform.common.string.OkStringUtil;
 import org.okstar.platform.org.connect.ConnectorDefines;
 import org.okstar.platform.org.connect.api.UserInfo;
+import org.okstar.platform.org.connect.connector.ConnectorFactory;
+import org.okstar.platform.org.connect.connector.SysConnector;
 import org.okstar.platform.org.connect.exception.ConnectorException;
-import org.okstar.platform.org.sync.connect.domain.OrgIntegrateConf;
+import org.okstar.platform.org.connect.domain.OrgIntegrateConf;
 import org.okstar.platform.org.connect.api.UserId;
 import org.okstar.platform.org.connect.api.AccessToken;
 import org.okstar.platform.org.connect.api.Department;
-import org.okstar.platform.org.sync.connect.service.ConnectorConfigService;
+import org.okstar.platform.org.connect.service.ConnectorConfigService;
 
 import java.util.List;
 
@@ -56,12 +58,12 @@ class ConnectorFactoryTest {
 
 
     @Test
-    void getConnectorDD() throws ConnectorException {
+    void createConnectorDD() throws ConnectorException {
 
         OrgIntegrateConf conf = connectorConfigService.findOne(ConnectorDefines.Type.DD);
         Assert.assertNotNull(conf);
 
-        getConnector(conf);
+        createConnector(conf);
     }
 
     @Test
@@ -77,10 +79,10 @@ class ConnectorFactoryTest {
 
 
     @Test
-    void getConnectorFs() throws ConnectorException {
+    void createConnectorFs() throws ConnectorException {
         OrgIntegrateConf conf = connectorConfigService.findOne(ConnectorDefines.Type.FS);
         Assert.assertNotNull(conf);
-        getConnector(conf);
+        createConnector(conf);
     }
 
     @Test
@@ -96,14 +98,14 @@ class ConnectorFactoryTest {
     }
 
     @Test
-    void getConnectorWx() throws ConnectorException {
+    void createConnectorWx() throws ConnectorException {
         OrgIntegrateConf conf = connectorConfigService.findOne(ConnectorDefines.Type.WX);
         Assert.assertNotNull(conf);
-        getConnector(conf);
+        createConnector(conf);
     }
 
-    private void getConnector(OrgIntegrateConf conf) throws ConnectorException {
-        SysConnector connector = connectorFactory.getConnector(conf);
+    private void createConnector(OrgIntegrateConf conf) throws ConnectorException {
+        SysConnector connector = connectorFactory.createConnector(conf);
         Assert.assertNotNull(connector);
 
         AccessToken accessToken = connector.fetchAccessToken();

@@ -11,13 +11,13 @@
  * /
  */
 
-package org.okstar.platform.org.sync.connect.service;
+package org.okstar.platform.org.connect.service;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import org.eclipse.microprofile.rest.client.inject.RestClient;
 import org.okstar.platform.org.connect.ConnectorDefines;
-import org.okstar.platform.org.sync.connect.domain.OrgIntegrateConf;
+import org.okstar.platform.org.connect.domain.OrgIntegrateConf;
 import org.okstar.platform.system.rpc.SysPropertyDTO;
 import org.okstar.platform.system.rpc.SysPropertyRpc;
 

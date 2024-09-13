@@ -11,34 +11,20 @@
  * /
  */
 
-package org.okstar.platform.org.sync.connect;
+package org.okstar.platform.org.connect.service;
 
 
 import org.okstar.platform.org.connect.ConnectorDefines;
+import org.okstar.platform.org.connect.domain.OrgIntegrateConf;
 
-public interface SysConAppClientService {
+import java.util.List;
 
-    /**
-     * 测试方法
-     *
-     * @param type
-     * @return
-     */
-    String test(ConnectorDefines.Type type);
+public interface ConnectorConfigService {
 
-    /**
-     * 同步方法
-     *
-     * @param type
-     * @return
-     */
-    Boolean sync(ConnectorDefines.Type type);
+    void save(OrgIntegrateConf orgIntegrateConf);
 
-    /**
-     * 同步人员
-     *
-     * @param type
-     * @return
-     */
-    Boolean syncUser(ConnectorDefines.Type type);
+    List<OrgIntegrateConf> findAll();
+
+    OrgIntegrateConf findOne(ConnectorDefines.Type type);
 }
+

@@ -11,26 +11,32 @@
  * /
  */
 
-package org.okstar.platform.org.sync.connect;
+package org.okstar.platform.org.connect.connector;
 
 
 import org.okstar.platform.org.connect.ConnectorDefines;
+import org.okstar.platform.org.connect.api.AccessToken;
 import org.okstar.platform.org.connect.api.Department;
 import org.okstar.platform.org.connect.api.UserId;
-import org.okstar.platform.org.connect.exception.ConnectorException;
-import org.okstar.platform.org.connect.api.AccessToken;
 import org.okstar.platform.org.connect.api.UserInfo;
-import org.okstar.platform.org.sync.connect.domain.OrgIntegrateConf;
+import org.okstar.platform.org.connect.exception.ConnectorException;
 
 import java.util.List;
 
 public interface SysConnector {
 
+    /**
+     * 获取保证有效的token
+     * @return
+     * @throws ConnectorException
+     */
+    AccessToken ensureAccessToken() throws ConnectorException;
+
     ConnectorDefines.Type getType();
 
-    OrgIntegrateConf getConf();
-
     String getRequestUrl(String url);
+
+    void setAccessToken(AccessToken accessToken);
 
     /**
      * 获取AccessToken
