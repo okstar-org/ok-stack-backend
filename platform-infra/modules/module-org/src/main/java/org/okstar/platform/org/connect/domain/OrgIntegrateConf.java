@@ -28,9 +28,10 @@ public class OrgIntegrateConf {
      */
     private ConnectorDefines.Type type;
 
+    //应用ID
     private String appId;
     
-    
+    //应用名称
     private String name;
 
     /**
@@ -43,18 +44,20 @@ public class OrgIntegrateConf {
      * 应用凭证(secret)
      *
      */
-    
     private String certSecret;
 
     /**
-     * 应用凭证(info)
-     *
+     * 基础URL
      */
-    private String info;
-
     private String baseUrl;
+
     /**
      * 跟部门ID
      */
     private String rootDeptId;
+
+    /**
+     * 同步周期（分钟）
+     */
+    private int period;
 }

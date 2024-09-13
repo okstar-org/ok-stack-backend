@@ -39,7 +39,6 @@ public class ConnectorFactory {
      */
     public synchronized SysConnector getConnect(OrgIntegrateConf conf) {
         OkAssert.isTrue(conf != null && conf.getType() != null, "Invalid configuration!");
-
         if (pool.containsKey(conf.getType())) {
             return pool.get(conf.getType());
         }

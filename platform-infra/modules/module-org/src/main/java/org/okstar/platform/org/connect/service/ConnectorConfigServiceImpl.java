@@ -21,6 +21,7 @@ import org.okstar.platform.org.connect.domain.OrgIntegrateConf;
 import org.okstar.platform.system.rpc.SysPropertyDTO;
 import org.okstar.platform.system.rpc.SysPropertyRpc;
 
+import java.util.Arrays;
 import java.util.List;
 
 @ApplicationScoped
@@ -74,6 +75,14 @@ public class ConnectorConfigServiceImpl implements ConnectorConfigService {
             dto.setV(conf.getRootDeptId());
             sysPropertyRpc.save(dto);
         }
+
+        if (conf.getName() != null) {
+            SysPropertyDTO dto = new SysPropertyDTO();
+            dto.setGrouping(grouping);
+            dto.setK("name");
+            dto.setV(conf.getName());
+            sysPropertyRpc.save(dto);
+        }
     }
 
     private static String toGroup(ConnectorDefines.Type type) {
@@ -82,7 +91,7 @@ public class ConnectorConfigServiceImpl implements ConnectorConfigService {
 
     @Override
     public List<OrgIntegrateConf> findAll() {
-        return List.of();
+        return Arrays.stream(ConnectorDefines.Type.values()).map(this::findOne).toList();
     }
 
     @Override
@@ -93,6 +102,7 @@ public class ConnectorConfigServiceImpl implements ConnectorConfigService {
         String group = toGroup(type);
         for (SysPropertyDTO dto : sysPropertyRpc.getByGroup(group)) {
             switch (dto.getK()) {
+                case "name" -> conf.setName(dto.getV());
                 case "appId" -> conf.setAppId(dto.getV());
                 case "secret" -> conf.setCertSecret(dto.getV());
                 case "key" -> conf.setCertKey(dto.getV());

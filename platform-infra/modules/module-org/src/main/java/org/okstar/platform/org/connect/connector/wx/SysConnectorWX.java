@@ -52,7 +52,7 @@ public class SysConnectorWX extends SysConnectorAbstract {
      * @return
      */
     @Override
-    public AccessToken fetchAccessToken() {
+    public AccessToken fetchAccessToken() throws ConnectorException {
         OkAssert.notNull(conf, "conf is null!");
 
         log.info("getAccessToken...");
@@ -77,7 +77,9 @@ public class SysConnectorWX extends SysConnectorAbstract {
          * }
          */
         ObjectNode node = OkJsonUtils.asObject(res, ObjectNode.class);
-        OkAssert.isTrue(0 == node.get("errcode").asInt(), "返回异常！");
+        if (0 != node.get("errcode").asInt()) {
+            throw new ConnectorException(getType(), url, "获取Token异常！");
+        }
 
         var accessToken = AccessToken.builder()
                 .accessToken(node.get("access_token").asText())
