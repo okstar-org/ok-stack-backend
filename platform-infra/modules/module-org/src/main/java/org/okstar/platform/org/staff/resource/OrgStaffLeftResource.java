@@ -16,7 +16,6 @@ package org.okstar.platform.org.staff.resource;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
-import org.okstar.platform.common.core.web.bean.Req;
 import org.okstar.platform.common.core.web.bean.Res;
 import org.okstar.platform.common.core.web.page.OkPageResult;
 import org.okstar.platform.common.core.web.page.OkPageable;
@@ -36,6 +35,6 @@ public class OrgStaffLeftResource {
     @Path("page")
     public Res<OkPageResult<OrgStaff>> page(OkPageable page) {
         var list = orgStaffService.findLefts(page);
-        return Res.ok(Req.empty(), list);
+        return Res.ok(list);
     }
 }

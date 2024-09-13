@@ -16,7 +16,6 @@ package org.okstar.platform.org.staff.resource;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
-import org.okstar.platform.common.core.web.bean.Req;
 import org.okstar.platform.common.core.web.bean.Res;
 import org.okstar.platform.common.core.web.page.OkPageResult;
 import org.okstar.platform.org.dto.OrgStaff0;
@@ -40,7 +39,7 @@ public class OrgStaffEmployedResource {
     @Path("leave")
     public Res<Boolean> leave(Long staffId) {
         boolean yes = staffPostService.leave(staffId);
-        return Res.ok(Req.empty(), yes);
+        return Res.ok(yes);
     }
 
     @POST

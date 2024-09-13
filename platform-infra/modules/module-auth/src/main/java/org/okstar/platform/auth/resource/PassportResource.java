@@ -19,7 +19,6 @@ import jakarta.ws.rs.HeaderParam;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
 import org.okstar.platform.auth.service.PassportService;
-import org.okstar.platform.common.core.web.bean.Req;
 import org.okstar.platform.common.core.web.bean.Res;
 import org.okstar.platform.system.sign.*;
 
@@ -38,7 +37,7 @@ public class PassportResource extends BaseResource {
     public Res<SignUpResult> signUp(SignUpForm signUpForm) {
         Log.infof("signUp:%s", signUpForm);
         var resultDto = passportService.signUp(signUpForm);
-        return Res.ok(signUpForm, resultDto);
+        return Res.ok(resultDto);
     }
 
     @POST
@@ -46,7 +45,7 @@ public class PassportResource extends BaseResource {
     public Res<AuthorizationResult> signIn(SignInForm signInForm) {
         Log.infof("signIn:%s", signInForm);
         var resultDto = passportService.signIn(signInForm);
-        return Res.ok(signInForm, resultDto);
+        return Res.ok(resultDto);
     }
 
     @POST
@@ -54,14 +53,14 @@ public class PassportResource extends BaseResource {
     public Res<Boolean> signOut(@HeaderParam("Authorization")String accessToken) {
         Log.infof("signOut:%s", accessToken);
         passportService.signOut(accessToken);
-        return Res.ok(Req.empty(), true);
+        return Res.ok(true);
     }
 
     @POST
     @Path("refresh")
     public Res<AuthorizationResult> refresh(RefreshForm refreshForm) {
         AuthorizationResult result = passportService.refresh(refreshForm.getRefreshToken());
-        return Res.ok(refreshForm, result);
+        return Res.ok(result);
     }
 
     /**

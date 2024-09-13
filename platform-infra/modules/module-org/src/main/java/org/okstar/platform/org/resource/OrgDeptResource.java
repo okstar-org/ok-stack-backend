@@ -83,14 +83,14 @@ public class OrgDeptResource extends BaseResource {
         Org current = orgService.loadCurrent();
         OkAssert.isTrue(current != null, "未初始化组织！");
         List<OrgDept> list = deptService.loadRootByOrgId(current.id);
-        return Res.ok(Req.empty(), list);
+        return Res.ok(list);
     }
 
     @GET
     @Path("children/{parentId}")
     public Res<List<OrgDept>> children(@PathParam("parentId") Long parentId) {
         List<OrgDept> list = deptService.children(parentId);
-        return Res.ok(Req.empty(), list);
+        return Res.ok(list);
     }
 
     @GET

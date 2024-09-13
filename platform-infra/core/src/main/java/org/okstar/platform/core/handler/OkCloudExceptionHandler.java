@@ -17,7 +17,6 @@ import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.ext.ExceptionMapper;
 import jakarta.ws.rs.ext.Provider;
 import org.okstar.platform.common.core.exception.OkCloudException;
-import org.okstar.platform.common.core.web.bean.Req;
 import org.okstar.platform.common.core.web.bean.Res;
 
 /**
@@ -28,7 +27,7 @@ public class OkCloudExceptionHandler implements ExceptionMapper<OkCloudException
 
     @Override
     public Response toResponse(OkCloudException exception) {
-        Res<Object> error = Res.error(Req.empty(), "无法连接到OkCloud，原因：%s！".formatted(exception.getMessage()));
+        Res<Object> error = Res.error("无法连接到OkCloud，原因：%s！".formatted(exception.getMessage()));
         return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(error).build();
     }
 }

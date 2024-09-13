@@ -15,10 +15,7 @@ package org.okstar.platform.org.connect.web;
 
 import io.quarkus.logging.Log;
 import jakarta.inject.Inject;
-import jakarta.ws.rs.GET;
-import jakarta.ws.rs.POST;
-import jakarta.ws.rs.Path;
-import jakarta.ws.rs.PathParam;
+import jakarta.ws.rs.*;
 import org.okstar.platform.common.core.web.bean.Res;
 import org.okstar.platform.org.connect.ConnectorDefines;
 import org.okstar.platform.org.connect.api.AccessToken;
@@ -57,5 +54,12 @@ public class OrgIntegrationResource extends BaseResource {
         } catch (ConnectorException e) {
             return Res.ok(false);
         }
+    }
+
+    @PUT
+    @Path("conf/update")
+    public Res<Boolean> update(OrgIntegrateConf conf) {
+        connectorConfigService.save(conf);
+        return Res.ok(true);
     }
 }

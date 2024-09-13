@@ -16,6 +16,9 @@ package org.okstar.platform.system.settings.service;
 
 import org.okstar.platform.core.service.OkService;
 import org.okstar.platform.system.settings.domain.SysConfIntegration;
+import org.okstar.platform.system.settings.domain.SysConfIntegrationIm;
+import org.okstar.platform.system.settings.domain.SysConfIntegrationKeycloak;
+import org.okstar.platform.system.settings.domain.SysConfIntegrationStack;
 
 /**
  *集成配置
@@ -27,4 +30,10 @@ public interface SysConfIntegrationService extends OkService
     void save(SysConfIntegration integration);
 
     void uploadConf(SysConfIntegration integration);
+
+    void saveStack(SysConfIntegrationStack conf);
+
+    void saveKeycloak(SysConfIntegrationKeycloak conf);
+
+    void saveIm(SysConfIntegrationIm conf);
 }

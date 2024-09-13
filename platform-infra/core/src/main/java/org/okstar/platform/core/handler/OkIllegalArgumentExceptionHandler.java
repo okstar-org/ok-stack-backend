@@ -16,14 +16,13 @@ package org.okstar.platform.core.handler;
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.ext.ExceptionMapper;
 import jakarta.ws.rs.ext.Provider;
-import org.okstar.platform.common.core.web.bean.Req;
 import org.okstar.platform.common.core.web.bean.Res;
 
 @Provider
 public class OkIllegalArgumentExceptionHandler  implements ExceptionMapper<IllegalArgumentException> {
     @Override
     public Response toResponse(IllegalArgumentException e) {
-        Res<Object> error = Res.error(Req.empty(), e.getMessage());
+        Res<Object> error = Res.error(e.getMessage());
         return Response.status(Response.Status.BAD_REQUEST).entity(error).build();
     }
 }

@@ -71,6 +71,107 @@ public class SysConfIntegrationServiceImpl implements SysConfIntegrationService 
 
         //im
         SysConfIntegrationIm im = integration.getIm();
+        saveIm(im);
+
+        //stack
+        SysConfIntegrationStack stack = integration.getStack();
+        saveStack(stack);
+
+        //keycloak
+        SysConfIntegrationKeycloak keycloak = integration.getKeycloak();
+        saveKeycloak(keycloak);
+
+        uploadConf(integration);
+    }
+
+    /**
+     * 上传配置
+     */
+    @Override
+    public void uploadConf(SysConfIntegration integration) {
+        Log.infof("Upload integration [%s]", integration);
+
+        /**
+         * 保存到Cloud
+         */
+        RpcResult<Org0> current = orgRpc.current();
+        Org0 org0 = RpcAssert.isTrue(current);
+
+        if (org0 == null || OkStringUtil.isEmpty(org0.getCert())) {
+            return;
+        }
+
+        SysConfIntegrationIm im = integration.getIm();
+        var x = new FederalStateConfEntity();
+        x.setImHost(im.getHost());
+        x.setImPort(im.getPort());
+
+        SysConfIntegrationStack stack = integration.getStack();
+        x.setStackUrl(stack.getFqdn());
+
+        try {
+            Log.infof("Put config to cloud...");
+            OkCloudApiClient client = OkCloudFactory.makeClient(OkCloudDefines.OK_CLOUD_API_STACK,
+                    OkCloudDefines.OK_CLOUD_USERNAME,
+                    OkCloudDefines.OK_CLOUD_PASSWORD);
+
+            FederalChannel channel = client.getFederalChannel();
+            String putConfig = channel.putConfig(org0.getCert(), x);
+            Log.infof("Put config=>%s", putConfig);
+
+        } catch (IOException e) {
+            throw new OkRuntimeException("连接到社区网络异常，请稍后再试！");
+        }
+    }
+
+    @Override
+    public void saveStack(SysConfIntegrationStack stack) {
+        Log.infof("Save stack [%s]", stack);
+
+        List<SysProperty> stackProperties = propertyService.findByGroup(stack.getGroup());
+        if (stackProperties.isEmpty()) {
+            SysProperty p = new SysProperty();
+            p.setK("fqdn");
+            p.setV(stack.getFqdn());
+            p.setGrouping(stack.getGroup());
+            propertyService.create(p, 1L);
+        } else {
+            stackProperties.forEach(sp -> {
+                if ("fqdn".equals(sp.getK())) {
+                    sp.setV(stack.getFqdn());
+                }
+            });
+        }
+    }
+
+    @Override
+    public void saveKeycloak(SysConfIntegrationKeycloak keycloak) {
+        Log.infof("Save keycloak [%s]", keycloak);
+
+        List<SysProperty> kcList = propertyService.findByGroup(keycloak.getGroup());
+        if (kcList.isEmpty()) {
+            SysProperty p = new SysProperty();
+            p.setGrouping(keycloak.getGroup());
+            p.setK("server-url");
+            p.setV(keycloak.getServerUrl());
+            propertyService.create(p, 1L);
+        } else {
+            kcList.forEach(p -> {
+                switch (p.getK()) {
+                    case "server-url" -> p.setV(keycloak.getServerUrl());
+                    case "realm" -> p.setV(keycloak.getRealm());
+                    case "client-id" -> p.setV(keycloak.getClientId());
+                    case "client-secret" -> p.setV(keycloak.getClientSecret());
+                    case "username" -> p.setV(keycloak.getUsername());
+                    case "password" -> p.setV(keycloak.getPassword());
+                }
+            });
+        }
+    }
+
+    @Override
+    public void saveIm(SysConfIntegrationIm im) {
+        Log.infof("Save im [%s]", im);
         List<SysProperty> imProperties = propertyService.findByGroup(im.getGroup());
         if (imProperties.isEmpty()) {
             SysProperty p = new SysProperty();
@@ -103,76 +204,5 @@ public class SysConfIntegrationServiceImpl implements SysConfIntegrationService 
             });
         }
 
-        //stack
-        SysConfIntegrationStack stack = integration.getStack();
-        List<SysProperty> stackProperties = propertyService.findByGroup(stack.getGroup());
-        if (stackProperties.isEmpty()) {
-            SysProperty p = new SysProperty();
-            p.setK("fqdn");
-            p.setV(stack.getFqdn());
-            p.setGrouping(stack.getGroup());
-            propertyService.create(p, 1L);
-        } else {
-            stackProperties.forEach(sp -> {
-                if ("fqdn".equals(sp.getK())) {
-                    sp.setV(stack.getFqdn());
-                }
-            });
-        }
-
-        //keycloak
-        SysConfIntegrationKeycloak keycloak = integration.getKeycloak();
-        List<SysProperty> kcList = propertyService.findByGroup(keycloak.getGroup());
-        if (kcList.isEmpty()) {
-            SysProperty p = new SysProperty();
-            p.setGrouping(keycloak.getGroup());
-            p.setK("server-url");
-            p.setV(keycloak.getServerUrl());
-            propertyService.create(p, 1L);
-        } else {
-            kcList.forEach(p -> {
-                if ("server-url".equals(p.getK())) {
-                    p.setV(keycloak.getServerUrl());
-                }
-            });
-        }
-        uploadConf(integration);
-    }
-
-    /**
-     * 上传配置
-     */
-    @Override
-    public void uploadConf(SysConfIntegration integration) {
-        /**
-         * 保存到Cloud
-         */
-        RpcResult<Org0> current = orgRpc.current();
-        Org0 org0 = RpcAssert.isTrue(current);
-
-        if (org0 == null || OkStringUtil.isEmpty(org0.getCert())) {
-            return;
-        }
-
-        SysConfIntegrationIm im = integration.getIm();
-        var x = new FederalStateConfEntity();
-        x.setImHost(im.getHost());
-        x.setImPort(im.getPort());
-
-        SysConfIntegrationStack stack = integration.getStack();
-        x.setStackUrl(stack.getFqdn());
-
-        try {
-            OkCloudApiClient client = OkCloudFactory.makeClient(OkCloudDefines.OK_CLOUD_API_STACK,
-                    OkCloudDefines.OK_CLOUD_USERNAME,
-                    OkCloudDefines.OK_CLOUD_PASSWORD);
-
-            FederalChannel channel = client.getFederalChannel();
-            String putConfig = channel.putConfig(org0.getCert(), x);
-            Log.infof("Put config=>%s", putConfig);
-
-        } catch (IOException e) {
-            throw new OkRuntimeException("连接到社区网络异常，请稍后再试！");
-        }
     }
 }

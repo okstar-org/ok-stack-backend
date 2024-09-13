@@ -24,7 +24,6 @@ import org.okstar.platform.chat.beans.ChatGeneral;
 import org.okstar.platform.chat.beans.ChatRosterItem;
 import org.okstar.platform.chat.beans.ChatUser;
 import org.okstar.platform.chat.openfire.XmppClient;
-import org.okstar.platform.common.core.web.bean.Req;
 import org.okstar.platform.common.core.web.bean.Res;
 
 import java.util.List;
@@ -47,7 +46,7 @@ public class ChatUserResource {
     @Path("findByUsername/{username}")
     public Res<ChatUser> findByUsername(@PathParam("username") String username) {
         var user = xmppClient.findUserByUsername(username);
-        return Res.ok(Req.empty(), ChatUtils.convertUser(user));
+        return Res.ok(ChatUtils.convertUser(user));
     }
 
 
@@ -60,7 +59,7 @@ public class ChatUserResource {
     @Path("findGeneralByUsername/{username}")
     public Res<ChatGeneral> findGeneralByUsername(@PathParam("username") String username) {
         var user = xmppClient.findChatGeneralByUsername(username);
-        return Res.ok(Req.empty(), (user));
+        return Res.ok(user);
     }
 
     @GET
@@ -69,7 +68,7 @@ public class ChatUserResource {
         var roster = xmppClient.findRosterByUsername(username);
         List<RosterItemEntity> entities = roster.getRosterItem();
         if (entities == null) {
-            return Res.ok(Req.empty());
+            return Res.ok();
         }
 
         List<ChatRosterItem> items = entities.stream().map(e -> ChatRosterItem.builder()
@@ -79,6 +78,6 @@ public class ChatUserResource {
                 .subscriptionType(e.getSubscriptionType())
                 .build()).collect(Collectors.toList());
 
-        return Res.ok(Req.empty(), items);
+        return Res.ok(items);
     }
 }

@@ -17,7 +17,6 @@ import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.ext.ExceptionMapper;
 import jakarta.ws.rs.ext.Provider;
 import org.okstar.platform.common.core.exception.OkHttpException;
-import org.okstar.platform.common.core.web.bean.Req;
 import org.okstar.platform.common.core.web.bean.Res;
 
 /**
@@ -28,7 +27,7 @@ public class OkHttpExceptionHandler implements ExceptionMapper<OkHttpException> 
 
     @Override
     public Response toResponse(OkHttpException exception) {
-        Res<Object> error = Res.error(Req.empty(), "无法连接到:" + exception.getUri() + "，异常:" + exception.getMessage());
+        Res<Object> error = Res.error("无法连接到:" + exception.getUri() + "，异常:" + exception.getMessage());
         return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(error).build();
     }
 }

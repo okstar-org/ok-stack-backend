@@ -16,7 +16,6 @@ package org.okstar.platform.org.staff.resource;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
-import org.okstar.platform.common.core.web.bean.Req;
 import org.okstar.platform.common.core.web.bean.Res;
 import org.okstar.platform.common.core.web.page.OkPageResult;
 import org.okstar.platform.common.core.web.page.OkPageable;
@@ -41,7 +40,7 @@ public class OrgStaffPendingResource {
     @Path("page")
     public Res<OkPageResult<OrgStaff>> page(OkPageable pageable) {
         var list = orgStaffService.findPendings(pageable);
-        return Res.ok(Req.empty(), list);
+        return Res.ok(list);
     }
 
 
@@ -52,6 +51,6 @@ public class OrgStaffPendingResource {
     @Path("join")
     public Res<Boolean> join(OrgStaffJoinReq req) {
         var yes = staffPostService.join(req.getStaffId(), req.getPostIds());
-        return Res.ok(req, yes);
+        return Res.ok(yes);
     }
 }

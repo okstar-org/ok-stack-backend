@@ -19,7 +19,6 @@ import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.QueryParam;
-import org.okstar.platform.common.core.web.bean.Req;
 import org.okstar.platform.common.core.web.bean.Res;
 import org.okstar.platform.common.phone.OkPhoneUtils;
 import org.okstar.platform.core.account.AccountDefines;
@@ -45,7 +44,7 @@ public class SysAccountResource extends OkCommonResource {
     @Path("findAll")
     public Res<List<SysAccount>> findAll() {
         List<SysAccount> all = sysAccountService.findAll();
-        return Res.ok(Req.empty(), all);
+        return Res.ok(all);
     }
 
     @GET

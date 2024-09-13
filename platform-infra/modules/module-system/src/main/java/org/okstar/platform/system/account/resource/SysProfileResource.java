@@ -18,7 +18,6 @@ import jakarta.inject.Inject;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.PUT;
 import jakarta.ws.rs.Path;
-import org.okstar.platform.common.core.web.bean.Req;
 import org.okstar.platform.common.core.web.bean.Res;
 import org.okstar.platform.system.account.domain.SysAccount;
 import org.okstar.platform.system.account.domain.SysProfile;
@@ -36,7 +35,7 @@ public class SysProfileResource extends BaseResource {
     public Res<SysProfile> get() {
         String username = getUsername();
         var profile = profileService.loadByUsername(username);
-        return Res.ok(Req.empty(), profile);
+        return Res.ok(profile);
     }
 
     @PUT

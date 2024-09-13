@@ -141,7 +141,7 @@ class AuthzClientManagerImpl implements AuthzClientManager {
                     String error = node.get("error").asText();
                     Log.warnf("error:%s description: %s", error, description);
                     //400 / Bad Request / Body : {"error":"invalid_grant","error_description":"Account is not fully set up"}
-                    Res<Object> error0 = Res.error(Req.empty(), description.asText());
+                    Res<Object> error0 = Res.error(description.asText());
                     Response response = Response
                             .status(Response.Status.fromStatusCode(statusCode))
                             .entity(error0)

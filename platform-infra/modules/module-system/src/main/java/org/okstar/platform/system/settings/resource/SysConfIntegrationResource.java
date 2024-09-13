@@ -20,24 +20,48 @@ import jakarta.ws.rs.Path;
 import org.okstar.platform.common.core.web.bean.Res;
 import org.okstar.platform.system.resource.BaseResource;
 import org.okstar.platform.system.settings.domain.SysConfIntegration;
+import org.okstar.platform.system.settings.domain.SysConfIntegrationIm;
+import org.okstar.platform.system.settings.domain.SysConfIntegrationKeycloak;
+import org.okstar.platform.system.settings.domain.SysConfIntegrationStack;
 import org.okstar.platform.system.settings.service.SysConfIntegrationService;
 
 @Path("conf/integration")
 public class SysConfIntegrationResource extends BaseResource {
 
     @Inject
-    SysConfIntegrationService service;
+    SysConfIntegrationService integrationService;
 
 
     @GET
     @Path("")
     public Res<SysConfIntegration> get() {
-        return Res.ok(service.find());
+        return Res.ok(integrationService.find());
     }
 
     @PUT
     @Path("")
     public void put(SysConfIntegration integration) {
-        service.save(integration);
+        integrationService.save(integration);
+    }
+
+    @PUT
+    @Path("stack")
+    public Res<Boolean> putStack(SysConfIntegrationStack conf) {
+        integrationService.saveStack(conf);
+        return Res.ok(true);
+    }
+
+    @PUT
+    @Path("keycloak")
+    public Res<Boolean> putKeycloak(SysConfIntegrationKeycloak conf) {
+        integrationService.saveKeycloak(conf);
+        return Res.ok(true);
+    }
+
+    @PUT
+    @Path("im")
+    public Res<Boolean> putIm(SysConfIntegrationIm conf) {
+        integrationService.saveIm(conf);
+        return Res.ok(true);
     }
 }
