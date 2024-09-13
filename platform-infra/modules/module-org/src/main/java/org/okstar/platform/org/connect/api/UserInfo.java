@@ -26,18 +26,15 @@ public class UserInfo {
     private String name;
     private String nickname;
     private String unionId;
-    private Boolean isBoos;
     private Boolean isActive;
+    private Boolean isBoos;
     private Boolean isLeader;
     private Boolean isAdmin;
     private String mobilePhone;
     private String linePhone;
-    private String remark;
     private String avatar;
     private String email;
     private String orgMail;
     private String title;
-    private String jobNumber;
-    private String countryCode;
     private UserDefines.Gender gender;
 }

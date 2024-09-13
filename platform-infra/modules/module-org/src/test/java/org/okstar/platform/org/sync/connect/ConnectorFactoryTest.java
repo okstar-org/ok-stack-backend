@@ -78,10 +78,27 @@ class ConnectorFactoryTest {
 
     @Test
     void getConnectorFs() throws ConnectorException {
-
         OrgIntegrateConf conf = connectorConfigService.findOne(ConnectorDefines.Type.FS);
         Assert.assertNotNull(conf);
+        getConnector(conf);
+    }
 
+    @Test
+    void saveConfigWx(){
+        OrgIntegrateConf conf = new OrgIntegrateConf();
+        conf.setType(ConnectorDefines.Type.WX);
+        conf.setAppId("1000002");
+        conf.setCertKey("wwd2bcf3d12b08bb5d");
+        conf.setCertSecret("zES8GX6xFb-aoK5kAYqGL9gCcAYl9jfLu9xaMp7VbQU");
+        conf.setBaseUrl("https://qyapi.weixin.qq.com/cgi-bin");
+        conf.setRootDeptId("1");
+        connectorConfigService.save(conf);
+    }
+
+    @Test
+    void getConnectorWx() throws ConnectorException {
+        OrgIntegrateConf conf = connectorConfigService.findOne(ConnectorDefines.Type.WX);
+        Assert.assertNotNull(conf);
         getConnector(conf);
     }
 

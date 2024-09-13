@@ -14,26 +14,24 @@
 package org.okstar.platform.org.sync.connect.connector.wx;
 
 
-import jakarta.ws.rs.NotSupportedException;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.google.common.collect.Lists;
 import lombok.extern.slf4j.Slf4j;
 import org.okstar.platform.common.asserts.OkAssert;
+import org.okstar.platform.common.json.OkJsonUtils;
 import org.okstar.platform.common.web.rest.transport.RestClient;
-import org.okstar.platform.org.connect.ConnectorDefines;
-import org.okstar.platform.org.sync.connect.connector.SysConnectorAbstract;
-import org.okstar.platform.org.sync.connect.connector.common.OkAssertConnector;
-import org.okstar.platform.org.sync.connect.connector.wx.proto.access.req.WXAccessTokenReq;
-import org.okstar.platform.org.sync.connect.connector.wx.proto.access.res.WXAccessTokenRes;
-import org.okstar.platform.org.sync.connect.connector.wx.proto.department.res.WXDepartmentRes;
-import org.okstar.platform.org.sync.connect.connector.wx.proto.department.res.WXUserListRes;
-import org.okstar.platform.org.sync.connect.domain.OrgIntegrateConf;
-import org.okstar.platform.org.connect.api.UserId;
 import org.okstar.platform.org.connect.api.AccessToken;
 import org.okstar.platform.org.connect.api.Department;
+import org.okstar.platform.org.connect.api.UserId;
 import org.okstar.platform.org.connect.api.UserInfo;
+import org.okstar.platform.org.sync.connect.connector.SysConnectorAbstract;
+import org.okstar.platform.org.sync.connect.domain.OrgIntegrateConf;
 
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 @Slf4j
 public class SysConnectorWX extends SysConnectorAbstract {
@@ -43,11 +41,6 @@ public class SysConnectorWX extends SysConnectorAbstract {
         this.conf = conf;
     }
 
-    @Override
-    public ConnectorDefines.Type getType() {
-        return ConnectorDefines.Type.WX;
-    }
-
     /**
      * 参考链接：
      * https://work.weixin.qq.com/api/doc/10013#%E7%AC%AC%E4%B8%89%E6%AD%A5%EF%BC%9A%E8%8E%B7%E5%8F%96access_token
@@ -55,45 +48,43 @@ public class SysConnectorWX extends SysConnectorAbstract {
      * 请求方式：GET（HTTPS）
      * 请求URL：https://qyapi.weixin.qq.com/cgi-bin/gettoken?corpid=ID&corpsecret=SECRET
      *
-     * @param app
      * @return
      */
     @Override
-    public AccessToken fetchAccessToken( ) {
+    public AccessToken fetchAccessToken() {
+        OkAssert.notNull(conf, "conf is null!");
 
         log.info("getAccessToken...");
 
+        String url = "/gettoken";
 
-        OkAssert.notNull(conf, "appCert is null!");
-
-
-        if (accessToken != null && accessToken.isValid()) {
-            return accessToken;
-        }
-
-        WXAccessTokenReq req = WXAccessTokenReq.builder().build().fromAppCert(conf);
-
-        log.info("getAccessToken:{}...", req);
+        Map<String, String> params = new LinkedHashMap<>();
+        params.put("corpid", conf.getCertKey());
+        params.put("corpsecret", conf.getCertSecret());
+        log.info("getAccessToken:{}...", params);
 
         RestClient client = getClient();
 
-
-        Map<String, String> params = new LinkedHashMap<>();
-        params.put("corpid", req.getCorpId());
-        params.put("corpsecret", req.getCorpSecret());
-
-        WXAccessTokenRes res = client.get("/gettoken ",
-                WXAccessTokenRes.class, params);
-
+        String res = client.get(url, String.class, params);
         log.info("res=>{}", res);
+        /**
+         * {
+         *    "errcode": 0,
+         *    "errmsg": "ok",
+         *    "access_token": "accesstoken000001",
+         *    "expires_in": 7200
+         * }
+         */
+        ObjectNode node = OkJsonUtils.asObject(res, ObjectNode.class);
+        OkAssert.isTrue(0 == node.get("errcode").asInt(), "返回异常！");
 
-        OkAssertConnector.success(getType(), res, "获取认证信息！");
-        AccessToken r = res.to(conf);
+        accessToken = AccessToken.builder()
+                .accessToken(node.get("access_token").asText())
+                .expiresIn(node.get("expires_in").asLong())
+                .build();
 
-        log.info("getAccessToken=>{}", r);
-
-
-        return r;
+        log.info("getAccessToken=>{}", accessToken);
+        return accessToken;
     }
 
     /**
@@ -119,9 +110,7 @@ public class SysConnectorWX extends SysConnectorAbstract {
      */
     @Override
     public List<Department> getDepartmentList(String parentId) {
-        log.info("getDepartmentList...");
-        log.info("parentId:{}", parentId);
-
+        log.info("getDepartmentList parentId:{}", parentId);
 
         OkAssert.notNull(accessToken, "accessToken");
 
@@ -131,15 +120,29 @@ public class SysConnectorWX extends SysConnectorAbstract {
         RestClient client = getClient();
 
         Map<String, String> params = new LinkedHashMap<>();
-        params.put("corpid", parentId);
-        params.put("corpsecret", accessToken.getAccessToken());
+        params.put("id", parentId);
+        params.put("access_token", accessToken.getAccessToken());
 
-        WXDepartmentRes res = client.get(url, WXDepartmentRes.class, params);
+        var res = client.get(url, String.class, params);
         log.info("res=>{}", res);
 
-        OkAssertConnector.success(getType(), res, "获取部门信息");
+        ObjectNode node = OkJsonUtils.asObject(res, ObjectNode.class);
+        OkAssert.isTrue(0 == node.get("errcode").asInt(), "返回异常！");
 
-        return res.to(conf);
+        List<Department> list = Lists.newArrayList();
+
+        JsonNode departments = node.get("department");
+        if (departments != null) {
+            departments.elements().forEachRemaining(e -> {
+                Department dept = Department.builder()
+                        .id(e.get("id").asText())
+                        .name(e.get("name").asText())
+                        .parentId(e.get("parentid").asText())
+                        .build();
+                list.add(dept);
+            });
+        }
+        return list.stream().filter(e -> Objects.equals(e.getParentId(), parentId)).toList();
     }
 
     @Override
@@ -149,23 +152,56 @@ public class SysConnectorWX extends SysConnectorAbstract {
 
         OkAssert.notNull(accessToken, "accessToken");
 
-        String url = "/user/list ";
-
+        String url = "/user/simplelist";
         log.info("req=>{}", url);
+
         Map<String, String> ps = new LinkedHashMap<>();
         ps.put("access_token", accessToken.getAccessToken());
         ps.put("department_id", dept.getId());
         ps.put("fetch_child", String.valueOf(0));
-        WXUserListRes res = getClient().get("/user/list", WXUserListRes.class, ps);
+
+        String res = getClient().get(url, String.class, ps);
         log.info("res=>{}", res);
 
-        OkAssertConnector.success(getType(), res, "获取用户列表信息");
+        ObjectNode node = OkJsonUtils.asObject(res, ObjectNode.class);
+        OkAssert.isTrue(0 == node.get("errcode").asInt(), "返回异常！");
 
-        return res.to(conf);
+        List<UserId> list = Lists.newArrayList();
+        JsonNode userlist = node.get("userlist");
+        if (userlist != null) {
+            userlist.elements().forEachRemaining(e -> {
+                list.add(UserId.builder().userId(e.get("userid").asText()).build());
+            });
+        }
+        return list;
     }
 
     @Override
     public UserInfo getUserInfo(String userId) {
-        throw new NotSupportedException();
+
+        Map<String, String> ps = new LinkedHashMap<>();
+        ps.put("access_token", accessToken.getAccessToken());
+        ps.put("userid", userId);
+
+        String url = "/user/get";
+
+        String res = getClient().get(url, String.class, ps);
+        log.info("res=>{}", res);
+
+        ObjectNode node = OkJsonUtils.asObject(res, ObjectNode.class);
+        OkAssert.isTrue(0 == node.get("errcode").asInt(), "返回异常！");
+
+        return UserInfo.builder()
+                .id(node.get("userid").asText())
+                .name(node.get("name").asText())
+                .avatar(node.get("avatar").asText())
+                .nickname(node.get("alias").asText())
+                .isActive(node.get("status").asInt() == 1)
+                .email(node.get("email").asText())
+                .orgMail(node.get("biz_mail").asText())
+                .mobilePhone(node.get("mobile").asText())
+                .linePhone(node.get("telephone").asText())
+                .title(node.get("position").asText())
+                .build();
     }
 }

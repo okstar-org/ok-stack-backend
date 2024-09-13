@@ -15,6 +15,7 @@ package org.okstar.platform.org.sync.connect.connector.feishu;
 
 
 import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import lombok.extern.slf4j.Slf4j;
 import org.okstar.platform.common.asserts.OkAssert;
@@ -30,7 +31,6 @@ import org.okstar.platform.org.connect.api.UserId;
 import org.okstar.platform.org.connect.api.UserInfo;
 import org.okstar.platform.org.connect.exception.ConnectorException;
 import org.okstar.platform.org.sync.connect.connector.SysConnectorAbstract;
-import org.okstar.platform.org.sync.connect.connector.feishu.proto.access.req.FSAccessTokenReq;
 import org.okstar.platform.org.sync.connect.domain.OrgIntegrateConf;
 
 import java.util.*;
@@ -70,12 +70,12 @@ public class SysConnectorFS extends SysConnectorAbstract {
     public AccessToken fetchAccessToken() throws ConnectorException {
         String url = "auth/v3/app_access_token/internal";
         try {
-            FSAccessTokenReq req = new FSAccessTokenReq();
-            req.setAppId(conf.getAppId());
-            req.setAppSecret(conf.getCertSecret());
+            ObjectNode req = new ObjectMapper().createObjectNode();
+            req.put("app_id", conf.getAppId());
+            req.put("app_secret", conf.getCertSecret());
 
-            log.info("getAccessToken: {} {}", req.getAppId(),
-                    OkStringUtil.abbreviate(req.getAppSecret(), 20));
+            log.info("getAccessToken: {} {}", conf.getAppId(),
+                    OkStringUtil.abbreviate(conf.getCertSecret(), 20));
 
             RestClient client = getClient();
 
@@ -83,10 +83,10 @@ public class SysConnectorFS extends SysConnectorAbstract {
             String res = client.post(
                     url,
                     String.class,
-                    req.asJson(),
+                    req.toString(),
                     null);
 
-            log.info("getAccessToken: {} => {}", req.getAppId(), res);
+            log.info("getAccessToken: {} => {}", conf.getAppId(), res);
             ObjectNode node = OkJsonUtils.asObject(res, ObjectNode.class);
             OkAssert.isTrue(node.get("code").asInt() == 0, "返回异常！");
 

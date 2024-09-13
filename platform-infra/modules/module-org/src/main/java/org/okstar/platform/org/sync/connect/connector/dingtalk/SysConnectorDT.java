@@ -127,7 +127,6 @@ public class SysConnectorDT extends SysConnectorAbstract {
     public List<UserId> getUserIdList(Department dept) throws ConnectorException {
 
         String url = "/topapi/user/listid";
-        List<UserId> list = Lists.newArrayList();
 
         log.info("getUserIdList dept:{}", dept.getName());
 
@@ -148,6 +147,7 @@ public class SysConnectorDT extends SysConnectorAbstract {
         String errcode = node.get("errcode").asText();
         OkAssert.isTrue("0".equals(errcode), String.format("【%s】连接异常，errcode:%s errmsg:%s", getType().getText(), node.get("errcode").asText(), node.get("errmsg").asText()));
 
+        List<UserId> list = Lists.newArrayList();
         node.get("result").get("userid_list").elements().forEachRemaining(e -> {
             list.add(UserId.builder().userId(e.asText()).build());
         });
@@ -173,6 +173,7 @@ public class SysConnectorDT extends SysConnectorAbstract {
             return UserInfo.builder()
                     .id(e.getUserid())
                     .name(e.getName())
+                    .avatar(e.getAvatar())
                     .nickname(e.getNickname())
                     .unionId(e.getUnionid())
                     .isBoos(e.getBoss())
@@ -182,10 +183,6 @@ public class SysConnectorDT extends SysConnectorAbstract {
                     .orgMail(e.getOrgEmail())
                     .mobilePhone(e.getMobile())
                     .title(e.getPosition())
-                    .remark(e.getRemark())
-                    .jobNumber(e.getJobNumber())
-                    .countryCode(e.getStateCode())
-                    .avatar(e.getAvatar())
                     .build();
         } catch (ApiException e) {
             throw new ConnectorException(getType(), url, e.getCause());
