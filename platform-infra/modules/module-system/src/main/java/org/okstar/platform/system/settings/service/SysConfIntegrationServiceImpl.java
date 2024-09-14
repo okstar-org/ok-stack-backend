@@ -18,12 +18,14 @@ import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 import org.eclipse.microprofile.rest.client.inject.RestClient;
+import org.keycloak.admin.client.Keycloak;
 import org.okstar.cloud.OkCloudApiClient;
 import org.okstar.cloud.OkCloudFactory;
 import org.okstar.cloud.channel.FederalChannel;
 import org.okstar.cloud.entity.FederalStateConfEntity;
 import org.okstar.platform.common.core.exception.OkRuntimeException;
 import org.okstar.platform.common.string.OkStringUtil;
+import org.okstar.platform.common.web.OkWebUtil;
 import org.okstar.platform.core.OkCloudDefines;
 import org.okstar.platform.core.rpc.RpcAssert;
 import org.okstar.platform.core.rpc.RpcResult;
@@ -32,6 +34,9 @@ import org.okstar.platform.org.rpc.OrgRpc;
 import org.okstar.platform.system.settings.domain.*;
 
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.util.List;
 
 @Transactional
@@ -43,6 +48,9 @@ public class SysConfIntegrationServiceImpl implements SysConfIntegrationService 
     @Inject
     @RestClient
     OrgRpc orgRpc;
+
+    @Inject
+    private SysKeycloakService keycloakService;
 
     @Override
     public SysConfIntegration find() {
@@ -204,5 +212,33 @@ public class SysConfIntegrationServiceImpl implements SysConfIntegrationService 
             });
         }
 
+    }
+
+    @Override
+    public boolean testKeycloak(SysConfIntegrationKeycloak conf) {
+        try (Keycloak keycloak = keycloakService.openKeycloak(conf)) {
+            return keycloak != null && keycloak.serverInfo().getInfo() != null;
+        }
+    }
+
+    @Override
+    public boolean testIm(SysConfIntegrationIm conf) {
+        try {
+            URL url = new URL("http", conf.getHost(), conf.getPort(), "");
+            String content = OkWebUtil.get(url.toURI());
+            Log.infof(content);
+            return OkStringUtil.isNotEmpty(content);
+        } catch (MalformedURLException | URISyntaxException e) {
+            Log.warnf("url:%s is invalid:%s", conf.getHost(), e.getMessage());
+            return false;
+        }
+    }
+
+    @Override
+    public boolean testStack(SysConfIntegrationStack conf) {
+        String fqdn = conf.getFqdn();
+        String content = OkWebUtil.get(fqdn);
+        Log.infof(content);
+        return OkStringUtil.isNotEmpty(content);
     }
 }

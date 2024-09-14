@@ -15,6 +15,7 @@ package org.okstar.platform.system.settings.resource;
 
 import jakarta.inject.Inject;
 import jakarta.ws.rs.GET;
+import jakarta.ws.rs.POST;
 import jakarta.ws.rs.PUT;
 import jakarta.ws.rs.Path;
 import org.okstar.platform.common.core.web.bean.Res;
@@ -51,6 +52,13 @@ public class SysConfIntegrationResource extends BaseResource {
         return Res.ok(true);
     }
 
+    @POST
+    @Path("/stack/test")
+    public Res<Boolean> testStack(SysConfIntegrationStack conf) {
+        boolean y = integrationService.testStack(conf);
+        return Res.ok(y);
+    }
+
     @PUT
     @Path("keycloak")
     public Res<Boolean> putKeycloak(SysConfIntegrationKeycloak conf) {
@@ -58,10 +66,25 @@ public class SysConfIntegrationResource extends BaseResource {
         return Res.ok(true);
     }
 
+
+    @POST
+    @Path("/keycloak/test")
+    public Res<Boolean> testKeycloak(SysConfIntegrationKeycloak conf) {
+        boolean y = integrationService.testKeycloak(conf);
+        return Res.ok(y);
+    }
+
     @PUT
     @Path("im")
     public Res<Boolean> putIm(SysConfIntegrationIm conf) {
         integrationService.saveIm(conf);
         return Res.ok(true);
+    }
+
+    @POST
+    @Path("/im/test")
+    public Res<Boolean> testIm(SysConfIntegrationIm conf) {
+        boolean y = integrationService.testIm(conf);
+        return Res.ok(y);
     }
 }

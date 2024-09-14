@@ -55,4 +55,6 @@ public interface SysKeycloakService {
     String testConfig();
 
     SysKeycloakConfDTO getOidcConfig();
+
+    Keycloak openKeycloak(SysConfIntegrationKeycloak config);
 }

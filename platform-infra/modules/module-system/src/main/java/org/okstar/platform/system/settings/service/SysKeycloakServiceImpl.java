@@ -404,6 +404,12 @@ public class SysKeycloakServiceImpl implements SysKeycloakService {
             Log.warn("Keycloak config not found!");
             return null;
         }
+        return openKeycloak(config);
+    }
+
+    @Override
+    public Keycloak openKeycloak(SysConfIntegrationKeycloak config) {
+        OkAssert.notNull(config, "Invalid configuration!");
 
         var builder = KeycloakBuilder.builder()
                 .serverUrl(config.getServerUrl())
