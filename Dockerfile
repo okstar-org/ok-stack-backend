@@ -23,11 +23,10 @@ ADD distribution/target/ok-stack-backend-assembly.tar.gz ${OK_STAR_DIR}
 # UI
 COPY build/docker/default /etc/nginx/sites-enabled
 
-#ok-stack-ui/dist/ok-stack-ui.zip
+# ok-stack-ui/dist/ok-stack-ui.zip
 ADD ok-stack-ui/dist/ok-stack-ui.zip ${OK_STAR_DIR}
-RUN unzip ${OK_STAR_DIR}/ok-stack-ui.zip -d /usr/share/nginx/html/
-
-
+RUN unzip ${OK_STAR_DIR}/ok-stack-ui.zip -d /usr/share/nginx/html/ && \
+    rm -rf ${OK_STAR_DIR}/ok-stack-ui.zip
 
 EXPOSE 80
 VOLUME ["${OK_STACK_LOG_DIR}"]
