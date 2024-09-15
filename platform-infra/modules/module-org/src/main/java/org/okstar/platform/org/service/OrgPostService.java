@@ -19,6 +19,7 @@ import org.okstar.platform.org.domain.OrgPost;
 import org.okstar.platform.org.dto.OrgPost0;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * 岗位信息 服务层
@@ -42,4 +43,5 @@ public interface OrgPostService extends OkJpaService<OrgPost>
 
     long getCount();
 
+    Optional<OrgPost> findByDeptAndName(Long departmentId, String position);
 }

@@ -17,15 +17,17 @@ package org.okstar.platform.org.connect.connector.wx;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.google.common.collect.Lists;
+import io.quarkus.logging.Log;
 import lombok.extern.slf4j.Slf4j;
 import org.okstar.platform.common.asserts.OkAssert;
+import org.okstar.platform.common.date.OkDateUtils;
 import org.okstar.platform.common.json.OkJsonUtils;
 import org.okstar.platform.common.web.rest.transport.RestClient;
 import org.okstar.platform.org.connect.api.AccessToken;
 import org.okstar.platform.org.connect.api.Department;
 import org.okstar.platform.org.connect.api.UserId;
 import org.okstar.platform.org.connect.api.UserInfo;
-import org.okstar.platform.org.connect.connector.SysConnectorAbstract;
+import org.okstar.platform.org.connect.connector.OrgConnectorAbstract;
 import org.okstar.platform.org.connect.domain.OrgIntegrateConf;
 import org.okstar.platform.org.connect.exception.ConnectorException;
 
@@ -35,7 +37,7 @@ import java.util.Map;
 import java.util.Objects;
 
 @Slf4j
-public class SysConnectorWX extends SysConnectorAbstract {
+public class SysConnectorWX extends OrgConnectorAbstract {
 
 
     public SysConnectorWX(OrgIntegrateConf conf) {
@@ -84,12 +86,57 @@ public class SysConnectorWX extends SysConnectorAbstract {
         var accessToken = AccessToken.builder()
                 .accessToken(node.get("access_token").asText())
                 .expiresIn(node.get("expires_in").asLong())
+                .createdAt(OkDateUtils.instant())
                 .build();
 
         setAccessToken(accessToken);
 
         log.info("getAccessToken=>{}", accessToken);
         return accessToken;
+    }
+
+    @Override
+    public Department getDepartment(String id) throws ConnectorException {
+        /**
+         * /department/get?access_token=ACCESS_TOKEN&id=ID
+         */
+        String url = "/department/get";
+        log.info("req=>{}", url);
+
+        RestClient client = getClient();
+
+        Map<String, String> params = new LinkedHashMap<>();
+        params.put("id", id);
+        params.put("access_token", ensureAccessToken().getAccessToken());
+
+        var res = client.get(url, String.class, params);
+        log.info("res=>{}", res);
+
+        ObjectNode node = OkJsonUtils.asObject(res, ObjectNode.class);
+        OkAssert.isTrue(0 == node.get("errcode").asInt(), "获取部门异常！");
+        /**
+         * {
+         *    "errcode": 0,
+         *    "errmsg": "ok",
+         *    "department":
+         *        {
+         *            "id": 2,
+         *            "name": "广州研发中心",
+         * 		   "name_en": "RDGZ",
+         * 		   "department_leader":["zhangsan","lisi"],
+         *            "parentid": 1,
+         *            "order": 10
+         *        }
+         * }
+         */
+
+        JsonNode department = node.get("department");
+        if (department == null) {
+            Log.warnf("department is null!");
+            return null;
+        }
+
+        return parseDepartment(department);
     }
 
     /**
@@ -138,12 +185,7 @@ public class SysConnectorWX extends SysConnectorAbstract {
         JsonNode departments = node.get("department");
         if (departments != null) {
             departments.elements().forEachRemaining(e -> {
-                Department dept = Department.builder()
-                        .id(e.get("id").asText())
-                        .name(e.get("name").asText())
-                        .parentId(e.get("parentid").asText())
-                        .build();
-                list.add(dept);
+                list.add(parseDepartment(e));
             });
         }
         return list.stream().filter(e -> Objects.equals(e.getParentId(), parentId)).toList();
@@ -204,7 +246,18 @@ public class SysConnectorWX extends SysConnectorAbstract {
                 .orgMail(node.get("biz_mail").asText())
                 .mobilePhone(node.get("mobile").asText())
                 .linePhone(node.get("telephone").asText())
-                .title(node.get("position").asText())
+                .position(node.get("position").asText())
                 .build();
     }
+
+
+
+    private static Department parseDepartment(JsonNode department) {
+        return Department.builder()
+                .id(department.get("id").asText())
+                .name(department.get("name").asText())
+                .order(department.get("order").asLong(0))
+                .parentId(department.get("parentid").asText()).build();
+    }
+
 }

@@ -26,6 +26,7 @@ import org.okstar.platform.common.bean.OkBeanUtils;
 import org.okstar.platform.common.core.web.page.OkPageResult;
 import org.okstar.platform.common.core.web.page.OkPageable;
 import org.okstar.platform.common.date.OkDateUtils;
+import org.okstar.platform.common.string.OkNameUtil;
 import org.okstar.platform.common.string.OkStringUtil;
 import org.okstar.platform.core.org.JobDefines;
 import org.okstar.platform.org.domain.OrgPost;
@@ -300,7 +301,7 @@ public class OrgStaffServiceImpl implements OrgStaffService {
         }
         fragment.setFirstName(dto.getFirstName());
         fragment.setLastName(dto.getLastName());
-        fragment.setName(OkStringUtil.combinePeopleName(dto.getLanguage(), dto.getFirstName(), dto.getLastName()));
+        fragment.setName(OkNameUtil.combinePeopleName(dto.getLanguage(), dto.getFirstName(), dto.getLastName()));
         fragment.setEmail(dto.getEmail());
         fragment.setPhone(dto.getPhone());
         fragment.setGender(dto.getGender());
@@ -311,6 +312,7 @@ public class OrgStaffServiceImpl implements OrgStaffService {
         fragment.setCountry(dto.getCountry());
         fragment.setLanguage(dto.getLanguage());
     }
+
 
     private Optional<OrgStaff> findByNo(String no) {
         return orgStaffMapper.find("no", no).stream().findFirst();

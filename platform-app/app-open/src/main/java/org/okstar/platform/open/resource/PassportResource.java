@@ -20,7 +20,6 @@ import jakarta.ws.rs.Path;
 import jakarta.ws.rs.PathParam;
 import org.eclipse.microprofile.rest.client.inject.RestClient;
 import org.okstar.platform.common.core.web.bean.Res;
-import org.okstar.platform.core.rpc.RpcAssert;
 import org.okstar.platform.system.dto.SysAccountDTO;
 import org.okstar.platform.system.rpc.SysAccountRpc;
 
@@ -37,11 +36,11 @@ public class PassportResource {
     @GET
     @Path("account/{account}")
     public Res<SysAccountDTO> getAccount(@PathParam("account") String account) {
-        var sysAccount0 = RpcAssert.isTrue(sysAccountRpc.getByAccount(account));
-        if (sysAccount0 == null) {
+        var sysAccount0 = sysAccountRpc.getByAccount(account);
+        if (sysAccount0.isEmpty()) {
             //返回404错误
             throw new NotFoundException();
         }
-        return Res.ok(sysAccount0);
+        return Res.ok(sysAccount0.get());
     }
 }

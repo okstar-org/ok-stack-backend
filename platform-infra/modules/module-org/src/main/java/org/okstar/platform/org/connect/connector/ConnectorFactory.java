@@ -29,7 +29,7 @@ import java.util.Map;
 @ApplicationScoped
 public class ConnectorFactory {
 
-    Map<ConnectorDefines.Type, SysConnector> pool = new HashMap<>();
+    Map<ConnectorDefines.Type, OrgConnector> pool = new HashMap<>();
 
     /**
      * 获取连接没有即创建
@@ -37,12 +37,12 @@ public class ConnectorFactory {
      * @param conf
      * @return
      */
-    public synchronized SysConnector getConnect(OrgIntegrateConf conf) {
+    public synchronized OrgConnector getConnect(OrgIntegrateConf conf) {
         OkAssert.isTrue(conf != null && conf.getType() != null, "Invalid configuration!");
         if (pool.containsKey(conf.getType())) {
             return pool.get(conf.getType());
         }
-        SysConnector connector = createConnector(conf);
+        OrgConnector connector = createConnector(conf);
         pool.put(conf.getType(), connector);
         return connector;
     }
@@ -53,7 +53,7 @@ public class ConnectorFactory {
      * @param conf
      * @return
      */
-    public SysConnector createConnector(OrgIntegrateConf conf) {
+    public OrgConnector createConnector(OrgIntegrateConf conf) {
         OkAssert.isTrue(conf != null && conf.getType() != null, "Invalid configuration!");
 
         ConnectorDefines.Type type = conf.getType();

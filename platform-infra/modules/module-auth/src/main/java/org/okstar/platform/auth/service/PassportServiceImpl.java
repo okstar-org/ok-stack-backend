@@ -112,7 +112,7 @@ public class PassportServiceImpl implements PassportService {
     public void signDown(Long accountId) {
         log.info("signDown:{}", accountId);
 
-        SysAccountDTO account0 = RpcAssert.isTrue(sysAccountRpc.findById(accountId));
+        SysAccountDTO account0 = sysAccountRpc.findById(accountId);
 
         //删除认证信息
         boolean backUser = backUserManager.delete(account0.getUsername());
@@ -120,9 +120,8 @@ public class PassportServiceImpl implements PassportService {
         OkAssert.isTrue(backUser, "Sign down auth account failed");
 
         //删除系统帐号
-        Boolean aTrue = RpcAssert.isTrue(sysAccountRpc.signDown(accountId));
-        Log.infof("Sign down system account:%s=>%s", accountId, aTrue);
-        OkAssert.isTrue(aTrue, "Delete system account failed");
+        sysAccountRpc.signDown(accountId);
+        Log.infof("Sign down system account:%s", accountId);
     }
 
     @Override
@@ -191,7 +190,7 @@ public class PassportServiceImpl implements PassportService {
 
     @Override
     public SysAccountDTO getAccount(String account) {
-        return RpcAssert.isTrue(sysAccountRpc.getByAccount(account));
+        return sysAccountRpc.getByAccount(account).orElse(null);
     }
 
     @Override

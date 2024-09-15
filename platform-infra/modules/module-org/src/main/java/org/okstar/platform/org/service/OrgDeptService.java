@@ -18,6 +18,7 @@ import org.okstar.platform.common.datasource.OkJpaService;
 import org.okstar.platform.org.domain.OrgDept;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * 部门管理 服务层
@@ -29,10 +30,11 @@ public interface OrgDeptService extends OkJpaService<OrgDept>
 
     List<OrgDept> children(Long parentId);
 
-    List<OrgDept> getRootByOrgId(Long orgId);
+    Optional<OrgDept> getRootByOrgId(Long orgId);
 
-    List<OrgDept> loadRootByOrgId(Long orgId);
+    OrgDept loadRootByOrgId(Long orgId);
 
     long getCount();
 
+    OrgDept findByNameLevel(String name, int level);
 }

@@ -39,6 +39,7 @@ import org.okstar.platform.system.rpc.SysAccountRpc;
 import org.okstar.platform.system.rpc.SysProfileRpc;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
@@ -75,10 +76,10 @@ public class OrgResource extends BaseResource {
 
     @PUT
     @Path("save")
-    public Res<Boolean> save(Org0 org0){
+    public Res<Boolean> save(Org0 org0) {
         Org saved = orgService.save(org0);
         federalService.save(saved);
-        return Res.ok(saved!=null);
+        return Res.ok(saved != null);
     }
 
     @GET
@@ -90,19 +91,23 @@ public class OrgResource extends BaseResource {
         String username = getUsername();
         Log.infof("username=> %s", username);
 
-        SysAccountDTO account0 = RpcAssert.isTrue(sysAccountRpc.findByUsername(username));
-        Log.infof("SysAccount0=> %s", account0);
+        Optional<SysAccountDTO> optional = (sysAccountRpc.findByUsername(username));
+        Log.infof("SysAccount=> %s", optional);
+        if (optional.isEmpty()) {
+            return Res.ok(new MyOrgInfo());
+        }
 
-        SysProfileDTO profile = sysProfileRpc.getByAccount(account0.getId());
+        SysAccountDTO account = optional.get();
+        SysProfileDTO profile = sysProfileRpc.getByAccount(account.getId());
 
-        var staffOptional = staffService.getByAccountId(account0.getId());
+        var staffOptional = staffService.getByAccountId(account.getId());
         var orgStaff = staffOptional.orElseGet(() -> {
             OrgStaff staff0 = new OrgStaff();
-            staff0.setAccountId(account0.getId());
+            staff0.setAccountId(account.getId());
 
             OrgStaffFragment f = new OrgStaffFragment();
-            f.setIso(account0.getIso());
-            List<SysAccountBindDTO> bindDTOS = RpcAssert.isTrue(sysAccountRpc.getBinds(account0.getId()));
+            f.setIso(account.getIso());
+            List<SysAccountBindDTO> bindDTOS = RpcAssert.isTrue(sysAccountRpc.getBinds(account.getId()));
             bindDTOS.forEach(bind -> {
                 switch (bind.getBindType()) {
                     case email -> f.setEmail(bind.getBindValue());
@@ -110,13 +115,13 @@ public class OrgResource extends BaseResource {
                 }
             });
             staff0.setFragment(f);
-            staffService.create(staff0, account0.getId());
+            staffService.create(staff0, account.getId());
             return staff0;
         });
 
 
         MyOrgInfo info = new MyOrgInfo();
-        info.setAccount(account0);
+        info.setAccount(account);
         info.setProfile(profile);
         info.setOrg(Org0.builder()
                 .name(org.getName())
@@ -126,7 +131,7 @@ public class OrgResource extends BaseResource {
                 .build());
 
         info.setStaff(OrgStaff0.builder()
-                .accountId(account0.getId())
+                .accountId(account.getId())
                 .name(profile.getPersonalName())
                 .id(orgStaff.id)
                 .no(orgStaff.getFragment().getNo())

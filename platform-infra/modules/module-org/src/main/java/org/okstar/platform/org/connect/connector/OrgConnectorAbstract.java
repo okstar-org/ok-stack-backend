@@ -19,12 +19,13 @@ import org.okstar.platform.common.web.rest.transport.ClientFactory;
 import org.okstar.platform.common.web.rest.transport.RestClient;
 import org.okstar.platform.org.connect.ConnectorDefines;
 import org.okstar.platform.org.connect.api.AccessToken;
+import org.okstar.platform.org.connect.api.Department;
 import org.okstar.platform.org.connect.domain.OrgIntegrateConf;
 import org.okstar.platform.org.connect.exception.ConnectorException;
 
 
 @Slf4j
-public abstract class SysConnectorAbstract implements SysConnector {
+public abstract class OrgConnectorAbstract implements OrgConnector {
 
     private AccessToken accessToken;
 
@@ -33,6 +34,11 @@ public abstract class SysConnectorAbstract implements SysConnector {
     @Override
     public void setAccessToken(AccessToken accessToken) {
         this.accessToken = accessToken;
+    }
+
+    @Override
+    public OrgIntegrateConf getConf() {
+        return conf;
     }
 
     @Override
@@ -70,4 +76,5 @@ public abstract class SysConnectorAbstract implements SysConnector {
     }
 
 
+    public abstract Department getDepartment(String id) throws ConnectorException;
 }

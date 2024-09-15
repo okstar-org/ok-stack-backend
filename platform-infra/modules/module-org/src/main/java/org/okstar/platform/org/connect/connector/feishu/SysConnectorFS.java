@@ -17,8 +17,10 @@ package org.okstar.platform.org.connect.connector.feishu;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import io.quarkus.logging.Log;
 import lombok.extern.slf4j.Slf4j;
 import org.okstar.platform.common.asserts.OkAssert;
+import org.okstar.platform.common.date.OkDateUtils;
 import org.okstar.platform.common.json.OkJsonUtils;
 import org.okstar.platform.common.string.OkStringUtil;
 import org.okstar.platform.common.web.auth.AuthenticationToken;
@@ -30,13 +32,13 @@ import org.okstar.platform.org.connect.api.Department;
 import org.okstar.platform.org.connect.api.UserId;
 import org.okstar.platform.org.connect.api.UserInfo;
 import org.okstar.platform.org.connect.exception.ConnectorException;
-import org.okstar.platform.org.connect.connector.SysConnectorAbstract;
+import org.okstar.platform.org.connect.connector.OrgConnectorAbstract;
 import org.okstar.platform.org.connect.domain.OrgIntegrateConf;
 
 import java.util.*;
 
 @Slf4j
-public class SysConnectorFS extends SysConnectorAbstract {
+public class SysConnectorFS extends OrgConnectorAbstract {
 
 
     public SysConnectorFS(OrgIntegrateConf conf) {
@@ -103,14 +105,40 @@ public class SysConnectorFS extends SysConnectorAbstract {
             var accessToken = AccessToken.builder()
                     .accessToken(node.get("app_access_token").asText())
                     .expiresIn(node.get("expire").asLong())
+                    .createdAt(OkDateUtils.instant())
                     .build();
 
             setAccessToken(accessToken);
 
             return accessToken;
         } catch (Exception e) {
-            throw new ConnectorException(conf.getType(), url, e.getCause());
+            throw new ConnectorException(conf.getType(), url, e.getMessage());
         }
+    }
+
+    @Override
+    public Department getDepartment(String id) throws ConnectorException {
+//        https://open.feishu.cn/open-apis/contact/v3/departments/:department_id
+        log.info("getDepartment id:{}", id);
+
+        String url = "/contact/v3/departments/:"+id;
+        log.info("url:{}", url);
+
+        RestClient client = getClient();
+        client.setToken(new AuthenticationToken(ensureAccessToken().getAccessToken()));
+
+        String res = client.get(url, String.class, null);
+        log.info("response=> {}", res);
+
+        ObjectNode node = OkJsonUtils.asObject(res, ObjectNode.class);
+        OkAssert.isTrue(0 == node.get("code").asInt(), "获取部门列表异常！");
+
+        JsonNode department = node.get("data").get("department");
+        if (department == null) {
+            Log.warnf("department is null.");
+            return null;
+        }
+        return parseDepartment(department);
     }
 
     @Override
@@ -132,22 +160,26 @@ public class SysConnectorFS extends SysConnectorAbstract {
         log.info("response=> {}", res);
 
         ObjectNode node = OkJsonUtils.asObject(res, ObjectNode.class);
-        OkAssert.isTrue(0 == node.get("code").asInt(), "返回异常！");
+        OkAssert.isTrue(0 == node.get("code").asInt(), "获取部门列表异常！");
 
         ArrayList<Department> list = new ArrayList<>();
         JsonNode jsonNode = node.get("data").get("items");
         if (jsonNode != null) {
             jsonNode.elements().forEachRemaining(depart -> {
-                Department department = Department.builder()
-                        .id(depart.get("open_department_id").asText())
-                        .name(depart.get("name").asText())
-                        .parentId(depart.get("parent_department_id").asText())
-                        .build();
-                list.add(department);
+                list.add(parseDepartment(depart));
             });
         }
         return list;
 
+    }
+
+    private static Department parseDepartment(JsonNode depart) {
+        return Department.builder()
+                .id(depart.get("open_department_id").asText())
+                .name(depart.get("name").asText())
+                .parentId(depart.get("parent_department_id").asText())
+                .order(depart.get("order").asLong(0))
+                .build();
     }
 
     @Override
@@ -242,7 +274,7 @@ public class SysConnectorFS extends SysConnectorAbstract {
                     .mobilePhone(user.get("mobile").asText())
 
                     //获取用户受雇信息 contact:user.employee:readonly
-                    .title(user.get("job_title").asText())
+                    .position(user.get("job_title").asText())
                     .orgMail(Optional.ofNullable(user.get("enterprise_email")).map(JsonNode::asText).orElse(null))
                     .isActive(user.get("status").get("is_activated").asBoolean())
                     .build();

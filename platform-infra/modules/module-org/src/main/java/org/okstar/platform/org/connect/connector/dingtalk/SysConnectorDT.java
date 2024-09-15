@@ -21,6 +21,7 @@ import com.dingtalk.api.request.OapiV2UserGetRequest;
 import com.dingtalk.api.response.OapiGettokenResponse;
 import com.dingtalk.api.response.OapiV2DepartmentListidsResponse;
 import com.dingtalk.api.response.OapiV2UserGetResponse;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.google.common.collect.Lists;
 import com.taobao.api.ApiException;
@@ -28,6 +29,7 @@ import com.taobao.api.TaobaoResponse;
 import io.quarkus.logging.Log;
 import lombok.extern.slf4j.Slf4j;
 import org.okstar.platform.common.asserts.OkAssert;
+import org.okstar.platform.common.date.OkDateUtils;
 import org.okstar.platform.common.json.OkJsonUtils;
 import org.okstar.platform.common.web.OkRestUtil;
 import org.okstar.platform.common.web.rest.transport.RestClient;
@@ -36,7 +38,7 @@ import org.okstar.platform.org.connect.api.Department;
 import org.okstar.platform.org.connect.api.UserId;
 import org.okstar.platform.org.connect.api.UserInfo;
 import org.okstar.platform.org.connect.exception.ConnectorException;
-import org.okstar.platform.org.connect.connector.SysConnectorAbstract;
+import org.okstar.platform.org.connect.connector.OrgConnectorAbstract;
 import org.okstar.platform.org.connect.domain.OrgIntegrateConf;
 
 import java.util.HashMap;
@@ -44,7 +46,7 @@ import java.util.List;
 import java.util.Map;
 
 @Slf4j
-public class SysConnectorDT extends SysConnectorAbstract {
+public class SysConnectorDT extends OrgConnectorAbstract {
 
 
     public SysConnectorDT(OrgIntegrateConf conf) {
@@ -72,13 +74,45 @@ public class SysConnectorDT extends SysConnectorAbstract {
             var accessToken = AccessToken.builder()
                     .accessToken(response.getAccessToken())
                     .expiresIn(response.getExpiresIn())
+                    .createdAt(OkDateUtils.instant())
                     .build();
             setAccessToken(accessToken);
+
             return accessToken;
         } catch (ApiException e) {
             throw new ConnectorException(conf.getType(), url, e.getCause());
         }
     }
+
+    @Override
+    public Department getDepartment(String id) throws ConnectorException {
+        String url = "/topapi/v2/department/get?dept_id=" + id;
+        log.info("getDepartment deptId:{}", id);
+
+        RestClient restClient = OkRestUtil.getInstance(getRequestUrl("")).getClientFactory().createClient();
+
+        Map<String, String> map = new HashMap<>();
+        map.put("dept_id", id);
+        map.put("access_token", ensureAccessToken().getAccessToken());
+
+        String response = restClient.get(url, String.class, map);
+        Log.infof("response=> %s", response);
+
+        ObjectNode node = OkJsonUtils.asObject(response, ObjectNode.class);
+
+        //check
+        String errcode = node.get("errcode").asText();
+        OkAssert.isTrue("0".equals(errcode), String.format("【%s】连接异常，errcode:%s errmsg:%s", getType().getText(), node.get("errcode").asText(), node.get("errmsg").asText()));
+
+        JsonNode result = node.get("result");
+        if (result == null) {
+            Log.warnf("result is null!");
+            return null;
+        }
+
+        return parseDepartment(result);
+    }
+
 
     @Override
     public List<Department> getDepartmentList(String parentId) throws ConnectorException {
@@ -101,15 +135,14 @@ public class SysConnectorDT extends SysConnectorAbstract {
             String body = response.getBody();
 
             ObjectNode node = OkJsonUtils.asObject(body, ObjectNode.class);
-            node.get("result").elements().forEachRemaining(e -> {
-                //{"auto_add_user":true,"create_dept_group":true,"dept_id":551835489,"name":"研发部","parent_id":1}
-                Log.infof("item:%s", e);
-                Department dept = Department.builder()
-                        .id(e.get("dept_id").asText())
-                        .name(e.get("name").asText())
-                        .parentId(e.get("parent_id").asText())
-                        .build();
-                list.add(dept);
+            JsonNode result = node.get("result");
+            if (result == null) {
+                Log.warnf("result is null!");
+                return list;
+            }
+
+            result.elements().forEachRemaining(e -> {
+                list.add(parseDepartment(e));
             });
         } catch (ApiException e) {
             throw new ConnectorException(conf.getType(), url, e.getCause());
@@ -181,7 +214,7 @@ public class SysConnectorDT extends SysConnectorAbstract {
                     .email(e.getEmail())
                     .orgMail(e.getOrgEmail())
                     .mobilePhone(e.getMobile())
-                    .title(e.getPosition())
+                    .position(e.getPosition())
                     .build();
         } catch (ApiException e) {
             throw new ConnectorException(getType(), url, e.getCause());
@@ -193,4 +226,17 @@ public class SysConnectorDT extends SysConnectorAbstract {
                 String.format("【%s】连接异常，subCode:%s subMsg:%s",
                         getType().getText(), response.getSubCode(), response.getSubMsg()));
     }
+
+
+    private static Department parseDepartment(JsonNode result) {
+        //{"auto_add_user":true,"create_dept_group":true,"dept_id":551835489,"name":"研发部","parent_id":1}
+        Log.infof("parse department:%s", result);
+        return Department.builder()
+                .name(result.get("name").asText())
+                .id(result.get("dept_id").asText())
+                .parentId(result.get("parent_id").asText())
+//                .order(result.get("order").asLong(0))
+                .build();
+    }
+
 }

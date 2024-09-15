@@ -17,7 +17,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.okstar.platform.common.string.OkStringUtil;
+import org.okstar.platform.common.string.OkNameUtil;
 import org.okstar.platform.core.user.UserDefines;
 
 import java.util.Date;
@@ -112,7 +112,7 @@ public class SysProfileDTO {
      * 个人真实名称
      */
     public String getPersonalName() {
-        return OkStringUtil.combinePeopleName(language,   getFirstName(),  getLastName());
+        return OkNameUtil.combinePeopleName(language,   getFirstName(),  getLastName());
     }
 
 

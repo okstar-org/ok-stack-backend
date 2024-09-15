@@ -15,6 +15,7 @@ package org.okstar.platform.org.dto;
 
 import jakarta.persistence.Embeddable;
 import lombok.Data;
+import org.okstar.platform.common.string.OkNameUtil;
 import org.okstar.platform.common.string.OkStringUtil;
 import org.okstar.platform.core.user.UserDefines;
 
@@ -49,7 +50,7 @@ public class OrgStaffFragment {
     public String getName() {
         if(OkStringUtil.isNotEmpty(name))
             return name;
-        return OkStringUtil.combinePeopleName(language, firstName, lastName);
+        return OkNameUtil.combinePeopleName(language, firstName, lastName);
     }
 
     /**

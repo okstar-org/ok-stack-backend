@@ -23,6 +23,7 @@ import org.okstar.platform.system.sign.SignUpForm;
 import org.okstar.platform.system.sign.SignUpResult;
 
 import java.util.List;
+import java.util.Optional;
 
 
 @Path("rpc/SysAccountRpc")
@@ -39,29 +40,33 @@ public interface SysAccountRpc {
 
     @DELETE
     @Path("signDown/{accountId}")
-    RpcResult<Boolean> signDown(@PathParam("accountId") Long accountId);
+    void signDown(@PathParam("accountId") Long accountId);
 
     @GET
     @Path("findByAccount/{account}")
-    RpcResult<SysAccountDTO> getByAccount(@PathParam("account") String account);
+    Optional<SysAccountDTO> getByAccount(@PathParam("account") String account);
 
     @GET
     @Path("findByBind")
-    RpcResult<SysAccountDTO> findByBind(@QueryParam("type") AccountDefines.BindType type,
+    Optional<SysAccountDTO> findByBind(@QueryParam("type") AccountDefines.BindType type,
                                         @QueryParam("bindValue") String bindValue);
 
     @GET
     @Path("findByEmail")
-    RpcResult<SysAccountDTO> findByEmail(@QueryParam("type") AccountDefines.BindType type,
-                                         @QueryParam("email") String email);
+    Optional<SysAccountDTO> findByEmail(@QueryParam("email") String email);
+
+
+    @GET
+    @Path("findByPhone")
+    Optional<SysAccountDTO> findByPhone(@QueryParam("phone") String phone, @QueryParam("iso") String iso);
 
     @GET
     @Path("findByUsername")
-    RpcResult<SysAccountDTO> findByUsername(@QueryParam("username") String username);
+    Optional<SysAccountDTO> findByUsername(@QueryParam("username") String username);
 
     @GET
     @Path("findById/{id}")
-    RpcResult<SysAccountDTO> findById(@PathParam("id") Long id);
+    SysAccountDTO findById(@PathParam("id") Long id);
 
 
     @POST

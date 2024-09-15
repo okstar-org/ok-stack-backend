@@ -16,7 +16,6 @@ package org.okstar.platform.org.resource;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
 import org.okstar.platform.common.asserts.OkAssert;
-import org.okstar.platform.common.core.web.bean.Req;
 import org.okstar.platform.common.core.web.bean.Res;
 import org.okstar.platform.org.domain.Org;
 import org.okstar.platform.org.domain.OrgDept;
@@ -82,8 +81,8 @@ public class OrgDeptResource extends BaseResource {
     public Res<List<OrgDept>> children() {
         Org current = orgService.loadCurrent();
         OkAssert.isTrue(current != null, "未初始化组织！");
-        List<OrgDept> list = deptService.loadRootByOrgId(current.id);
-        return Res.ok(list);
+        OrgDept root = deptService.loadRootByOrgId(current.id);
+        return Res.ok(List.of(root));
     }
 
     @GET

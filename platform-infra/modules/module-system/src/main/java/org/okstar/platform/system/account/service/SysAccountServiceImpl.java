@@ -154,7 +154,7 @@ public class SysAccountServiceImpl extends OkAbsService implements SysAccountSer
         OkBeanUtils.copyPropertiesTo(account, dto);
 
         sysAccountBindMapper.find("accountId = ?1 and bindType = ?2", account.id, AccountDefines.BindType.email)
-                .firstResultOptional().ifPresent(email->{
+                .firstResultOptional().ifPresent(email -> {
                     dto.setEmail(email.getBindValue());
                 });
         return dto;
@@ -190,11 +190,11 @@ public class SysAccountServiceImpl extends OkAbsService implements SysAccountSer
         sysAccount.setUsername(RandomStringUtils.randomAlphanumeric(12));
         sysAccount.setIso(signUpForm.getIso());
         sysAccount.setLanguage(signUpForm.getLanguage());
-        sysAccount.setAvatar(AccountDefines.DefaultAvatar);
-        sysAccount.setNickname(
-                Optional.ofNullable(signUpForm.getFirstName()).orElse("")
-                        + Optional.ofNullable(signUpForm.getLastName()).orElse("")
-        );
+        sysAccount.setNickname(signUpForm.getNickname());
+
+        if (OkStringUtil.isEmpty(signUpForm.getAvatar())) {
+            sysAccount.setAvatar(AccountDefines.DefaultAvatar);
+        }
 
         create(sysAccount, 1L);
         Log.infof("User have been saved successfully.=>%s", sysAccount.getUsername());

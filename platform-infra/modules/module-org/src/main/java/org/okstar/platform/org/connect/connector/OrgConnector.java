@@ -19,11 +19,14 @@ import org.okstar.platform.org.connect.api.AccessToken;
 import org.okstar.platform.org.connect.api.Department;
 import org.okstar.platform.org.connect.api.UserId;
 import org.okstar.platform.org.connect.api.UserInfo;
+import org.okstar.platform.org.connect.domain.OrgIntegrateConf;
 import org.okstar.platform.org.connect.exception.ConnectorException;
 
 import java.util.List;
 
-public interface SysConnector {
+public interface OrgConnector {
+
+    OrgIntegrateConf getConf();
 
     /**
      * 获取保证有效的token
@@ -43,6 +46,12 @@ public interface SysConnector {
      * @return SysConnAccessToken
      */
     AccessToken fetchAccessToken() throws ConnectorException;
+
+    /**
+     * 获取跟部门
+     * @return
+     */
+    Department getDepartment(String id) throws ConnectorException;
 
     /**
      * 获取部门列表

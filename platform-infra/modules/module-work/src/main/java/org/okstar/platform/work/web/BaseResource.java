@@ -15,7 +15,6 @@ package org.okstar.platform.work.web;
 
 import jakarta.inject.Inject;
 import org.eclipse.microprofile.rest.client.inject.RestClient;
-import org.okstar.platform.core.rpc.RpcAssert;
 import org.okstar.platform.core.web.resource.OkCommonResource;
 import org.okstar.platform.system.dto.SysAccountDTO;
 import org.okstar.platform.system.rpc.SysAccountRpc;
@@ -29,9 +28,10 @@ public class BaseResource extends OkCommonResource {
 
     /**
      * 获取自己
-     * @return SysAccount0
+     *
+     * @return SysAccountDTO
      */
     protected SysAccountDTO self() {
-        return RpcAssert.isTrue(sysAccountRpc.findByUsername(getUsername()));
+        return sysAccountRpc.findByUsername(getUsername()).orElse(null);
     }
 }

@@ -29,7 +29,6 @@ import org.okstar.platform.common.string.OkStringUtil;
 import org.okstar.platform.core.account.AccountDefines;
 import org.okstar.platform.core.org.JobDefines;
 import org.okstar.platform.core.rpc.RpcAssert;
-import org.okstar.platform.core.rpc.RpcResult;
 import org.okstar.platform.org.mapper.OrgStaffPostMapper;
 import org.okstar.platform.org.service.OrgPostService;
 import org.okstar.platform.org.staff.domain.OrgStaff;
@@ -40,6 +39,7 @@ import org.okstar.platform.system.sign.SignUpForm;
 import org.okstar.platform.system.sign.SignUpResult;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.SortedSet;
 
@@ -141,12 +141,12 @@ public class OrgStaffPostServiceImpl implements OrgStaffPostService {
          * 注销其帐号
          */
         AccountDefines.BindType emailType = AccountDefines.BindType.email;
-        RpcResult<SysAccountDTO> bind = sysAccountRpc.findByBind(
+        Optional<SysAccountDTO> accountDTO = sysAccountRpc.findByBind(
                 emailType,
                 staff.getFragment().getEmail());
 
-        SysAccountDTO account0 = RpcAssert.isTrue(bind);
-        if (account0 != null) {
+        if (accountDTO.isPresent()) {
+            SysAccountDTO account0 = accountDTO.get();
             Log.debugf("注销帐号:%s", account0.getUsername());
             Boolean result = RpcAssert.isTrue(passportRpc.signDown(account0.getId()));
             Log.debugf("注销帐号:%s=>%s", account0.getUsername(), result);
@@ -192,9 +192,7 @@ public class OrgStaffPostServiceImpl implements OrgStaffPostService {
         }
 
         //如果员工没有对应帐号，则为其生成帐号信息
-        var account0 = RpcAssert.isTrue(sysAccountRpc.findById(staff.getAccountId()));
-
-
+        var account0 = sysAccountRpc.findById(staff.getAccountId());
         if (account0 == null) {
             SignUpForm form = new SignUpForm();
             form.setPassword(AccountDefines.DefaultPWD);

@@ -31,6 +31,7 @@ import org.okstar.platform.org.mapper.OrgDeptMapper;
 import org.okstar.platform.org.mapper.OrgPostMapper;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * 岗位信息 服务层处理
@@ -131,5 +132,11 @@ public class OrgPostServiceImpl implements OrgPostService {
     @Override
     public long getCount() {
         return postMapper.count("disabled", false);
+    }
+
+    @Override
+    public Optional<OrgPost> findByDeptAndName(Long departmentId, String name) {
+        postMapper.find("deptId = ?1 and name = ?2", departmentId, name).firstResult();
+        return Optional.empty();
     }
 }

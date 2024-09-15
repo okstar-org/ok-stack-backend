@@ -11,38 +11,12 @@
  * /
  */
 
-package org.okstar.platform.org.connect.api;
+package org.okstar.platform.org.connect.service;
 
-import lombok.*;
+import org.okstar.platform.org.connect.connector.OrgConnector;
+import org.okstar.platform.org.connect.exception.ConnectorException;
 
-/**
- * API-部门
- */
-@Data
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
-@ToString
-public class Department {
+public interface ConnectorSyncService {
 
-
-    /**
-     * 部门名称
-     */
-    private String name;
-
-    /**
-     * Id
-     */
-    private String id;
-
-    /**
-     * 父Id
-     */
-    private String parentId;
-
-    /**
-     * 顺序
-     */
-    private Long order;
+    void sync(OrgConnector connect) throws ConnectorException;
 }

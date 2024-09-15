@@ -45,7 +45,7 @@ public class StaffResource {
         var list = RpcAssert.isTrue(orgStaffRpc.search(query));
         list.forEach(e -> {
             if (e.getAccountId() != null) {
-                SysAccountDTO account0 = RpcAssert.isTrue(sysAccountRpc.findById(e.getAccountId()));
+                SysAccountDTO account0 = sysAccountRpc.findById(e.getAccountId());
                 e.setUsername(account0.getUsername());
             }
         });

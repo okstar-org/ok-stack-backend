@@ -25,6 +25,7 @@ import org.okstar.platform.org.mapper.OrgDeptMapper;
 import org.okstar.platform.org.mapper.OrgPostMapper;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * 部门管理 服务实现
@@ -69,7 +70,7 @@ public class OrgDeptServiceImpl implements OrgDeptService {
         OkAssert.isTrue(depts.isEmpty(), "存在下级，无法删除！");
 
         var query = orgPostMapper.find("deptId", id);
-        OkAssert.isTrue(query.count()<1, "存在岗位，无法删除！");
+        OkAssert.isTrue(query.count() < 1, "存在岗位，无法删除！");
 
         orgDeptMapper.deleteById(id);
     }
@@ -90,8 +91,8 @@ public class OrgDeptServiceImpl implements OrgDeptService {
     }
 
     @Override
-    public List<OrgDept> getRootByOrgId(Long orgId) {
-        return orgDeptMapper.list("parentId = ?1 and orgId = ?2", 0L, orgId).stream().toList();
+    public Optional<OrgDept> getRootByOrgId(Long orgId) {
+        return orgDeptMapper.list("parentId = ?1 and orgId = ?2", 0L, orgId).stream().findFirst();
     }
 
     @Override
@@ -100,10 +101,15 @@ public class OrgDeptServiceImpl implements OrgDeptService {
     }
 
     @Override
-    public List<OrgDept> loadRootByOrgId(Long orgId) {
-        List<OrgDept> depts = getRootByOrgId(orgId);
-        if (!depts.isEmpty()) {
-            return depts;
+    public OrgDept findByNameLevel(String name, int level) {
+        return orgDeptMapper.find("name = ?1 and level = ?2", name, level).firstResult();
+    }
+
+    @Override
+    public OrgDept loadRootByOrgId(Long orgId) {
+        Optional<OrgDept> exist = getRootByOrgId(orgId);
+        if (exist.isPresent()) {
+            return exist.get();
         }
 
         //初始化默认部门
@@ -114,8 +120,6 @@ public class OrgDeptServiceImpl implements OrgDeptService {
         root.setName("默认部门");
         root.setDisabled(false);
         create(root, 1L);
-        return List.of(root);
+        return root;
     }
-
-
 }

@@ -54,8 +54,7 @@ public class OrgRbacUserServiceImpl implements OrgRbacUserService, PanacheReposi
     @Override
     public List<OrgRbacUserResponseVo> queryUserList() {
         return orgRbacUserMapper.listAll().stream().map(ids -> {
-            RpcResult<SysAccountDTO> sysAccount0RpcResult = sysAccountRpc.findById(ids.getAccountId());
-            SysAccountDTO sysAccount = sysAccount0RpcResult.getData();
+            SysAccountDTO sysAccount = sysAccountRpc.findById(ids.getAccountId());
             if (sysAccount != null) {
                 OrgRbacUserResponseVo user = new OrgRbacUserResponseVo();
                 OkBeanUtils.copyPropertiesTo(sysAccount, user);
@@ -66,7 +65,6 @@ public class OrgRbacUserServiceImpl implements OrgRbacUserService, PanacheReposi
     }
 
     public SysAccountDTO getAccount(Long accountId) {
-        RpcResult<SysAccountDTO> sysAccount0RpcResult = sysAccountRpc.findById(accountId);
-        return sysAccount0RpcResult.getData();
+        return sysAccountRpc.findById(accountId);
     }
 }

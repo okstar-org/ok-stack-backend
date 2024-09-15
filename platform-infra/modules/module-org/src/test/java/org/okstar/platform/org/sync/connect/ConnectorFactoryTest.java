@@ -22,7 +22,7 @@ import org.okstar.platform.common.string.OkStringUtil;
 import org.okstar.platform.org.connect.ConnectorDefines;
 import org.okstar.platform.org.connect.api.UserInfo;
 import org.okstar.platform.org.connect.connector.ConnectorFactory;
-import org.okstar.platform.org.connect.connector.SysConnector;
+import org.okstar.platform.org.connect.connector.OrgConnector;
 import org.okstar.platform.org.connect.exception.ConnectorException;
 import org.okstar.platform.org.connect.domain.OrgIntegrateConf;
 import org.okstar.platform.org.connect.api.UserId;
@@ -105,7 +105,7 @@ class ConnectorFactoryTest {
     }
 
     private void createConnector(OrgIntegrateConf conf) throws ConnectorException {
-        SysConnector connector = connectorFactory.createConnector(conf);
+        OrgConnector connector = connectorFactory.createConnector(conf);
         Assert.assertNotNull(connector);
 
         AccessToken accessToken = connector.fetchAccessToken();
@@ -115,7 +115,7 @@ class ConnectorFactoryTest {
         listDepartmentUsers(connector, conf.getRootDeptId());
     }
 
-    private static void listDepartmentUsers(SysConnector connector, String deptId) throws ConnectorException {
+    private static void listDepartmentUsers(OrgConnector connector, String deptId) throws ConnectorException {
         List<Department> list = connector.getDepartmentList(deptId);
         Assert.assertNotNull(list);
         for (Department e : list) {

@@ -75,4 +75,6 @@ public interface OrgStaffService extends OkJpaService<OrgStaff> {
      * @param dto
      */
     void save(SysProfileDTO dto);
+
+
 }

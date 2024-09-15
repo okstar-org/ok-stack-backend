@@ -16,6 +16,9 @@ package org.okstar.platform.org.connect.api;
 import lombok.*;
 import org.okstar.platform.core.user.UserDefines;
 
+import java.util.Date;
+import java.util.Locale;
+
 @Data
 @Builder
 @ToString
@@ -35,6 +38,10 @@ public class UserInfo {
     private String avatar;
     private String email;
     private String orgMail;
-    private String title;
+    //岗位
+    private String position;
+    //入职时间
+    private Date joinTime;
+    private Locale locale;
     private UserDefines.Gender gender;
 }
