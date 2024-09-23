@@ -11,21 +11,18 @@
  * /
  */
 
-package org.okstar.platform.system.rpc;
+package org.okstar.platform.auth.keycloak;
 
-import jakarta.ws.rs.GET;
-import jakarta.ws.rs.Path;
-import org.eclipse.microprofile.rest.client.inject.RegisterRestClient;
+import io.quarkus.oidc.client.Tokens;
+import org.okstar.platform.system.sign.AuthorizationResult;
 
-@RegisterRestClient
-@Path("rpc/SysKeycloakRpc")
-public interface SysKeycloakRpc {
+public interface AuthzClientManager {
 
-    @GET
-    @Path("/keycloakConf")
-    SysKeycloakConfDTO getStackConf();
+    Tokens getAccessToken();
 
-    @GET
-    @Path("/adminConf")
-    SysKeycloakConfDTO getAdminConf();
+    AuthorizationResult authorization(String username, String password);
+
+    AuthorizationResult refresh(String refreshToken);
+
+    Boolean revoke(String accessToken);
 }

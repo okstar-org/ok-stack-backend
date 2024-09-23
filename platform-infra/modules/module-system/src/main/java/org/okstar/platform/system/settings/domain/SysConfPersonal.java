@@ -16,6 +16,8 @@ package org.okstar.platform.system.settings.domain;
 import com.google.common.collect.Maps;
 import lombok.Data;
 import org.okstar.platform.common.string.OkStringUtil;
+import org.okstar.platform.system.dto.SysConfItem;
+import org.okstar.platform.system.dto.SysPropertyDTO;
 import org.okstar.platform.system.settings.SysConfDefines;
 
 import java.util.Map;
@@ -26,7 +28,7 @@ import java.util.Map;
  */
 @Data
 public class SysConfPersonal implements SysConfItem {
-    Map<String, SysProperty> properties = Maps.newHashMap();
+    Map<String, SysPropertyDTO> properties = Maps.newHashMap();
 
     //语言，格式：zh_CN
     String language;
@@ -38,7 +40,7 @@ public class SysConfPersonal implements SysConfItem {
     }
 
     @Override
-    public void addProperty(SysProperty property) {
+    public void addProperty(SysPropertyDTO property) {
         properties.put(property.getK(), property);
         if (OkStringUtil.equals(property.getK(), "language")) {
             this.language = property.getV();

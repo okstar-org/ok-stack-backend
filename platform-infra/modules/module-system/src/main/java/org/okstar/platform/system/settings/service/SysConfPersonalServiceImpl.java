@@ -24,6 +24,7 @@ import org.okstar.platform.system.settings.domain.SysProperty;
 import org.okstar.platform.system.settings.mapper.SysPropertyMapper;
 
 import java.util.List;
+import java.util.Optional;
 
 @Transactional
 @ApplicationScoped
@@ -31,15 +32,17 @@ public class SysConfPersonalServiceImpl implements SysConfPersonalService {
 
     @Inject
     SysPropertyMapper kvMapper;
+    @Inject
+    SysPropertyService sysPropertyService;
 
     @Override
     public synchronized SysConfPersonal findDefault(SysAccount account) {
         SysConfPersonal personal = new SysConfPersonal();
-        var property = kvMapper.findByGroupDomain(SysConfDefines.CONF_GROUP_PERSONAL_PREFIX, account.getUsername())
-                .stream().findFirst();
+
+        List<SysProperty> list = sysPropertyService.findByGroupDomain(SysConfDefines.CONF_GROUP_PERSONAL_PREFIX, account.getUsername());
+        Optional<SysProperty> property = list.stream().findFirst();
         if (property.isPresent()) {
-            SysProperty kv = property.get();
-            personal.addProperty(kv);
+            personal.addProperty(sysPropertyService.toDTO(property.get()));
         } else {
             personal.setLanguage(AccountDefines.DefaultLanguage);
             save(account, personal);

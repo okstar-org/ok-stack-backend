@@ -11,7 +11,7 @@
  * /
  */
 
-package org.okstar.platform.auth.backend;
+package org.okstar.platform.auth.keycloak;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -40,9 +40,9 @@ import org.keycloak.representations.idm.authorization.AuthorizationRequest;
 import org.keycloak.representations.idm.authorization.AuthorizationResponse;
 import org.okstar.platform.common.asserts.OkAssert;
 import org.okstar.platform.common.core.exception.OkRuntimeException;
-import org.okstar.platform.common.core.web.bean.Req;
 import org.okstar.platform.common.core.web.bean.Res;
 import org.okstar.platform.common.date.OkDateUtils;
+import org.okstar.platform.common.string.OkStringUtil;
 import org.okstar.platform.system.rpc.SysKeycloakConfDTO;
 import org.okstar.platform.system.rpc.SysKeycloakRpc;
 import org.okstar.platform.system.sign.AuthorizationResult;
@@ -62,16 +62,17 @@ class AuthzClientManagerImpl implements AuthzClientManager {
     @RestClient
     SysKeycloakRpc sysKeycloakRpc;
 
+
     /**
      * 1.初始化 Authz Client(登录认证)
      */
     public AuthzClient ensureAuthzClient() {
         Log.debugf("EnsureAuthzClient ...");
-        SysKeycloakConfDTO conf = sysKeycloakRpc.getKeycloakConf();
+        SysKeycloakConfDTO conf = sysKeycloakRpc.getStackConf();
         Log.infof("Get keycloak conf: %s", conf);
 
         Configuration configuration = new Configuration(
-                conf.getAuthServerUrl(),
+                conf.getServerUrl(),
                 conf.getRealm(),
                 conf.getClientId(),
                 Map.of("secret", conf.getClientSecret()),
@@ -86,12 +87,12 @@ class AuthzClientManagerImpl implements AuthzClientManager {
     public OidcClients ensureOidcClient() {
         Log.debugf("EnsureOidcClient ...");
 
-        SysKeycloakConfDTO conf = sysKeycloakRpc.getKeycloakConf();
+        SysKeycloakConfDTO conf = sysKeycloakRpc.getStackConf();
         Log.infof("Get keycloak conf: %s", conf);
 
         OidcClientConfig cc = new OidcClientConfig();
         cc.setClientId(conf.getClientId());
-        cc.setAuthServerUrl(conf.getAuthServerUrl() + "/realms/" + conf.getRealm());
+        cc.setAuthServerUrl(conf.getServerUrl() + "/realms/" + conf.getRealm());
 
         OidcCommonConfig.Credentials credentials = new OidcCommonConfig.Credentials();
         credentials.clientSecret.setValue(conf.getClientSecret());
@@ -108,14 +109,29 @@ class AuthzClientManagerImpl implements AuthzClientManager {
     }
 
     @Override
+    public Tokens getAccessToken(){
+        try (OidcClients client = ensureOidcClient()) {
+            Map<String, String> map = Map.of();
+            Uni<Tokens> tokens = client.getClient().getTokens(map);
+            return tokens.subscribeAsCompletionStage().get();
+        } catch (IOException | ExecutionException | InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
     public AuthorizationResult authorization(String username, String password) {
         OkAssert.hasText(username, "username is empty");
         OkAssert.hasText(password, "password is empty");
 
         try {
+            Log.infof("authorization username:%s password:%s", username, OkStringUtil.abbreviate(password, 6));
             AuthzClient authzClient = ensureAuthzClient();
             AuthorizationRequest request = new AuthorizationRequest();
-            AuthorizationResponse response = authzClient.authorization(username.toLowerCase(), password).authorize(request);
+
+            String scope="roles";
+            AuthorizationResponse response = authzClient.authorization(username.toLowerCase(), password, scope).authorize(request);
+
             return AuthorizationResult.builder()
                     .session_state(response.getSessionState())
                     .accessToken(response.getToken())
@@ -124,8 +140,9 @@ class AuthzClientManagerImpl implements AuthzClientManager {
                     .refreshToken(response.getRefreshToken())
                     .refreshExpiresIn(response.getRefreshExpiresIn())
                     .build();
+
         } catch (Exception e) {
-            Log.warnf(e, "认证异常！");
+            Log.warnf(e, "authorization error: " + e.getMessage());
 
             if (e.getCause() instanceof HttpResponseException cause) {
                 int statusCode = cause.getStatusCode();

@@ -13,14 +13,22 @@
 
 package org.okstar.platform.system.rpc;
 
-import lombok.Data;
-import lombok.ToString;
+import lombok.*;
 
 @Data
+@Builder
 @ToString
+@NoArgsConstructor
+@AllArgsConstructor
 public class SysKeycloakConfDTO {
-    String authServerUrl;
-    String realm;
-    String clientId;
-    String clientSecret;
+    /**
+     * 凭证登录：client_credentials , 密码登录：password
+     */
+    private String grantType;
+    private String serverUrl;
+    private String realm;
+    private String clientId;
+    private String clientSecret;
+    private String username;
+    private String password;
 }

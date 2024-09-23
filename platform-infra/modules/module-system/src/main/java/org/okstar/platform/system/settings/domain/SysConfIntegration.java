@@ -14,6 +14,7 @@
 package org.okstar.platform.system.settings.domain;
 
 import lombok.Data;
+import org.okstar.platform.system.dto.SysConfIntegrationKeycloak;
 
 
 /**

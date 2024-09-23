@@ -11,38 +11,36 @@
  * /
  */
 
-package org.okstar.platform.system.settings.service;
+package org.okstar.platform.auth.keycloak;
 
 import org.keycloak.admin.client.Keycloak;
+import org.keycloak.admin.client.resource.AuthorizationResource;
+import org.keycloak.admin.client.resource.RolesResource;
+import org.keycloak.admin.client.resource.UsersResource;
 import org.keycloak.representations.idm.ClientRepresentation;
-import org.okstar.platform.system.dto.SysConfIntegrationKeycloak;
 import org.okstar.platform.system.rpc.SysKeycloakConfDTO;
 
-import java.util.List;
-
-public interface SysKeycloakService {
-    List<String> listRealms();
-
-    void removeRealm();
-
-    String initRealm(SysConfIntegrationKeycloak conf, String realm);
-
-    Keycloak openKeycloak();
-
-    Keycloak openKeycloak(SysConfIntegrationKeycloak config);
+public interface KeycloakService {
 
     ClientRepresentation getClient(String realm, String clientId);
 
-    String testConfig();
 
-    void clearConfig();
+    RolesResource getRoleResource(Keycloak keycloak);
 
+    UsersResource getUsersResource(Keycloak keycloak);
 
-    SysConfIntegrationKeycloak getConfig();
+    /**
+     * 构建一个Keycloak实例
+     * @return
+     */
+    Keycloak openKeycloak();
 
-    SysConfIntegrationKeycloak initConfig();
+    SysKeycloakConfDTO getAdminConfig();
 
     SysKeycloakConfDTO getStackConfig();
 
-    SysKeycloakConfDTO getAdminConfig();
+    Keycloak openKeycloak(SysKeycloakConfDTO config);
+
+    AuthorizationResource getAuthorizationResource(Keycloak keycloak);
+
 }

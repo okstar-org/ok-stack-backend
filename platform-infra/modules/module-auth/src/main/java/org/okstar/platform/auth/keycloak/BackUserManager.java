@@ -11,7 +11,7 @@
  * /
  */
 
-package org.okstar.platform.system.keycloak;
+package org.okstar.platform.auth.keycloak;
 
 import org.okstar.platform.system.dto.BackUser;
 
@@ -26,6 +26,12 @@ public interface BackUserManager {
     void resetPassword(String username, String password);
 
     List<BackUser> users();
+
+    void assignRole(String username, String roleId);
+
+    void unassignRole(String username, String roleId);
+
+    List<BackRoleDTO> listRoles(String username);
 
     Optional<BackUser> getUser(String username);
 

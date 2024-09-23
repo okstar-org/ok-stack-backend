@@ -11,21 +11,23 @@
  * /
  */
 
-package org.okstar.platform.system.rpc;
+package org.okstar.platform.auth.keycloak;
 
-import jakarta.ws.rs.GET;
-import jakarta.ws.rs.Path;
-import org.eclipse.microprofile.rest.client.inject.RegisterRestClient;
+import io.quarkus.test.junit.QuarkusTest;
+import jakarta.inject.Inject;
+import org.junit.jupiter.api.Test;
 
-@RegisterRestClient
-@Path("rpc/SysKeycloakRpc")
-public interface SysKeycloakRpc {
+import java.util.List;
 
-    @GET
-    @Path("/keycloakConf")
-    SysKeycloakConfDTO getStackConf();
 
-    @GET
-    @Path("/adminConf")
-    SysKeycloakConfDTO getAdminConf();
+@QuarkusTest
+class KeycloakUserManagerTest {
+    @Inject
+    BackUserManagerImpl keycloakUserManager;
+
+    @Test
+    void getUserRole() {
+        List<BackRoleDTO> roleDTOS = keycloakUserManager.listRoles("azpm4siwxbjg");
+        roleDTOS.forEach(System.out::println);
+    }
 }

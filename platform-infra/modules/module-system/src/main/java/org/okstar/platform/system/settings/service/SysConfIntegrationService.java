@@ -17,7 +17,7 @@ package org.okstar.platform.system.settings.service;
 import org.okstar.platform.core.service.OkService;
 import org.okstar.platform.system.settings.domain.SysConfIntegration;
 import org.okstar.platform.system.settings.domain.SysConfIntegrationIm;
-import org.okstar.platform.system.settings.domain.SysConfIntegrationKeycloak;
+import org.okstar.platform.system.dto.SysConfIntegrationKeycloak;
 import org.okstar.platform.system.settings.domain.SysConfIntegrationStack;
 
 /**

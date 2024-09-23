@@ -11,30 +11,17 @@
  * /
  */
 
-package org.okstar.platform.system.rpc;
+package org.okstar.platform.auth.keycloak;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import org.okstar.platform.common.core.web.bean.DTO;
+import lombok.*;
 
 @Data
 @Builder
-@NoArgsConstructor
+@ToString
 @AllArgsConstructor
-public class SysPropertyDTO extends DTO {
-
-    String grouping;
-
-    /**
-     * 配置所在域或范围（比如：隔离不同用户或者其他区域范围）
-     */
-    String domain;
-
-    //key
-    String k;
-
-    //value
-    String v;
+@NoArgsConstructor
+public class BackRoleDTO {
+    private String id;
+    private String name;
+    private String description;
 }

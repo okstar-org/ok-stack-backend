@@ -11,12 +11,11 @@
  * /
  */
 
-package org.okstar.platform.system.settings.domain;
+package org.okstar.platform.system.dto;
 
 import com.google.common.collect.Maps;
 import lombok.Data;
 import org.okstar.platform.common.string.OkStringUtil;
-import org.okstar.platform.system.settings.SysConfDefines;
 
 import java.util.Map;
 
@@ -26,7 +25,8 @@ import java.util.Map;
  */
 @Data
 public class SysConfIntegrationKeycloak implements SysConfItem {
-    Map<String, SysProperty> properties = Maps.newHashMap();
+
+    Map<String, SysPropertyDTO> properties = Maps.newHashMap();
 
     String serverUrl;
     String realm;
@@ -35,13 +35,18 @@ public class SysConfIntegrationKeycloak implements SysConfItem {
     String password;
     String clientSecret;
 
+    /**
+     * 集成配置组
+     */
+    String CONF_GROUP_INTEGRATION_PREFIX = "sys.conf.integration";
+
     @Override
     public String getGroup() {
-        return SysConfDefines.CONF_GROUP_INTEGRATION_PREFIX + ".keycloak";
+        return CONF_GROUP_INTEGRATION_PREFIX + ".keycloak";
     }
 
     @Override
-    public void addProperty(SysProperty property) {
+    public void addProperty(SysPropertyDTO property) {
         properties.put(property.getK(), property);
 
         if (OkStringUtil.equals(property.getK(), "server-url")) {

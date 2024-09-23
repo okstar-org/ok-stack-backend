@@ -11,21 +11,14 @@
  * /
  */
 
-package org.okstar.platform.system.rpc;
+package org.okstar.platform.auth.keycloak;
 
-import jakarta.ws.rs.GET;
-import jakarta.ws.rs.Path;
-import org.eclipse.microprofile.rest.client.inject.RegisterRestClient;
+import org.keycloak.representations.idm.RoleRepresentation;
 
-@RegisterRestClient
-@Path("rpc/SysKeycloakRpc")
-public interface SysKeycloakRpc {
+import java.util.List;
 
-    @GET
-    @Path("/keycloakConf")
-    SysKeycloakConfDTO getStackConf();
+public interface BackRoleManager {
+    List<BackRoleDTO> list();
 
-    @GET
-    @Path("/adminConf")
-    SysKeycloakConfDTO getAdminConf();
+    BackRoleDTO toDTO(RoleRepresentation representation);
 }

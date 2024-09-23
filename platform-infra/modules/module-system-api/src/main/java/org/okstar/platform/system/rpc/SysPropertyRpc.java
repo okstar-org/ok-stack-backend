@@ -15,6 +15,7 @@ package org.okstar.platform.system.rpc;
 
 import jakarta.ws.rs.*;
 import org.eclipse.microprofile.rest.client.inject.RegisterRestClient;
+import org.okstar.platform.system.dto.SysPropertyDTO;
 
 import java.util.List;
 

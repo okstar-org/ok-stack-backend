@@ -11,21 +11,28 @@
  * /
  */
 
-package org.okstar.platform.system.rpc;
+package org.okstar.platform.system.dto;
 
-import jakarta.ws.rs.GET;
-import jakarta.ws.rs.Path;
-import org.eclipse.microprofile.rest.client.inject.RegisterRestClient;
+import lombok.*;
+import org.okstar.platform.common.core.web.bean.DTO;
 
-@RegisterRestClient
-@Path("rpc/SysKeycloakRpc")
-public interface SysKeycloakRpc {
+@Getter
+@Setter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+public class SysPropertyDTO extends DTO {
 
-    @GET
-    @Path("/keycloakConf")
-    SysKeycloakConfDTO getStackConf();
+    private String grouping;
 
-    @GET
-    @Path("/adminConf")
-    SysKeycloakConfDTO getAdminConf();
+    /**
+     * 配置所在域或范围（比如：隔离不同用户或者其他区域范围）
+     */
+    private String domain;
+
+    //key
+    private String k;
+
+    //value
+    private String v;
 }

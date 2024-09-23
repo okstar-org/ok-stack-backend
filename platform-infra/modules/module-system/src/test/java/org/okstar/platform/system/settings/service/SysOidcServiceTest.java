@@ -17,7 +17,7 @@ import io.quarkus.test.junit.QuarkusTest;
 import jakarta.inject.Inject;
 import org.junit.jupiter.api.Test;
 import org.okstar.platform.system.rpc.SysKeycloakConfDTO;
-import org.okstar.platform.system.settings.domain.SysConfIntegrationKeycloak;
+import org.okstar.platform.system.dto.SysConfIntegrationKeycloak;
 
 import java.util.List;
 
@@ -68,7 +68,7 @@ class SysOidcServiceTest {
 
     @Test
     void getOidcConf(){
-        SysKeycloakConfDTO oidcConfig = sysKeycloakService.getOidcConfig();
+        SysKeycloakConfDTO oidcConfig = sysKeycloakService.getStackConfig();
         System.out.println(oidcConfig);
         assertNotNull(oidcConfig);
     }

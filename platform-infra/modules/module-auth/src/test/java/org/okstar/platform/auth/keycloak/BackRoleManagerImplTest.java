@@ -11,15 +11,21 @@
  * /
  */
 
-package org.okstar.platform.auth.backend;
+package org.okstar.platform.auth.keycloak;
 
-import org.okstar.platform.system.sign.AuthorizationResult;
+import io.quarkus.logging.Log;
+import io.quarkus.test.junit.QuarkusTest;
+import jakarta.inject.Inject;
+import org.junit.jupiter.api.Test;
 
-public interface AuthzClientManager {
+@QuarkusTest
+class BackRoleManagerImplTest {
+    @Inject BackRoleManager backRoleManager;
+    @Test
+    void list() {
+        for (BackRoleDTO role : backRoleManager.list()) {
+            Log.infof("role=%s", role);
+        }
 
-    AuthorizationResult authorization(String username, String password);
-
-    AuthorizationResult refresh(String refreshToken);
-
-    Boolean revoke(String accessToken);
+    }
 }

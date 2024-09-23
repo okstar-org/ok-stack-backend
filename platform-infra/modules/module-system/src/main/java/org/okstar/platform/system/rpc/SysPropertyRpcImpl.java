@@ -17,6 +17,7 @@ import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 import org.okstar.platform.common.bean.OkBeanUtils;
+import org.okstar.platform.system.dto.SysPropertyDTO;
 import org.okstar.platform.system.settings.domain.SysProperty;
 import org.okstar.platform.system.settings.service.SysPropertyService;
 
@@ -58,18 +59,13 @@ public class SysPropertyRpcImpl implements SysPropertyRpc {
     @Override
     public List<SysPropertyDTO> getByGroup(String group) {
         return sysPropertyService.findByGroup(group).stream()
-                .map(this::toDTO).toList();
+                .map(sysPropertyService::toDTO).toList();
     }
 
-    private SysPropertyDTO toDTO(SysProperty e) {
-        var d = new SysPropertyDTO();
-        OkBeanUtils.copyPropertiesTo(e, d);
-        return d;
-    }
 
     @Override
     public List<SysPropertyDTO> getByKey(String group, String domain, String key) {
         return sysPropertyService.findByKey(group, domain, key).stream()
-                .map(this::toDTO).toList();
+                .map(sysPropertyService::toDTO).toList();
     }
 }

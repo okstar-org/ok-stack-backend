@@ -11,21 +11,23 @@
  * /
  */
 
-package org.okstar.platform.system.rpc;
+package org.okstar.platform.auth.keycloak;
 
-import jakarta.ws.rs.GET;
-import jakarta.ws.rs.Path;
-import org.eclipse.microprofile.rest.client.inject.RegisterRestClient;
+import lombok.*;
 
-@RegisterRestClient
-@Path("rpc/SysKeycloakRpc")
-public interface SysKeycloakRpc {
+import java.util.Set;
 
-    @GET
-    @Path("/keycloakConf")
-    SysKeycloakConfDTO getStackConf();
-
-    @GET
-    @Path("/adminConf")
-    SysKeycloakConfDTO getAdminConf();
+@Data
+@Builder
+@ToString
+@AllArgsConstructor
+@NoArgsConstructor
+public class BackResourceDTO {
+    private String id;
+    private String name;
+    private String displayName;
+    private String type;
+    private Set<String> uris;
+    private String iconUri;
+    private String scopes;
 }

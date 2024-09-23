@@ -16,6 +16,8 @@ package org.okstar.platform.system.settings.domain;
 import com.google.common.collect.Maps;
 import lombok.Data;
 import org.okstar.platform.common.string.OkStringUtil;
+import org.okstar.platform.system.dto.SysConfItem;
+import org.okstar.platform.system.dto.SysPropertyDTO;
 import org.okstar.platform.system.settings.SysConfDefines;
 
 import java.util.Map;
@@ -26,7 +28,7 @@ import java.util.Map;
  */
 @Data
 public class SysConfIntegrationIm implements SysConfItem {
-    Map<String, SysProperty> properties = Maps.newHashMap();
+    Map<String, SysPropertyDTO> properties = Maps.newHashMap();
 
     String host;
 
@@ -43,7 +45,7 @@ public class SysConfIntegrationIm implements SysConfItem {
     }
 
     @Override
-    public void addProperty(SysProperty property) {
+    public void addProperty(SysPropertyDTO property) {
         properties.put(property.getK(), property);
 
         if (OkStringUtil.equalsIgnoreCase(property.getK(), "host")) {

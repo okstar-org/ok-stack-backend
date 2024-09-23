@@ -17,8 +17,10 @@ import io.quarkus.panache.common.Page;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
+import org.okstar.platform.common.bean.OkBeanUtils;
 import org.okstar.platform.common.core.web.page.OkPageResult;
 import org.okstar.platform.common.core.web.page.OkPageable;
+import org.okstar.platform.system.dto.SysPropertyDTO;
 import org.okstar.platform.system.settings.domain.SysProperty;
 import org.okstar.platform.system.settings.domain.SysProperty_;
 import org.okstar.platform.system.settings.mapper.SysPropertyMapper;
@@ -74,12 +76,17 @@ public class SysPropertyServiceImpl implements SysPropertyService {
 
     @Override
     public void deleteByGroup(String group) {
-        sysPropertyMapper.deleteByGroup( group);
+        sysPropertyMapper.deleteByGroup(group);
     }
 
     @Override
     public List<SysProperty> findByGroup(String group) {
         return sysPropertyMapper.findByGroup(group);
+    }
+
+    @Override
+    public List<SysProperty> findByGroupDomain(String group, String domain) {
+        return sysPropertyMapper.findByGroupDomain(group, domain);
     }
 
     @Override
@@ -90,5 +97,17 @@ public class SysPropertyServiceImpl implements SysPropertyService {
     @Override
     public List<SysProperty> findByKey(String group, String domain, String k) {
         return sysPropertyMapper.findByKey(group, domain, k);
+    }
+
+    @Override
+    public SysPropertyDTO toDTO(SysProperty e) {
+        var d = new SysPropertyDTO();
+        OkBeanUtils.copyPropertiesTo(e, d);
+        return d;
+    }
+
+    @Override
+    public List<SysPropertyDTO> toDTOs(List<SysProperty> ps) {
+        return ps.stream().map(this::toDTO).toList();
     }
 }

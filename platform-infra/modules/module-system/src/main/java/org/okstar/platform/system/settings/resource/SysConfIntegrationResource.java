@@ -22,7 +22,7 @@ import org.okstar.platform.common.core.web.bean.Res;
 import org.okstar.platform.system.resource.BaseResource;
 import org.okstar.platform.system.settings.domain.SysConfIntegration;
 import org.okstar.platform.system.settings.domain.SysConfIntegrationIm;
-import org.okstar.platform.system.settings.domain.SysConfIntegrationKeycloak;
+import org.okstar.platform.system.dto.SysConfIntegrationKeycloak;
 import org.okstar.platform.system.settings.domain.SysConfIntegrationStack;
 import org.okstar.platform.system.settings.service.SysConfIntegrationService;
 

@@ -14,6 +14,7 @@
 package org.okstar.platform.system.settings.service;
 
 import org.okstar.platform.common.datasource.OkJpaService;
+import org.okstar.platform.system.dto.SysPropertyDTO;
 import org.okstar.platform.system.settings.domain.SysProperty;
 
 import java.util.List;
@@ -23,7 +24,13 @@ public interface SysPropertyService extends OkJpaService<SysProperty> {
 
     List<SysProperty> findByGroup(String group);
 
+    List<SysProperty> findByGroupDomain(String group, String domain);
+
     List<SysProperty> findByKey(String group, String k);
 
     List<SysProperty> findByKey(String group, String domain, String k);
+
+    SysPropertyDTO toDTO(SysProperty p);
+
+    List<SysPropertyDTO> toDTOs(List<SysProperty> ps);
 }

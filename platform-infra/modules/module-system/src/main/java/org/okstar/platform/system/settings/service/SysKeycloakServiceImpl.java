@@ -22,20 +22,19 @@ import jakarta.enterprise.event.Observes;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
+import org.jboss.resteasy.client.jaxrs.ResteasyClient;
 import org.jboss.resteasy.client.jaxrs.internal.ResteasyClientBuilderImpl;
 import org.keycloak.admin.client.Keycloak;
 import org.keycloak.admin.client.KeycloakBuilder;
-import org.keycloak.admin.client.resource.RealmResource;
 import org.keycloak.admin.client.resource.RealmsResource;
-import org.keycloak.admin.client.resource.UsersResource;
 import org.keycloak.representations.idm.ClientRepresentation;
 import org.keycloak.representations.idm.RealmRepresentation;
 import org.keycloak.representations.idm.authorization.*;
 import org.okstar.platform.common.asserts.OkAssert;
 import org.okstar.platform.common.id.OkIdUtils;
 import org.okstar.platform.common.string.OkStringUtil;
+import org.okstar.platform.system.dto.SysConfIntegrationKeycloak;
 import org.okstar.platform.system.rpc.SysKeycloakConfDTO;
-import org.okstar.platform.system.settings.domain.SysConfIntegrationKeycloak;
 import org.okstar.platform.system.settings.domain.SysProperty;
 
 import java.net.URI;
@@ -48,6 +47,7 @@ import java.util.concurrent.TimeUnit;
 @Transactional
 @ApplicationScoped
 public class SysKeycloakServiceImpl implements SysKeycloakService {
+
     //Keycloak 用户名和密码
     private static final String DEFAULT_KC_USERNAME = "admin";
     private static final String DEFAULT_KC_PASSWORD = "okstar";
@@ -55,13 +55,12 @@ public class SysKeycloakServiceImpl implements SysKeycloakService {
     public static final String ADMIN_CLIENT_CLI = "admin-cli";
 
     @Inject
-    SysPropertyService propertyService;
-
+    private SysPropertyService propertyService;
     @Inject
-    ObjectMapper objectMapper;
-
+    private ExecutorService executorService;
     @Inject
-    ExecutorService executorService;
+    private ObjectMapper objectMapper;
+
 
     @ConfigProperty(name = "quarkus.oidc.auth-server-url",
             defaultValue = "http://localhost:18080/realms/okstar")
@@ -122,6 +121,95 @@ public class SysKeycloakServiceImpl implements SysKeycloakService {
                 }
             } while (value == null);
         });
+    }
+
+
+    private RealmRepresentation getRealm(Keycloak kc, String realm) {
+        RealmsResource realms = kc.realms();
+        for (RealmRepresentation realmRepresentation : realms.findAll()) {
+            if (OkStringUtil.equalsIgnoreCase(realmRepresentation.getRealm(), realm)) {
+                return realmRepresentation;
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public List<String> listRealms() {
+        try (Keycloak kc = openKeycloak()) {
+            RealmsResource realms = kc.realms();
+            return realms.findAll().stream().map(e -> e.getRealm()).toList();
+        }
+    }
+
+    @Override
+    public void removeRealm() {
+        try (Keycloak kc = openKeycloak()) {
+            RealmsResource realms = kc.realms();
+            realms.findAll().forEach(r -> {
+                if (!OkStringUtil.equals(r.getRealm(), MASTER_REALM)) {
+                    Log.infof("Removing realm=%s", r.getRealm());
+                    realms.realm(r.getRealm()).remove();
+                }
+            });
+        }
+    }
+
+    @Override
+    public String initRealm(SysConfIntegrationKeycloak conf, String realm) {
+        Log.infof("Initialize realm: %s", realm);
+        try (Keycloak kc = openKeycloak()) {
+            RealmsResource realms = kc.realms();
+            RealmRepresentation realmRepresentation = getRealm(kc, realm);
+            if (realmRepresentation != null) {
+                Log.infof("Found existed realm: %s", realm);
+                return realmRepresentation.getRealm();
+            }
+
+            realmRepresentation = new RealmRepresentation();
+            realmRepresentation.setRealm(realm);
+            realmRepresentation.setDisplayName(realm);
+            realmRepresentation.setEnabled(true);
+
+            initClient(conf, realmRepresentation, clientId);
+
+            // 创建realm
+            realms.create(realmRepresentation);
+
+            Log.infof("Created realm: %s", realmRepresentation.getRealm());
+            return realmRepresentation.getRealm();
+        }
+    }
+
+
+    @Override
+    public Keycloak openKeycloak() {
+        SysConfIntegrationKeycloak config = getConfig();
+        if (config == null) {
+            Log.warn("Keycloak config not found!");
+            return null;
+        }
+        return openKeycloak(config);
+    }
+
+    @Override
+    public Keycloak openKeycloak(SysConfIntegrationKeycloak config) {
+        OkAssert.notNull(config, "Invalid configuration!");
+
+        var builder = KeycloakBuilder.builder()
+                .serverUrl(config.getServerUrl())
+                .username(config.getUsername())
+                .password(config.getPassword())
+                .realm(config.getRealm())
+                .clientId(config.getClientId())
+                .clientSecret(config.getClientSecret());
+
+        Keycloak keycloak = builder
+                .resteasyClient(buildClient())
+                .build();
+
+        Log.infof("Opened Keycloak %s", keycloak);
+        return keycloak;
     }
 
     public void initClient(SysConfIntegrationKeycloak conf, RealmRepresentation realm, String clientId) {
@@ -185,7 +273,6 @@ public class SysKeycloakServiceImpl implements SysKeycloakService {
         Log.infof("Initialized client: %s", clientId);
     }
 
-
     @Override
     public ClientRepresentation getClient(String realm, String clientId) {
         try (Keycloak kc = openKeycloak()) {
@@ -198,7 +285,7 @@ public class SysKeycloakServiceImpl implements SysKeycloakService {
                 return null;
             }
             for (ClientRepresentation client : clients) {
-                if (client.getClientId().equals(this.clientId)) {
+                if (client.getClientId().equals(clientId)) {
                     return client;
                 }
             }
@@ -206,61 +293,17 @@ public class SysKeycloakServiceImpl implements SysKeycloakService {
         }
     }
 
-    @Override
-    public List<String> listRealms() {
-        try (Keycloak kc = openKeycloak()) {
-            RealmsResource realms = kc.realms();
-            return realms.findAll().stream().map(e -> e.getRealm()).toList();
-        }
+    public ResteasyClient buildClient() {
+        return new ResteasyClientBuilderImpl().connectionPoolSize(10).build();
     }
 
     @Override
-    public void removeRealm() {
-        try (Keycloak kc = openKeycloak()) {
-            RealmsResource realms = kc.realms();
-            realms.findAll().forEach(r -> {
-                if (!OkStringUtil.equals(r.getRealm(), MASTER_REALM)) {
-                    Log.infof("Removing realm=%s", r.getRealm());
-                    realms.realm(r.getRealm()).remove();
-                }
-            });
+    public String testConfig() {
+        Log.info("Test Keycloak config");
+        try (var kc = openKeycloak()) {
+            if (kc == null) return null;
+            return kc.serverInfo().getInfo().getSystemInfo().getVersion();
         }
-    }
-
-    public String initRealm(SysConfIntegrationKeycloak conf, String realm) {
-        Log.infof("Initialize realm: %s", realm);
-        try (Keycloak kc = openKeycloak()) {
-            RealmsResource realms = kc.realms();
-            RealmRepresentation realmRepresentation = getRealm(kc, realm);
-            if (realmRepresentation != null) {
-                Log.infof("Found existed realm: %s", realm);
-                return realmRepresentation.getRealm();
-            }
-
-            realmRepresentation = new RealmRepresentation();
-            realmRepresentation.setRealm(realm);
-            realmRepresentation.setDisplayName(realm);
-            realmRepresentation.setEnabled(true);
-
-            initClient(conf, realmRepresentation, clientId);
-
-            // 创建realm
-            realms.create(realmRepresentation);
-
-            Log.infof("Created realm: %s", realmRepresentation.getRealm());
-            return realmRepresentation.getRealm();
-        }
-    }
-
-
-    private RealmRepresentation getRealm(Keycloak kc, String realm) {
-        RealmsResource realms = kc.realms();
-        for (RealmRepresentation realmRepresentation : realms.findAll()) {
-            if (OkStringUtil.equalsIgnoreCase(realmRepresentation.getRealm(), realm)) {
-                return realmRepresentation;
-            }
-        }
-        return null;
     }
 
 
@@ -270,12 +313,39 @@ public class SysKeycloakServiceImpl implements SysKeycloakService {
         propertyService.deleteByGroup(keycloak.getGroup());
     }
 
+    @Override
+    public SysKeycloakConfDTO getStackConfig() {
+        SysConfIntegrationKeycloak config = getConfig();
+        if (config == null) return null;
+        SysKeycloakConfDTO dto = new SysKeycloakConfDTO();
+        dto.setRealm(realm);
+        dto.setClientId(clientId);
+        dto.setServerUrl(config.getServerUrl());
+        dto.setClientSecret(config.getClientSecret());
+        dto.setGrantType("client_credentials");
+        return dto;
+    }
+
+
+    @Override
+    public SysKeycloakConfDTO getAdminConfig() {
+        SysConfIntegrationKeycloak config = getConfig();
+        if (config == null) return null;
+        SysKeycloakConfDTO dto = new SysKeycloakConfDTO();
+        dto.setServerUrl(config.getServerUrl());
+        dto.setRealm(MASTER_REALM);
+        dto.setClientId(ADMIN_CLIENT_CLI);
+        dto.setUsername(DEFAULT_KC_USERNAME);
+        dto.setPassword(DEFAULT_KC_PASSWORD);
+        dto.setGrantType("password");
+        return dto;
+    }
 
     @Override
     public SysConfIntegrationKeycloak getConfig() {
         SysConfIntegrationKeycloak conf = new SysConfIntegrationKeycloak();
         List<SysProperty> kvs = propertyService.findByGroup(conf.getGroup());
-        conf.addProperties(kvs);
+        conf.addProperties(kvs.stream().map(propertyService::toDTO).toList());
         conf.setServerUrl(serverUrl);
         return conf;
     }
@@ -370,60 +440,4 @@ public class SysKeycloakServiceImpl implements SysKeycloakService {
     }
 
 
-    @Override
-    public String testConfig() {
-        Log.info("Test OIDC config");
-        try (var kc = openKeycloak()) {
-            if (kc == null) return null;
-            return kc.serverInfo().getInfo().getSystemInfo().getVersion();
-        }
-    }
-
-    @Override
-    public SysKeycloakConfDTO getOidcConfig() {
-        SysConfIntegrationKeycloak config = getConfig();
-        if (config == null) return null;
-        SysKeycloakConfDTO dto = new SysKeycloakConfDTO();
-        dto.setRealm(realm);
-        dto.setClientId(clientId);
-        dto.setAuthServerUrl(config.getServerUrl());
-        dto.setClientSecret(config.getClientSecret());
-        return dto;
-    }
-
-    @Override
-    public UsersResource getUsersResource(Keycloak keycloak) {
-        RealmResource realm = keycloak.realms().realm(this.realm);
-        return realm.users();
-    }
-
-    @Override
-    public Keycloak openKeycloak() {
-        SysConfIntegrationKeycloak config = getConfig();
-        if (config == null) {
-            Log.warn("Keycloak config not found!");
-            return null;
-        }
-        return openKeycloak(config);
-    }
-
-    @Override
-    public Keycloak openKeycloak(SysConfIntegrationKeycloak config) {
-        OkAssert.notNull(config, "Invalid configuration!");
-
-        var builder = KeycloakBuilder.builder()
-                .serverUrl(config.getServerUrl())
-                .username(config.getUsername())
-                .password(config.getPassword())
-                .realm(config.getRealm())
-                .clientId(config.getClientId())
-                .clientSecret(config.getClientSecret());
-
-        Keycloak keycloak = builder
-                .resteasyClient(new ResteasyClientBuilderImpl().connectionPoolSize(10).build())
-                .build();
-
-        Log.infof("Opened Keycloak %s", keycloak);
-        return keycloak;
-    }
 }

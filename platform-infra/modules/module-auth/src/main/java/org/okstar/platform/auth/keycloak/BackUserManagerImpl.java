@@ -11,7 +11,7 @@
  * /
  */
 
-package org.okstar.platform.system.keycloak;
+package org.okstar.platform.auth.keycloak;
 
 import io.quarkus.logging.Log;
 import io.smallrye.common.constraint.Assert;
@@ -22,24 +22,81 @@ import jakarta.ws.rs.BadRequestException;
 import jakarta.ws.rs.core.Response;
 import org.jboss.resteasy.client.exception.ResteasyBadRequestException;
 import org.keycloak.admin.client.Keycloak;
+import org.keycloak.admin.client.resource.RoleMappingResource;
 import org.keycloak.admin.client.resource.UserResource;
 import org.keycloak.admin.client.resource.UsersResource;
-import org.keycloak.representations.idm.CredentialRepresentation;
-import org.keycloak.representations.idm.UserRepresentation;
+import org.keycloak.representations.idm.*;
 import org.okstar.platform.common.core.exception.OkRuntimeException;
 import org.okstar.platform.common.asserts.OkAssert;
 import org.okstar.platform.system.dto.BackUser;
-import org.okstar.platform.system.settings.service.SysKeycloakService;
 
+
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
 @ApplicationScoped
-public class KeycloakUserManager implements BackUserManager {
+public class BackUserManagerImpl implements BackUserManager {
 
     @Inject
-    SysKeycloakService keycloakService;
+    KeycloakService keycloakService;
+    @Inject
+    BackRoleManager backRoleManager;
+
+    @Override
+    public void assignRole(String username, String roleId){
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public void unassignRole(String username, String roleId){
+        throw new UnsupportedOperationException();
+    }
+
+    /**
+     * get user roles
+     *
+     * @param username
+     * @return
+     */
+    @Override
+    public List<BackRoleDTO> listRoles(String username) {
+        Log.infof("Get user role for user:%s", username);
+
+        Optional<BackUser> backUser = getUser(username);
+        if (backUser.isEmpty()) {
+            Log.warnf("User:%s is not exist", username);
+            return List.of();
+        }
+
+        List<BackRoleDTO> list = new ArrayList<>();
+        try (Keycloak keycloak = keycloakService.openKeycloak()) {
+            UsersResource usersResource = keycloakService.getUsersResource(keycloak);
+            UserResource userResource = usersResource.get(backUser.get().getId());
+            RoleMappingResource roles = userResource.roles();
+            MappingsRepresentation all = roles.getAll();
+            Map<String, ClientMappingsRepresentation> clientMappings = all.getClientMappings();
+            if (clientMappings != null) {
+                clientMappings.forEach((c, k) -> {
+                    Log.debugf("%s=>%s", c, k);
+                    List<BackRoleDTO> dtos = k.getMappings().stream().map(backRoleManager::toDTO).toList();
+                    list.addAll(dtos);
+                });
+            }
+
+            List<RoleRepresentation> realmRoles = all.getRealmMappings();
+            if (realmRoles != null) {
+                realmRoles.forEach((k) -> {
+                    Log.debugf("realm role=>%s", k);
+                    list.add(backRoleManager.toDTO(k));
+                });
+            }
+        }
+
+        return list;
+    }
 
 
     /**
@@ -87,13 +144,15 @@ public class KeycloakUserManager implements BackUserManager {
         try (Keycloak keycloak = keycloakService.openKeycloak()) {
             UsersResource usersResource = keycloakService.getUsersResource(keycloak);
             return usersResource.list().stream()//
-                    .map(KeycloakUserManager::toBackend)//
+                    .map(BackUserManagerImpl::toBackend)//
                     .collect(Collectors.toList());
         }
     }
 
+
     /**
-     * tested
+     * get user
+     *
      * @param username
      * @return
      */
@@ -103,7 +162,7 @@ public class KeycloakUserManager implements BackUserManager {
         try (Keycloak keycloak = keycloakService.openKeycloak()) {
             UsersResource usersResource = keycloakService.getUsersResource(keycloak);
             List<UserRepresentation> list = usersResource.search(username);
-            return list.stream().map(KeycloakUserManager::toBackend).toList().stream().findFirst();
+            return list.stream().map(BackUserManagerImpl::toBackend).toList().stream().findFirst();
         }
     }
 
@@ -132,7 +191,7 @@ public class KeycloakUserManager implements BackUserManager {
                 cr.setValue(user.getPassword());
                 UserResource userResource = usersResource.get(userRepresentation.getId());
                 userResource.resetPassword(cr);
-            }).findFirst().map(KeycloakUserManager::toBackend).orElse(null);
+            }).findFirst().map(BackUserManagerImpl::toBackend).orElse(null);
 
             Log.infof("User is:%s", u);
             return u;

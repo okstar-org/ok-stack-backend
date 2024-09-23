@@ -11,25 +11,10 @@
  * /
  */
 
-package org.okstar.platform.system.settings.domain;
+package org.okstar.platform.auth.keycloak;
 
 import java.util.List;
-import java.util.Map;
 
-/**
- * 集成配置接口
- */
-public interface SysConfItem {
-    /**
-     * 配置组
-     */
-    String getGroup();
-
-    Map<String, SysProperty> getProperties() ;
-
-    void addProperty(SysProperty property);
-
-    default void addProperties(List<SysProperty> properties) {
-        properties.forEach(this::addProperty);
-    }
+public interface BackResourceManager {
+    List<BackResourceDTO> list();
 }

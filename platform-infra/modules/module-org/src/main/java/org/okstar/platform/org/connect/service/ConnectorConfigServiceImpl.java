@@ -18,7 +18,7 @@ import jakarta.inject.Inject;
 import org.eclipse.microprofile.rest.client.inject.RestClient;
 import org.okstar.platform.org.connect.ConnectorDefines;
 import org.okstar.platform.org.connect.domain.OrgIntegrateConf;
-import org.okstar.platform.system.rpc.SysPropertyDTO;
+import org.okstar.platform.system.dto.SysPropertyDTO;
 import org.okstar.platform.system.rpc.SysPropertyRpc;
 
 import java.util.Arrays;

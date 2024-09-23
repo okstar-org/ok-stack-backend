@@ -72,6 +72,13 @@
             <groupId>io.quarkus</groupId>
             <artifactId>quarkus-oidc-client</artifactId>
         </dependency>
+
+
+        <dependency>
+            <groupId>io.quarkus</groupId>
+            <artifactId>quarkus-keycloak-admin-client</artifactId>
+        </dependency>
+
         <dependency>
             <groupId>org.okstar.platform</groupId>
             <artifactId>common-jpa</artifactId>

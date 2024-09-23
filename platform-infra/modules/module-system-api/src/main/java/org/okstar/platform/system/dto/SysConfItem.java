@@ -11,21 +11,25 @@
  * /
  */
 
-package org.okstar.platform.system.rpc;
+package org.okstar.platform.system.dto;
 
-import jakarta.ws.rs.GET;
-import jakarta.ws.rs.Path;
-import org.eclipse.microprofile.rest.client.inject.RegisterRestClient;
+import java.util.List;
+import java.util.Map;
 
-@RegisterRestClient
-@Path("rpc/SysKeycloakRpc")
-public interface SysKeycloakRpc {
+/**
+ * 集成配置接口
+ */
+public interface SysConfItem {
+    /**
+     * 配置组
+     */
+    String getGroup();
 
-    @GET
-    @Path("/keycloakConf")
-    SysKeycloakConfDTO getStackConf();
+    Map<String, SysPropertyDTO> getProperties() ;
 
-    @GET
-    @Path("/adminConf")
-    SysKeycloakConfDTO getAdminConf();
+    void addProperty(SysPropertyDTO property);
+
+    default void addProperties(List<SysPropertyDTO> properties) {
+        properties.forEach(this::addProperty);
+    }
 }

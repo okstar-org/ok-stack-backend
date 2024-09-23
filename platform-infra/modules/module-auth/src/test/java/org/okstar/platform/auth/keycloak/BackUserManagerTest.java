@@ -11,7 +11,7 @@
  * /
  */
 
-package org.okstar.platform.system.keycloak;
+package org.okstar.platform.auth.keycloak;
 
 import io.quarkus.logging.Log;
 import io.quarkus.test.junit.QuarkusTest;

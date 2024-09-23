@@ -31,6 +31,7 @@ import org.okstar.platform.core.rpc.RpcAssert;
 import org.okstar.platform.core.rpc.RpcResult;
 import org.okstar.platform.org.dto.Org0;
 import org.okstar.platform.org.rpc.OrgRpc;
+import org.okstar.platform.system.dto.SysConfIntegrationKeycloak;
 import org.okstar.platform.system.settings.domain.*;
 
 import java.io.IOException;
@@ -58,17 +59,17 @@ public class SysConfIntegrationServiceImpl implements SysConfIntegrationService 
 
         //IM
         SysConfIntegrationIm im = new SysConfIntegrationIm();
-        im.addProperties(propertyService.findByGroup(im.getGroup()));
+        im.addProperties(propertyService.toDTOs(propertyService.findByGroup(im.getGroup())));
         integration.setIm(im);
 
         //Stack
         SysConfIntegrationStack stack = new SysConfIntegrationStack();
-        stack.addProperties(propertyService.findByGroup(stack.getGroup()));
+        stack.addProperties(propertyService.toDTOs(propertyService.findByGroup(stack.getGroup())));
         integration.setStack(stack);
 
         //Keycloak
         SysConfIntegrationKeycloak keycloak = new SysConfIntegrationKeycloak();
-        keycloak.addProperties(propertyService.findByGroup(keycloak.getGroup()));
+        keycloak.addProperties(propertyService.toDTOs(propertyService.findByGroup(keycloak.getGroup())));
         integration.setKeycloak(keycloak);
         return integration;
     }
