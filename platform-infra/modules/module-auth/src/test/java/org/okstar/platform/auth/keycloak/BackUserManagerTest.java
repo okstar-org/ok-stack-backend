@@ -18,10 +18,13 @@ import io.quarkus.test.junit.QuarkusTest;
 import jakarta.inject.Inject;
 import org.junit.jupiter.api.Test;
 
+import java.util.List;
 
 
 @QuarkusTest
 class BackUserManagerTest {
+
+    public static final String USERNAME = "azpm4siwxbjg";
 
     @Inject
     BackUserManager backUserManager;
@@ -38,6 +41,17 @@ class BackUserManagerTest {
                     userRepresentation.getLastName(),
                     userRepresentation.getEmail());
         });
+    }
+
+    @Test
+    void userRoles() {
+
+            Log.infof("user: %s roles:", USERNAME);
+            List<BackRoleDTO> roleDTOS = backUserManager.listRoles(USERNAME);
+            roleDTOS.forEach(roleDTO -> {
+                Log.infof("\tRole:%s", roleDTO.getName());
+            });
+
     }
 
 

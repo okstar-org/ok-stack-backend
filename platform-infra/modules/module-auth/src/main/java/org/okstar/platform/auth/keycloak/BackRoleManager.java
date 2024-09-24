@@ -14,6 +14,7 @@
 package org.okstar.platform.auth.keycloak;
 
 import org.keycloak.representations.idm.RoleRepresentation;
+import org.okstar.platform.common.core.web.page.OkPageable;
 
 import java.util.List;
 
@@ -21,4 +22,6 @@ public interface BackRoleManager {
     List<BackRoleDTO> list();
 
     BackRoleDTO toDTO(RoleRepresentation representation);
+
+    List<BackRoleDTO> page(OkPageable pageable);
 }

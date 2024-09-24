@@ -16,6 +16,7 @@ package org.okstar.platform.auth.keycloak;
 import io.quarkus.test.junit.QuarkusTest;
 import jakarta.inject.Inject;
 import org.junit.jupiter.api.Test;
+import org.okstar.platform.common.core.web.page.OkPageable;
 
 import java.util.List;
 
@@ -28,5 +29,12 @@ class BackResourceManagerImplTest {
     void list() {
         List<BackResourceDTO> list = backResourceManager.list();
         list.forEach(System.out::println);
+    }
+
+    @Test
+    void page(){
+        OkPageable p = new OkPageable(0, 10);
+        List<BackResourceDTO> page = backResourceManager.page(p, null, null, null, null, null);
+        page.forEach(System.out::println);
     }
 }

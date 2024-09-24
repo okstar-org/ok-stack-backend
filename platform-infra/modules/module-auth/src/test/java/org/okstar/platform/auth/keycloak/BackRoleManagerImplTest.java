@@ -17,15 +17,24 @@ import io.quarkus.logging.Log;
 import io.quarkus.test.junit.QuarkusTest;
 import jakarta.inject.Inject;
 import org.junit.jupiter.api.Test;
+import org.okstar.platform.common.core.web.page.OkPageable;
+
+import java.util.List;
 
 @QuarkusTest
 class BackRoleManagerImplTest {
     @Inject BackRoleManager backRoleManager;
+
+    @Test
+    void page(){
+        OkPageable p = new OkPageable(0, 10);
+        List<BackRoleDTO> list = backRoleManager.page(p);
+        list.forEach(role -> Log.infof("role=%s", role));
+    }
+
     @Test
     void list() {
-        for (BackRoleDTO role : backRoleManager.list()) {
-            Log.infof("role=%s", role);
-        }
-
+        List<BackRoleDTO> list = backRoleManager.list();
+        list.forEach(role -> Log.infof("role=%s", role));
     }
 }

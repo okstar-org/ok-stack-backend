@@ -18,6 +18,7 @@ import jakarta.inject.Inject;
 import org.keycloak.admin.client.Keycloak;
 import org.keycloak.admin.client.resource.RolesResource;
 import org.keycloak.representations.idm.RoleRepresentation;
+import org.okstar.platform.common.core.web.page.OkPageable;
 
 import java.util.List;
 
@@ -25,6 +26,14 @@ import java.util.List;
 public class BackRoleManagerImpl implements BackRoleManager {
     @Inject
     KeycloakService keycloakService;
+
+    public List<BackRoleDTO> page(OkPageable pageable) {
+        try (Keycloak keycloak = keycloakService.openKeycloak()) {
+            RolesResource roleResource = keycloakService.getRoleResource(keycloak);
+            return roleResource.list(pageable.getPageIndex() * pageable.getPageSize(), pageable.getPageSize())//
+                    .stream().map(this::toDTO).toList();
+        }
+    }
 
     @Override
     public List<BackRoleDTO> list() {
@@ -42,4 +51,6 @@ public class BackRoleManagerImpl implements BackRoleManager {
                 .name(representation.getName())
                 .id(representation.getId()).build();
     }
+
+
 }

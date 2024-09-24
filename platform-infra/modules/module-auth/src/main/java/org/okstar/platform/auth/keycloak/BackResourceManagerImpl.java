@@ -18,6 +18,7 @@ import jakarta.inject.Inject;
 import org.keycloak.admin.client.Keycloak;
 import org.keycloak.admin.client.resource.AuthorizationResource;
 import org.keycloak.representations.idm.authorization.ResourceRepresentation;
+import org.okstar.platform.common.core.web.page.OkPageable;
 
 import java.util.List;
 
@@ -31,7 +32,26 @@ public class BackResourceManagerImpl implements BackResourceManager {
     public List<BackResourceDTO> list() {
         try (Keycloak keycloak = keycloakService.openKeycloak()) {
             AuthorizationResource authorization = keycloakService.getAuthorizationResource(keycloak);
-          return authorization.resources().resources().stream().map(this::toDTO).toList();
+            return authorization.resources().resources().stream().map(this::toDTO).toList();
+        }
+    }
+
+    @Override
+    public List<BackResourceDTO> page(OkPageable pageable,
+                                      String name,
+                                      String uri,
+                                      String owner,
+                                      String type,
+                                      String scope
+    ) {
+        try (Keycloak keycloak = keycloakService.openKeycloak()) {
+            AuthorizationResource authorization = keycloakService.getAuthorizationResource(keycloak);
+            return authorization.resources()
+                    .find(name, uri, owner, type, scope,
+                    pageable.getPageIndex() * pageable.getPageSize(),
+                    pageable.getPageSize())
+                    .stream()
+                    .map(this::toDTO).toList();
         }
     }
 

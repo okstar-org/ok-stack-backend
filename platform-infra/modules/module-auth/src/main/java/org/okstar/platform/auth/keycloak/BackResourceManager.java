@@ -13,8 +13,19 @@
 
 package org.okstar.platform.auth.keycloak;
 
+import org.okstar.platform.common.core.web.page.OkPageable;
+
 import java.util.List;
 
 public interface BackResourceManager {
+
     List<BackResourceDTO> list();
+
+    List<BackResourceDTO> page(OkPageable pageable,
+                               String name,
+                               String uri,
+                               String owner,
+                               String type,
+                               String scope
+    );
 }

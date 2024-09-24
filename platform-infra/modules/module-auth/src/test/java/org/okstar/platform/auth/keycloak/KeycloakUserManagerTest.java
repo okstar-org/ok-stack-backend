@@ -22,12 +22,13 @@ import java.util.List;
 
 @QuarkusTest
 class KeycloakUserManagerTest {
+    public static final String USERNAME = "azpm4siwxbjg";
     @Inject
     BackUserManagerImpl keycloakUserManager;
 
     @Test
     void getUserRole() {
-        List<BackRoleDTO> roleDTOS = keycloakUserManager.listRoles("azpm4siwxbjg");
+        List<BackRoleDTO> roleDTOS = keycloakUserManager.listRoles(USERNAME);
         roleDTOS.forEach(System.out::println);
     }
 }

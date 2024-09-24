@@ -76,6 +76,10 @@ public class BackUserManagerImpl implements BackUserManager {
             UsersResource usersResource = keycloakService.getUsersResource(keycloak);
             UserResource userResource = usersResource.get(backUser.get().getId());
             RoleMappingResource roles = userResource.roles();
+            if (roles == null) {
+                return List.of();
+            }
+
             MappingsRepresentation all = roles.getAll();
             Map<String, ClientMappingsRepresentation> clientMappings = all.getClientMappings();
             if (clientMappings != null) {
