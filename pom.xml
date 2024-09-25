@@ -44,11 +44,9 @@
         <surefire-plugin.version>3.1.2</surefire-plugin.version>
         <resources-plugin.version>3.3.1</resources-plugin.version>
 
-        <quarkus.platform.version>3.5.3</quarkus.platform.version>
+        <quarkus.platform.version>3.6.9</quarkus.platform.version>
         <quarkus.platform.group-id>io.quarkus.platform</quarkus.platform.group-id>
         <quarkus.platform.artifact-id>quarkus-bom</quarkus.platform.artifact-id>
-
-
 
 
         <quarkus.datasource.db-kind>h2</quarkus.datasource.db-kind>
@@ -63,11 +61,17 @@
         <quarkus.hibernate-orm.log.sql>true</quarkus.hibernate-orm.log.sql>
 
         <quarkus.keycloak.admin-client.server-url>http://localhost:8043</quarkus.keycloak.admin-client.server-url>
+
         <quarkus.oidc.auth-server-url>http://localhost:8043/realms/okstar</quarkus.oidc.auth-server-url>
+        <quarkus.oidc.client-id>ok-stack</quarkus.oidc.client-id>
         <quarkus.oidc.credentials.secret>i7CucuLUJYa4Tmn767GtdeQATCFgRH2e</quarkus.oidc.credentials.secret>
 
         <quarkus.vertx.max-worker-execute-time>120s</quarkus.vertx.max-worker-execute-time>
         <quarkus.vertx.max-event-loop-execute-time>600s</quarkus.vertx.max-event-loop-execute-time>
+
+        <quarkus.log.level>DEBUG</quarkus.log.level>
+        <quarkus.profile>debug</quarkus.profile>
+        <quarkus.log.console.enable>true</quarkus.log.console.enable>
     </properties>
 
     <profiles>
@@ -82,8 +86,8 @@
                 <quarkus.datasource.jdbc.url>jdbc:mariadb://localhost:13306</quarkus.datasource.jdbc.url>
                 <quarkus.datasource.jdbc.driver>org.mariadb.jdbc.Driver</quarkus.datasource.jdbc.driver>
                 <quarkus.hibernate-orm.dialect>org.hibernate.dialect.MariaDBDialect</quarkus.hibernate-orm.dialect>
-                <quarkus.oidc.auth-server-url>https://kc.localhost:18443/realms/okstar</quarkus.oidc.auth-server-url>
-                <quarkus.oidc.client-id>okstack</quarkus.oidc.client-id>
+                <quarkus.oidc.auth-server-url>https://kc.localhost:18443/realms/ok-star</quarkus.oidc.auth-server-url>
+                <quarkus.oidc.client-id>ok-stack</quarkus.oidc.client-id>
             </properties>
         </profile>
 

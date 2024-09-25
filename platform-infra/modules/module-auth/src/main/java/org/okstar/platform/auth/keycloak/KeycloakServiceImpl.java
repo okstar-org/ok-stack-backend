@@ -51,7 +51,6 @@ public class KeycloakServiceImpl implements KeycloakService {
         String realm = config.getRealm();
         String clientId = config.getClientId();
 
-
         RealmResource realmResource = keycloak.realms().realm(realm);
         ClientsResource clientsResource = realmResource.clients();
         List<ClientRepresentation> list = clientsResource.findByClientId(clientId);
@@ -90,6 +89,7 @@ public class KeycloakServiceImpl implements KeycloakService {
             return all.get(0);
         }
     }
+
 
     private RealmRepresentation getRealm(Keycloak kc, String realm) {
         RealmsResource realms = kc.realms();

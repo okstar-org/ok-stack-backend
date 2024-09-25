@@ -11,29 +11,10 @@
  * /
  */
 
-package org.okstar.platform.auth.resource;
-
-
-import jakarta.inject.Inject;
-import jakarta.ws.rs.POST;
-import jakarta.ws.rs.Path;
-import org.okstar.platform.auth.keycloak.BackResourceDTO;
-import org.okstar.platform.auth.keycloak.BackResourceManager;
-import org.okstar.platform.common.core.web.bean.Res;
+package org.okstar.platform.auth.keycloak;
 
 import java.util.List;
 
-@Path("resource")
-public class ResourceResource extends BaseResource {
-
-    @Inject
-    BackResourceManager resourceManager;
-
-    @POST
-    @Path("list")
-    public Res<List<BackResourceDTO>> list() {
-        var list = resourceManager.list();
-        return Res.ok(list);
-    }
-
+public interface BackPermissionManager {
+    List<BackPermissionDTO> list();
 }

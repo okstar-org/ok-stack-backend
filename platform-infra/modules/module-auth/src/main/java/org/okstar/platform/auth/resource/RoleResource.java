@@ -17,22 +17,22 @@ package org.okstar.platform.auth.resource;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
-import org.okstar.platform.auth.keycloak.BackResourceDTO;
-import org.okstar.platform.auth.keycloak.BackResourceManager;
+import org.okstar.platform.auth.keycloak.BackRoleDTO;
+import org.okstar.platform.auth.keycloak.BackRoleManager;
 import org.okstar.platform.common.core.web.bean.Res;
 
 import java.util.List;
 
-@Path("resource")
-public class ResourceResource extends BaseResource {
+@Path("role")
+public class RoleResource extends BaseResource {
 
     @Inject
-    BackResourceManager resourceManager;
+    BackRoleManager roleManager;
 
     @POST
     @Path("list")
-    public Res<List<BackResourceDTO>> list() {
-        var list = resourceManager.list();
+    public Res<List<BackRoleDTO>> list() {
+        var list = roleManager.list();
         return Res.ok(list);
     }
 

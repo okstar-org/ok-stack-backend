@@ -11,29 +11,22 @@
  * /
  */
 
-package org.okstar.platform.auth.resource;
+package org.okstar.platform.auth.keycloak;
 
-
+import io.quarkus.test.junit.QuarkusTest;
 import jakarta.inject.Inject;
-import jakarta.ws.rs.POST;
-import jakarta.ws.rs.Path;
-import org.okstar.platform.auth.keycloak.BackResourceDTO;
-import org.okstar.platform.auth.keycloak.BackResourceManager;
-import org.okstar.platform.common.core.web.bean.Res;
+import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
-@Path("resource")
-public class ResourceResource extends BaseResource {
-
+@QuarkusTest
+class BackPermissionManagerImplTest {
     @Inject
-    BackResourceManager resourceManager;
+    BackPermissionManager backPermissionManager;
 
-    @POST
-    @Path("list")
-    public Res<List<BackResourceDTO>> list() {
-        var list = resourceManager.list();
-        return Res.ok(list);
+    @Test
+    void list() {
+        List<BackPermissionDTO> list = backPermissionManager.list();
+        list.forEach(System.out::println);
     }
-
 }
