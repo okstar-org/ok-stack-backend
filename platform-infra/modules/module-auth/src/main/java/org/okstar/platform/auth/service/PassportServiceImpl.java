@@ -126,12 +126,14 @@ public class PassportServiceImpl implements PassportService {
 
     @Override
     public AuthorizationResult signIn(SignInForm signInForm) {
-        Log.infof("signIn:%s", signInForm);
+        Log.debugf("signIn:%s", signInForm);
         String account = signInForm.getAccount();
 
         //获取帐号
+        Log.infof("Get account: %s", account);
         SysAccountDTO account0 = getAccount(account);
-        Log.debugf("getAccount=>%s", account0);
+        Log.debugf("getAccount=> %s", account0);
+
         if (account0 == null) {
             throw new NotFoundException("帐号不存在！");
         }

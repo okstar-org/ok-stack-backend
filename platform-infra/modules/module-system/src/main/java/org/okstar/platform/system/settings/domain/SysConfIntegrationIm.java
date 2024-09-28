@@ -28,16 +28,15 @@ import java.util.Map;
  */
 @Data
 public class SysConfIntegrationIm implements SysConfItem {
-    Map<String, SysPropertyDTO> properties = Maps.newHashMap();
+    private Map<String, SysPropertyDTO> properties = Maps.newHashMap();
 
-    String host;
-
-    //服务端口
-    int port;
+    private String host;
 
     //管理端口
-    int adminPort;
-    String apiSecret;
+    private int adminPort;
+
+    //密钥
+    private String apiSecret;
 
     @Override
     public String getGroup() {

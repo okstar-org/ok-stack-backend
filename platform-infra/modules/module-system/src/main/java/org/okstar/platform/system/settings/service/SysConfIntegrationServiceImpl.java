@@ -225,7 +225,7 @@ public class SysConfIntegrationServiceImpl implements SysConfIntegrationService 
     @Override
     public boolean testIm(SysConfIntegrationIm conf) {
         try {
-            URL url = new URL("http", conf.getHost(), conf.getPort(), "");
+            URL url = new URL("http", conf.getHost(), conf.getAdminPort(), "");
             String content = OkWebUtil.get(url.toURI());
             Log.infof(content);
             return OkStringUtil.isNotEmpty(content);
