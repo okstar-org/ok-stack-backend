@@ -84,6 +84,7 @@ public class SysConfIntegrationResource extends BaseResource {
     @POST
     @Path("/im/test")
     public Res<Boolean> testIm(SysConfIntegrationIm conf) {
+        conf.setPort(5222);
         boolean y = integrationService.testIm(conf);
         return Res.ok(y);
     }

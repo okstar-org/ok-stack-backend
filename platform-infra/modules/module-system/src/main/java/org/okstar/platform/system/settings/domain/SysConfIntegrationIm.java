@@ -32,10 +32,11 @@ public class SysConfIntegrationIm implements SysConfItem {
 
     private String host;
 
+    //服务端口(默认5222)
+    private int port = 5222;
+
     //管理端口
     private int adminPort;
-
-    //密钥
     private String apiSecret;
 
     @Override
@@ -51,6 +52,8 @@ public class SysConfIntegrationIm implements SysConfItem {
             setHost(property.getV());
         } else if (OkStringUtil.equalsIgnoreCase(property.getK(), "admin-port")) {
             setAdminPort(Integer.parseInt(property.getV()));
+        } else if (OkStringUtil.equalsIgnoreCase(property.getK(), "port")) {
+            setPort(Integer.parseInt(property.getV()));
         } else if (OkStringUtil.equalsIgnoreCase(property.getK(), "api-secret")) {
             setApiSecret(property.getV());
         }
