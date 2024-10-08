@@ -3,7 +3,6 @@
     <id>assembly</id>
     <includeBaseDirectory>true</includeBaseDirectory>
     <formats>
-        <format>dir</format>
         <format>zip</format>
         <format>tar.gz</format>
     </formats>

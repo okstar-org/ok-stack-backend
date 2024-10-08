@@ -181,8 +181,8 @@ public class PassportServiceImpl implements PassportService {
     }
 
     @Override
-    public AuthorizationResult refresh(String refreshForm) {
-        return authzClientManager.refresh(refreshForm);
+    public AuthorizationResult refresh(String refreshToken) {
+        return authzClientManager.refresh(refreshToken);
     }
 
     @Override
