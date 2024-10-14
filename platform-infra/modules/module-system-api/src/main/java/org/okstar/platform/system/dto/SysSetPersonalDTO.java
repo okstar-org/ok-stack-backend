@@ -13,7 +13,7 @@
 
 package org.okstar.platform.system.dto;
 
-import org.okstar.platform.common.core.web.bean.DTO;
+import org.okstar.platform.common.web.bean.DTO;
 
 /**
  * 个人设置

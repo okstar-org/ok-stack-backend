@@ -23,7 +23,7 @@ import org.okstar.cloud.OkCloudApiClient;
 import org.okstar.cloud.OkCloudFactory;
 import org.okstar.cloud.channel.FederalChannel;
 import org.okstar.cloud.entity.FederalStateConfEntity;
-import org.okstar.platform.common.core.exception.OkRuntimeException;
+import org.okstar.platform.common.exception.OkRuntimeException;
 import org.okstar.platform.common.string.OkStringUtil;
 import org.okstar.platform.common.web.OkWebUtil;
 import org.okstar.platform.core.OkCloudDefines;

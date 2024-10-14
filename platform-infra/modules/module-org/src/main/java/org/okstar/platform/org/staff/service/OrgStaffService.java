@@ -14,8 +14,8 @@
 package org.okstar.platform.org.staff.service;
 
 
-import org.okstar.platform.common.core.web.page.OkPageResult;
-import org.okstar.platform.common.core.web.page.OkPageable;
+import org.okstar.platform.common.web.page.OkPageResult;
+import org.okstar.platform.common.web.page.OkPageable;
 import org.okstar.platform.common.datasource.OkJpaService;
 import org.okstar.platform.org.staff.domain.OrgStaff;
 import org.okstar.platform.org.dto.OrgStaff0;

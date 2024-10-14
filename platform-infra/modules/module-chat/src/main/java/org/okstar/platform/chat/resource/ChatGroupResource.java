@@ -16,7 +16,7 @@ package org.okstar.platform.chat.resource;
 import jakarta.inject.Inject;
 import org.okstar.platform.chat.beans.ChatGroup;
 import org.okstar.platform.chat.openfire.OpenfireManager;
-import org.okstar.platform.common.core.web.bean.Res;
+import org.okstar.platform.common.web.bean.Res;
 
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;

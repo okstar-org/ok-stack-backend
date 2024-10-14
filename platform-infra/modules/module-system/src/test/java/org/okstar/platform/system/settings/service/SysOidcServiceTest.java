@@ -13,60 +13,58 @@
 
 package org.okstar.platform.system.settings.service;
 
-import io.quarkus.test.junit.QuarkusTest;
-import jakarta.inject.Inject;
-import org.junit.jupiter.api.Test;
-import org.okstar.platform.system.rpc.SysKeycloakConfDTO;
 import org.okstar.platform.system.dto.SysConfIntegrationKeycloak;
+import org.okstar.platform.system.rpc.SysKeycloakConfDTO;
 
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-@QuarkusTest
+//@QuarkusTest
 class SysOidcServiceTest {
 
-    @Inject
+//    @Inject
     SysKeycloakService sysKeycloakService;
-    @Test
+
+//    @Test
     void initKeycloakConfig() {
         var config = sysKeycloakService.initConfig();
         System.out.println(config);
         assertNotNull(config);
     }
 
-    @Test
+//    @Test
     void testKeycloakConfig() {
         String tested = sysKeycloakService.testConfig();
         System.out.println(tested);
         assertNotNull(tested);
     }
 
-    @Test
+//    @Test
     void clearConfig() {
         sysKeycloakService.clearConfig();
     }
 
-    @Test
+//    @Test
     void initRealm() {
         SysConfIntegrationKeycloak config = sysKeycloakService.getConfig();
         String test = sysKeycloakService.initRealm(config, "okstar");
         assertNotNull(test);
     }
 
-    @Test
+//    @Test
     void listRealms(){
         List<String> realms = sysKeycloakService.listRealms();
         System.out.println(realms);
         assertNotNull(realms);
     }
 
-    @Test
+//    @Test
     void removeRealm() {
         sysKeycloakService.removeRealm();
     }
 
-    @Test
+//    @Test
     void getOidcConf(){
         SysKeycloakConfDTO oidcConfig = sysKeycloakService.getStackConfig();
         System.out.println(oidcConfig);

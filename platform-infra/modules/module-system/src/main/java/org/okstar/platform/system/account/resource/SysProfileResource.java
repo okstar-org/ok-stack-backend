@@ -18,7 +18,7 @@ import jakarta.inject.Inject;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.PUT;
 import jakarta.ws.rs.Path;
-import org.okstar.platform.common.core.web.bean.Res;
+import org.okstar.platform.common.web.bean.Res;
 import org.okstar.platform.system.account.domain.SysAccount;
 import org.okstar.platform.system.account.domain.SysProfile;
 import org.okstar.platform.system.account.service.SysProfileService;

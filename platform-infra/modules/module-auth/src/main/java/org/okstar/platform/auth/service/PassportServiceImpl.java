@@ -23,7 +23,7 @@ import org.okstar.platform.auth.keycloak.AuthzClientManager;
 import org.okstar.platform.auth.domain.AuthSession;
 import org.okstar.platform.auth.keycloak.BackUserManager;
 import org.okstar.platform.common.asserts.OkAssert;
-import org.okstar.platform.common.core.exception.OkRuntimeException;
+import org.okstar.platform.common.exception.OkRuntimeException;
 import org.okstar.platform.core.rpc.RpcAssert;
 import org.okstar.platform.core.rpc.RpcResult;
 import org.okstar.platform.common.string.OkStringUtil;

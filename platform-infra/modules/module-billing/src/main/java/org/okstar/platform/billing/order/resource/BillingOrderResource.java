@@ -23,9 +23,9 @@ import org.okstar.cloud.entity.OrderResultEntity;
 import org.okstar.platform.billing.order.domain.BillingOrder;
 import org.okstar.platform.billing.order.service.BillingOrderService;
 import org.okstar.platform.billing.resource.BaseResource;
-import org.okstar.platform.common.core.web.bean.Res;
-import org.okstar.platform.common.core.web.page.OkPageResult;
-import org.okstar.platform.common.core.web.page.OkPageable;
+import org.okstar.platform.common.web.bean.Res;
+import org.okstar.platform.common.web.page.OkPageResult;
+import org.okstar.platform.common.web.page.OkPageable;
 
 @Authenticated
 @Path("order")

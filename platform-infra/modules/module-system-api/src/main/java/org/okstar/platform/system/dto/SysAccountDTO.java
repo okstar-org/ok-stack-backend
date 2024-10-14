@@ -15,7 +15,7 @@ package org.okstar.platform.system.dto;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import org.okstar.platform.common.core.web.bean.DTO;
+import org.okstar.platform.common.web.bean.DTO;
 
 /**
  * 简单帐号对象

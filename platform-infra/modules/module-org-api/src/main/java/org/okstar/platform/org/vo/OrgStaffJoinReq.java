@@ -16,7 +16,7 @@ package org.okstar.platform.org.vo;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
-import org.okstar.platform.common.core.web.bean.Req;
+import org.okstar.platform.common.web.bean.Req;
 
 import java.util.SortedSet;
 

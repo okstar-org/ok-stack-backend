@@ -26,7 +26,7 @@ import org.keycloak.admin.client.resource.RoleMappingResource;
 import org.keycloak.admin.client.resource.UserResource;
 import org.keycloak.admin.client.resource.UsersResource;
 import org.keycloak.representations.idm.*;
-import org.okstar.platform.common.core.exception.OkRuntimeException;
+import org.okstar.platform.common.exception.OkRuntimeException;
 import org.okstar.platform.common.asserts.OkAssert;
 import org.okstar.platform.system.dto.BackUser;
 

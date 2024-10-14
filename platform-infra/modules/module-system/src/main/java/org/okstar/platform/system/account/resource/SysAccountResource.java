@@ -19,7 +19,7 @@ import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.QueryParam;
-import org.okstar.platform.common.core.web.bean.Res;
+import org.okstar.platform.common.web.bean.Res;
 import org.okstar.platform.common.phone.OkPhoneUtils;
 import org.okstar.platform.core.account.AccountDefines;
 import org.okstar.platform.core.web.resource.OkCommonResource;

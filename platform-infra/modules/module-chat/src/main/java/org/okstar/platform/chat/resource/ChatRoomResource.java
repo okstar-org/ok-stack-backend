@@ -17,7 +17,7 @@ import jakarta.inject.Inject;
 import org.okstar.platform.chat.beans.ChatParticipant;
 import org.okstar.platform.chat.beans.ChatRoom;
 import org.okstar.platform.chat.openfire.OpenfireManager;
-import org.okstar.platform.common.core.web.bean.Res;
+import org.okstar.platform.common.web.bean.Res;
 
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.PUT;

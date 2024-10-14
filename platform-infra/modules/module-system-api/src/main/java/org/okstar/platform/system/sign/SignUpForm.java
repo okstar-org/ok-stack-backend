@@ -14,7 +14,7 @@
 package org.okstar.platform.system.sign;
 
 import lombok.*;
-import org.okstar.platform.common.core.web.bean.Req;
+import org.okstar.platform.common.web.bean.Req;
 import org.okstar.platform.common.string.OkNameUtil;
 import org.okstar.platform.core.account.AccountDefines;
 

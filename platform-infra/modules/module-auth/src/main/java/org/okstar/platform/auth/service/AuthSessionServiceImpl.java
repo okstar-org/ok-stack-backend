@@ -19,8 +19,8 @@ import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 import org.okstar.platform.auth.domain.AuthSession;
 import org.okstar.platform.auth.repository.AuthSessionRepository;
-import org.okstar.platform.common.core.web.page.OkPageResult;
-import org.okstar.platform.common.core.web.page.OkPageable;
+import org.okstar.platform.common.web.page.OkPageResult;
+import org.okstar.platform.common.web.page.OkPageable;
 
 import java.util.List;
 

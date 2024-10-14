@@ -16,7 +16,7 @@ package org.okstar.platform.auth.keycloak;
 import io.quarkus.test.junit.QuarkusTest;
 import jakarta.inject.Inject;
 import org.junit.jupiter.api.Test;
-import org.okstar.platform.common.core.web.page.OkPageable;
+import org.okstar.platform.common.web.page.OkPageable;
 
 import java.util.List;
 

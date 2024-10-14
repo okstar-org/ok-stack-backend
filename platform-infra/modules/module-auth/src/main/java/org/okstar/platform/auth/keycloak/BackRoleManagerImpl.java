@@ -18,7 +18,7 @@ import jakarta.inject.Inject;
 import org.keycloak.admin.client.Keycloak;
 import org.keycloak.admin.client.resource.RolesResource;
 import org.keycloak.representations.idm.RoleRepresentation;
-import org.okstar.platform.common.core.web.page.OkPageable;
+import org.okstar.platform.common.web.page.OkPageable;
 
 import java.util.List;
 

@@ -15,8 +15,8 @@ package org.okstar.platform.org.service.impl;
 
 
 import jakarta.enterprise.context.ApplicationScoped;
-import org.okstar.platform.common.core.web.page.OkPageResult;
-import org.okstar.platform.common.core.web.page.OkPageable;
+import org.okstar.platform.common.web.page.OkPageResult;
+import org.okstar.platform.common.web.page.OkPageable;
 import org.okstar.platform.org.domain.SysLogininfor;
 import org.okstar.platform.org.service.ISysLogininforService;
 

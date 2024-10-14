@@ -12,7 +12,7 @@
  */
 package org.okstar.platform.chat.beans;
 import lombok.*;
-import org.okstar.platform.common.core.web.bean.DTO;
+import org.okstar.platform.common.web.bean.DTO;
 
 @Data
 @Builder

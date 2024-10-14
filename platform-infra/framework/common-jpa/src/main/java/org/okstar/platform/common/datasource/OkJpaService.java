@@ -15,8 +15,8 @@ package org.okstar.platform.common.datasource;
 
 import jakarta.transaction.Transactional;
 import org.okstar.platform.common.bean.OkBeanUtils;
-import org.okstar.platform.common.core.web.page.OkPageResult;
-import org.okstar.platform.common.core.web.page.OkPageable;
+import org.okstar.platform.common.web.page.OkPageResult;
+import org.okstar.platform.common.web.page.OkPageable;
 import org.okstar.platform.common.datasource.domain.OkEntity;
 import org.okstar.platform.common.date.OkDateUtils;
 import org.okstar.platform.common.id.OkIdUtils;

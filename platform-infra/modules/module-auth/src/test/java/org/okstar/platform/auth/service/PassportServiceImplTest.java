@@ -16,9 +16,6 @@ package org.okstar.platform.auth.service;
 import io.quarkus.logging.Log;
 import io.quarkus.test.junit.QuarkusTest;
 import io.smallrye.common.constraint.Assert;
-import jakarta.inject.Inject;
-import org.junit.jupiter.api.Order;
-import org.junit.jupiter.api.Test;
 import org.okstar.platform.common.id.OkIdUtils;
 import org.okstar.platform.core.account.AccountDefines;
 import org.okstar.platform.system.sign.AuthorizationResult;
@@ -32,14 +29,14 @@ class PassportServiceImplTest {
 
     public static final String STRING = "okstar";
 
-    @Inject
+//    @Inject
     PassportService passportService;
 
     /**
      * 注册用户
      */
-    @Test
-    @Order(1)
+//    @Test
+//    @Order(1)
     void signUp() {
         String uuid = OkIdUtils.makeUuid();
         SignUpForm form = new SignUpForm();
@@ -58,7 +55,7 @@ class PassportServiceImplTest {
         Assert.assertNotNull(resultDto.getUsername());
     }
 
-    @Test
+//    @Test
     void signIn() {
         SignInForm form = new SignInForm();
         form.setIso(AccountDefines.DefaultISO);

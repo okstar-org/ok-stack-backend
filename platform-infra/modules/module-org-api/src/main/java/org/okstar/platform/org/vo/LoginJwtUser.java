@@ -15,7 +15,7 @@ package org.okstar.platform.org.vo;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import org.okstar.platform.common.core.web.bean.DTO;
+import org.okstar.platform.common.web.bean.DTO;
 
 import java.util.Set;
 

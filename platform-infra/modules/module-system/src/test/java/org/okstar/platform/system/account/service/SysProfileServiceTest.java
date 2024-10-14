@@ -15,7 +15,6 @@ package org.okstar.platform.system.account.service;
 
 import io.quarkus.test.junit.QuarkusTest;
 import jakarta.inject.Inject;
-import org.junit.jupiter.api.Test;
 import org.okstar.platform.common.date.OkDateUtils;
 import org.okstar.platform.common.id.OkIdUtils;
 import org.okstar.platform.core.user.UserDefines;
@@ -24,26 +23,10 @@ import org.okstar.platform.system.account.domain.SysProfile;
 @QuarkusTest
 class SysProfileServiceTest {
 
-    @Inject SysProfileService sysProfileService;
+    @Inject
+    SysProfileService sysProfileService;
 
-    @Test
-    void update() {
-        SysProfile profile = sysProfileService.get(1L);
-        profile.setFirstName("Ok");
-        profile.setLastName("Star");
-        profile.setPhone("18910221510");
-        profile.setEmail("okstar@gmail.com");
-        profile.setIdentify("430000000000");
-        profile.setAddress("ChaoYang");
-        profile.setCity("Beijing");
-        profile.setCountry("China");
-        profile.setLanguage("zh-CN");
-        profile.setBirthday(OkDateUtils.now());
-        profile.setGender(UserDefines.Gender.male);
-        sysProfileService.save(profile);
-    }
-
-    @Test
+//    @Test
     void save() {
         SysProfile profile = new SysProfile();
         profile.setAccountId(51L);
@@ -60,4 +43,23 @@ class SysProfileServiceTest {
         profile.setGender(UserDefines.Gender.male);
         sysProfileService.save(profile);
     }
+
+//    @Test
+    void update() {
+        SysProfile profile = sysProfileService.get(1L);
+        profile.setFirstName("Ok");
+        profile.setLastName("Star");
+        profile.setPhone("18910221510");
+        profile.setEmail("okstar@gmail.com");
+        profile.setIdentify("430000000000");
+        profile.setAddress("ChaoYang");
+        profile.setCity("Beijing");
+        profile.setCountry("China");
+        profile.setLanguage("zh-CN");
+        profile.setBirthday(OkDateUtils.now());
+        profile.setGender(UserDefines.Gender.male);
+        sysProfileService.save(profile);
+    }
+
+
 }

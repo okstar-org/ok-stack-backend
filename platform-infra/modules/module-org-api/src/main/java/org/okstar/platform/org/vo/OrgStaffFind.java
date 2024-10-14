@@ -16,7 +16,7 @@ package org.okstar.platform.org.vo;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
-import org.okstar.platform.common.core.web.page.OkPageable;
+import org.okstar.platform.common.web.page.OkPageable;
 import org.okstar.platform.core.org.JobDefines;
 
 @Data

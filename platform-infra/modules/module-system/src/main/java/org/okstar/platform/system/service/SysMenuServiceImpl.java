@@ -16,8 +16,8 @@ package org.okstar.platform.system.service;
 
 import io.quarkus.panache.common.Page;
 import jakarta.enterprise.context.ApplicationScoped;
-import org.okstar.platform.common.core.web.page.OkPageResult;
-import org.okstar.platform.common.core.web.page.OkPageable;
+import org.okstar.platform.common.web.page.OkPageResult;
+import org.okstar.platform.common.web.page.OkPageable;
 import org.okstar.platform.system.domain.SysMenu;
 import org.okstar.platform.system.mapper.SysMenuMapper;
 

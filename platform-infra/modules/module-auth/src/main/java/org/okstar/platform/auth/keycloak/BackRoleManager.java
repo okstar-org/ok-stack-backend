@@ -14,7 +14,7 @@
 package org.okstar.platform.auth.keycloak;
 
 import org.keycloak.representations.idm.RoleRepresentation;
-import org.okstar.platform.common.core.web.page.OkPageable;
+import org.okstar.platform.common.web.page.OkPageable;
 
 import java.util.List;
 

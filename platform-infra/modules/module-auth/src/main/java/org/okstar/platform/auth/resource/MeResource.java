@@ -20,7 +20,7 @@ import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;
 import org.eclipse.microprofile.rest.client.inject.RestClient;
 import org.okstar.platform.auth.dto.Me;
-import org.okstar.platform.common.core.web.bean.Res;
+import org.okstar.platform.common.web.bean.Res;
 import org.okstar.platform.system.dto.SysAccountDTO;
 import org.okstar.platform.system.rpc.SysProfileRpc;
 

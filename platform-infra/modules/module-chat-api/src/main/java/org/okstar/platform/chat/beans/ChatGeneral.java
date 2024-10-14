@@ -15,7 +15,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.okstar.platform.common.core.web.bean.DTO;
+import org.okstar.platform.common.web.bean.DTO;
 
 /**
  * 概括信息

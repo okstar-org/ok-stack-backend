@@ -14,7 +14,7 @@
 package org.okstar.platform.system.sign;
 
 import lombok.Data;
-import org.okstar.platform.common.core.web.bean.Req;
+import org.okstar.platform.common.web.bean.Req;
 
 @Data
 public class PasswordUpdateForm extends Req {

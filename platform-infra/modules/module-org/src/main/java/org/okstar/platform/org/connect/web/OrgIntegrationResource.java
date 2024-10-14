@@ -16,7 +16,7 @@ package org.okstar.platform.org.connect.web;
 import io.quarkus.logging.Log;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
-import org.okstar.platform.common.core.web.bean.Res;
+import org.okstar.platform.common.web.bean.Res;
 import org.okstar.platform.org.connect.ConnectorDefines;
 import org.okstar.platform.org.connect.api.AccessToken;
 import org.okstar.platform.org.connect.connector.ConnectorFactory;

@@ -21,7 +21,7 @@ import io.vertx.ext.web.RoutingContext;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import org.eclipse.microprofile.jwt.JsonWebToken;
-import org.okstar.platform.common.core.web.OkHttpDefines;
+import org.okstar.platform.common.web.OkHttpDefines;
 import org.okstar.platform.common.string.OkStringUtil;
 
 

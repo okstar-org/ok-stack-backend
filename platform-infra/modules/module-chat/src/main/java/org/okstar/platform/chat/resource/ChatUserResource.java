@@ -24,7 +24,7 @@ import org.okstar.platform.chat.beans.ChatGeneral;
 import org.okstar.platform.chat.beans.ChatRosterItem;
 import org.okstar.platform.chat.beans.ChatUser;
 import org.okstar.platform.chat.openfire.XmppClient;
-import org.okstar.platform.common.core.web.bean.Res;
+import org.okstar.platform.common.web.bean.Res;
 
 import java.util.List;
 import java.util.stream.Collectors;

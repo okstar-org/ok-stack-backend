@@ -20,8 +20,8 @@ import jakarta.transaction.Transactional;
 import org.okstar.platform.billing.order.domain.BillingGoods;
 import org.okstar.platform.billing.order.domain.BillingGoods_;
 import org.okstar.platform.billing.order.mapper.BillingGoodsMapper;
-import org.okstar.platform.common.core.web.page.OkPageResult;
-import org.okstar.platform.common.core.web.page.OkPageable;
+import org.okstar.platform.common.web.page.OkPageResult;
+import org.okstar.platform.common.web.page.OkPageable;
 
 import java.util.List;
 

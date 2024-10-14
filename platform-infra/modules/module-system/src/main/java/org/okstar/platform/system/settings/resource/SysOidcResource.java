@@ -16,7 +16,7 @@ package org.okstar.platform.system.settings.resource;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;
-import org.okstar.platform.common.core.web.bean.Res;
+import org.okstar.platform.common.web.bean.Res;
 import org.okstar.platform.system.resource.BaseResource;
 import org.okstar.platform.system.settings.service.SysKeycloakService;
 

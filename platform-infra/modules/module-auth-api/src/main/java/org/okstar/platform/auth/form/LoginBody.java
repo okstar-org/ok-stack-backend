@@ -14,7 +14,7 @@
 package org.okstar.platform.auth.form;
 
 import lombok.Data;
-import org.okstar.platform.common.core.web.bean.VO;
+import org.okstar.platform.common.web.bean.VO;
 
 /**
  * 用户登录对象

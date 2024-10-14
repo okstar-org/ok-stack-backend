@@ -16,7 +16,7 @@ package org.okstar.platform.core.handler;
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.ext.ExceptionMapper;
 import jakarta.ws.rs.ext.Provider;
-import org.okstar.platform.common.core.web.bean.Res;
+import org.okstar.platform.common.web.bean.Res;
 
 @Provider
 public class OkIllegalArgumentExceptionHandler  implements ExceptionMapper<IllegalArgumentException> {

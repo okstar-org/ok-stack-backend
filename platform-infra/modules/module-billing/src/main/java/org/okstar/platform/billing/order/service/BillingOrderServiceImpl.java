@@ -31,8 +31,8 @@ import org.okstar.platform.billing.order.domain.BillingOrder;
 import org.okstar.platform.billing.order.domain.BillingOrder_;
 import org.okstar.platform.billing.order.mapper.BillingOrderMapper;
 import org.okstar.platform.common.bean.OkBeanUtils;
-import org.okstar.platform.common.core.web.page.OkPageResult;
-import org.okstar.platform.common.core.web.page.OkPageable;
+import org.okstar.platform.common.web.page.OkPageResult;
+import org.okstar.platform.common.web.page.OkPageable;
 import org.okstar.platform.core.OkCloudDefines;
 
 import java.util.List;
