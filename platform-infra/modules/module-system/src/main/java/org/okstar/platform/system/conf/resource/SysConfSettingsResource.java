@@ -11,42 +11,40 @@
  * /
  */
 
-package org.okstar.platform.system.account.resource;
+package org.okstar.platform.system.conf.resource;
 
-import io.quarkus.security.Authenticated;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.PUT;
 import jakarta.ws.rs.Path;
 import org.okstar.platform.common.web.bean.Res;
-import org.okstar.platform.system.account.domain.SysAccount;
-import org.okstar.platform.system.account.domain.SysProfile;
-import org.okstar.platform.system.account.service.SysProfileService;
+import org.okstar.platform.system.conf.domain.SysConfWebsite;
+import org.okstar.platform.system.conf.domain.SysProperty;
+import org.okstar.platform.system.conf.service.SysConfSettingsService;
 import org.okstar.platform.system.resource.BaseResource;
 
-@Authenticated
-@Path("/profile")
-public class SysProfileResource extends BaseResource {
+import java.util.List;
+
+/**
+ * 个人设置
+ */
+@Path("conf/settings")
+public class SysConfSettingsResource extends BaseResource {
 
     @Inject
-    SysProfileService profileService;
-
-
+    SysConfSettingsService settingsService;
 
     @GET
-    public Res<SysProfile> get() {
-        String username = getUsername();
-        var profile = profileService.loadByUsername(username);
-        return Res.ok(profile);
+    @Path("website")
+    public Res<SysConfWebsite> get() {
+        var personal = settingsService.loadWebsite();
+        return Res.ok(personal);
     }
 
     @PUT
-    public Res<Boolean> put(SysProfile profile) {
-        SysAccount self = self();
-        profile.setAccountId(self.id);
-        profileService.create(profile, 1L);
-        return Res.ok(true);
+    @Path("website")
+    public Res<Boolean> put(SysConfWebsite settings) {
+        List<SysProperty> saved = settingsService.saveWebsite(settings);
+        return Res.ok(!saved.isEmpty());
     }
-
-
 }

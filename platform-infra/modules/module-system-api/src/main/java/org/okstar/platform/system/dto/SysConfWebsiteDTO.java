@@ -11,22 +11,16 @@
  * /
  */
 
-package org.okstar.platform.system.rpc;
+package org.okstar.platform.system.dto;
 
-import jakarta.ws.rs.GET;
-import jakarta.ws.rs.Path;
-import org.eclipse.microprofile.rest.client.inject.RegisterRestClient;
-import org.okstar.platform.system.dto.SysKeycloakConfDTO;
+import lombok.Data;
 
-@RegisterRestClient
-@Path("rpc/SysKeycloakRpc")
-public interface SysKeycloakRpc {
-
-    @GET
-    @Path("/keycloakConf")
-    SysKeycloakConfDTO getStackConf();
-
-    @GET
-    @Path("/adminConf")
-    SysKeycloakConfDTO getAdminConf();
+@Data
+public class SysConfWebsiteDTO {
+    //网站标题
+    private String title;
+    //备案号
+    private String license;
+    //版权所有
+    private String copyright;
 }

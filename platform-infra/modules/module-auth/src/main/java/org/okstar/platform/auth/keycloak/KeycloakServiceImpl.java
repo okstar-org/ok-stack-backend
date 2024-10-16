@@ -28,7 +28,7 @@ import org.keycloak.representations.idm.ClientRepresentation;
 import org.keycloak.representations.idm.RealmRepresentation;
 import org.okstar.platform.common.asserts.OkAssert;
 import org.okstar.platform.common.string.OkStringUtil;
-import org.okstar.platform.system.rpc.SysKeycloakConfDTO;
+import org.okstar.platform.system.dto.SysKeycloakConfDTO;
 import org.okstar.platform.system.rpc.SysKeycloakRpc;
 
 import java.util.List;

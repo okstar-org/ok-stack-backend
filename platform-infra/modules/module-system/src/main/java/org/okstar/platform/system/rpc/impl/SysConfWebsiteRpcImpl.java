@@ -15,24 +15,23 @@ package org.okstar.platform.system.rpc.impl;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
-import org.okstar.platform.system.dto.SysKeycloakConfDTO;
-import org.okstar.platform.system.rpc.SysKeycloakRpc;
-import org.okstar.platform.system.conf.service.SysKeycloakService;
+import org.okstar.platform.common.bean.OkBeanUtils;
+import org.okstar.platform.system.conf.domain.SysConfWebsite;
+import org.okstar.platform.system.conf.service.SysConfSettingsService;
+import org.okstar.platform.system.dto.SysConfWebsiteDTO;
+import org.okstar.platform.system.rpc.SysConfWebsiteRpc;
 
 @ApplicationScoped
-public class SysKeycloakRpcImpl implements SysKeycloakRpc {
+public class SysConfWebsiteRpcImpl implements SysConfWebsiteRpc {
 
     @Inject
-    SysKeycloakService keycloakService;
+    SysConfSettingsService sysConfSettingsService;
 
     @Override
-    public SysKeycloakConfDTO getStackConf() {
-        return keycloakService.getStackConfig();
+    public SysConfWebsiteDTO getSysConfWebsite() {
+        SysConfWebsite website = sysConfSettingsService.loadWebsite();
+        SysConfWebsiteDTO dto = new SysConfWebsiteDTO();
+        OkBeanUtils.copyPropertiesTo(website, dto);
+        return dto;
     }
-
-    @Override
-    public SysKeycloakConfDTO getAdminConf() {
-        return keycloakService.getAdminConfig();
-    }
-
 }

@@ -19,8 +19,8 @@ import org.okstar.platform.system.dto.SysConfImDTO;
 import org.okstar.platform.system.dto.SysConfIntegrationDTO;
 import org.okstar.platform.system.dto.SysConfStackDTO;
 import org.okstar.platform.system.rpc.SysConfIntegrationRpc;
-import org.okstar.platform.system.settings.domain.SysConfIntegration;
-import org.okstar.platform.system.settings.service.SysConfIntegrationService;
+import org.okstar.platform.system.conf.domain.SysConfIntegration;
+import org.okstar.platform.system.conf.service.SysConfIntegrationService;
 
 
 @ApplicationScoped

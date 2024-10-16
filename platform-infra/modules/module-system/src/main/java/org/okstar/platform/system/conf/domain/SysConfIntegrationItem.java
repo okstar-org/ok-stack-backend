@@ -11,22 +11,8 @@
  * /
  */
 
-package org.okstar.platform.system.rpc;
+package org.okstar.platform.system.conf.domain;
 
-import jakarta.ws.rs.GET;
-import jakarta.ws.rs.Path;
-import org.eclipse.microprofile.rest.client.inject.RegisterRestClient;
-import org.okstar.platform.system.dto.SysKeycloakConfDTO;
+public class SysConfIntegrationItem {
 
-@RegisterRestClient
-@Path("rpc/SysKeycloakRpc")
-public interface SysKeycloakRpc {
-
-    @GET
-    @Path("/keycloakConf")
-    SysKeycloakConfDTO getStackConf();
-
-    @GET
-    @Path("/adminConf")
-    SysKeycloakConfDTO getAdminConf();
 }

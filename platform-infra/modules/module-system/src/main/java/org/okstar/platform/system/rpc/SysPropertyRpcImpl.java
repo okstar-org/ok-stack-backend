@@ -18,10 +18,11 @@ import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 import org.okstar.platform.common.bean.OkBeanUtils;
 import org.okstar.platform.system.dto.SysPropertyDTO;
-import org.okstar.platform.system.settings.domain.SysProperty;
-import org.okstar.platform.system.settings.service.SysPropertyService;
+import org.okstar.platform.system.conf.domain.SysProperty;
+import org.okstar.platform.system.conf.service.SysPropertyService;
 
 import java.util.List;
+import java.util.Optional;
 
 @Transactional
 @ApplicationScoped
@@ -31,24 +32,7 @@ public class SysPropertyRpcImpl implements SysPropertyRpc {
 
     @Override
     public void save(SysPropertyDTO dto) {
-
-        List<SysProperty> list = dto.getDomain() == null ?
-                sysPropertyService.findByKey(dto.getGrouping(), dto.getK()) :
-                sysPropertyService.findByKey(dto.getGrouping(), dto.getDomain(), dto.getK());
-
-        if (list.isEmpty()) {
-            //create
-            SysProperty t = new SysProperty();
-            OkBeanUtils.copyPropertiesTo(dto, t);
-            sysPropertyService.create(t, 1L);
-        } else {
-            //update
-            list.forEach(exist -> {
-                exist.setV(dto.getV());
-                sysPropertyService.update(exist, 1L);
-            });
-        }
-
+        sysPropertyService.save(dto);
     }
 
     @Override

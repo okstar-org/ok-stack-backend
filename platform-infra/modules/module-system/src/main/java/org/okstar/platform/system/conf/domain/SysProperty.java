@@ -11,20 +11,30 @@
  * /
  */
 
-package org.okstar.platform.system.dto;
+package org.okstar.platform.system.conf.domain;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
+import jakarta.persistence.UniqueConstraint;
+import jakarta.validation.constraints.NotBlank;
 import lombok.*;
-import org.okstar.platform.common.web.bean.DTO;
+import org.okstar.platform.system.domain.BaseEntity;
 
-import java.util.Objects;
-
-@Getter
-@Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class SysPropertyDTO extends DTO {
+@Setter
+@Getter
+@Entity
+@Table(uniqueConstraints = @UniqueConstraint(columnNames = {"grouping", "domain", "k"}))
+public class SysProperty extends BaseEntity {
 
+    /**
+     * 配置组，针对不同类型（实体）配置的区分
+     *
+     * @see org.okstar.platform.system.conf.SysConfDefines
+     */
+    @NotBlank
     private String grouping;
 
     /**
@@ -33,21 +43,10 @@ public class SysPropertyDTO extends DTO {
     private String domain;
 
     //key
+    @NotBlank
     private String k;
 
     //value
     private String v;
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        SysPropertyDTO that = (SysPropertyDTO) o;
-        return Objects.equals(grouping, that.grouping) && Objects.equals(domain, that.domain) && Objects.equals(k, that.k);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(grouping, domain, k);
-    }
 }

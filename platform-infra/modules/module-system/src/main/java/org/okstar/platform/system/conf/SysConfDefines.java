@@ -11,22 +11,26 @@
  * /
  */
 
-package org.okstar.platform.system.rpc;
+package org.okstar.platform.system.conf;
 
-import jakarta.ws.rs.GET;
-import jakarta.ws.rs.Path;
-import org.eclipse.microprofile.rest.client.inject.RegisterRestClient;
-import org.okstar.platform.system.dto.SysKeycloakConfDTO;
+/**
+ * 配置group、prefix相关定义
+ * 不能重复否则出现替代或者覆盖问题
+ */
+public interface SysConfDefines {
 
-@RegisterRestClient
-@Path("rpc/SysKeycloakRpc")
-public interface SysKeycloakRpc {
+    /**
+     * 个人配置组
+     */
+    String CONF_GROUP_PERSONAL_PREFIX = "sys.conf.personal";
 
-    @GET
-    @Path("/keycloakConf")
-    SysKeycloakConfDTO getStackConf();
+    /**
+     * 集成配置组
+     */
+    String CONF_GROUP_INTEGRATION_PREFIX = "sys.conf.integration";
 
-    @GET
-    @Path("/adminConf")
-    SysKeycloakConfDTO getAdminConf();
+    /**
+     * 系统设置
+     */
+    String CONF_GROUP_SETTINGS_PREFIX = "sys.conf.settings.website";
 }

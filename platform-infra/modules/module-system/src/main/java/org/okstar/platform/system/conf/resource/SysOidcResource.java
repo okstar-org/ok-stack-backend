@@ -11,22 +11,25 @@
  * /
  */
 
-package org.okstar.platform.system.rpc;
+package org.okstar.platform.system.conf.resource;
 
+import jakarta.inject.Inject;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;
-import org.eclipse.microprofile.rest.client.inject.RegisterRestClient;
-import org.okstar.platform.system.dto.SysKeycloakConfDTO;
+import org.okstar.platform.common.web.bean.Res;
+import org.okstar.platform.system.resource.BaseResource;
+import org.okstar.platform.system.conf.service.SysKeycloakService;
 
-@RegisterRestClient
-@Path("rpc/SysKeycloakRpc")
-public interface SysKeycloakRpc {
+@Path("oidc")
+public class SysOidcResource extends BaseResource {
+
+    @Inject
+    SysKeycloakService oidcService;
 
     @GET
-    @Path("/keycloakConf")
-    SysKeycloakConfDTO getStackConf();
-
-    @GET
-    @Path("/adminConf")
-    SysKeycloakConfDTO getAdminConf();
+    @Path("test")
+    public Res<String> test() {
+        String tested = oidcService.testConfig();
+        return Res.ok(tested);
+    }
 }

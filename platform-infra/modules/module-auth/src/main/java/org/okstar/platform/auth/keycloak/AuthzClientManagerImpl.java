@@ -43,7 +43,7 @@ import org.okstar.platform.common.exception.OkRuntimeException;
 import org.okstar.platform.common.web.bean.Res;
 import org.okstar.platform.common.date.OkDateUtils;
 import org.okstar.platform.common.string.OkStringUtil;
-import org.okstar.platform.system.rpc.SysKeycloakConfDTO;
+import org.okstar.platform.system.dto.SysKeycloakConfDTO;
 import org.okstar.platform.system.rpc.SysKeycloakRpc;
 import org.okstar.platform.system.sign.AuthorizationResult;
 

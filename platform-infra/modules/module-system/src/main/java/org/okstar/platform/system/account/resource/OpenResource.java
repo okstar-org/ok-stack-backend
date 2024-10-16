@@ -11,22 +11,25 @@
  * /
  */
 
-package org.okstar.platform.system.rpc;
+package org.okstar.platform.system.account.resource;
 
+import jakarta.inject.Inject;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;
-import org.eclipse.microprofile.rest.client.inject.RegisterRestClient;
-import org.okstar.platform.system.dto.SysKeycloakConfDTO;
+import org.okstar.platform.common.web.bean.Res;
+import org.okstar.platform.core.web.resource.OkCommonResource;
+import org.okstar.platform.system.conf.domain.SysConfWebsite;
+import org.okstar.platform.system.conf.service.SysConfSettingsService;
 
-@RegisterRestClient
-@Path("rpc/SysKeycloakRpc")
-public interface SysKeycloakRpc {
+@Path("open")
+public class OpenResource extends OkCommonResource {
+
+    @Inject
+    SysConfSettingsService sysConfSettingsService;
 
     @GET
-    @Path("/keycloakConf")
-    SysKeycloakConfDTO getStackConf();
-
-    @GET
-    @Path("/adminConf")
-    SysKeycloakConfDTO getAdminConf();
+    @Path("website")
+    public Res<SysConfWebsite> website() {
+        return Res.ok(sysConfSettingsService.loadWebsite());
+    }
 }
