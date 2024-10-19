@@ -47,5 +47,10 @@
             <artifactId>quarkus-reactive-routes</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>io.quarkus</groupId>
+            <artifactId>quarkus-cache</artifactId>
+        </dependency>
+
     </dependencies>
 </project>

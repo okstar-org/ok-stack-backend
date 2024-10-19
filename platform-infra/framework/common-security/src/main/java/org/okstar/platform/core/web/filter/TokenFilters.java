@@ -21,23 +21,29 @@ import io.vertx.ext.web.RoutingContext;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import org.eclipse.microprofile.jwt.JsonWebToken;
-import org.okstar.platform.common.web.OkHttpDefines;
+import org.okstar.platform.common.security.cache.OkLogonUserCache;
+import org.okstar.platform.common.security.domain.OkLogonUser;
 import org.okstar.platform.common.string.OkStringUtil;
+import org.okstar.platform.common.web.OkHttpDefines;
 
 
 @ApplicationScoped
 public class TokenFilters {
 
     @Inject
-    JsonWebToken jwt;
+    JsonWebToken jsonWebToken;
 
-    @RouteFilter(100)
+    @Inject
+    OkLogonUserCache logonUserCache;
+
+    @RouteFilter(1)
     void filter(RoutingContext rc) {
         HttpServerRequest request = rc.request();
         String uri = request.uri();
         Log.infof("Filter method:%s uri:%s", request.method(), uri);
+
         String from = request.getHeader(OkHttpDefines.Header_X_OK_from);
-        Log.infof("from:%s", from);
+        Log.infof("header from:%s", from);
 
         if (OkStringUtil.isNotEmpty(from)) {
             Log.infof("bypass the uri.");
@@ -58,15 +64,17 @@ public class TokenFilters {
             return;
         }
 
-        Log.infof("jwt: %s", jwt);
-        String username = jwt.getName();
+        String username = jsonWebToken.getName();
+        Log.infof("username:%s", username);
         if (OkStringUtil.isEmpty(username)) {
             Log.warnf("Access denied!");
             rc.fail(HttpResponseStatus.FORBIDDEN.code());
             return;
         }
 
-        Log.infof("username:%s", username);
+        OkLogonUser logonUser = logonUserCache.set(username, jsonWebToken);
+        Log.infof("logon user is: %s", logonUser);
+
         rc.put(OkHttpDefines.Header_X_OK_username, username);
         rc.next();
     }
