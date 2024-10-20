@@ -15,11 +15,12 @@ package org.okstar.platform.auth.keycloak;
 
 import lombok.*;
 
+import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 @Data
 @Builder
-@ToString
 @AllArgsConstructor
 @NoArgsConstructor
 public class BackResourceDTO {
@@ -30,4 +31,5 @@ public class BackResourceDTO {
     private Set<String> uris;
     private String iconUri;
     private String scopes;
+    private Map<String, List<String>> attribute;
 }

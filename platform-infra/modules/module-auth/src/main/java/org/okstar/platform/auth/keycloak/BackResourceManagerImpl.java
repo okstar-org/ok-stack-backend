@@ -63,6 +63,7 @@ public class BackResourceManagerImpl implements BackResourceManager {
                 .uris(representation.getUris())
                 .type(representation.getType())
                 .iconUri(representation.getIconUri())
+                .attribute(representation.getAttributes())
                 .build();
     }
 }
