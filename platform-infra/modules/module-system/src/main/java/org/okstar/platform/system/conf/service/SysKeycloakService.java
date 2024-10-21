@@ -21,6 +21,10 @@ import org.okstar.platform.system.dto.SysKeycloakConfDTO;
 import java.util.List;
 
 public interface SysKeycloakService {
+    String getAuthServerUrl();
+
+    String getRealm();
+
     List<String> listRealms();
 
     void removeRealm();

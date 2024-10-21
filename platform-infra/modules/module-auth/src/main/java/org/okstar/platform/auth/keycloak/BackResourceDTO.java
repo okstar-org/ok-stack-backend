@@ -31,5 +31,9 @@ public class BackResourceDTO {
     private Set<String> uris;
     private String iconUri;
     private String scopes;
-    private Map<String, List<String>> attribute;
+    private Map<String, List<String>> attributes;
+
+    public String getUri() {
+        return uris == null || uris.isEmpty() ? null : uris.iterator().next();
+    }
 }

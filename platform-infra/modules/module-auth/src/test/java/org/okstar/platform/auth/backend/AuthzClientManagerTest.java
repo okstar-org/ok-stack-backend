@@ -14,14 +14,14 @@
 package org.okstar.platform.auth.backend;
 
 import io.quarkus.logging.Log;
-import io.quarkus.oidc.client.Tokens;
 import io.quarkus.test.junit.QuarkusTest;
 import jakarta.inject.Inject;
 import org.junit.jupiter.api.Test;
 import org.okstar.platform.auth.keycloak.AuthzClientManager;
 import org.okstar.platform.system.sign.AuthorizationResult;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @QuarkusTest
 class AuthzClientManagerTest {
@@ -38,17 +38,6 @@ class AuthzClientManagerTest {
         return result;
     }
 
-    private Tokens auth2() {
-        Tokens result = authzClientManager.getAccessToken();
-        Log.infof("result=%s", result);
-        return result;
-    }
-
-    @Test
-    void getAccessToken() {
-        Tokens result = auth2();
-
-    }
 
     @Test
     void authorization() {

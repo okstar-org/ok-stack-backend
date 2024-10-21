@@ -11,34 +11,14 @@
  * /
  */
 
-package org.okstar.platform.org.rbac.domain;
+package org.okstar.platform.auth.startup;
 
-import io.quarkus.hibernate.orm.panache.PanacheEntity;
-import jakarta.persistence.Entity;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
 import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
+import org.okstar.platform.auth.dto.Menu;
 
+import java.util.List;
 
-/**
- * 角色和资源的关联
- * 
- * 
- */
-@Setter
-@Getter
-@Table
-@Entity
-public class SysRbacRoleResource extends PanacheEntity
-{
-    /** 角色ID */
-    @ManyToOne
-    private OrgRbacRole role;
-    
-    /** 菜单ID */
-    @ManyToOne
-    private OrgRbacResource menuId;
-
+@Data
+public class MenuFile {
+    private List<Menu> menu;
 }

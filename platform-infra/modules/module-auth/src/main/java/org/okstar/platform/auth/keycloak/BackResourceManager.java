@@ -28,4 +28,9 @@ public interface BackResourceManager {
                                String type,
                                String scope
     );
+
+    boolean add(BackResourceDTO backResourceDTO);
+
+    boolean exist(String name);
+
 }

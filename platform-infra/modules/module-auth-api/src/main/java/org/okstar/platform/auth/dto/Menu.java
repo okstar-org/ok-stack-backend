@@ -23,7 +23,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 菜单权限表 sys_menu
+ * 菜单
  */
 @Data
 @Builder

@@ -33,16 +33,14 @@ import org.keycloak.representations.idm.authorization.*;
 import org.okstar.platform.common.asserts.OkAssert;
 import org.okstar.platform.common.id.OkIdUtils;
 import org.okstar.platform.common.string.OkStringUtil;
+import org.okstar.platform.system.conf.domain.SysProperty;
 import org.okstar.platform.system.dto.SysConfIntegrationKeycloak;
 import org.okstar.platform.system.dto.SysKeycloakConfDTO;
-import org.okstar.platform.system.conf.domain.SysProperty;
 
 import java.net.URI;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.TimeUnit;
 
 @Transactional
 @ApplicationScoped
@@ -55,26 +53,40 @@ public class SysKeycloakServiceImpl implements SysKeycloakService {
     public static final String ADMIN_CLIENT_CLI = "admin-cli";
 
     @Inject
-    private SysPropertyService propertyService;
-    @Inject
-    private ExecutorService executorService;
-    @Inject
-    private ObjectMapper objectMapper;
+    SysPropertyService propertyService;
 
-
-    @ConfigProperty(name = "quarkus.oidc.auth-server-url",
-            defaultValue = "http://localhost:18080/realms/okstar")
-    private String authServerUrl;
-    private String realm;
-    private String serverUrl;
+    @Inject
+    ObjectMapper objectMapper;
 
     @ConfigProperty(name = "quarkus.oidc.client-id", defaultValue = "okstack")
-    private String clientId;
+    String clientId;
 
+    @ConfigProperty(name = "quarkus.oidc.auth-server-url", defaultValue = "http://localhost:18080/realms/okstar")
+    String authServerUrl;
+
+    /**
+     * 从authServerUrl解析到如下两个字段
+     * 如：authServerUrl=https://okstar.org/ok-stack解析为：
+     * serverUrl=https://okstar.org
+     * realm=ok-stack
+     */
+    private String serverUrl;
+    private String realm;
+
+    @Override
+    public String getAuthServerUrl() {
+        return authServerUrl;
+    }
+
+    @Override
+    public String getRealm() {
+        return realm;
+    }
 
     void startup(@Observes StartupEvent event) {
-
+        Log.infof("startup ...");
         try {
+
             Log.infof("auth-server-url: %s", authServerUrl);
             URI url = new URI(authServerUrl);
 
@@ -87,13 +99,13 @@ public class SysKeycloakServiceImpl implements SysKeycloakService {
 
             String path = url.getPath();
             if (OkStringUtil.isEmpty(path)) {
-                throw new IllegalArgumentException("Is invliad auth server url:" + authServerUrl);
+                throw new IllegalArgumentException("Is invalid auth server url:" + authServerUrl);
             }
 
             //["", "realms", "okstar"]
             String[] split = path.split("/");
             if (split.length != 3 || OkStringUtil.isEmpty(split[2].trim())) {
-                throw new IllegalArgumentException("Is invliad auth server url:" + authServerUrl);
+                throw new IllegalArgumentException("Is invalid auth server url:" + authServerUrl);
             }
 
             realm = split[2];
@@ -102,27 +114,7 @@ public class SysKeycloakServiceImpl implements SysKeycloakService {
         } catch (Exception e) {
             throw new RuntimeException("Unable to resolve auth server url", e);
         }
-
-        SysConfIntegrationKeycloak conf = initConfig();
-        executorService.execute(() -> {
-            String value = null;
-            do {
-                try {
-                    Log.infof("Initializing realm: %s", realm);
-                    value = initRealm(conf, realm);
-                    Log.infof("Initialized realm=>%s", realm);
-                } catch (Exception e) {
-                    Log.warnf("Unable to initialize realm: %s, Try again in 1 minute.", realm);
-                    try {
-                        TimeUnit.MINUTES.sleep(1);
-                    } catch (InterruptedException ignored) {
-
-                    }
-                }
-            } while (value == null);
-        });
     }
-
 
     private RealmRepresentation getRealm(Keycloak kc, String realm) {
         RealmsResource realms = kc.realms();

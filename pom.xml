@@ -415,6 +415,7 @@
                 <filtering>true</filtering>
                 <includes>
                     <include>**/*.properties</include>
+                    <include>**/*.json</include>
                     <include>**/*.xml</include>
                     <include>**/*.yml</include>
                     <include>**/*.yaml</include>

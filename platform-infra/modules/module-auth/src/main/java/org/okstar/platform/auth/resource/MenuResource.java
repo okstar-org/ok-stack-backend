@@ -90,6 +90,10 @@ public class MenuResource extends BaseResource {
             }
             parent.addChild(menu);
         }
+
+        List<Menu> sorted = parent.getChildren().stream().sorted(Comparator.comparingInt(Menu::getIdx)).toList();
+        parent.setChildren(sorted);
+
     }
 
     private Menu toRootMenu(BackResourceDTO resourceDTO) {
@@ -122,9 +126,9 @@ public class MenuResource extends BaseResource {
         menu.setPath(List.of(segment));
         menu.setId(resourceDTO.getId());
         menu.setName(resourceDTO.getDisplayName());
-        menu.setAttribute(resourceDTO.getAttribute());
+        menu.setAttribute(resourceDTO.getAttributes());
 
-        Optional.ofNullable(resourceDTO.getAttribute())
+        Optional.ofNullable(resourceDTO.getAttributes())
                 .ifPresent(attribute -> {
                     attribute.forEach((key, value) -> {
                         try {

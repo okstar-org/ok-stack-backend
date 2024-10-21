@@ -20,11 +20,6 @@ import org.okstar.platform.org.dto.Org0;
 
 public interface OrgService extends OkJpaService<Org>
 {
-    /**
-     * 获取当前组织
-     * 没有则初始化
-     * @return
-     */
     Org loadCurrent();
 
     Org0 loadCurrent0();

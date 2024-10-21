@@ -11,30 +11,28 @@
  * /
  */
 
-package org.okstar.platform.org.rbac.domain;
+package org.okstar.platform.auth.startup;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
-import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
-import org.okstar.platform.org.domain.BaseEntity;
+import io.quarkus.test.junit.QuarkusTest;
+import jakarta.inject.Inject;
+import org.junit.jupiter.api.Test;
+import org.okstar.platform.auth.keycloak.BackResourceManager;
+import org.wildfly.common.Assert;
 
-/**
- * RBAC-Role
- */
-@Setter
-@Getter
-@Table
-@Entity
-public class OrgRbacRole extends BaseEntity
-{
+@QuarkusTest
+class MenuStartupTest {
+    @Inject
+    MenuStartup menuStartup;
+    @Inject
+    BackResourceManager resourceManager;
 
-    /** 角色名称 */
-    private String name;
 
-    /**
-     * 绑定到岗位 [OrgPost]
-     */
-    private Long postId;
+    @Test
+    void readMenuFile() {
+        MenuFile file = menuStartup.readMenuFile();
+        Assert.assertNotNull(file);
+
+    }
+
+
 }

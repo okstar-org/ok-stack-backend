@@ -15,6 +15,7 @@ package org.okstar.platform.auth.keycloak;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
+import jakarta.ws.rs.core.Response;
 import org.keycloak.admin.client.Keycloak;
 import org.keycloak.admin.client.resource.AuthorizationResource;
 import org.keycloak.representations.idm.authorization.ResourceRepresentation;
@@ -48,11 +49,34 @@ public class BackResourceManagerImpl implements BackResourceManager {
             AuthorizationResource authorization = keycloakService.getAuthorizationResource(keycloak);
             return authorization.resources()
                     .find(name, uri, owner, type, scope,
-                    pageable.getPageIndex() * pageable.getPageSize(),
-                    pageable.getPageSize())
+                            pageable.getPageIndex() * pageable.getPageSize(),
+                            pageable.getPageSize())
                     .stream()
                     .map(this::toDTO).toList();
         }
+    }
+
+    @Override
+    public boolean add(BackResourceDTO backResourceDTO) {
+        var representation = toRepresentation(backResourceDTO);
+        try (Keycloak keycloak = keycloakService.openKeycloak()) {
+            var authorization = keycloakService.getAuthorizationResource(keycloak);
+            try (Response response = authorization.resources().create(representation)) {
+                return response.getStatus() != Response.Status.CREATED.getStatusCode();
+            }
+        }
+    }
+
+    @Override
+    public boolean exist(String name) {
+        try (Keycloak keycloak = keycloakService.openKeycloak()) {
+            var authorization = keycloakService.getAuthorizationResource(keycloak);
+            var resources = authorization.resources().findByName(name);
+            if (!resources.isEmpty()) {
+                return true;
+            }
+        }
+        return false;
     }
 
     private BackResourceDTO toDTO(ResourceRepresentation representation) {
@@ -63,7 +87,18 @@ public class BackResourceManagerImpl implements BackResourceManager {
                 .uris(representation.getUris())
                 .type(representation.getType())
                 .iconUri(representation.getIconUri())
-                .attribute(representation.getAttributes())
+                .attributes(representation.getAttributes())
                 .build();
+    }
+
+    private ResourceRepresentation toRepresentation(BackResourceDTO dto) {
+        var r = new ResourceRepresentation();
+        r.setName(dto.getName());
+        r.setDisplayName(dto.getDisplayName());
+        r.setUris(dto.getUris());
+        r.setType(dto.getType());
+        r.setAttributes(dto.getAttributes());
+        r.setIconUri(dto.getIconUri());
+        return r;
     }
 }

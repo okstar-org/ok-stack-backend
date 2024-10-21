@@ -13,13 +13,11 @@
 
 package org.okstar.platform.auth.keycloak;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import io.quarkus.logging.Log;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 import org.eclipse.microprofile.rest.client.inject.RestClient;
-import org.jboss.resteasy.client.jaxrs.ResteasyClient;
 import org.jboss.resteasy.client.jaxrs.internal.ResteasyClientBuilderImpl;
 import org.keycloak.admin.client.Keycloak;
 import org.keycloak.admin.client.KeycloakBuilder;
@@ -37,10 +35,6 @@ import java.util.List;
 @ApplicationScoped
 public class KeycloakServiceImpl implements KeycloakService {
 
-    private ResteasyClient client;
-
-    @Inject
-    ObjectMapper objectMapper;
     @Inject
     @RestClient
     SysKeycloakRpc sysKeycloakRpc;

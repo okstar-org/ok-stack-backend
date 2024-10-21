@@ -1,0 +1,154 @@
+{
+  "menu": [
+    {
+      "route": "dashboard",
+      "name": "dashboard",
+      "type": "link",
+      "icon": "dashboard",
+      "uri": "dashboard"
+    },
+    {
+      "route": "org",
+      "name": "org",
+      "type": "sub",
+      "icon": "domain",
+      "uri": "org",
+      "children": [
+        {
+          "route": "dept",
+          "name": "dept",
+          "type": "link",
+          "uri": "org/dept"
+        },
+        {
+          "route": "staff",
+          "name": "staff",
+          "type": "link",
+          "uri": "org/staff"
+        },
+        {
+          "route": "integration",
+          "name": "integration",
+          "type": "link",
+          "uri": "org/integration"
+        }
+      ]
+    },
+    {
+      "route": "auth",
+      "name": "auth",
+      "type": "sub",
+      "icon":"lock",
+      "uri": "auth",
+      "children": [
+        {
+          "route": "resource",
+          "name": "resource",
+          "type": "link",
+          "uri": "auth/resource"
+        },
+        {
+          "route": "role",
+          "name": "role",
+          "type": "link",
+          "uri": "auth/role"
+        },
+        {
+          "route": "conf",
+          "name": "conf",
+          "type": "link",
+          "uri": "auth/conf"
+        }
+      ]
+    },
+    {
+      "route": "chat",
+      "name": "chat",
+      "type": "sub",
+      "icon": "chat",
+      "uri": "chat",
+      "children": [
+        {
+          "route": "user",
+          "name": "user",
+          "type": "link",
+          "uri": "chat/user"
+        },
+        {
+          "route": "room",
+          "name": "room",
+          "type": "link",
+          "uri": "chat/room"
+        }
+      ]
+    },
+    {
+      "route": "meet",
+      "name": "meet",
+      "type": "sub",
+      "icon": "meeting_room",
+      "children": [
+        {
+          "route": "history",
+          "name": "history",
+          "type": "link",
+          "uri": "meet/history"
+        }
+      ]
+    },
+    {
+      "route": "work",
+      "name": "work",
+      "type": "sub",
+      "icon": "apps",
+      "children": [
+        {
+          "route": "app",
+          "name": "app",
+          "type": "link",
+          "uri": "work/app"
+        }
+      ]
+    },
+    {
+      "route": "billing",
+      "name": "billing",
+      "type": "sub",
+      "icon": "attach_money",
+      "children": [
+        {
+          "route": "order",
+          "name": "order",
+          "type": "link",
+          "uri": "billing/order"
+        }
+      ]
+    },
+    {
+      "route": "sys",
+      "name": "sys",
+      "type": "sub",
+      "icon": "settings",
+      "children": [
+        {
+          "route": "settings",
+          "name": "settings",
+          "type": "link",
+          "uri": "sys/settings"
+        },
+        {
+          "route": "integration",
+          "name": "integration",
+          "type": "link",
+          "uri": "sys/integration"
+        },
+        {
+          "route": "open",
+          "name": "open",
+          "type": "link",
+          "uri": "sys/open"
+        }
+      ]
+    }
+  ]
+}
