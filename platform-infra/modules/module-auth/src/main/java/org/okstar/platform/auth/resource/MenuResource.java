@@ -127,20 +127,22 @@ public class MenuResource extends BaseResource {
         Optional.ofNullable(resourceDTO.getAttribute())
                 .ifPresent(attribute -> {
                     attribute.forEach((key, value) -> {
-                        switch (key) {
-                            case "icon":
-                                menu.setIcon(value.get(0));
-                                break;
-                            case "type":
-                                menu.setType(value.get(0));
-                                break;
-                            case "idx":
-                                menu.setIdx(Integer.parseInt(value.get(0)));
-                                break;
+                        try {
+                            switch (key) {
+                                case "icon":
+                                    menu.setIcon(value.get(0));
+                                    break;
+                                case "type":
+                                    menu.setType(value.get(0));
+                                    break;
+                                case "idx":
+                                    menu.setIdx(Integer.parseInt(value.get(0)));
+                                    break;
+                            }
+                        } catch (Exception ignored) {
                         }
                     });
                 });
         return menu;
     }
-
 }
