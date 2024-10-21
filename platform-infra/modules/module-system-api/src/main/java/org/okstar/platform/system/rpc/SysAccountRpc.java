@@ -77,5 +77,7 @@ public interface SysAccountRpc {
     @Path("getBinds/{id}")
     RpcResult<List<SysAccountBindDTO>> getBinds(@PathParam("id") Long id);
 
-
+    @POST
+    @Path("{username}/uid")
+    void setUid(@PathParam("username") String username, String uid);
 }

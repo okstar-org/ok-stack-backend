@@ -30,6 +30,7 @@ import org.okstar.platform.system.dto.SysKeycloakConfDTO;
 import org.okstar.platform.system.rpc.SysKeycloakRpc;
 
 import java.util.List;
+import java.util.Optional;
 
 @Transactional
 @ApplicationScoped
@@ -38,6 +39,15 @@ public class KeycloakServiceImpl implements KeycloakService {
     @Inject
     @RestClient
     SysKeycloakRpc sysKeycloakRpc;
+
+    public List<ClientRepresentation> getClients(Keycloak keycloak) {
+        SysKeycloakConfDTO config = getStackConfig();
+        String realm = config.getRealm();
+        String clientId = config.getClientId();
+        RealmResource realmResource = keycloak.realms().realm(realm);
+        ClientsResource clientsResource = realmResource.clients();
+        return clientsResource.findByClientId(clientId);
+    }
 
     @Override
     public AuthorizationResource getAuthorizationResource(Keycloak keycloak) {
@@ -58,8 +68,14 @@ public class KeycloakServiceImpl implements KeycloakService {
 
     @Override
     public RolesResource getRoleResource(Keycloak keycloak) {
-        RealmResource realm = keycloak.realms().realm(getStackConfig().getRealm());
-        return realm.roles();
+        SysKeycloakConfDTO config = getStackConfig();
+        String realm = config.getRealm();
+        String clientId = config.getClientId();
+        RealmResource realm0 = keycloak.realms().realm(realm);
+        ClientsResource clients = realm0.clients();
+        Optional<ClientRepresentation> first = clients.findAll().stream().filter(e -> e.getClientId().equals(clientId)).findFirst();
+        return first.map(clientRepresentation -> clients.get(clientRepresentation.getId()).roles()).orElse(null);
+
     }
 
     @Override

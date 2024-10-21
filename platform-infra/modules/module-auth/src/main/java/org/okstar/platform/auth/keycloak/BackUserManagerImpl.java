@@ -63,7 +63,7 @@ public class BackUserManagerImpl implements BackUserManager {
      */
     @Override
     public List<BackRoleDTO> listRoles(String username) {
-        Log.infof("Get user role for user:%s", username);
+        Log.infof("Get user:%s roles", username);
 
         Optional<BackUser> backUser = getUser(username);
         if (backUser.isEmpty()) {
@@ -183,18 +183,23 @@ public class BackUserManagerImpl implements BackUserManager {
             try {
                 var response = usersResource.create(toRepresent(user));
                 Log.infof("statusCode=>%s", response.getStatus());
+
                 Assert.assertTrue(response.getStatus() == Response.Status.CREATED.getStatusCode());
             } catch (Exception e) {
                 throw new OkRuntimeException("Creating account exception occurred: %s".formatted(e.getMessage()), e);
             }
 
             var u = usersResource.search(user.getUsername()).stream().peek(userRepresentation -> {
+
+                //设置密码
                 CredentialRepresentation cr = new CredentialRepresentation();
                 cr.setUserLabel("My password");
                 cr.setType("password");
                 cr.setValue(user.getPassword());
+
                 UserResource userResource = usersResource.get(userRepresentation.getId());
                 userResource.resetPassword(cr);
+
             }).findFirst().map(BackUserManagerImpl::toBackend).orElse(null);
 
             Log.infof("User is:%s", u);

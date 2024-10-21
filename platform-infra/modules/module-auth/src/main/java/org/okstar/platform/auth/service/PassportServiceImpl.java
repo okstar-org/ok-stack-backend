@@ -76,7 +76,6 @@ public class PassportServiceImpl implements PassportService {
         staff.setLastName(form.getLastName());
         staff.setIso(form.getIso());
 
-
         switch (form.getAccountType()) {
             case email -> staff.setEmail(form.getAccount());
             case phone -> staff.setPhone(form.getAccount());
@@ -131,24 +130,24 @@ public class PassportServiceImpl implements PassportService {
 
         //获取帐号
         Log.infof("Get account: %s", account);
-        SysAccountDTO account0 = getAccount(account);
-        Log.debugf("getAccount=> %s", account0);
+        SysAccountDTO accountDTO = getAccount(account);
+        Log.debugf("getAccount=> %s", accountDTO);
 
-        if (account0 == null) {
+        if (accountDTO == null) {
             throw new NotFoundException("帐号不存在！");
         }
 
         //从后端系统获取用户
-        Optional<BackUser> backUser = backUserManager.getUser(account0.getUsername());
+        Optional<BackUser> backUser = backUserManager.getUser(accountDTO.getUsername());
         if (backUser.isEmpty()) {
             //不存在则创建
-            RpcResult<String> lastedPassword = sysAccountRpc.lastPassword(account0.getId());
+            RpcResult<String> lastedPassword = sysAccountRpc.lastPassword(accountDTO.getId());
             String pwd = RpcAssert.isTrue(lastedPassword);
             OkAssert.isTrue(OkStringUtil.equals(pwd, signInForm.getPassword()), "密码不正确！");
 
             BackUser addUser = new BackUser();
-            addUser.setId(String.valueOf(account0.getId()));
-            addUser.setUsername(account0.getUsername());
+            addUser.setId(String.valueOf(accountDTO.getUid()));
+            addUser.setUsername(accountDTO.getUsername());
             if (signInForm.getType() == email) {
                 addUser.setEmail(signInForm.getAccount());
             } else if (signInForm.getType() == phone) {
@@ -158,11 +157,18 @@ public class PassportServiceImpl implements PassportService {
 
             BackUser added = backUserManager.addUser(addUser);
             Log.infof("User:%s is initialized to ldap successfully.", added.getUsername());
+        }else{
+            BackUser user = backUser.get();
+            accountDTO.setUid(user.getId());
+            sysAccountRpc.setUid(user.getUsername(), accountDTO.getUid());
         }
-        AuthorizationResult result = authzClientManager.authorization(account0.getUsername(), signInForm.getPassword());
-        result.setUsername(account0.getUsername());
-        AuthSession sess = buildAuthSession(signInForm, account0, result);
-        authSessionService.create(sess, 1L);
+
+        AuthorizationResult result = authzClientManager.authorization(accountDTO.getUsername(), signInForm.getPassword());
+        result.setUsername(accountDTO.getUsername());
+
+        AuthSession session = buildAuthSession(signInForm, accountDTO, result);
+        authSessionService.create(session, accountDTO.getId());
+
         return result;
     }
 

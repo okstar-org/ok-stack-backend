@@ -31,6 +31,11 @@ import org.okstar.platform.system.domain.BaseEntity;
 public class SysAccount extends BaseEntity {
 
     /**
+     * akka keycloak user id
+     */
+    private String uid;
+
+    /**
      * 用户账号
      */
     private String username;

@@ -16,11 +16,15 @@ package org.okstar.platform.auth.keycloak;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import org.keycloak.admin.client.Keycloak;
+import org.keycloak.admin.client.resource.RoleResource;
 import org.keycloak.admin.client.resource.RolesResource;
 import org.keycloak.representations.idm.RoleRepresentation;
+import org.keycloak.representations.idm.UserRepresentation;
 import org.okstar.platform.common.web.page.OkPageable;
 
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @ApplicationScoped
 public class BackRoleManagerImpl implements BackRoleManager {
@@ -29,28 +33,44 @@ public class BackRoleManagerImpl implements BackRoleManager {
 
     public List<BackRoleDTO> page(OkPageable pageable) {
         try (Keycloak keycloak = keycloakService.openKeycloak()) {
-            RolesResource roleResource = keycloakService.getRoleResource(keycloak);
-            return roleResource.list(pageable.getPageIndex() * pageable.getPageSize(), pageable.getPageSize())//
-                    .stream().map(this::toDTO).toList();
+            RolesResource rolesResource = keycloakService.getRoleResource(keycloak);
+            return rolesResource
+                    .list(pageable.getPageIndex() * pageable.getPageSize(), pageable.getPageSize())//page
+                    .stream().map(e -> toDTO(e, rolesResource)).toList();
         }
     }
 
     @Override
     public List<BackRoleDTO> list() {
         try (Keycloak keycloak = keycloakService.openKeycloak()) {
-            RolesResource roleResource = keycloakService.getRoleResource(keycloak);
-            List<RoleRepresentation> list = roleResource.list();
-            return list.stream().map(this::toDTO).toList();
+            RolesResource rolesResource = keycloakService.getRoleResource(keycloak);
+            List<RoleRepresentation> list = rolesResource.list();
+            return list.stream().map(e -> toDTO(e, rolesResource)).toList();
         }
     }
 
     @Override
+    public BackRoleDTO toDTO(RoleRepresentation representation, RolesResource rolesResource) {
+
+        BackRoleDTO dto = BackRoleDTO.builder()
+                .description(representation.getDescription())
+                .name(representation.getName())
+                .id(representation.getId()).build();
+
+        RoleResource roleResource = rolesResource.get(representation.getName());
+        if (roleResource != null) {
+            Set<String> users = roleResource.getUserMembers().stream().map(UserRepresentation::getUsername).collect(Collectors.toSet());
+            dto.setUsers(users);
+        }
+        return dto;
+    }
+
+    @Override
     public BackRoleDTO toDTO(RoleRepresentation representation) {
+
         return BackRoleDTO.builder()
                 .description(representation.getDescription())
                 .name(representation.getName())
                 .id(representation.getId()).build();
     }
-
-
 }

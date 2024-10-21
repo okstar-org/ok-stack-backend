@@ -15,6 +15,7 @@ package org.okstar.platform.system.rpc.impl;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
+import jakarta.transaction.Transactional;
 import org.okstar.platform.common.bean.OkBeanUtils;
 import org.okstar.platform.common.phone.OkPhoneUtils;
 import org.okstar.platform.core.rpc.RpcResult;
@@ -31,7 +32,7 @@ import org.okstar.platform.system.sign.SignUpResult;
 import java.util.List;
 import java.util.Optional;
 
-
+@Transactional
 @ApplicationScoped
 public class SysAccountRpcImpl implements SysAccountRpc {
 
@@ -108,6 +109,14 @@ public class SysAccountRpcImpl implements SysAccountRpc {
             return dto;
         }).toList();
         return RpcResult.success(list);
+    }
+
+    @Override
+    public void setUid(String username, String uid) {
+        Optional<SysAccount> sysAccount = accountService.findByUsername(username);
+        sysAccount.ifPresent(e -> {
+           e.setUid(uid);
+        });
     }
 
 

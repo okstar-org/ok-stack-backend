@@ -22,6 +22,8 @@ import java.util.List;
 
 public interface SysProfileService extends OkJpaService<SysProfile> {
 
+    void update(SysAccount sysAccount, SysProfile sysProfile);
+
     SysProfile loadByUsername(String username);
 
     SysProfile loadByAccount(Long accountId);

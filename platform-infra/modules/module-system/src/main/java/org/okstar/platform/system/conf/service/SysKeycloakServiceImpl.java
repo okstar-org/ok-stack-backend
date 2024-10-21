@@ -26,13 +26,17 @@ import org.jboss.resteasy.client.jaxrs.ResteasyClient;
 import org.jboss.resteasy.client.jaxrs.internal.ResteasyClientBuilderImpl;
 import org.keycloak.admin.client.Keycloak;
 import org.keycloak.admin.client.KeycloakBuilder;
+import org.keycloak.admin.client.resource.RealmResource;
 import org.keycloak.admin.client.resource.RealmsResource;
+import org.keycloak.admin.client.resource.UserResource;
 import org.keycloak.representations.idm.ClientRepresentation;
 import org.keycloak.representations.idm.RealmRepresentation;
+import org.keycloak.representations.idm.UserRepresentation;
 import org.keycloak.representations.idm.authorization.*;
 import org.okstar.platform.common.asserts.OkAssert;
 import org.okstar.platform.common.id.OkIdUtils;
 import org.okstar.platform.common.string.OkStringUtil;
+import org.okstar.platform.system.account.domain.SysProfile;
 import org.okstar.platform.system.conf.domain.SysProperty;
 import org.okstar.platform.system.dto.SysConfIntegrationKeycloak;
 import org.okstar.platform.system.dto.SysKeycloakConfDTO;
@@ -127,10 +131,35 @@ public class SysKeycloakServiceImpl implements SysKeycloakService {
     }
 
     @Override
+    public void updateUserProfile(String uid, SysProfile sysProfile) {
+        if (OkStringUtil.isEmpty(uid)) {
+            return;
+        }
+
+        try (Keycloak kc = openKeycloak()) {
+            RealmsResource realmsResource = kc.realms();
+            RealmResource realmResource = realmsResource.realm(getRealm());
+            UserResource userResource = realmResource.users().get(uid);
+            if (userResource == null) {
+                return;
+            }
+
+            UserRepresentation userRepresentation = userResource.toRepresentation();
+            if (userRepresentation == null) {
+                return;
+            }
+            userRepresentation.setFirstName(sysProfile.getFirstName());
+            userRepresentation.setLastName(sysProfile.getLastName());
+            userResource.update(userRepresentation);
+        }
+    }
+
+
+    @Override
     public List<String> listRealms() {
         try (Keycloak kc = openKeycloak()) {
             RealmsResource realms = kc.realms();
-            return realms.findAll().stream().map(e -> e.getRealm()).toList();
+            return realms.findAll().stream().map(RealmRepresentation::getRealm).toList();
         }
     }
 

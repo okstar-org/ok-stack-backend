@@ -32,7 +32,6 @@ public class SysProfileResource extends BaseResource {
     SysProfileService profileService;
 
 
-
     @GET
     public Res<SysProfile> get() {
         String username = getUsername();
@@ -44,7 +43,7 @@ public class SysProfileResource extends BaseResource {
     public Res<Boolean> put(SysProfile profile) {
         SysAccount self = self();
         profile.setAccountId(self.id);
-        profileService.create(profile, 1L);
+        profileService.update(self, profile);
         return Res.ok(true);
     }
 

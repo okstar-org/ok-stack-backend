@@ -14,10 +14,8 @@
 package org.okstar.platform.org.dto;
 
 import lombok.Data;
-import lombok.EqualsAndHashCode;
-import org.okstar.platform.common.web.bean.DTO;
-import org.okstar.platform.system.dto.SysProfileDTO;
 import org.okstar.platform.system.dto.SysAccountDTO;
+import org.okstar.platform.system.dto.SysProfileDTO;
 
 import java.util.List;
 
@@ -25,8 +23,7 @@ import java.util.List;
  * 我的组织信息
  */
 @Data
-@EqualsAndHashCode(callSuper = true)
-public class MyOrgInfo extends DTO {
+public class MyOrgInfo {
 
     /**
      * 帐号信息

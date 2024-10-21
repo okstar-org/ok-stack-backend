@@ -15,29 +15,15 @@ package org.okstar.platform.auth.resource;
 
 import io.quarkus.logging.Log;
 import io.quarkus.security.Authenticated;
-import jakarta.inject.Inject;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;
-import org.eclipse.microprofile.rest.client.inject.RestClient;
 import org.okstar.platform.auth.dto.Me;
 import org.okstar.platform.common.web.bean.Res;
 import org.okstar.platform.system.dto.SysAccountDTO;
-import org.okstar.platform.system.rpc.SysProfileRpc;
 
 @Authenticated
 @Path("me")
 public class MeResource extends BaseResource {
-
-//    @Inject
-//    ExecutorService executorService;
-//
-//    @Inject
-//    @RestClient
-//    SysAccountRpc sysAccountRpc;
-
-    @Inject
-    @RestClient
-    SysProfileRpc sysProfileRpc;
 
 
     @GET

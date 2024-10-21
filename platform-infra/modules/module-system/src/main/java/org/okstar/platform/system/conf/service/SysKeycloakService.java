@@ -15,15 +15,19 @@ package org.okstar.platform.system.conf.service;
 
 import org.keycloak.admin.client.Keycloak;
 import org.keycloak.representations.idm.ClientRepresentation;
+import org.okstar.platform.system.account.domain.SysProfile;
 import org.okstar.platform.system.dto.SysConfIntegrationKeycloak;
 import org.okstar.platform.system.dto.SysKeycloakConfDTO;
 
 import java.util.List;
 
 public interface SysKeycloakService {
+
     String getAuthServerUrl();
 
     String getRealm();
+
+    void updateUserProfile(String uid, SysProfile sysProfile);
 
     List<String> listRealms();
 

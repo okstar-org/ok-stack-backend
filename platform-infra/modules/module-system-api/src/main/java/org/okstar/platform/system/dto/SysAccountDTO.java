@@ -24,6 +24,7 @@ import org.okstar.platform.common.web.bean.DTO;
 @EqualsAndHashCode(callSuper = true)
 public class SysAccountDTO extends DTO {
     private Long id;
+    private String uid;
     //国家
     private String iso;
     //语言

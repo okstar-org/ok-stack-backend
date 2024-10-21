@@ -15,6 +15,8 @@ package org.okstar.platform.auth.keycloak;
 
 import lombok.*;
 
+import java.util.Set;
+
 @Data
 @Builder
 @ToString
@@ -24,4 +26,5 @@ public class BackRoleDTO {
     private String id;
     private String name;
     private String description;
+    private Set<String> users;
 }

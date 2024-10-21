@@ -36,6 +36,7 @@ import org.okstar.platform.system.account.domain.SysAccountBind;
 import org.okstar.platform.system.account.domain.SysProfile;
 import org.okstar.platform.system.account.domain.SysProfile_;
 import org.okstar.platform.system.account.mapper.SysProfileMapper;
+import org.okstar.platform.system.conf.service.SysKeycloakService;
 
 import java.util.List;
 import java.util.Map;
@@ -51,6 +52,8 @@ public class SysProfileServiceImpl implements SysProfileService {
     SysAccountService accountService;
     @Inject
     ObjectMapper objectMapper;
+    @Inject
+    SysKeycloakService keycloakService;
 
     @Inject
     ConnectionFactory connectionFactory;
@@ -81,6 +84,13 @@ public class SysProfileServiceImpl implements SysProfileService {
         if (context != null) {
             context.close();
         }
+    }
+
+
+    @Override
+    public void update(SysAccount sysAccount, SysProfile sysProfile) {
+        keycloakService.updateUserProfile(sysAccount.getUid(), sysProfile);
+        update(sysProfile, sysAccount.id);
     }
 
     @SneakyThrows(JsonProcessingException.class)
@@ -152,6 +162,7 @@ public class SysProfileServiceImpl implements SysProfileService {
     public SysProfile get(String uuid) {
         return mapper.find("uuid", uuid).firstResult();
     }
+
 
     @Override
     public SysProfile loadByUsername(String username) {
