@@ -13,21 +13,19 @@
 
 package org.okstar.platform.system.conf.domain;
 
-import com.beust.jcommander.internal.Maps;
 import lombok.Data;
 import org.okstar.platform.common.string.OkStringUtil;
 import org.okstar.platform.system.conf.SysConfDefines;
-import org.okstar.platform.system.dto.SysConfItem;
 import org.okstar.platform.system.dto.SysPropertyDTO;
 
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 系统管理-基础设置-个人设置
  */
 @Data
 public class SysConfPersonal implements SysConfItem {
-    private Map<String, SysPropertyDTO> properties = Maps.newHashMap();
 
     //语言，格式：zh_CN
     private String language;
@@ -39,20 +37,20 @@ public class SysConfPersonal implements SysConfItem {
 
     @Override
     public void addProperty(SysPropertyDTO property) {
-        properties.put(property.getK(), property);
         if (OkStringUtil.equals(property.getK(), "language")) {
             this.language = property.getV();
         }
     }
 
-    public Map<String, SysPropertyDTO> getProperties() {
-        if (language == null) {
-            SysPropertyDTO p = new SysPropertyDTO();
-            p.setGrouping(getGroup());
-            p.setK("language");
-            p.setV(language);
-            properties.put(p.getK(), p);
-        }
-        return properties;
+    public List<SysPropertyDTO> getProperties() {
+        ArrayList<SysPropertyDTO> list = new ArrayList<>();
+
+        SysPropertyDTO p = new SysPropertyDTO();
+        p.setGrouping(getGroup());
+        p.setK("language");
+        p.setV(language);
+        list.add(p);
+
+        return list;
     }
 }

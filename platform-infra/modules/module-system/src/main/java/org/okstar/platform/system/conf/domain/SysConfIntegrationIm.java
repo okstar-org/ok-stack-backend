@@ -13,14 +13,13 @@
 
 package org.okstar.platform.system.conf.domain;
 
-import com.google.common.collect.Maps;
 import lombok.Data;
 import org.okstar.platform.common.string.OkStringUtil;
-import org.okstar.platform.system.dto.SysConfItem;
-import org.okstar.platform.system.dto.SysPropertyDTO;
 import org.okstar.platform.system.conf.SysConfDefines;
+import org.okstar.platform.system.dto.SysPropertyDTO;
 
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -28,7 +27,6 @@ import java.util.Map;
  */
 @Data
 public class SysConfIntegrationIm implements SysConfItem {
-    private Map<String, SysPropertyDTO> properties = Maps.newHashMap();
 
     private String host;
 
@@ -46,7 +44,7 @@ public class SysConfIntegrationIm implements SysConfItem {
 
     @Override
     public void addProperty(SysPropertyDTO property) {
-        properties.put(property.getK(), property);
+//        properties.put(property.getK(), property);
 
         if (OkStringUtil.equalsIgnoreCase(property.getK(), "host")) {
             setHost(property.getV());
@@ -59,5 +57,41 @@ public class SysConfIntegrationIm implements SysConfItem {
         }
 
     }
+
+    @Override
+    public List<SysPropertyDTO> getProperties(){
+
+        List<SysPropertyDTO> list = new ArrayList<>();
+
+        //host
+        SysPropertyDTO pHost = new SysPropertyDTO();
+        pHost.setK("host");
+        pHost.setV(getHost());
+        pHost.setGrouping(getGroup());
+        list.add(pHost);
+
+        //admin-port
+        SysPropertyDTO pAdminPort = new SysPropertyDTO();
+        pAdminPort.setK("admin-port");
+        pAdminPort.setV(String.valueOf(getAdminPort()));
+        pAdminPort.setGrouping(getGroup());
+        list.add(pAdminPort);
+
+        //port
+        SysPropertyDTO pPort = new SysPropertyDTO();
+        pPort.setK("port");
+        pPort.setV(String.valueOf(getPort()));
+        pPort.setGrouping(getGroup());
+        list.add(pPort);
+
+        SysPropertyDTO pApiSecret = new SysPropertyDTO();
+        pApiSecret.setK("api-secret");
+        pApiSecret.setV(String.valueOf(getApiSecret()));
+        pApiSecret.setGrouping(getGroup());
+        list.add(pApiSecret);
+
+        return list;
+    }
+
 
 }

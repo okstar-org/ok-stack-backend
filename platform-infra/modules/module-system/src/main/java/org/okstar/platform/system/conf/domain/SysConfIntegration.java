@@ -14,18 +14,20 @@
 package org.okstar.platform.system.conf.domain;
 
 import lombok.Data;
-import org.okstar.platform.system.dto.SysConfIntegrationKeycloak;
 
 
 /**
  * 系统管理-集成设置
  */
 @Data
-public class SysConfIntegration  {
+public class SysConfIntegration {
     //IM 设置
-    SysConfIntegrationIm im;
+    private SysConfIntegrationIm im;
     //Stack 设置
-    SysConfIntegrationStack stack;
+    private SysConfIntegrationStack stack;
     //Keycloak 设置
-    SysConfIntegrationKeycloak keycloak;
+    private SysConfIntegrationKeycloak keycloak;
+    //minio
+    private SysConfIntegrationMinio minio;
+
 }

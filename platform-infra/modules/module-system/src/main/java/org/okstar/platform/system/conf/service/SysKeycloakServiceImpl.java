@@ -38,7 +38,7 @@ import org.okstar.platform.common.id.OkIdUtils;
 import org.okstar.platform.common.string.OkStringUtil;
 import org.okstar.platform.system.account.domain.SysProfile;
 import org.okstar.platform.system.conf.domain.SysProperty;
-import org.okstar.platform.system.dto.SysConfIntegrationKeycloak;
+import org.okstar.platform.system.conf.domain.SysConfIntegrationKeycloak;
 import org.okstar.platform.system.dto.SysKeycloakConfDTO;
 
 import java.net.URI;

@@ -11,13 +11,15 @@
  * /
  */
 
-package org.okstar.platform.system.dto;
+package org.okstar.platform.system.conf.domain;
 
-import com.google.common.collect.Maps;
 import lombok.Data;
 import org.okstar.platform.common.string.OkStringUtil;
+import org.okstar.platform.system.conf.SysConfDefines;
+import org.okstar.platform.system.dto.SysPropertyDTO;
 
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -26,28 +28,21 @@ import java.util.Map;
 @Data
 public class SysConfIntegrationKeycloak implements SysConfItem {
 
-    Map<String, SysPropertyDTO> properties = Maps.newHashMap();
 
-    String serverUrl;
-    String realm;
-    String clientId;
-    String username;
-    String password;
-    String clientSecret;
-
-    /**
-     * 集成配置组
-     */
-    String CONF_GROUP_INTEGRATION_PREFIX = "sys.conf.integration";
+    private String serverUrl;
+    private String realm;
+    private String clientId;
+    private String username;
+    private String password;
+    private String clientSecret;
 
     @Override
     public String getGroup() {
-        return CONF_GROUP_INTEGRATION_PREFIX + ".keycloak";
+        return SysConfDefines.CONF_GROUP_INTEGRATION_PREFIX+".keycloak";
     }
 
     @Override
     public void addProperty(SysPropertyDTO property) {
-        properties.put(property.getK(), property);
 
         if (OkStringUtil.equals(property.getK(), "server-url")) {
             this.serverUrl = property.getV();
@@ -62,5 +57,42 @@ public class SysConfIntegrationKeycloak implements SysConfItem {
         } else if (OkStringUtil.equals(property.getK(), "client-secret")) {
             this.clientSecret = property.getV();
         }
+    }
+
+    @Override
+    public List<SysPropertyDTO> getProperties() {
+        List<SysPropertyDTO> list = new ArrayList<>();
+
+        SysPropertyDTO serverUrl0 = SysPropertyDTO.builder()
+                .grouping(getGroup())
+                .k("server-url")
+                .v(serverUrl).build();
+        list.add(serverUrl0);
+
+        SysPropertyDTO realm1 = SysPropertyDTO.builder().grouping(getGroup())
+                .k("realm")
+                .v(realm).build();
+        list.add(realm1);
+
+        SysPropertyDTO clientId0 = SysPropertyDTO.builder().grouping(getGroup())
+                .k("client-id")
+                .v(clientId).build();
+        list.add(clientId0);
+
+        SysPropertyDTO username1 = SysPropertyDTO.builder()
+                .grouping(getGroup())
+                .k("username")
+                .v(username)
+                .build();
+        list.add(username1);
+
+        SysPropertyDTO password1 = SysPropertyDTO.builder()
+                .grouping(getGroup())
+                .k("password")
+                .v(password)
+                .build();
+        list.add(password1);
+
+        return list;
     }
 }

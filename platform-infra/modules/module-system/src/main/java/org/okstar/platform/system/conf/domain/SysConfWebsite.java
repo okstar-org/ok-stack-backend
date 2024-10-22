@@ -14,13 +14,12 @@
 package org.okstar.platform.system.conf.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.google.common.collect.Maps;
 import lombok.Data;
 import org.okstar.platform.system.conf.SysConfDefines;
-import org.okstar.platform.system.dto.SysConfItem;
 import org.okstar.platform.system.dto.SysPropertyDTO;
 
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -28,8 +27,6 @@ import java.util.Map;
  */
 @Data
 public class SysConfWebsite implements SysConfItem {
-
-    private Map<String, SysPropertyDTO> properties = Maps.newHashMap();
 
     private String title;
     //备案号
@@ -45,7 +42,6 @@ public class SysConfWebsite implements SysConfItem {
 
     @Override
     public void addProperty(SysPropertyDTO property) {
-        properties.put(property.getK(), property);
         switch (property.getK()) {
             case "license":
                 this.license = property.getV();
@@ -60,32 +56,27 @@ public class SysConfWebsite implements SysConfItem {
     }
 
     @JsonIgnore
-    public Map<String, SysPropertyDTO> getProperties() {
-        if (license != null) {
-            SysPropertyDTO p = new SysPropertyDTO();
-            p.setGrouping(getGroup());
-            p.setK("license");
-            p.setV(license);
-            properties.put(p.getK(), p);
-        }
+    public List<SysPropertyDTO> getProperties() {
+        List<SysPropertyDTO> list = new ArrayList<>();
 
-        if (license != null) {
-            SysPropertyDTO p = new SysPropertyDTO();
-            p.setGrouping(getGroup());
-            p.setK("copyright");
-            p.setV(copyright);
-            properties.put(p.getK(), p);
-        }
+        SysPropertyDTO l = new SysPropertyDTO();
+        l.setGrouping(getGroup());
+        l.setK("license");
+        l.setV(license);
+        list.add(l);
 
-        if (title != null) {
-            SysPropertyDTO p = new SysPropertyDTO();
-            p.setGrouping(getGroup());
-            p.setK("title");
-            p.setV(title);
-            properties.put(p.getK(), p);
-        }
+        SysPropertyDTO c = new SysPropertyDTO();
+        c.setGrouping(getGroup());
+        c.setK("copyright");
+        c.setV(copyright);
+        list.add(c);
 
+        SysPropertyDTO t = new SysPropertyDTO();
+        t.setGrouping(getGroup());
+        t.setK("title");
+        t.setV(title);
+        list.add(t);
 
-        return properties;
+        return list;
     }
 }

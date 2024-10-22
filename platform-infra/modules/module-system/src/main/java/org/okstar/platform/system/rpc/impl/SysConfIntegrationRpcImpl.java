@@ -16,7 +16,6 @@ package org.okstar.platform.system.rpc.impl;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import org.okstar.platform.system.dto.SysConfImDTO;
-import org.okstar.platform.system.dto.SysConfIntegrationDTO;
 import org.okstar.platform.system.dto.SysConfStackDTO;
 import org.okstar.platform.system.rpc.SysConfIntegrationRpc;
 import org.okstar.platform.system.conf.domain.SysConfIntegration;
@@ -30,10 +29,10 @@ public class SysConfIntegrationRpcImpl implements SysConfIntegrationRpc {
     SysConfIntegrationService service;
 
     @Override
-    public SysConfIntegrationDTO getIntegrationConf() {
+    public org.okstar.platform.system.dto.SysConfIntegrationDTO getIntegrationConf() {
         SysConfIntegration integration = service.find();
 
-        SysConfIntegrationDTO dto = new SysConfIntegrationDTO();
+        org.okstar.platform.system.dto.SysConfIntegrationDTO dto = new org.okstar.platform.system.dto.SysConfIntegrationDTO();
 
         SysConfImDTO im = new SysConfImDTO();
         im.setHost(integration.getIm().getHost());

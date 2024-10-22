@@ -13,7 +13,7 @@
 
 package org.okstar.platform.system.conf.service;
 
-import org.okstar.platform.system.dto.SysConfIntegrationKeycloak;
+import org.okstar.platform.system.conf.domain.SysConfIntegrationKeycloak;
 import org.okstar.platform.system.dto.SysKeycloakConfDTO;
 
 import java.util.List;

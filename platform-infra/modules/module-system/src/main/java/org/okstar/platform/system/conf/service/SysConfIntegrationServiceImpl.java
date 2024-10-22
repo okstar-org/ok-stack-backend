@@ -31,14 +31,15 @@ import org.okstar.platform.core.rpc.RpcAssert;
 import org.okstar.platform.core.rpc.RpcResult;
 import org.okstar.platform.org.dto.Org0;
 import org.okstar.platform.org.rpc.OrgRpc;
-import org.okstar.platform.system.dto.SysConfIntegrationKeycloak;
 import org.okstar.platform.system.conf.domain.*;
+import org.okstar.platform.system.dto.SysPropertyDTO;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.List;
+import java.util.Optional;
 
 @Transactional
 @ApplicationScoped
@@ -51,27 +52,53 @@ public class SysConfIntegrationServiceImpl implements SysConfIntegrationService 
     OrgRpc orgRpc;
 
     @Inject
-    private SysKeycloakService keycloakService;
+    SysKeycloakService keycloakService;
 
     @Override
     public SysConfIntegration find() {
         SysConfIntegration integration = new SysConfIntegration();
 
         //IM
-        SysConfIntegrationIm im = new SysConfIntegrationIm();
+        var im = new SysConfIntegrationIm();
         im.addProperties(propertyService.toDTOs(propertyService.findByGroup(im.getGroup())));
         integration.setIm(im);
 
         //Stack
-        SysConfIntegrationStack stack = new SysConfIntegrationStack();
+        var stack = new SysConfIntegrationStack();
         stack.addProperties(propertyService.toDTOs(propertyService.findByGroup(stack.getGroup())));
         integration.setStack(stack);
 
         //Keycloak
-        SysConfIntegrationKeycloak keycloak = new SysConfIntegrationKeycloak();
+        var keycloak = new SysConfIntegrationKeycloak();
         keycloak.addProperties(propertyService.toDTOs(propertyService.findByGroup(keycloak.getGroup())));
         integration.setKeycloak(keycloak);
+
+        var minio = new SysConfIntegrationMinio();
+        minio.addProperties(propertyService.toDTOs(propertyService.findByGroup(minio.getGroup())));
+        integration.setMinio(minio);
+
         return integration;
+    }
+
+    @Override
+    public void save(SysConfItem item) {
+        List<SysPropertyDTO> list = item.getProperties();
+        list.forEach(property -> {
+            Optional<SysProperty> optional = propertyService.findByKey(property.getGrouping(), property.getK());
+            if (optional.isEmpty()) {
+                SysProperty create = new SysProperty();
+                create.setGrouping(property.getGrouping());
+                create.setK(property.getK());
+                create.setV(property.getV());
+                propertyService.create(create, 1L);
+            } else {
+                SysProperty update = optional.get();
+                update.setGrouping(property.getGrouping());
+                update.setK(property.getK());
+                update.setV(property.getV());
+                propertyService.update(update, 1L);
+            }
+        });
     }
 
     @Override
@@ -80,15 +107,18 @@ public class SysConfIntegrationServiceImpl implements SysConfIntegrationService 
 
         //im
         SysConfIntegrationIm im = integration.getIm();
-        saveIm(im);
+//        saveIm(im);
+        save(im);
 
         //stack
         SysConfIntegrationStack stack = integration.getStack();
-        saveStack(stack);
+//        saveStack(stack);
+        save(stack);
 
         //keycloak
         SysConfIntegrationKeycloak keycloak = integration.getKeycloak();
-        saveKeycloak(keycloak);
+//        saveKeycloak(keycloak);
+        save(keycloak);
 
         uploadConf(integration);
     }
@@ -241,5 +271,19 @@ public class SysConfIntegrationServiceImpl implements SysConfIntegrationService 
         String content = OkWebUtil.get(fqdn);
         Log.infof(content);
         return OkStringUtil.isNotEmpty(content);
+    }
+
+    @Override
+    public boolean testMinio(SysConfIntegrationMinio conf) {
+//        try {
+//            var client = MinioClient.builder().endpoint(conf.getEndpoint())
+//                    .credentials(conf.getAccessKey(), conf.getSecretKey())
+//                    .build();
+//            return !client.listBuckets().isEmpty();
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            return false;
+//        }
+        return false;
     }
 }

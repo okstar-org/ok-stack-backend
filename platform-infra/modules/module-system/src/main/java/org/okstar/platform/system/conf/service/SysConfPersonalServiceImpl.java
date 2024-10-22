@@ -48,7 +48,7 @@ public class SysConfPersonalServiceImpl implements SysConfPersonalService {
 
     @Override
     public List<SysProperty> save(SysAccount account, SysConfPersonal personal) {
-        return personal.getProperties().values().stream().toList().stream()//
+        return personal.getProperties().stream()//
                 .map(property -> {
                     property.setDomain(account.getUsername());
                     return sysPropertyService.save(property);

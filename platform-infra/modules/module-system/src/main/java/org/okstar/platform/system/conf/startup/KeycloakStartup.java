@@ -19,7 +19,7 @@ import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.event.Observes;
 import jakarta.inject.Inject;
 import org.okstar.platform.system.conf.service.SysKeycloakService;
-import org.okstar.platform.system.dto.SysConfIntegrationKeycloak;
+import org.okstar.platform.system.conf.domain.SysConfIntegrationKeycloak;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.TimeUnit;

@@ -19,7 +19,6 @@ import jakarta.transaction.Transactional;
 import org.okstar.platform.system.conf.domain.SysConfWebsite;
 import org.okstar.platform.system.conf.domain.SysProperty;
 
-import java.util.LinkedList;
 import java.util.List;
 
 @Transactional
@@ -33,14 +32,12 @@ public class SysConfSettingsServiceImpl implements SysConfSettingsService {
     public SysConfWebsite loadWebsite() {
         SysConfWebsite settings = new SysConfWebsite();
         List<SysProperty> list = sysPropertyService.findByGroup(settings.getGroup());
-        list.forEach(p-> settings.addProperty(sysPropertyService.toDTO(p)));
+        list.forEach(p -> settings.addProperty(sysPropertyService.toDTO(p)));
         return settings;
     }
 
     @Override
     public List<SysProperty> saveWebsite(SysConfWebsite settings) {
-        List<SysProperty> list = new LinkedList<>();
-        settings.getProperties().forEach((k, dto) -> list.add(sysPropertyService.save(dto)));
-        return list;
+        return settings.getProperties().stream().map(dto -> sysPropertyService.save(dto)).toList();
     }
 }

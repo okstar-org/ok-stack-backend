@@ -11,10 +11,11 @@
  * /
  */
 
-package org.okstar.platform.system.dto;
+package org.okstar.platform.system.conf.domain;
+
+import org.okstar.platform.system.dto.SysPropertyDTO;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * 集成配置接口
@@ -25,11 +26,11 @@ public interface SysConfItem {
      */
     String getGroup();
 
-    Map<String, SysPropertyDTO> getProperties() ;
-
     void addProperty(SysPropertyDTO property);
 
     default void addProperties(List<SysPropertyDTO> properties) {
         properties.forEach(this::addProperty);
     }
+
+    List<SysPropertyDTO> getProperties();
 }

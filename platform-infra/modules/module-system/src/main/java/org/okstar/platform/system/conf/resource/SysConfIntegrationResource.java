@@ -13,18 +13,13 @@
 
 package org.okstar.platform.system.conf.resource;
 
+import io.quarkus.logging.Log;
 import jakarta.inject.Inject;
-import jakarta.ws.rs.GET;
-import jakarta.ws.rs.POST;
-import jakarta.ws.rs.PUT;
-import jakarta.ws.rs.Path;
+import jakarta.ws.rs.*;
 import org.okstar.platform.common.web.bean.Res;
-import org.okstar.platform.system.resource.BaseResource;
-import org.okstar.platform.system.conf.domain.SysConfIntegration;
-import org.okstar.platform.system.conf.domain.SysConfIntegrationIm;
-import org.okstar.platform.system.dto.SysConfIntegrationKeycloak;
-import org.okstar.platform.system.conf.domain.SysConfIntegrationStack;
+import org.okstar.platform.system.conf.domain.*;
 import org.okstar.platform.system.conf.service.SysConfIntegrationService;
+import org.okstar.platform.system.resource.BaseResource;
 
 @Path("conf/integration")
 public class SysConfIntegrationResource extends BaseResource {
@@ -48,12 +43,12 @@ public class SysConfIntegrationResource extends BaseResource {
     @PUT
     @Path("stack")
     public Res<Boolean> putStack(SysConfIntegrationStack conf) {
-        integrationService.saveStack(conf);
+        integrationService.save(conf);
         return Res.ok(true);
     }
 
     @POST
-    @Path("/stack/test")
+    @Path("test/stack")
     public Res<Boolean> testStack(SysConfIntegrationStack conf) {
         boolean y = integrationService.testStack(conf);
         return Res.ok(y);
@@ -68,7 +63,7 @@ public class SysConfIntegrationResource extends BaseResource {
 
 
     @POST
-    @Path("/keycloak/test")
+    @Path("/test/keycloak")
     public Res<Boolean> testKeycloak(SysConfIntegrationKeycloak conf) {
         boolean y = integrationService.testKeycloak(conf);
         return Res.ok(y);
@@ -82,10 +77,26 @@ public class SysConfIntegrationResource extends BaseResource {
     }
 
     @POST
-    @Path("/im/test")
+    @Path("/test/im")
     public Res<Boolean> testIm(SysConfIntegrationIm conf) {
         conf.setPort(5222);
         boolean y = integrationService.testIm(conf);
+        return Res.ok(y);
+    }
+
+    @PUT
+    @Path("minio")
+    public Res<Boolean> putConf(SysConfIntegrationMinio conf) {
+        Log.infof("save config: %s", conf);
+        integrationService.save(conf);
+        return Res.ok(true);
+    }
+
+    @POST
+    @Path("/test/minio")
+    public Res<Boolean> testConf(SysConfIntegrationMinio conf) {
+        Log.infof("test config: %s", conf);
+        boolean y = integrationService.testMinio(conf);
         return Res.ok(y);
     }
 }

@@ -13,14 +13,13 @@
 
 package org.okstar.platform.system.conf.domain;
 
-import com.google.common.collect.Maps;
 import lombok.Data;
 import org.okstar.platform.common.string.OkStringUtil;
-import org.okstar.platform.system.dto.SysConfItem;
-import org.okstar.platform.system.dto.SysPropertyDTO;
 import org.okstar.platform.system.conf.SysConfDefines;
+import org.okstar.platform.system.dto.SysPropertyDTO;
 
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -28,9 +27,8 @@ import java.util.Map;
  */
 @Data
 public class SysConfIntegrationStack implements SysConfItem {
-    Map<String, SysPropertyDTO> properties = Maps.newHashMap();
 
-    String fqdn;
+    private String fqdn;
 
     @Override
     public String getGroup() {
@@ -39,11 +37,22 @@ public class SysConfIntegrationStack implements SysConfItem {
 
     @Override
     public void addProperty(SysPropertyDTO property) {
-        properties.put(property.getK(), property);
-
         if (OkStringUtil.equals(property.getK(), "fqdn")) {
             this.fqdn = property.getV();
         }
+    }
+
+    @Override
+    public List<SysPropertyDTO> getProperties() {
+        ArrayList<SysPropertyDTO> list = new ArrayList<>();
+
+        SysPropertyDTO dto = new SysPropertyDTO();
+        dto.setK("fqdn");
+        dto.setV(fqdn);
+        dto.setGrouping(getGroup());
+        list.add(dto);
+
+        return list;
     }
 
 }

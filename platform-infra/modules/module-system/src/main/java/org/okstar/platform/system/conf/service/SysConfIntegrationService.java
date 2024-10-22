@@ -15,10 +15,7 @@ package org.okstar.platform.system.conf.service;
 
 
 import org.okstar.platform.core.service.OkService;
-import org.okstar.platform.system.conf.domain.SysConfIntegration;
-import org.okstar.platform.system.conf.domain.SysConfIntegrationIm;
-import org.okstar.platform.system.dto.SysConfIntegrationKeycloak;
-import org.okstar.platform.system.conf.domain.SysConfIntegrationStack;
+import org.okstar.platform.system.conf.domain.*;
 
 /**
  *集成配置
@@ -26,6 +23,8 @@ import org.okstar.platform.system.conf.domain.SysConfIntegrationStack;
 public interface SysConfIntegrationService extends OkService
 {
     SysConfIntegration find();
+
+    void save(SysConfItem item);
 
     void save(SysConfIntegration integration);
 
@@ -42,4 +41,6 @@ public interface SysConfIntegrationService extends OkService
     boolean testIm(SysConfIntegrationIm conf);
 
     boolean testStack(SysConfIntegrationStack conf);
+
+    boolean testMinio(SysConfIntegrationMinio conf);
 }
