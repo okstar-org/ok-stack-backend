@@ -307,4 +307,20 @@ public class SysAccountServiceImpl extends OkAbsService implements SysAccountSer
         SysAccount account = get(id);
         account.setCert(cert);
     }
+
+    @Override
+    public void saveLanguage(SysAccount self, String language) {
+        SysAccount account = get(self.id);
+        if (account != null) {
+            account.setLanguage(language);
+        }
+    }
+
+    @Override
+    public void saveAvatar(SysAccount self, String url) {
+        SysAccount sysAccount = get(self.id);
+        if (sysAccount != null) {
+            sysAccount.setAvatar(url);
+        }
+    }
 }

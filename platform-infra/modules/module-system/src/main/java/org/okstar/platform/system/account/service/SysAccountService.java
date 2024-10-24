@@ -61,4 +61,8 @@ public interface SysAccountService extends OkJpaService<SysAccount> {
     List<SysAccountBind> listBind(Long id);
 
     void setCert(Long id, String cert);
+
+    void saveLanguage(SysAccount self, String language);
+
+    void saveAvatar(SysAccount self, String url);
 }

@@ -21,6 +21,8 @@ import jakarta.ws.rs.Path;
 import jakarta.ws.rs.core.MediaType;
 import org.jboss.resteasy.annotations.providers.multipart.MultipartForm;
 import org.okstar.platform.common.web.bean.Res;
+import org.okstar.platform.system.account.domain.SysAccount;
+import org.okstar.platform.system.account.service.SysAccountService;
 import org.okstar.platform.system.dto.UploadDTO;
 import org.okstar.platform.system.service.SysUploadService;
 
@@ -29,6 +31,8 @@ public class SysUploadResource extends BaseResource {
 
     @Inject
     SysUploadService sysUploadService;
+    @Inject
+    SysAccountService accountService;
 
     @POST
     @Path("favicon")
@@ -55,5 +59,21 @@ public class SysUploadResource extends BaseResource {
         }
     }
 
+
+    @POST
+    @Path("avatar")
+    @Consumes(MediaType.MULTIPART_FORM_DATA)
+    public Res<String> uploadAvatar(@MultipartForm UploadDTO uploadDTO) {
+        try {
+            SysAccount self = self();
+            String url = sysUploadService.uploadAvatar(self, uploadDTO);
+
+            accountService.saveAvatar(self, url);
+
+            return Res.ok(url);
+        } catch (Exception e) {
+            return Res.error(e.getMessage());
+        }
+    }
 
 }

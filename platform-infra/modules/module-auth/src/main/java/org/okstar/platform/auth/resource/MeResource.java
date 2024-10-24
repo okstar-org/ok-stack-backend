@@ -29,11 +29,8 @@ public class MeResource extends BaseResource {
     @GET
     public Res<Me> get() {
         SysAccountDTO account0 = self();
-//        SysProfileDTO profileDTO = sysProfileRpc.getByAccount(account0.getId());
-        Me me = Me.builder().account(account0)
-//                .profile(profileDTO)
-                .build();
-        Log.infof("My info is: %s", me);
+        Me me = Me.builder().account(account0).build();
+        Log.infof("Me: %s", me);
         return Res.ok(me);
     }
 

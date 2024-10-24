@@ -13,9 +13,19 @@
 
 package org.okstar.platform.system.storage;
 
+import jakarta.annotation.Nonnull;
+import jakarta.annotation.Nullable;
 import org.jboss.resteasy.plugins.providers.multipart.InputPart;
 import org.okstar.platform.common.exception.OkRuntimeException;
 
+import java.util.Map;
+import java.util.Set;
+
 public interface StorageBackend {
-    String put(String bucketName, InputPart inputPart, String name) throws OkRuntimeException;
+    Set<String> removeByTags(@Nonnull String bucketName, @Nonnull Map<String, String> tags) throws OkRuntimeException;
+
+    String put(@Nonnull String bucketName,
+               @Nullable InputPart inputPart,
+               @Nullable String name,
+               @Nullable Map<String, String> tags) throws OkRuntimeException;
 }

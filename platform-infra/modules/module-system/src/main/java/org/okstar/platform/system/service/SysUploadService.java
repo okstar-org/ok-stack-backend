@@ -13,6 +13,7 @@
 
 package org.okstar.platform.system.service;
 
+import org.okstar.platform.system.account.domain.SysAccount;
 import org.okstar.platform.system.dto.UploadDTO;
 
 public interface SysUploadService {
@@ -20,4 +21,12 @@ public interface SysUploadService {
     String uploadFavicon(UploadDTO uploadDTO);
 
     String uploadLogo(UploadDTO uploadDTO);
+
+    /**
+     * update user's avatar
+     * @param self
+     * @param uploadDTO
+     * @return url
+     */
+    String uploadAvatar(SysAccount self, UploadDTO uploadDTO);
 }

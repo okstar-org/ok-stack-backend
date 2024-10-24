@@ -14,7 +14,6 @@
 package org.okstar.platform.system.conf.domain;
 
 import lombok.Data;
-import org.okstar.platform.common.string.OkStringUtil;
 import org.okstar.platform.system.conf.SysConfDefines;
 import org.okstar.platform.system.dto.SysPropertyDTO;
 
@@ -29,6 +28,8 @@ public class SysConfPersonal implements SysConfItem {
 
     //语言，格式：zh_CN
     private String language;
+    //头像
+    private String avatar;
 
     @Override
     public String getGroup() {
@@ -37,8 +38,13 @@ public class SysConfPersonal implements SysConfItem {
 
     @Override
     public void addProperty(SysPropertyDTO property) {
-        if (OkStringUtil.equals(property.getK(), "language")) {
-            this.language = property.getV();
+        switch (property.getK()) {
+            case "language":
+                this.language = property.getV();
+                break;
+            case "avatar":
+                this.avatar = property.getV();
+                break;
         }
     }
 
@@ -51,6 +57,14 @@ public class SysConfPersonal implements SysConfItem {
         p.setV(language);
         list.add(p);
 
+        SysPropertyDTO a = new SysPropertyDTO();
+        a.setGrouping(getGroup());
+        a.setK("avatar");
+        a.setV(avatar);
+        list.add(a);
+
         return list;
     }
+
+
 }

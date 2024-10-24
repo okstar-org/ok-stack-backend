@@ -43,8 +43,4 @@ public class Me {
 //        }
         return account.getUsername();
     }
-
-    public String getAvatar() {
-        return account.getAvatar();
-    }
 }

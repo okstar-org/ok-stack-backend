@@ -14,13 +14,17 @@
 package org.okstar.platform.system.storage;
 
 import io.minio.*;
+import io.minio.messages.Item;
+import io.minio.messages.Tags;
 import io.quarkus.logging.Log;
+import jakarta.annotation.Nonnull;
+import jakarta.annotation.Nullable;
 import org.jboss.resteasy.plugins.providers.multipart.InputPart;
 import org.okstar.platform.common.exception.OkRuntimeException;
 import org.okstar.platform.system.conf.domain.SysConfIntegrationMinio;
 
 import java.io.InputStream;
-import java.util.Optional;
+import java.util.*;
 
 public class StorageBackendMinio implements StorageBackend {
 
@@ -30,9 +34,47 @@ public class StorageBackendMinio implements StorageBackend {
         this.minio = minio;
     }
 
+    @Override
+    public Set<String> removeByTags(@Nonnull String bucketName, @Nonnull Map<String, String> tags) throws OkRuntimeException {
+        Set<String> deleted = new HashSet<>();
+        try {
+            MinioClient client = createClient();
+            for (Result<Item> obj : client.listObjects(ListObjectsArgs.builder().bucket(bucketName).build())) {
+                Item item = obj.get();
+                if (item.isDir()) {
+                    continue;
+                }
+
+                String objectName = item.objectName();
+
+                Tags tags0 = client.getObjectTags(
+                        GetObjectTagsArgs.builder()
+                        .bucket(bucketName)
+                        .object(objectName)
+                        .build());
+
+                for (Map.Entry<String, String> entry : tags.entrySet()) {
+                    String k = entry.getKey();
+                    String v = entry.getValue();
+                    if (Objects.equals(tags0.get().get(k), v)) {
+                        client.removeObject(RemoveObjectArgs.builder().bucket(bucketName).object(objectName).build());
+                        deleted.add(objectName);
+                    }
+                }
+            }
+        } catch (Exception e) {
+            Log.errorf(e, "error:%s", e.getMessage());
+            throw new OkRuntimeException("Remove object:%s".formatted(e.getMessage()));
+        }
+        return deleted;
+    }
+
 
     @Override
-    public String put(String bucketName, InputPart inputPart, String name) throws OkRuntimeException {
+    public String put(@Nonnull String bucketName,
+                      @Nonnull InputPart inputPart,
+                      @Nullable String name,
+                      @Nullable Map<String, String> tags) throws OkRuntimeException {
         try (InputStream inputStream = inputPart.getBody()) {
             MinioClient client = createClient();
 
@@ -50,12 +92,18 @@ public class StorageBackendMinio implements StorageBackend {
             PutObjectArgs objectArgs = PutObjectArgs.builder()
                     .bucket(bucketName)
                     .object(Optional.ofNullable(name).orElse(inputPart.getFileName()))
+                    .tags(tags)
                     .stream(inputStream, -1, 5 * 1024 * 1024)
                     .contentType(contentType)
                     .build();
 
+
             ObjectWriteResponse response = client.putObject(objectArgs);
-            return minio.getValidExternalUrl() + "/" + bucketName + "/" + response.object();
+
+            String url = minio.getValidExternalUrl() + "/" + bucketName + "/" + response.object();
+            Log.infof("Storage object:[%s]=> etag:%s url: %s", name, response.etag(), url);
+
+            return url;
 
         } catch (Exception e) {
             Log.errorf(e, "error:%s", e.getMessage());
