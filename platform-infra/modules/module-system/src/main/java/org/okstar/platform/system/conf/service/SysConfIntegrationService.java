@@ -30,12 +30,6 @@ public interface SysConfIntegrationService extends OkService
 
     void uploadConf(SysConfIntegration integration);
 
-    void saveStack(SysConfIntegrationStack conf);
-
-    void saveKeycloak(SysConfIntegrationKeycloak conf);
-
-    void saveIm(SysConfIntegrationIm conf);
-
     boolean testKeycloak(SysConfIntegrationKeycloak conf);
 
     boolean testIm(SysConfIntegrationIm conf);

@@ -23,7 +23,8 @@ import org.junit.jupiter.api.Test;
 @QuarkusTest
 class OpenfireManagerTest {
 
-    @Inject OpenfireManager openfireManager;
+    @Inject
+    OpenfireManager openfireManager;
 
     @Test
     void makeXmppClient() {

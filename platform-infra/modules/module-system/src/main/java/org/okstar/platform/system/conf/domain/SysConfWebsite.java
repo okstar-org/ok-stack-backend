@@ -27,12 +27,20 @@ import java.util.List;
  */
 @Data
 public class SysConfWebsite implements SysConfItem {
-
+    //网站名称
+    private String name;
+    //网站标题
     private String title;
     //备案号
     private String license;
     //版权所有
     private String copyright;
+    //图标
+//    @JsonIgnore
+    private String icon;
+
+    private String logo;
+
 
     @JsonIgnore
     @Override
@@ -51,6 +59,15 @@ public class SysConfWebsite implements SysConfItem {
                 break;
             case "title":
                 this.title = property.getV();
+                break;
+            case "icon":
+                this.icon = property.getV();
+                break;
+            case "name":
+                this.name = property.getV();
+                break;
+            case "logo":
+                this.logo = property.getV();
                 break;
         }
     }
@@ -76,6 +93,24 @@ public class SysConfWebsite implements SysConfItem {
         t.setK("title");
         t.setV(title);
         list.add(t);
+
+        SysPropertyDTO i = new SysPropertyDTO();
+        i.setGrouping(getGroup());
+        i.setK("icon");
+        i.setV(icon);
+        list.add(i);
+
+        SysPropertyDTO name0 = new SysPropertyDTO();
+        name0.setGrouping(getGroup());
+        name0.setK("name");
+        name0.setV(name);
+        list.add(name0);
+
+        SysPropertyDTO logo0 = new SysPropertyDTO();
+        logo0.setGrouping(getGroup());
+        logo0.setK("logo");
+        logo0.setV(logo);
+        list.add(logo0);
 
         return list;
     }

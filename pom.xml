@@ -339,15 +339,9 @@
             </dependency>
 
             <dependency>
-                <groupId>com.squareup.okhttp3</groupId>
-                <artifactId>okhttp</artifactId>
-                <version>4.11.0</version>
-            </dependency>
-
-            <dependency>
                 <groupId>io.quarkiverse.minio</groupId>
                 <artifactId>quarkus-minio</artifactId>
-                <version>3.7.7</version>
+                <version>3.3.1</version>
             </dependency>
 
             <dependency>

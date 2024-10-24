@@ -57,7 +57,7 @@ public class SysConfIntegrationResource extends BaseResource {
     @PUT
     @Path("keycloak")
     public Res<Boolean> putKeycloak(SysConfIntegrationKeycloak conf) {
-        integrationService.saveKeycloak(conf);
+        integrationService.save(conf);
         return Res.ok(true);
     }
 
@@ -72,14 +72,13 @@ public class SysConfIntegrationResource extends BaseResource {
     @PUT
     @Path("im")
     public Res<Boolean> putIm(SysConfIntegrationIm conf) {
-        integrationService.saveIm(conf);
+        integrationService.save(conf);
         return Res.ok(true);
     }
 
     @POST
     @Path("/test/im")
     public Res<Boolean> testIm(SysConfIntegrationIm conf) {
-        conf.setPort(5222);
         boolean y = integrationService.testIm(conf);
         return Res.ok(y);
     }

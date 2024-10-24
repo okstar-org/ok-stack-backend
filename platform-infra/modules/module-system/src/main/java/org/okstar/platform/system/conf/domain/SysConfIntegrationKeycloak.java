@@ -66,18 +66,29 @@ public class SysConfIntegrationKeycloak implements SysConfItem {
         SysPropertyDTO serverUrl0 = SysPropertyDTO.builder()
                 .grouping(getGroup())
                 .k("server-url")
-                .v(serverUrl).build();
+                .v(serverUrl)
+                .build();
         list.add(serverUrl0);
 
-        SysPropertyDTO realm1 = SysPropertyDTO.builder().grouping(getGroup())
+        SysPropertyDTO realm1 = SysPropertyDTO.builder()
+                .grouping(getGroup())
                 .k("realm")
-                .v(realm).build();
+                .v(realm)
+                .build();
         list.add(realm1);
 
-        SysPropertyDTO clientId0 = SysPropertyDTO.builder().grouping(getGroup())
+        SysPropertyDTO clientId0 = SysPropertyDTO.builder()
+                .grouping(getGroup())
                 .k("client-id")
-                .v(clientId).build();
+                .v(clientId)
+                .build();
         list.add(clientId0);
+
+        SysPropertyDTO secret = SysPropertyDTO.builder()
+                .grouping(getGroup())
+                .k("client-secret")
+                .v(clientSecret).build();
+        list.add(secret);
 
         SysPropertyDTO username1 = SysPropertyDTO.builder()
                 .grouping(getGroup())

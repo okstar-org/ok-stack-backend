@@ -13,6 +13,8 @@
 
 package org.okstar.platform.system.conf.service;
 
+import io.minio.MinioClient;
+import io.minio.messages.Bucket;
 import io.quarkus.logging.Log;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
@@ -164,88 +166,6 @@ public class SysConfIntegrationServiceImpl implements SysConfIntegrationService 
     }
 
     @Override
-    public void saveStack(SysConfIntegrationStack stack) {
-        Log.infof("Save stack [%s]", stack);
-
-        List<SysProperty> stackProperties = propertyService.findByGroup(stack.getGroup());
-        if (stackProperties.isEmpty()) {
-            SysProperty p = new SysProperty();
-            p.setK("fqdn");
-            p.setV(stack.getFqdn());
-            p.setGrouping(stack.getGroup());
-            propertyService.create(p, 1L);
-        } else {
-            stackProperties.forEach(sp -> {
-                if ("fqdn".equals(sp.getK())) {
-                    sp.setV(stack.getFqdn());
-                }
-            });
-        }
-    }
-
-    @Override
-    public void saveKeycloak(SysConfIntegrationKeycloak keycloak) {
-        Log.infof("Save keycloak [%s]", keycloak);
-
-        List<SysProperty> kcList = propertyService.findByGroup(keycloak.getGroup());
-        if (kcList.isEmpty()) {
-            SysProperty p = new SysProperty();
-            p.setGrouping(keycloak.getGroup());
-            p.setK("server-url");
-            p.setV(keycloak.getServerUrl());
-            propertyService.create(p, 1L);
-        } else {
-            kcList.forEach(p -> {
-                switch (p.getK()) {
-                    case "server-url" -> p.setV(keycloak.getServerUrl());
-                    case "realm" -> p.setV(keycloak.getRealm());
-                    case "client-id" -> p.setV(keycloak.getClientId());
-                    case "client-secret" -> p.setV(keycloak.getClientSecret());
-                    case "username" -> p.setV(keycloak.getUsername());
-                    case "password" -> p.setV(keycloak.getPassword());
-                }
-            });
-        }
-    }
-
-    @Override
-    public void saveIm(SysConfIntegrationIm im) {
-        Log.infof("Save im [%s]", im);
-        List<SysProperty> imProperties = propertyService.findByGroup(im.getGroup());
-        if (imProperties.isEmpty()) {
-            SysProperty p = new SysProperty();
-            p.setK("host");
-            p.setV(im.getHost());
-            p.setGrouping(im.getGroup());
-            propertyService.create(p, 1L);
-
-            SysProperty p2 = new SysProperty();
-            p2.setK("admin-port");
-            p2.setV(String.valueOf(im.getAdminPort()));
-            p2.setGrouping(im.getGroup());
-            propertyService.create(p2, 1L);
-
-            SysProperty p3 = new SysProperty();
-            p3.setK("api-secret");
-            p3.setV(String.valueOf(im.getApiSecret()));
-            p3.setGrouping(im.getGroup());
-            propertyService.create(p3, 1L);
-
-        } else {
-            imProperties.forEach(p -> {
-                if ("host".equals(p.getK())) {
-                    p.setV(im.getHost());
-                } else if ("admin-port".equals(p.getK())) {
-                    p.setV(String.valueOf(im.getAdminPort()));
-                } else if ("api-secret".equals(p.getK())) {
-                    p.setV(im.getApiSecret());
-                }
-            });
-        }
-
-    }
-
-    @Override
     public boolean testKeycloak(SysConfIntegrationKeycloak conf) {
         try (Keycloak keycloak = keycloakService.openKeycloak(conf)) {
             return keycloak != null && keycloak.serverInfo().getInfo() != null;
@@ -275,15 +195,17 @@ public class SysConfIntegrationServiceImpl implements SysConfIntegrationService 
 
     @Override
     public boolean testMinio(SysConfIntegrationMinio conf) {
-//        try {
-//            var client = MinioClient.builder().endpoint(conf.getEndpoint())
-//                    .credentials(conf.getAccessKey(), conf.getSecretKey())
-//                    .build();
-//            return !client.listBuckets().isEmpty();
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//            return false;
-//        }
+        try {
+            var client = MinioClient.builder().endpoint(conf.getEndpoint())
+                    .credentials(conf.getAccessKey(), conf.getSecretKey())
+                    .build();
+            List<Bucket> buckets = client.listBuckets();
+            Log.infof("buckets: %s", buckets.size());
+
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         return false;
     }
 }

@@ -19,14 +19,22 @@ import org.okstar.platform.system.dto.SysPropertyDTO;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Data
 public class SysConfIntegrationMinio implements SysConfItem {
+
     private String endpoint;
 
     private String accessKey;
 
     private String secretKey;
+
+    private String externalUrl;
+
+    public String getValidExternalUrl() {
+        return Optional.ofNullable(getExternalUrl()).orElse(getEndpoint());
+    }
 
     @Override
     public String getGroup() {
@@ -45,6 +53,10 @@ public class SysConfIntegrationMinio implements SysConfItem {
                 break;
             case "secretKey":
                 this.secretKey = property.getV();
+                break;
+            case "externalUrl":
+                this.externalUrl = property.getV();
+                break;
         }
     }
 
@@ -70,6 +82,13 @@ public class SysConfIntegrationMinio implements SysConfItem {
                 .k("secretKey")
                 .v(secretKey).build();
         list.add(secretKey1);
+
+        SysPropertyDTO externalUrl1 = SysPropertyDTO.builder()
+                .grouping(getGroup())
+                .k("externalUrl")
+                .v(externalUrl)
+                .build();
+        list.add(externalUrl1);
 
         return list;
     }
