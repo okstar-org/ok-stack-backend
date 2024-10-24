@@ -11,26 +11,10 @@
  * /
  */
 
-package org.okstar.platform.system.service;
+package org.okstar.common.storage;
 
-import org.okstar.common.storage.dto.UploadDTO;
 import org.okstar.common.storage.minio.StorageConfMinio;
-import org.okstar.platform.system.account.domain.SysAccount;
 
-
-public interface SysUploadService {
-
-    StorageConfMinio getConfig();
-
-    String uploadFavicon(UploadDTO uploadDTO);
-
-    String uploadLogo(UploadDTO uploadDTO);
-
-    /**
-     * update user's avatar
-     * @param self
-     * @param uploadDTO
-     * @return url
-     */
-    String uploadAvatar(SysAccount self, UploadDTO uploadDTO);
+public interface StorageManager {
+    StorageBackend getDefaultStorageBackend(StorageConfMinio conf);
 }

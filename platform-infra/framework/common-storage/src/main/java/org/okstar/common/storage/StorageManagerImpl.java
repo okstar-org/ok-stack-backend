@@ -11,24 +11,20 @@
  * /
  */
 
-package org.okstar.platform.system.storage;
+package org.okstar.common.storage;
 
 import jakarta.enterprise.context.ApplicationScoped;
-import jakarta.inject.Inject;
-import org.okstar.platform.system.conf.domain.SysConfIntegration;
-import org.okstar.platform.system.conf.domain.SysConfIntegrationMinio;
-import org.okstar.platform.system.conf.service.SysConfIntegrationService;
+import org.okstar.common.storage.minio.StorageBackendMinio;
+import org.okstar.common.storage.minio.StorageConfMinio;
+
 
 @ApplicationScoped
 public class StorageManagerImpl implements StorageManager {
 
-    @Inject
-    SysConfIntegrationService sysConfIntegrationService;
+
 
     @Override
-    public StorageBackend getDefaultStorageBackend() {
-        SysConfIntegration integration = sysConfIntegrationService.find();
-        SysConfIntegrationMinio minio = integration.getMinio();
+    public StorageBackend getDefaultStorageBackend(StorageConfMinio minio) {
         return new StorageBackendMinio(minio);
     }
 }

@@ -66,9 +66,19 @@
         </dependency>
 
         <dependency>
+            <groupId>io.quarkus</groupId>
+            <artifactId>quarkus-resteasy-multipart</artifactId>
+        </dependency>
+
+        <dependency>
             <groupId>com.aliyun</groupId>
             <artifactId>alibaba-dingtalk-service-sdk</artifactId>
             <version>1.0.1</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.okstar.platform</groupId>
+            <artifactId>common-storage</artifactId>
         </dependency>
 
     </dependencies>

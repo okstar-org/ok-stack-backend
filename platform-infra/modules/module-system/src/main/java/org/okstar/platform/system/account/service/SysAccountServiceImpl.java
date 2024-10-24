@@ -323,4 +323,12 @@ public class SysAccountServiceImpl extends OkAbsService implements SysAccountSer
             sysAccount.setAvatar(url);
         }
     }
+
+    @Override
+    public void saveNickname(SysAccount self, String nickname) {
+        SysAccount sysAccount = get(self.id);
+        if (sysAccount != null) {
+            sysAccount.setNickname(nickname);
+        }
+    }
 }

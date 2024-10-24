@@ -11,8 +11,22 @@
  * /
  */
 
-package org.okstar.platform.system.storage;
+package org.okstar.platform.system.dto;
 
-public interface StorageManager {
-    StorageBackend getDefaultStorageBackend();
+import lombok.Data;
+import lombok.ToString;
+
+/**
+ * Stack设置
+ */
+@Data
+@ToString
+public class SysConfStorageDTO {
+    private String endpoint;
+
+    private String accessKey;
+
+    private String secretKey;
+
+    private String externalUrl;
 }

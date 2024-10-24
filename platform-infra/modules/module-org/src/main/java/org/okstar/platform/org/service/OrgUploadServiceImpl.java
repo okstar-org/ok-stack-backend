@@ -11,21 +11,20 @@
  * /
  */
 
-package org.okstar.platform.system.service;
+package org.okstar.platform.org.service;
 
 import io.quarkus.logging.Log;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 import org.apache.commons.io.FilenameUtils;
+import org.eclipse.microprofile.rest.client.inject.RestClient;
 import org.okstar.common.storage.StorageBackend;
 import org.okstar.common.storage.StorageManager;
 import org.okstar.common.storage.dto.UploadDTO;
 import org.okstar.common.storage.minio.StorageConfMinio;
-import org.okstar.platform.system.account.domain.SysAccount;
-import org.okstar.platform.system.conf.domain.SysConfIntegration;
-import org.okstar.platform.system.conf.domain.SysConfIntegrationMinio;
-import org.okstar.platform.system.conf.service.SysConfIntegrationService;
+import org.okstar.platform.org.domain.Org;
+import org.okstar.platform.system.rpc.SysConfIntegrationRpc;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -33,17 +32,18 @@ import java.util.Set;
 
 @Transactional
 @ApplicationScoped
-public class SysUploadServiceImpl implements SysUploadService {
+public class OrgUploadServiceImpl implements OrgUploadService {
     public static final String BUCKET_NAME = "ok-stack";
     @Inject
     StorageManager storageManager;
     @Inject
-    SysConfIntegrationService sysConfIntegrationService;
+    @RestClient
+    SysConfIntegrationRpc sysConfIntegrationRpc;
 
     @Override
     public StorageConfMinio getConfig() {
-        SysConfIntegration integration = sysConfIntegrationService.find();
-        SysConfIntegrationMinio minio = integration.getMinio();
+        var integration = sysConfIntegrationRpc.getIntegrationConf();
+        var minio = integration.getStorage();
         return StorageConfMinio.builder().endpoint(minio.getEndpoint())
                 .accessKey(minio.getAccessKey())
                 .secretKey(minio.getSecretKey())
@@ -51,33 +51,12 @@ public class SysUploadServiceImpl implements SysUploadService {
                 .build();
     }
 
-
     @Override
-    public String uploadFavicon(UploadDTO uploadDTO) {
-        String name = "favicon.ico";
-        StorageBackend backend = storageManager.getDefaultStorageBackend(getConfig());
-        Map<String, String> tags = Map.of("type", "favicon");
-        Set<String> removed = backend.removeByTags(BUCKET_NAME, tags);
-        Log.debugf("Removed:%s", removed);
-        return backend.put(BUCKET_NAME, uploadDTO.getFile(), name, tags);
-    }
-
-    @Override
-    public String uploadLogo(UploadDTO uploadDTO) {
-        String name = "logo.%s".formatted(FilenameUtils.getExtension(uploadDTO.getFile().getFileName()));
-        StorageBackend backend = storageManager.getDefaultStorageBackend(getConfig());
-        Map<String, String> tags = Map.of("type", "logo");
-        Set<String> removed = backend.removeByTags(BUCKET_NAME, tags);
-        Log.debugf("Removed:%s", removed);
-        return backend.put(BUCKET_NAME, uploadDTO.getFile(), name, tags);
-    }
-
-    @Override
-    public String uploadAvatar(SysAccount self, UploadDTO uploadDTO) {
-        String name = "user/%s/logo.%s".formatted(self.getUsername(), FilenameUtils.getExtension(uploadDTO.getFile().getFileName()));
+    public String uploadAvatar(Org self, UploadDTO uploadDTO) {
+        String name = "org/%s/logo.%s".formatted(self.getUuid(), FilenameUtils.getExtension(uploadDTO.getFile().getFileName()));
         StorageBackend backend = storageManager.getDefaultStorageBackend(getConfig());
         Map<String, String> tags = new HashMap<>(Map.of("type", "avatar"));
-        tags.put("user", self.getUsername());
+        tags.put("org", self.getUuid());
         Set<String> removed = backend.removeByTags(BUCKET_NAME, tags);
         Log.debugf("Removed:%s", removed);
         return backend.put(BUCKET_NAME, uploadDTO.getFile(), name, tags);

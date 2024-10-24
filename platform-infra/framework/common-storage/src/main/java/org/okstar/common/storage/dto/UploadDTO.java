@@ -11,26 +11,19 @@
  * /
  */
 
-package org.okstar.platform.system.service;
+package org.okstar.common.storage.dto;
 
-import org.okstar.common.storage.dto.UploadDTO;
-import org.okstar.common.storage.minio.StorageConfMinio;
-import org.okstar.platform.system.account.domain.SysAccount;
+import jakarta.ws.rs.FormParam;
+import lombok.Data;
+import org.jboss.resteasy.plugins.providers.multipart.InputPart;
 
+@Data
+public class UploadDTO {
 
-public interface SysUploadService {
+    @FormParam("file")
+    private InputPart file;
 
-    StorageConfMinio getConfig();
+    @FormParam("name")
+    private String name;
 
-    String uploadFavicon(UploadDTO uploadDTO);
-
-    String uploadLogo(UploadDTO uploadDTO);
-
-    /**
-     * update user's avatar
-     * @param self
-     * @param uploadDTO
-     * @return url
-     */
-    String uploadAvatar(SysAccount self, UploadDTO uploadDTO);
 }

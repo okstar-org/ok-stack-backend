@@ -15,11 +15,14 @@ package org.okstar.platform.system.rpc.impl;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
-import org.okstar.platform.system.dto.SysConfImDTO;
-import org.okstar.platform.system.dto.SysConfStackDTO;
-import org.okstar.platform.system.rpc.SysConfIntegrationRpc;
+import org.okstar.platform.common.bean.OkBeanUtils;
 import org.okstar.platform.system.conf.domain.SysConfIntegration;
 import org.okstar.platform.system.conf.service.SysConfIntegrationService;
+import org.okstar.platform.system.dto.SysConfImDTO;
+import org.okstar.platform.system.dto.SysConfIntegrationDTO;
+import org.okstar.platform.system.dto.SysConfStackDTO;
+import org.okstar.platform.system.dto.SysConfStorageDTO;
+import org.okstar.platform.system.rpc.SysConfIntegrationRpc;
 
 
 @ApplicationScoped
@@ -29,10 +32,10 @@ public class SysConfIntegrationRpcImpl implements SysConfIntegrationRpc {
     SysConfIntegrationService service;
 
     @Override
-    public org.okstar.platform.system.dto.SysConfIntegrationDTO getIntegrationConf() {
+    public SysConfIntegrationDTO getIntegrationConf() {
         SysConfIntegration integration = service.find();
 
-        org.okstar.platform.system.dto.SysConfIntegrationDTO dto = new org.okstar.platform.system.dto.SysConfIntegrationDTO();
+        SysConfIntegrationDTO dto = new SysConfIntegrationDTO();
 
         SysConfImDTO im = new SysConfImDTO();
         im.setHost(integration.getIm().getHost());
@@ -44,6 +47,10 @@ public class SysConfIntegrationRpcImpl implements SysConfIntegrationRpc {
         SysConfStackDTO stack = new SysConfStackDTO();
         stack.setFqdn(integration.getStack().getFqdn());
         dto.setStack(stack);
+
+        SysConfStorageDTO storageDTO = new SysConfStorageDTO();
+        OkBeanUtils.copyPropertiesTo(integration.getMinio(), storageDTO);
+        dto.setStorage(storageDTO);
 
         return dto;
     }

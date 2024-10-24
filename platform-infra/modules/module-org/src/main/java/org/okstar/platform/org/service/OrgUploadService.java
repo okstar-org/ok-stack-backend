@@ -11,19 +11,22 @@
  * /
  */
 
-package org.okstar.platform.system.dto;
+package org.okstar.platform.org.service;
 
-import jakarta.ws.rs.FormParam;
-import lombok.Data;
-import org.jboss.resteasy.plugins.providers.multipart.InputPart;
+import org.okstar.common.storage.dto.UploadDTO;
+import org.okstar.common.storage.minio.StorageConfMinio;
+import org.okstar.platform.org.domain.Org;
 
-@Data
-public class UploadDTO {
 
-    @FormParam("file")
-    private InputPart file;
+public interface OrgUploadService {
 
-    @FormParam("name")
-    private String name;
+    StorageConfMinio getConfig();
 
+    /**
+     * update user's avatar
+     * @param self
+     * @param uploadDTO
+     * @return url
+     */
+    String uploadAvatar(Org self, UploadDTO uploadDTO);
 }

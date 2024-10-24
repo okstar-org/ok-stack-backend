@@ -14,14 +14,16 @@
 package org.okstar.platform.org.resource;
 
 import jakarta.inject.Inject;
-import jakarta.ws.rs.GET;
-import jakarta.ws.rs.PUT;
-import jakarta.ws.rs.Path;
+import jakarta.ws.rs.*;
+import jakarta.ws.rs.core.MediaType;
+import org.jboss.resteasy.annotations.providers.multipart.MultipartForm;
+import org.okstar.common.storage.dto.UploadDTO;
 import org.okstar.platform.common.web.bean.Res;
 import org.okstar.platform.org.domain.Org;
 import org.okstar.platform.org.dto.Org0;
 import org.okstar.platform.org.service.FederalService;
 import org.okstar.platform.org.service.OrgService;
+import org.okstar.platform.org.service.OrgUploadService;
 
 /**
  * 组织
@@ -34,7 +36,8 @@ public class OrgResource extends BaseResource {
 
     @Inject
     FederalService federalService;
-
+    @Inject
+    OrgUploadService orgUploadService;
 
     @GET
     @Path("current")
@@ -50,4 +53,12 @@ public class OrgResource extends BaseResource {
         return Res.ok(saved != null);
     }
 
+    @PUT
+    @Path("avatar")
+    @Consumes(MediaType.MULTIPART_FORM_DATA)
+    public Res<String> avatar(@MultipartForm UploadDTO uploadDTO) {
+        Org org = orgService.loadCurrent();
+        String avatar = orgUploadService.uploadAvatar(org, uploadDTO);
+        return Res.ok(avatar);
+    }
 }

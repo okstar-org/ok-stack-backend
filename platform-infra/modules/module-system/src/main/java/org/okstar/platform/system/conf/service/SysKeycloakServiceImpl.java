@@ -150,10 +150,10 @@ public class SysKeycloakServiceImpl implements SysKeycloakService {
             }
             userRepresentation.setFirstName(sysProfile.getFirstName());
             userRepresentation.setLastName(sysProfile.getLastName());
+
             userResource.update(userRepresentation);
         }
     }
-
 
     @Override
     public List<String> listRealms() {

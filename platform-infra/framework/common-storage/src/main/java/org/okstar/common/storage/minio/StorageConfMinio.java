@@ -11,26 +11,27 @@
  * /
  */
 
-package org.okstar.platform.system.service;
+package org.okstar.common.storage.minio;
 
-import org.okstar.common.storage.dto.UploadDTO;
-import org.okstar.common.storage.minio.StorageConfMinio;
-import org.okstar.platform.system.account.domain.SysAccount;
+import lombok.Builder;
+import lombok.Data;
 
+import java.util.Optional;
 
-public interface SysUploadService {
+@Data
+@Builder
+public class StorageConfMinio   {
 
-    StorageConfMinio getConfig();
+    private String endpoint;
 
-    String uploadFavicon(UploadDTO uploadDTO);
+    private String accessKey;
 
-    String uploadLogo(UploadDTO uploadDTO);
+    private String secretKey;
 
-    /**
-     * update user's avatar
-     * @param self
-     * @param uploadDTO
-     * @return url
-     */
-    String uploadAvatar(SysAccount self, UploadDTO uploadDTO);
+    private String externalUrl;
+
+    public String getValidExternalUrl() {
+        return Optional.ofNullable(getExternalUrl()).orElse(getEndpoint());
+    }
+
 }

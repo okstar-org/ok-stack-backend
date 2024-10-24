@@ -11,7 +11,7 @@
  * /
  */
 
-package org.okstar.platform.system.storage;
+package org.okstar.common.storage.minio;
 
 import io.minio.*;
 import io.minio.messages.Item;
@@ -20,17 +20,17 @@ import io.quarkus.logging.Log;
 import jakarta.annotation.Nonnull;
 import jakarta.annotation.Nullable;
 import org.jboss.resteasy.plugins.providers.multipart.InputPart;
+import org.okstar.common.storage.StorageBackend;
 import org.okstar.platform.common.exception.OkRuntimeException;
-import org.okstar.platform.system.conf.domain.SysConfIntegrationMinio;
 
 import java.io.InputStream;
 import java.util.*;
 
 public class StorageBackendMinio implements StorageBackend {
 
-    SysConfIntegrationMinio minio;
+    StorageConfMinio minio;
 
-    StorageBackendMinio(SysConfIntegrationMinio minio) {
+    public StorageBackendMinio(StorageConfMinio minio) {
         this.minio = minio;
     }
 

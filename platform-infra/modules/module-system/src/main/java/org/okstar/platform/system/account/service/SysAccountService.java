@@ -65,4 +65,6 @@ public interface SysAccountService extends OkJpaService<SysAccount> {
     void saveLanguage(SysAccount self, String language);
 
     void saveAvatar(SysAccount self, String url);
+
+    void saveNickname(SysAccount self, String nickname);
 }

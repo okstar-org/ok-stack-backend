@@ -16,22 +16,25 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-
     <parent>
         <groupId>org.okstar.platform</groupId>
-        <artifactId>platform-infra</artifactId>
+        <artifactId>framework</artifactId>
         <version>1.0-SNAPSHOT</version>
+        <relativePath>../pom.xml</relativePath>
     </parent>
 
-    <packaging>pom</packaging>
-    <artifactId>framework</artifactId>
+    <artifactId>common-storage</artifactId>
 
-    <modules>
-        <module>common-jpa</module>
-        <module>common-bus</module>
-        <module>common-security</module>
-        <module>common-cache</module>
-        <module>common-storage</module>
-    </modules>
+    <dependencies>
 
+        <dependency>
+            <groupId>io.quarkiverse.minio</groupId>
+            <artifactId>quarkus-minio</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>io.quarkus</groupId>
+            <artifactId>quarkus-resteasy-multipart</artifactId>
+        </dependency>
+    </dependencies>
 </project>

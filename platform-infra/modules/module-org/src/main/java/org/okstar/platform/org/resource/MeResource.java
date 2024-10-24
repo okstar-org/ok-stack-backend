@@ -99,12 +99,17 @@ public class MeResource extends BaseResource {
         MyOrgInfo info = new MyOrgInfo();
         info.setAccount(account);
         info.setProfile(profile);
-        info.setOrg(Org0.builder()
+
+        Org0 org0 = Org0.builder()
                 .name(org.getName())
                 .url(org.getUrl())
                 .avatar(org.getAvatar())
                 .location(org.getLocation())
-                .build());
+                .no(org.getNo())
+                .uuid(org.getUuid())
+                .build();
+
+        info.setOrg(org0);
 
         info.setStaff(OrgStaff0.builder()
                 .accountId(account.getId())

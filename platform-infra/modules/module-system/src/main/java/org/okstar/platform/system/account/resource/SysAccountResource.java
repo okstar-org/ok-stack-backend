@@ -15,16 +15,13 @@ package org.okstar.platform.system.account.resource;
 
 import io.quarkus.security.Authenticated;
 import jakarta.inject.Inject;
-import jakarta.ws.rs.GET;
-import jakarta.ws.rs.Path;
-import jakarta.ws.rs.PathParam;
-import jakarta.ws.rs.QueryParam;
-import org.okstar.platform.common.web.bean.Res;
+import jakarta.ws.rs.*;
 import org.okstar.platform.common.phone.OkPhoneUtils;
+import org.okstar.platform.common.web.bean.Res;
 import org.okstar.platform.core.account.AccountDefines;
-import org.okstar.platform.core.web.resource.OkCommonResource;
 import org.okstar.platform.system.account.domain.SysAccount;
 import org.okstar.platform.system.account.service.SysAccountService;
+import org.okstar.platform.system.resource.BaseResource;
 
 import java.util.List;
 import java.util.Optional;
@@ -35,7 +32,7 @@ import java.util.Optional;
  */
 @Authenticated
 @Path("/account")
-public class SysAccountResource extends OkCommonResource {
+public class SysAccountResource extends BaseResource {
 
     @Inject
     SysAccountService sysAccountService;
@@ -62,4 +59,10 @@ public class SysAccountResource extends OkCommonResource {
         return Res.ok(account.map(SysAccount::getUsername).orElse(null));
     }
 
+    @PUT
+    @Path("nickname")
+    public Res<Boolean> updateNickname(String nickname) {
+        sysAccountService.saveNickname(self(), nickname);
+        return Res.ok(true);
+    }
 }

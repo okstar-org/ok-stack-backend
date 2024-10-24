@@ -25,7 +25,6 @@ import org.okstar.platform.system.dto.SysAccountDTO;
 @Path("me")
 public class MeResource extends BaseResource {
 
-
     @GET
     public Res<Me> get() {
         SysAccountDTO account0 = self();

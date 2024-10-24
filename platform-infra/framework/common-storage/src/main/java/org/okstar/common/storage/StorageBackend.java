@@ -11,7 +11,7 @@
  * /
  */
 
-package org.okstar.platform.system.storage;
+package org.okstar.common.storage;
 
 import jakarta.annotation.Nonnull;
 import jakarta.annotation.Nullable;

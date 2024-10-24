@@ -17,13 +17,14 @@ package org.okstar.platform.system.resource;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.POST;
+import jakarta.ws.rs.PUT;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.core.MediaType;
 import org.jboss.resteasy.annotations.providers.multipart.MultipartForm;
+import org.okstar.common.storage.dto.UploadDTO;
 import org.okstar.platform.common.web.bean.Res;
 import org.okstar.platform.system.account.domain.SysAccount;
 import org.okstar.platform.system.account.service.SysAccountService;
-import org.okstar.platform.system.dto.UploadDTO;
 import org.okstar.platform.system.service.SysUploadService;
 
 @Path("upload")
@@ -47,7 +48,7 @@ public class SysUploadResource extends BaseResource {
     }
 
 
-    @POST
+    @PUT
     @Path("logo")
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     public Res<String> uploadLogo(@MultipartForm UploadDTO uploadDTO) {
@@ -60,16 +61,14 @@ public class SysUploadResource extends BaseResource {
     }
 
 
-    @POST
+    @PUT
     @Path("avatar")
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     public Res<String> uploadAvatar(@MultipartForm UploadDTO uploadDTO) {
         try {
             SysAccount self = self();
             String url = sysUploadService.uploadAvatar(self, uploadDTO);
-
             accountService.saveAvatar(self, url);
-
             return Res.ok(url);
         } catch (Exception e) {
             return Res.error(e.getMessage());

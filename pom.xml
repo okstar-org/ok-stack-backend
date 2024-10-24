@@ -364,6 +364,18 @@
 
             <dependency>
                 <groupId>org.okstar.platform</groupId>
+                <artifactId>common-bus</artifactId>
+                <version>1.0-SNAPSHOT</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.okstar.platform</groupId>
+                <artifactId>common-storage</artifactId>
+                <version>1.0-SNAPSHOT</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.okstar.platform</groupId>
                 <artifactId>common-cache</artifactId>
                 <version>${revision}</version>
             </dependency>

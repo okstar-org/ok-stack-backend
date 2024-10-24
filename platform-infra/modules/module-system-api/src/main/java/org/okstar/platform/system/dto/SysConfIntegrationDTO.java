@@ -13,18 +13,23 @@
 
 package org.okstar.platform.system.dto;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
-import org.okstar.platform.common.web.bean.DTO;
+import lombok.NoArgsConstructor;
 
 /**
  * 全局设置
  */
 @Data
-public class SysConfIntegrationDTO extends DTO {
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+public class SysConfIntegrationDTO {
 
-    SysConfImDTO im;
+    private SysConfImDTO im;
 
-    SysConfStackDTO stack;
+    private SysConfStackDTO stack;
 
-
+    private SysConfStorageDTO storage;
 }
