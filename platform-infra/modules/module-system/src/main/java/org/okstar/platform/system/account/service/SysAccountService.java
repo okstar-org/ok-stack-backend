@@ -60,6 +60,8 @@ public interface SysAccountService extends OkJpaService<SysAccount> {
 
     List<SysAccountBind> listBind(Long id);
 
+    void setUid(String username, String uid);
+
     void setCert(Long id, String cert);
 
     void saveLanguage(SysAccount self, String language);
@@ -67,4 +69,6 @@ public interface SysAccountService extends OkJpaService<SysAccount> {
     void saveAvatar(SysAccount self, String url);
 
     void saveNickname(SysAccount self, String nickname);
+
+    void syncDb2Ldap(String username);
 }

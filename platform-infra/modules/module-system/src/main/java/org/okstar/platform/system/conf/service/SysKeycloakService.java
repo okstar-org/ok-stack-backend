@@ -20,6 +20,7 @@ import org.okstar.platform.system.conf.domain.SysConfIntegrationKeycloak;
 import org.okstar.platform.system.dto.SysKeycloakConfDTO;
 
 import java.util.List;
+import java.util.Map;
 
 public interface SysKeycloakService {
 
@@ -27,7 +28,11 @@ public interface SysKeycloakService {
 
     String getRealm();
 
-    void updateUserProfile(String uid, SysProfile sysProfile);
+    void setUserInfo(String uid, SysProfile sysProfile, Map<String, List<String>> attr);
+
+    void setUserProfile(String uid, SysProfile sysProfile);
+
+    void setUserAttribute(String uid, Map<String, List<String>> attr);
 
     List<String> listRealms();
 

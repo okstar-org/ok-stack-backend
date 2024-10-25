@@ -34,6 +34,7 @@ import org.keycloak.representations.idm.RealmRepresentation;
 import org.keycloak.representations.idm.UserRepresentation;
 import org.keycloak.representations.idm.authorization.*;
 import org.okstar.platform.common.asserts.OkAssert;
+import org.okstar.platform.common.exception.OkRuntimeException;
 import org.okstar.platform.common.id.OkIdUtils;
 import org.okstar.platform.common.string.OkStringUtil;
 import org.okstar.platform.system.account.domain.SysProfile;
@@ -130,8 +131,45 @@ public class SysKeycloakServiceImpl implements SysKeycloakService {
         return null;
     }
 
+
     @Override
-    public void updateUserProfile(String uid, SysProfile sysProfile) {
+    public void setUserInfo(String uid, SysProfile sysProfile, Map<String, List<String>> attr) {
+        Log.infof("setUserInfo uid:%s", uid);
+
+        if (OkStringUtil.isEmpty(uid)) {
+            return;
+        }
+
+        try (Keycloak kc = openKeycloak()) {
+            RealmsResource realmsResource = kc.realms();
+            RealmResource realmResource = realmsResource.realm(getRealm());
+            UserResource userResource = realmResource.users().get(uid);
+            if (userResource == null) {
+                return;
+            }
+
+            UserRepresentation userRepresentation = userResource.toRepresentation();
+            if (userRepresentation == null) {
+                return;
+            }
+            userRepresentation.setFirstName(sysProfile.getFirstName());
+            userRepresentation.setLastName(sysProfile.getLastName());
+
+            Map<String, List<String>> attributes = userRepresentation.getAttributes();
+            attributes.putAll(attr);
+            userRepresentation.setAttributes(attributes);
+
+            userResource.update(userRepresentation);
+        } catch (RuntimeException e) {
+            Log.errorf(e, e.getMessage());
+            throw new OkRuntimeException("更新异常！",e);
+        }
+    }
+
+    @Override
+    public void setUserProfile(String uid, SysProfile sysProfile) {
+        Log.infof("updateUserProfile uid:%s", uid);
+
         if (OkStringUtil.isEmpty(uid)) {
             return;
         }
@@ -152,6 +190,41 @@ public class SysKeycloakServiceImpl implements SysKeycloakService {
             userRepresentation.setLastName(sysProfile.getLastName());
 
             userResource.update(userRepresentation);
+        } catch (RuntimeException e) {
+            Log.errorf(e, e.getMessage());
+            throw new OkRuntimeException("更新异常！",e);
+        }
+    }
+
+    @Override
+    public void setUserAttribute(String uid, Map<String, List<String>> attr) {
+        Log.infof("setUserAttribute uid:%s", uid);
+
+        if (OkStringUtil.isEmpty(uid)) {
+            return;
+        }
+
+        try (Keycloak kc = openKeycloak()) {
+            RealmsResource realmsResource = kc.realms();
+            RealmResource realmResource = realmsResource.realm(getRealm());
+            UserResource userResource = realmResource.users().get(uid);
+            if (userResource == null) {
+                return;
+            }
+
+            UserRepresentation userRepresentation = userResource.toRepresentation();
+            if (userRepresentation == null) {
+                return;
+            }
+
+            Map<String, List<String>> attributes = userRepresentation.getAttributes();
+            attributes.putAll(attr);
+            userRepresentation.setAttributes(attributes);
+
+            userResource.update(userRepresentation);
+        } catch (RuntimeException e) {
+            Log.errorf(e, e.getMessage());
+            throw new OkRuntimeException("更新异常！",e);
         }
     }
 

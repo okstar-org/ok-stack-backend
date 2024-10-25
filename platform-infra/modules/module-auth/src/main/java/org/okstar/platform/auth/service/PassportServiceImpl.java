@@ -155,13 +155,15 @@ public class PassportServiceImpl implements PassportService {
             }
             addUser.setPassword(pwd);
 
-            BackUser added = backUserManager.addUser(addUser);
-            Log.infof("User:%s is initialized to ldap successfully.", added.getUsername());
-        }else{
-            BackUser user = backUser.get();
-            accountDTO.setUid(user.getId());
-            sysAccountRpc.setUid(user.getUsername(), accountDTO.getUid());
+            var added = backUserManager.addUser(addUser);
+            Log.infof("User is initialized to ldap successfully. {username:%s uid:%s} ", added.getUsername(), added.getId());
+            backUser = Optional.of(added);
         }
+
+        BackUser backUser1 = backUser.get();
+        accountDTO.setUid(backUser1.getId());
+        sysAccountRpc.setUid(backUser1.getUsername(), accountDTO.getUid());
+        sysAccountRpc.syncDb2Ldap(backUser1.getUsername());
 
         AuthorizationResult result = authzClientManager.authorization(accountDTO.getUsername(), signInForm.getPassword());
         result.setUsername(accountDTO.getUsername());

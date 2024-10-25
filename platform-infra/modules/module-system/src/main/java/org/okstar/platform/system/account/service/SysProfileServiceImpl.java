@@ -86,10 +86,8 @@ public class SysProfileServiceImpl implements SysProfileService {
         }
     }
 
-
     @Override
     public void update(SysAccount sysAccount, SysProfile sysProfile) {
-        keycloakService.updateUserProfile(sysAccount.getUid(), sysProfile);
         update(sysProfile, sysAccount.id);
     }
 
@@ -168,52 +166,65 @@ public class SysProfileServiceImpl implements SysProfileService {
     public SysProfile loadByUsername(String username) {
         SysAccount account = accountService.loadByUsername(username);
         OkAssert.notNull(account, "Invalid username");
-        return getProfile(account);
+        return loadProfile(account.id);
     }
 
     @Override
     public SysProfile loadByAccount(Long accountId) {
-        SysAccount account = accountService.get(accountId);
-        OkAssert.notNull(account, "Invalid id");
-        return getProfile(account);
+        return loadProfile(accountId);
     }
 
     @Override
-    public List<SysAccount> loadByFirstName(String firstName) {
+    public List<SysAccount> getByFirstName(String firstName) {
         List<SysProfile> list = mapper.find(SysProfile_.FIRST_NAME, firstName).stream().toList();
         return list.stream().map(e -> accountService.get(e.getAccountId())).toList();
     }
 
     @Override
-    public List<SysAccount> loadByLastName(String lastName) {
+    public List<SysAccount> getByLastName(String lastName) {
         List<SysProfile> list = mapper.find(SysProfile_.LAST_NAME, lastName).stream().toList();
         return list.stream().map(e -> accountService.get(e.getAccountId())).toList();
     }
 
     @Override
-    public List<SysAccount> loadByPersonalName(String personalName) {
+    public List<SysAccount> getByPersonalName(String personalName) {
         List<SysProfile> list = mapper.find(SysProfile_.FIRST_NAME + " || " + SysProfile_.LAST_NAME + " = ?1", personalName)
                 .stream().toList();
         return list.stream().map(e -> accountService.get(e.getAccountId())).toList();
     }
 
+    @Override
+    public void syncDb2Ldap(String username) {
+        Optional<SysAccount> account = accountService.findByUsername(username);
+        account.ifPresent(sysAccount -> {
+            keycloakService.setUserProfile(sysAccount.getUid(), loadProfile(sysAccount.id));
+        });
+    }
 
-    private SysProfile getProfile(SysAccount account) {
-        Optional<SysProfile> first = mapper.find("accountId", account.id).stream().findFirst();
-        if (first.isEmpty()) {
-            SysProfile profile = new SysProfile();
-            profile.setAccountId(account.id);
-            List<SysAccountBind> binds = accountService.listBind(account.id);
-            binds.forEach(bind -> {
-                if (bind.getBindType() == AccountDefines.BindType.email) {
-                    profile.setEmail(bind.getBindValue());
-                } else if (bind.getBindType() == AccountDefines.BindType.phone) {
-                    profile.setPhone(bind.getBindValue());
-                }
-            });
-            mapper.persist(profile);
-            return profile;
+    @Override
+    public SysProfile loadProfile(Long accountId) {
+        Optional<SysProfile> first = getProfile(accountId);
+        if (first.isPresent()) {
+            return first.get();
         }
-        return first.get();
+
+        SysProfile profile = new SysProfile();
+        profile.setAccountId(accountId);
+        List<SysAccountBind> binds = accountService.listBind(accountId);
+        binds.forEach(bind -> {
+            if (bind.getBindType() == AccountDefines.BindType.email) {
+                profile.setEmail(bind.getBindValue());
+            } else if (bind.getBindType() == AccountDefines.BindType.phone) {
+                profile.setPhone(bind.getBindValue());
+            }
+        });
+
+        save(profile);
+        return profile;
+    }
+
+    @Override
+    public Optional<SysProfile> getProfile(Long accountId) {
+        return mapper.find("accountId", accountId).stream().findFirst();
     }
 }

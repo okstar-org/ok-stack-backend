@@ -23,6 +23,7 @@ import org.okstar.platform.core.account.AccountDefines;
 import org.okstar.platform.system.account.domain.SysAccount;
 import org.okstar.platform.system.account.domain.SysAccountBind;
 import org.okstar.platform.system.account.service.SysAccountService;
+import org.okstar.platform.system.account.service.SysProfileService;
 import org.okstar.platform.system.dto.SysAccountBindDTO;
 import org.okstar.platform.system.dto.SysAccountDTO;
 import org.okstar.platform.system.rpc.SysAccountRpc;
@@ -38,6 +39,8 @@ public class SysAccountRpcImpl implements SysAccountRpc {
 
     @Inject
     SysAccountService accountService;
+    @Inject
+    SysProfileService profileService;
 
     @Override
     public RpcResult<String> lastPassword(Long accountId) {
@@ -113,10 +116,13 @@ public class SysAccountRpcImpl implements SysAccountRpc {
 
     @Override
     public void setUid(String username, String uid) {
-        Optional<SysAccount> sysAccount = accountService.findByUsername(username);
-        sysAccount.ifPresent(e -> {
-           e.setUid(uid);
-        });
+        accountService.setUid(username, uid);
+    }
+
+    @Override
+    public void syncDb2Ldap(String username) {
+        accountService.syncDb2Ldap(username);
+        profileService.syncDb2Ldap(username);
     }
 
 

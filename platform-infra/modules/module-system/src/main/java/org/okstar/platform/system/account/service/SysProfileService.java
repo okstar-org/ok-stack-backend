@@ -19,6 +19,7 @@ import org.okstar.platform.system.account.domain.SysAccount;
 import org.okstar.platform.system.account.domain.SysProfile;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface SysProfileService extends OkJpaService<SysProfile> {
 
@@ -28,9 +29,15 @@ public interface SysProfileService extends OkJpaService<SysProfile> {
 
     SysProfile loadByAccount(Long accountId);
 
-    List<SysAccount> loadByFirstName(String firstName);
+    List<SysAccount> getByFirstName(String firstName);
 
-    List<SysAccount> loadByLastName(String lastName);
+    List<SysAccount> getByLastName(String lastName);
 
-    List<SysAccount> loadByPersonalName(String personalName);
+    List<SysAccount> getByPersonalName(String personalName);
+
+    void syncDb2Ldap(String username);
+
+    SysProfile loadProfile(Long accountId);
+
+    Optional<SysProfile> getProfile(Long accountId);
 }

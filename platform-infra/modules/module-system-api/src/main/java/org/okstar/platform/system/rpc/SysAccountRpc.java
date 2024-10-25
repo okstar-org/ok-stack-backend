@@ -80,4 +80,9 @@ public interface SysAccountRpc {
     @POST
     @Path("{username}/uid")
     void setUid(@PathParam("username") String username, String uid);
+
+
+    @POST
+    @Path("{username}/syncDb2Ldap")
+    void syncDb2Ldap(@PathParam("username") String username);
 }

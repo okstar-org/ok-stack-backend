@@ -42,13 +42,12 @@ import org.okstar.platform.system.account.domain.SysAccountPassword;
 import org.okstar.platform.system.account.mapper.SysAccountBindMapper;
 import org.okstar.platform.system.account.mapper.SysAccountMapper;
 import org.okstar.platform.system.account.mapper.SysAccountPasswordMapper;
+import org.okstar.platform.system.conf.service.SysKeycloakService;
 import org.okstar.platform.system.dto.SysAccountDTO;
 import org.okstar.platform.system.sign.SignUpForm;
 import org.okstar.platform.system.sign.SignUpResult;
 
-import java.util.Comparator;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 import static com.google.i18n.phonenumbers.PhoneNumberUtil.PhoneNumberFormat.INTERNATIONAL;
 
@@ -66,7 +65,8 @@ public class SysAccountServiceImpl extends OkAbsService implements SysAccountSer
     SysAccountBindMapper sysAccountBindMapper;
     @Inject
     SysAccountPasswordMapper sysAccountPasswordMapper;
-
+    @Inject
+    SysKeycloakService sysKeycloakService;
 
     @Override
     public Optional<SysAccountPassword> lastPassword(Long accountId) {
@@ -303,6 +303,14 @@ public class SysAccountServiceImpl extends OkAbsService implements SysAccountSer
     }
 
     @Override
+    public void setUid(String username, String uid) {
+        Optional<SysAccount> sysAccount = findByUsername(username);
+        sysAccount.ifPresent(e -> {
+            e.setUid(uid);
+        });
+    }
+
+    @Override
     public void setCert(Long id, String cert) {
         SysAccount account = get(id);
         account.setCert(cert);
@@ -330,5 +338,19 @@ public class SysAccountServiceImpl extends OkAbsService implements SysAccountSer
         if (sysAccount != null) {
             sysAccount.setNickname(nickname);
         }
+
+        Map<String, List<String>> attr = new HashMap<>();
+        attr.put("nickname", Collections.singletonList(nickname));
+        sysKeycloakService.setUserAttribute(self.getUid(), attr);
+    }
+
+    @Override
+    public void syncDb2Ldap(String username) {
+        Optional<SysAccount> account = findByUsername(username);
+        account.ifPresent(account0 -> {
+            Map<String, List<String>> attr = new HashMap<>();
+            attr.put("nickname", Collections.singletonList(account0.getNickname()));
+            sysKeycloakService.setUserAttribute(account0.getUid(), attr);
+        });
     }
 }

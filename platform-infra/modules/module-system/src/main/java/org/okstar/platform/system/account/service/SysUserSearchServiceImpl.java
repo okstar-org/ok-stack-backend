@@ -50,9 +50,9 @@ public class SysUserSearchServiceImpl implements SysUserSearchService {
                 .forEach(list::add);
 
         //姓名搜索
-        profileService.loadByFirstName(query).stream().map(e -> accountService.toAccount0(e)).forEach(list::add);
-        profileService.loadByLastName(query).stream().map(e -> accountService.toAccount0(e)).forEach(list::add);
-        profileService.loadByPersonalName(query).stream().map(e -> accountService.toAccount0(e)).forEach(list::add);
+        profileService.getByFirstName(query).stream().map(e -> accountService.toAccount0(e)).forEach(list::add);
+        profileService.getByLastName(query).stream().map(e -> accountService.toAccount0(e)).forEach(list::add);
+        profileService.getByPersonalName(query).stream().map(e -> accountService.toAccount0(e)).forEach(list::add);
 
         return list.stream().distinct().toList();
     }
