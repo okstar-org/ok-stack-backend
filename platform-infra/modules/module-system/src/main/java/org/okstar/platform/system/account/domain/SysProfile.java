@@ -104,4 +104,9 @@ public class SysProfile extends BaseEntity {
      * @link https://www.loc.gov/standards/iso639-2/php/code_list.php
      */
     private String language;
+
+    /**
+     * 个人介绍
+     */
+    private String description;
 }

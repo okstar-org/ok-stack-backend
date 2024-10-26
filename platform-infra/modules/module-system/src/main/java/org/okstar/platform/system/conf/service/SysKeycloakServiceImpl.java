@@ -210,6 +210,7 @@ public class SysKeycloakServiceImpl implements SysKeycloakService {
             attributes.put("province", Collections.singletonList(sysProfile.getProvince()));
             attributes.put("city", Collections.singletonList(sysProfile.getCity()));
             attributes.put("street", Collections.singletonList(sysProfile.getAddress()));
+            attributes.put("description", Collections.singletonList(sysProfile.getDescription()));
 
 
             userRepresentation.setAttributes(attributes);
