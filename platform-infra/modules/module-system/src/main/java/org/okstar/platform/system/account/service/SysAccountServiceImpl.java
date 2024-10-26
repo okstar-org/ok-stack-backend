@@ -345,11 +345,12 @@ public class SysAccountServiceImpl extends OkAbsService implements SysAccountSer
     }
 
     @Override
-    public void syncDb2Ldap(String username) {
+    public void syncToKeycloak(String username) {
         Optional<SysAccount> account = findByUsername(username);
         account.ifPresent(account0 -> {
             Map<String, List<String>> attr = new HashMap<>();
             attr.put("nickname", Collections.singletonList(account0.getNickname()));
+
             sysKeycloakService.setUserAttribute(account0.getUid(), attr);
         });
     }

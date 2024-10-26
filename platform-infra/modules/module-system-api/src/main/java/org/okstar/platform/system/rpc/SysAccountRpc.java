@@ -84,5 +84,5 @@ public interface SysAccountRpc {
 
     @POST
     @Path("{username}/syncDb2Ldap")
-    void syncDb2Ldap(@PathParam("username") String username);
+    void sync(@PathParam("username") String username);
 }

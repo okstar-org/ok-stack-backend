@@ -89,6 +89,7 @@ public class SysProfileServiceImpl implements SysProfileService {
     @Override
     public void update(SysAccount sysAccount, SysProfile sysProfile) {
         update(sysProfile, sysAccount.id);
+        syncToKeycloak(sysAccount.getUsername());
     }
 
     @SneakyThrows(JsonProcessingException.class)
@@ -194,7 +195,7 @@ public class SysProfileServiceImpl implements SysProfileService {
     }
 
     @Override
-    public void syncDb2Ldap(String username) {
+    public void syncToKeycloak(String username) {
         Optional<SysAccount> account = accountService.findByUsername(username);
         account.ifPresent(sysAccount -> {
             keycloakService.setUserProfile(sysAccount.getUid(), loadProfile(sysAccount.id));

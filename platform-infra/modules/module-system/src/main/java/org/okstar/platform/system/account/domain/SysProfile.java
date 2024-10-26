@@ -75,6 +75,11 @@ public class SysProfile extends BaseEntity {
     private String country;
 
     /**
+     * 州/省
+     */
+    private String province;
+
+    /**
      * 城市
      */
     private String city;

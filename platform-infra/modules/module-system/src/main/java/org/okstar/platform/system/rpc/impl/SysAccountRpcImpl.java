@@ -120,9 +120,9 @@ public class SysAccountRpcImpl implements SysAccountRpc {
     }
 
     @Override
-    public void syncDb2Ldap(String username) {
-        accountService.syncDb2Ldap(username);
-        profileService.syncDb2Ldap(username);
+    public void sync(String username) {
+        accountService.syncToKeycloak(username);
+        profileService.syncToKeycloak(username);
     }
 
 

@@ -70,5 +70,5 @@ public interface SysAccountService extends OkJpaService<SysAccount> {
 
     void saveNickname(SysAccount self, String nickname);
 
-    void syncDb2Ldap(String username);
+    void syncToKeycloak(String username);
 }

@@ -43,6 +43,7 @@ import org.okstar.platform.system.conf.domain.SysConfIntegrationKeycloak;
 import org.okstar.platform.system.dto.SysKeycloakConfDTO;
 
 import java.net.URI;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -162,7 +163,7 @@ public class SysKeycloakServiceImpl implements SysKeycloakService {
             userResource.update(userRepresentation);
         } catch (RuntimeException e) {
             Log.errorf(e, e.getMessage());
-            throw new OkRuntimeException("更新异常！",e);
+            throw new OkRuntimeException("更新异常！", e);
         }
     }
 
@@ -189,10 +190,34 @@ public class SysKeycloakServiceImpl implements SysKeycloakService {
             userRepresentation.setFirstName(sysProfile.getFirstName());
             userRepresentation.setLastName(sysProfile.getLastName());
 
+            Map<String, List<String>> attributes = userRepresentation.getAttributes();
+            //用户名信息
+            attributes.put("firstName", Collections.singletonList(sysProfile.getFirstName()));
+            attributes.put("lastName", Collections.singletonList(sysProfile.getLastName()));
+            if (OkStringUtil.isNotEmpty(sysProfile.getFirstName()) && OkStringUtil.isNotEmpty(sysProfile.getLastName())) {
+                attributes.put("initials", Collections.singletonList(String.valueOf(sysProfile.getFirstName().charAt(0)
+                        + sysProfile.getLastName().charAt(0))));
+            }
+
+            //联系方式
+            attributes.put("email", Collections.singletonList(sysProfile.getEmail()));
+            attributes.put("phone", Collections.singletonList(sysProfile.getPhone()));
+            attributes.put("telephone", Collections.singletonList(sysProfile.getTelephone()));
+            attributes.put("web", Collections.singletonList(sysProfile.getWebsite()));
+
+            //地区
+            attributes.put("country", Collections.singletonList(sysProfile.getCountry()));
+            attributes.put("province", Collections.singletonList(sysProfile.getProvince()));
+            attributes.put("city", Collections.singletonList(sysProfile.getCity()));
+            attributes.put("street", Collections.singletonList(sysProfile.getAddress()));
+
+
+            userRepresentation.setAttributes(attributes);
+
             userResource.update(userRepresentation);
         } catch (RuntimeException e) {
             Log.errorf(e, e.getMessage());
-            throw new OkRuntimeException("更新异常！",e);
+            throw new OkRuntimeException("更新异常！", e);
         }
     }
 
@@ -224,7 +249,7 @@ public class SysKeycloakServiceImpl implements SysKeycloakService {
             userResource.update(userRepresentation);
         } catch (RuntimeException e) {
             Log.errorf(e, e.getMessage());
-            throw new OkRuntimeException("更新异常！",e);
+            throw new OkRuntimeException("更新异常！", e);
         }
     }
 

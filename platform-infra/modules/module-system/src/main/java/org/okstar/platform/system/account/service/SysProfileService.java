@@ -35,7 +35,7 @@ public interface SysProfileService extends OkJpaService<SysProfile> {
 
     List<SysAccount> getByPersonalName(String personalName);
 
-    void syncDb2Ldap(String username);
+    void syncToKeycloak(String username);
 
     SysProfile loadProfile(Long accountId);
 

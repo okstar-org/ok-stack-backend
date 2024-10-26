@@ -163,7 +163,7 @@ public class PassportServiceImpl implements PassportService {
         BackUser backUser1 = backUser.get();
         accountDTO.setUid(backUser1.getId());
         sysAccountRpc.setUid(backUser1.getUsername(), accountDTO.getUid());
-        sysAccountRpc.syncDb2Ldap(backUser1.getUsername());
+        sysAccountRpc.sync(backUser1.getUsername());
 
         AuthorizationResult result = authzClientManager.authorization(accountDTO.getUsername(), signInForm.getPassword());
         result.setUsername(accountDTO.getUsername());
