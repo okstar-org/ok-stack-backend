@@ -18,7 +18,8 @@ import org.okstar.platform.common.web.page.OkPageResult;
 import org.okstar.platform.common.web.page.OkPageable;
 import org.okstar.platform.common.datasource.OkJpaService;
 import org.okstar.platform.org.staff.domain.OrgStaff;
-import org.okstar.platform.org.dto.OrgStaff0;
+import org.okstar.platform.org.dto.OrgEmployee;
+import org.okstar.platform.org.staff.dto.OrgStaffDTO;
 import org.okstar.platform.org.vo.OrgStaffFind;
 import org.okstar.platform.system.dto.SysProfileDTO;
 
@@ -44,20 +45,24 @@ public interface OrgStaffService extends OkJpaService<OrgStaff> {
      * @param find
      * @return
      */
-    OkPageResult<OrgStaff0>  findEmployees(OrgStaffFind find);
+    OkPageResult<OrgEmployee>  findEmployees(OrgStaffFind find);
+
+    List<OrgEmployee> toEmployees(List<OrgStaff> pq);
+
+    OrgEmployee toEmployee(OrgStaff staff);
 
     /**
      * 查找[已离职]人员
      *
      * @return
      */
-    OkPageResult<OrgStaff> findLefts(OkPageable page);
+    OkPageResult<OrgStaffDTO> findLefts(OkPageable page);
     
     void setAccountId(Long id, Long accountId);
 
     Optional<OrgStaff> getByAccountId(Long id);
 
-    List<OrgStaff0> search(String query);
+    List<OrgEmployee> search(String query);
 
     long getCount();
 

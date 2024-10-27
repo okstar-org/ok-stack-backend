@@ -20,6 +20,7 @@ import io.quarkus.panache.common.Sort;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
+import org.eclipse.microprofile.rest.client.inject.RestClient;
 import org.okstar.platform.common.bean.OkBeanUtils;
 import org.okstar.platform.common.date.OkDateUtils;
 import org.okstar.platform.common.web.page.OkPageResult;
@@ -27,13 +28,15 @@ import org.okstar.platform.common.web.page.OkPageable;
 import org.okstar.platform.core.org.JobDefines;
 import org.okstar.platform.org.domain.OrgPost;
 import org.okstar.platform.org.dto.OrgPost0;
-import org.okstar.platform.org.dto.OrgStaff0;
+import org.okstar.platform.org.dto.OrgEmployee;
 import org.okstar.platform.org.service.OrgPostService;
 import org.okstar.platform.org.staff.domain.OrgStaff;
 import org.okstar.platform.org.staff.domain.OrgStaffPost;
+import org.okstar.platform.org.staff.dto.OrgStaffDTO;
 import org.okstar.platform.org.staff.mapper.OrgStaffMapper;
 import org.okstar.platform.org.vo.OrgStaffFind;
 import org.okstar.platform.system.dto.SysProfileDTO;
+import org.okstar.platform.system.rpc.SysProfileRpc;
 
 import java.util.Collections;
 import java.util.List;
@@ -55,6 +58,9 @@ public class OrgStaffServiceImpl implements OrgStaffService {
 
     @Inject
     OrgPostService orgPostService;
+    @Inject
+    @RestClient
+    SysProfileRpc sysProfileRpc;
 
 
     @Override
@@ -157,7 +163,7 @@ public class OrgStaffServiceImpl implements OrgStaffService {
     }
 
     @Override
-    public OkPageResult<OrgStaff0> findEmployees(OrgStaffFind find) {
+    public OkPageResult<OrgEmployee> findEmployees(OrgStaffFind find) {
 
         //获取部门下面的岗位
         var posIds = orgPostService.findByDept(find.getDeptId())
@@ -180,43 +186,44 @@ public class OrgStaffServiceImpl implements OrgStaffService {
 
         PanacheQuery<OrgStaff> pq = orgStaffMapper.find("id in ?1", staffIds)
                 .page(find.getPageIndex(), find.getPageSize());
-        List<OrgStaff0> list = forResult(pq.list());
+        List<OrgEmployee> list = toEmployees(pq.list());
         return OkPageResult.build(list, pq.count(), pq.pageCount());
     }
 
     @Override
-    public List<OrgStaff0> search(String query) {
+    public List<OrgEmployee> search(String query) {
         PanacheQuery<OrgStaff> pq = orgStaffMapper.find("accountId IS NOT null");
-        return forResult(pq.list());
-    }
-
-    private List<OrgStaff0> forResult(List<OrgStaff> pq) {
-        return pq.stream().map(staff -> {
-            OrgStaff0 staff0 = new OrgStaff0();
-
-            OkBeanUtils.copyPropertiesTo(staff, staff0);
-//            OkBeanUtils.copyPropertiesTo(staff.getFragment(), staff0);
-
-            List<OrgPost0> posts = orgStaffPostService.findByStaffId(staff.id).stream().map(e -> {
-                OrgPost0 p0 = new OrgPost0();
-                OrgPost post = orgPostService.get(e.getPostId());
-                OkBeanUtils.copyPropertiesTo(post, p0);
-                return p0;
-            }).toList();
-
-            staff0.setPosts(posts);
-            return staff0;
-        }).toList();
-
+        return toEmployees(pq.list());
     }
 
     @Override
-    public OkPageResult<OrgStaff> findLefts(OkPageable page) {
-        var paged = orgStaffMapper
-                .find("postStatus", JobDefines.PostStatus.left)
-                .page(page.getPageIndex(), page.getPageSize());
-        return OkPageResult.build(paged.list(), paged.count(), paged.pageCount());
+    public List<OrgEmployee> toEmployees(List<OrgStaff> pq) {
+        return pq.stream().map(this::toEmployee).toList();
+    }
 
+    @Override
+    public OrgEmployee toEmployee(OrgStaff staff) {
+        OrgEmployee employee = new OrgEmployee();
+
+        OrgStaffDTO staffDTO = toDTO(staff);
+        OkBeanUtils.copyPropertiesTo(staffDTO, employee);
+
+        List<OrgPost0> posts = orgStaffPostService.findByStaffId(staff.id).stream().map(e -> {
+            OrgPost0 p0 = new OrgPost0();
+            OrgPost post = orgPostService.get(e.getPostId());
+            OkBeanUtils.copyPropertiesTo(post, p0);
+            return p0;
+        }).toList();
+        employee.setPosts(posts);
+        return employee;
+    }
+
+    @Override
+    public OkPageResult<OrgStaffDTO> findLefts(OkPageable page) {
+        var paged = orgStaffMapper.find("postStatus", JobDefines.PostStatus.left)
+                .page(page.getPageIndex(), page.getPageSize());
+        var list = paged.list().stream().map(this::toDTO).toList();
+        return OkPageResult.build(list, paged.count(), paged.pageCount());
     }
 
     @Override
@@ -231,7 +238,6 @@ public class OrgStaffServiceImpl implements OrgStaffService {
     public Optional<OrgStaff> getByAccountId(Long id) {
         return orgStaffMapper.find("accountId", id).stream().findFirst();
     }
-
 
     @Override
     public long getCount() {
@@ -273,5 +279,15 @@ public class OrgStaffServiceImpl implements OrgStaffService {
 
     private Optional<OrgStaff> findByNo(String no) {
         return orgStaffMapper.find("no", no).stream().findFirst();
+    }
+
+    public OrgStaffDTO toDTO(OrgStaff e) {
+        OrgStaffDTO dto = new OrgStaffDTO();
+        OkBeanUtils.copyPropertiesTo(e, dto);
+        SysProfileDTO account = sysProfileRpc.getByAccount(e.getAccountId());
+        if (account != null) {
+            dto.setProfile(account);
+        }
+        return dto;
     }
 }

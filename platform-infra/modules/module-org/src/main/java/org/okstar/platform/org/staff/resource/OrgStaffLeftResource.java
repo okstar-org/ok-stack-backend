@@ -20,6 +20,7 @@ import org.okstar.platform.common.web.bean.Res;
 import org.okstar.platform.common.web.page.OkPageResult;
 import org.okstar.platform.common.web.page.OkPageable;
 import org.okstar.platform.org.staff.domain.OrgStaff;
+import org.okstar.platform.org.staff.dto.OrgStaffDTO;
 import org.okstar.platform.org.staff.service.OrgStaffService;
 
 /**
@@ -33,7 +34,7 @@ public class OrgStaffLeftResource {
 
     @POST
     @Path("page")
-    public Res<OkPageResult<OrgStaff>> page(OkPageable page) {
+    public Res<OkPageResult<OrgStaffDTO>> page(OkPageable page) {
         var list = orgStaffService.findLefts(page);
         return Res.ok(list);
     }

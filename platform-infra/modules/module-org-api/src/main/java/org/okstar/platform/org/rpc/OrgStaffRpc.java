@@ -16,7 +16,7 @@ package org.okstar.platform.org.rpc;
 import jakarta.ws.rs.*;
 import org.eclipse.microprofile.rest.client.inject.RegisterRestClient;
 import org.okstar.platform.core.rpc.RpcResult;
-import org.okstar.platform.org.dto.OrgStaff0;
+import org.okstar.platform.org.dto.OrgEmployee;
 
 
 import java.util.List;
@@ -27,5 +27,5 @@ public interface OrgStaffRpc {
 
     @GET
     @Path("search")
-    RpcResult<List<OrgStaff0>> search(@QueryParam("q") String query);
+    RpcResult<List<OrgEmployee>> search(@QueryParam("q") String query);
 }

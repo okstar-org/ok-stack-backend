@@ -18,7 +18,7 @@ import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
 import org.okstar.platform.common.web.bean.Res;
 import org.okstar.platform.common.web.page.OkPageResult;
-import org.okstar.platform.org.dto.OrgStaff0;
+import org.okstar.platform.org.dto.OrgEmployee;
 import org.okstar.platform.org.staff.service.OrgStaffPostService;
 import org.okstar.platform.org.staff.service.OrgStaffService;
 import org.okstar.platform.org.vo.OrgStaffFind;
@@ -44,7 +44,7 @@ public class OrgStaffEmployedResource {
 
     @POST
     @Path("page")
-    public Res<OkPageResult<OrgStaff0>> page(OrgStaffFind find) {
+    public Res<OkPageResult<OrgEmployee>> page(OrgStaffFind find) {
         var list = orgStaffService.findEmployees(find);
         return Res.ok(list);
     }

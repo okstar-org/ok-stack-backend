@@ -25,7 +25,7 @@ import org.okstar.platform.org.domain.OrgPost;
 import org.okstar.platform.org.dto.MyOrgInfo;
 import org.okstar.platform.org.dto.MyPostInfo;
 import org.okstar.platform.org.dto.Org0;
-import org.okstar.platform.org.dto.OrgStaff0;
+import org.okstar.platform.org.dto.OrgEmployee;
 import org.okstar.platform.org.service.OrgDeptService;
 import org.okstar.platform.org.service.OrgPostService;
 import org.okstar.platform.org.service.OrgService;
@@ -98,19 +98,10 @@ public class MeResource extends BaseResource {
                 .no(org.getNo())
                 .uuid(org.getUuid())
                 .build();
-
         info.setOrg(org0);
 
-        info.setStaff(OrgStaff0.builder()
-                .accountId(account.getId())
-                .id(orgStaff.id)
-                .no(orgStaff.getNo())
-                .name(profile.getFirstName()+profile.getLastName())
-                .phone(profile.getPhone())
-                .email(profile.getEmail())
-                .gender(profile.getGender())
-                .joinedDate(orgStaff.getJoinedDate())
-                .build());
+        OrgEmployee employee = staffService.toEmployee(orgStaff);
+        info.setStaff(employee);
 
         var staffPosts = staffPostService.findByStaffId(orgStaff.id);
         if (!staffPosts.isEmpty()) {

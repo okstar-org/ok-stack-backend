@@ -43,7 +43,7 @@ public interface SysAccountRpc {
     void signDown(@PathParam("accountId") Long accountId);
 
     @GET
-    @Path("findByAccount/{account}")
+    @Path("getByAccount/{account}")
     Optional<SysAccountDTO> getByAccount(@PathParam("account") String account);
 
     @GET

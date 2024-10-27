@@ -11,44 +11,55 @@
  * /
  */
 
-package org.okstar.platform.org.dto;
+package org.okstar.platform.org.staff.dto;
 
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import lombok.Data;
-import org.okstar.platform.system.dto.SysAccountDTO;
+import org.okstar.platform.core.org.JobDefines;
 import org.okstar.platform.system.dto.SysProfileDTO;
 
-import java.util.List;
+import java.util.Date;
 
-/**
- * 我的组织信息
- */
 @Data
-public class MyOrgInfo {
-
+public class OrgStaffDTO {
     /**
-     * 帐号信息
+     * ID
      */
-    private SysAccountDTO account;
+    private Long id;
+
+    protected Date createAt;
+
+    protected Date updateAt;
 
     /**
-     * profile
+     * 帐号ID
+     */
+    protected Long accountId;
+
+    /**
+     * 编号
+     */
+    protected String no;
+
+    /**
+     * 入职日期
+     */
+    protected Date joinedDate;
+
+    /**
+     * 离职日期
+     */
+    protected Date leftDate;
+
+    /**
+     * 岗位状态
+     */
+    @Enumerated(EnumType.STRING)
+    private JobDefines.PostStatus postStatus;
+
+    /**
+     * 详情
      */
     private SysProfileDTO profile;
-
-    /**
-     * 组织信息
-     */
-    private Org0 org;
-
-    /**
-     * 员工信息
-     */
-    private OrgEmployee staff;
-
-    /**
-     * 岗位信息
-     */
-    private List<MyPostInfo> postInfo;
-
-
 }

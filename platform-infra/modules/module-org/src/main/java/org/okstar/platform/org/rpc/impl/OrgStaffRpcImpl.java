@@ -16,7 +16,7 @@ package org.okstar.platform.org.rpc.impl;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import org.okstar.platform.core.rpc.RpcResult;
-import org.okstar.platform.org.dto.OrgStaff0;
+import org.okstar.platform.org.dto.OrgEmployee;
 import org.okstar.platform.org.rpc.OrgStaffRpc;
 import org.okstar.platform.org.staff.service.OrgStaffService;
 
@@ -30,9 +30,9 @@ public class OrgStaffRpcImpl implements OrgStaffRpc {
     OrgStaffService orgStaffService;
 
     @Override
-    public RpcResult<List<OrgStaff0>> search(String query) {
+    public RpcResult<List<OrgEmployee>> search(String query) {
         try {
-            List<OrgStaff0> list = orgStaffService.search(query);
+            List<OrgEmployee> list = orgStaffService.search(query);
             return RpcResult.success(list);
         } catch (Exception e) {
             return RpcResult.failed(e);

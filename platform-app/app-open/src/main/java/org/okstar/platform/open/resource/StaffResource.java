@@ -20,7 +20,7 @@ import jakarta.ws.rs.QueryParam;
 import org.eclipse.microprofile.rest.client.inject.RestClient;
 import org.okstar.platform.common.web.bean.Res;
 import org.okstar.platform.core.rpc.RpcAssert;
-import org.okstar.platform.org.dto.OrgStaff0;
+import org.okstar.platform.org.dto.OrgEmployee;
 import org.okstar.platform.org.rpc.OrgStaffRpc;
 import org.okstar.platform.system.dto.SysAccountDTO;
 import org.okstar.platform.system.rpc.SysAccountRpc;
@@ -42,7 +42,7 @@ public class StaffResource {
 
     @GET
     @Path("search")
-    public Res<List<OrgStaff0>> search(@QueryParam("q") String query) {
+    public Res<List<OrgEmployee>> search(@QueryParam("q") String query) {
         var list = RpcAssert.isTrue(orgStaffRpc.search(query));
         list.forEach(e -> {
             if (e.getAccountId() != null) {

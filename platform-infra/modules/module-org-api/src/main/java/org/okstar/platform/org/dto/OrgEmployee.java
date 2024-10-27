@@ -11,15 +11,28 @@
  * /
  */
 
-package org.okstar.platform.org.staff.dto;
+package org.okstar.platform.org.dto;
 
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import org.okstar.platform.org.staff.domain.OrgStaff;
-import org.okstar.platform.system.dto.SysProfileDTO;
+import lombok.*;
+import org.okstar.platform.org.staff.dto.OrgStaffDTO;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
+/**
+ * 组织成员
+ */
 @Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @EqualsAndHashCode(callSuper = true)
-public class OrgStaffDTO extends OrgStaff {
-    private SysProfileDTO fragment;
+public class OrgEmployee extends OrgStaffDTO {
+
+    //岗位信息
+    private List<OrgPost0> posts;
+
+    public String getPostNames() {
+        return posts == null ? "" : posts.stream().map(OrgPost0::getName).collect(Collectors.joining(","));
+    }
 }

@@ -51,12 +51,10 @@ public class OrgStaffPendingResource {
         List<OrgStaffDTO> list = pageResult.getList().stream().map(e -> {
             OrgStaffDTO dto = new OrgStaffDTO();
             OkBeanUtils.copyPropertiesTo(e, dto);
-
             SysProfileDTO account = sysProfileRpc.getByAccount(e.getAccountId());
             if (account != null) {
-                dto.setFragment(account);
+                dto.setProfile(account);
             }
-
             return dto;
         }).toList();
         return Res.ok(OkPageResult.build(list, pageResult.getTotalCount(), pageResult.getPageCount()));
