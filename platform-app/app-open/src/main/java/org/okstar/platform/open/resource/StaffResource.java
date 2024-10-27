@@ -26,6 +26,7 @@ import org.okstar.platform.system.dto.SysAccountDTO;
 import org.okstar.platform.system.rpc.SysAccountRpc;
 
 import java.util.List;
+import java.util.Optional;
 
 
 @Path("staff")
@@ -45,8 +46,10 @@ public class StaffResource {
         var list = RpcAssert.isTrue(orgStaffRpc.search(query));
         list.forEach(e -> {
             if (e.getAccountId() != null) {
-                SysAccountDTO account0 = sysAccountRpc.findById(e.getAccountId());
-                e.setUsername(account0.getUsername());
+                Optional<SysAccountDTO> account0 = sysAccountRpc.findById(e.getAccountId());
+                account0.ifPresent(accountDTO->{
+                    e.setUsername(accountDTO.getUsername());
+                });
             }
         });
         return Res.ok(list);

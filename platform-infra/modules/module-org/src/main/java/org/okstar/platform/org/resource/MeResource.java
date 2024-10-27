@@ -19,18 +19,19 @@ import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;
 import org.eclipse.microprofile.rest.client.inject.RestClient;
 import org.okstar.platform.common.web.bean.Res;
-import org.okstar.platform.core.rpc.RpcAssert;
 import org.okstar.platform.org.domain.Org;
 import org.okstar.platform.org.domain.OrgDept;
 import org.okstar.platform.org.domain.OrgPost;
-import org.okstar.platform.org.dto.*;
+import org.okstar.platform.org.dto.MyOrgInfo;
+import org.okstar.platform.org.dto.MyPostInfo;
+import org.okstar.platform.org.dto.Org0;
+import org.okstar.platform.org.dto.OrgStaff0;
 import org.okstar.platform.org.service.OrgDeptService;
 import org.okstar.platform.org.service.OrgPostService;
 import org.okstar.platform.org.service.OrgService;
 import org.okstar.platform.org.staff.domain.OrgStaff;
 import org.okstar.platform.org.staff.service.OrgStaffPostService;
 import org.okstar.platform.org.staff.service.OrgStaffService;
-import org.okstar.platform.system.dto.SysAccountBindDTO;
 import org.okstar.platform.system.dto.SysAccountDTO;
 import org.okstar.platform.system.dto.SysProfileDTO;
 import org.okstar.platform.system.rpc.SysAccountRpc;
@@ -80,17 +81,6 @@ public class MeResource extends BaseResource {
         var orgStaff = staffOptional.orElseGet(() -> {
             OrgStaff staff0 = new OrgStaff();
             staff0.setAccountId(account.getId());
-
-            OrgStaffFragment f = new OrgStaffFragment();
-            f.setIso(account.getIso());
-            List<SysAccountBindDTO> bindDTOS = RpcAssert.isTrue(sysAccountRpc.getBinds(account.getId()));
-            bindDTOS.forEach(bind -> {
-                switch (bind.getBindType()) {
-                    case email -> f.setEmail(bind.getBindValue());
-                    case phone -> f.setPhone(bind.getBindValue());
-                }
-            });
-            staff0.setFragment(f);
             staffService.create(staff0, account.getId());
             return staff0;
         });
@@ -113,13 +103,12 @@ public class MeResource extends BaseResource {
 
         info.setStaff(OrgStaff0.builder()
                 .accountId(account.getId())
-                .name(profile.getPersonalName())
                 .id(orgStaff.id)
-                .no(orgStaff.getFragment().getNo())
-                .phone(orgStaff.getFragment().getPhone())
-                .email(orgStaff.getFragment().getEmail())
-                .gender(orgStaff.getFragment().getGender())
-                .birthday(orgStaff.getFragment().getBirthday())
+                .no(orgStaff.getNo())
+                .name(profile.getFirstName()+profile.getLastName())
+                .phone(profile.getPhone())
+                .email(profile.getEmail())
+                .gender(profile.getGender())
                 .joinedDate(orgStaff.getJoinedDate())
                 .build());
 

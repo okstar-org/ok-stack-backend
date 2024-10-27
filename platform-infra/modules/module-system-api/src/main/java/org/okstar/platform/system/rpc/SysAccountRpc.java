@@ -49,7 +49,7 @@ public interface SysAccountRpc {
     @GET
     @Path("findByBind")
     Optional<SysAccountDTO> findByBind(@QueryParam("type") AccountDefines.BindType type,
-                                        @QueryParam("bindValue") String bindValue);
+                                       @QueryParam("bindValue") String bindValue);
 
     @GET
     @Path("findByEmail")
@@ -66,7 +66,7 @@ public interface SysAccountRpc {
 
     @GET
     @Path("findById/{id}")
-    SysAccountDTO findById(@PathParam("id") Long id);
+    Optional<SysAccountDTO> findById(@PathParam("id") Long id);
 
 
     @POST

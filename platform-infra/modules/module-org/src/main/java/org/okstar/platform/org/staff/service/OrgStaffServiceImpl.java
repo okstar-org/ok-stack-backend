@@ -20,30 +20,23 @@ import io.quarkus.panache.common.Sort;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
-import org.locationtech.jts.util.Assert;
-import org.okstar.platform.common.asserts.OkAssert;
 import org.okstar.platform.common.bean.OkBeanUtils;
+import org.okstar.platform.common.date.OkDateUtils;
 import org.okstar.platform.common.web.page.OkPageResult;
 import org.okstar.platform.common.web.page.OkPageable;
-import org.okstar.platform.common.date.OkDateUtils;
-import org.okstar.platform.common.string.OkNameUtil;
-import org.okstar.platform.common.string.OkStringUtil;
 import org.okstar.platform.core.org.JobDefines;
 import org.okstar.platform.org.domain.OrgPost;
 import org.okstar.platform.org.dto.OrgPost0;
 import org.okstar.platform.org.dto.OrgStaff0;
-import org.okstar.platform.org.dto.OrgStaffFragment;
 import org.okstar.platform.org.service.OrgPostService;
 import org.okstar.platform.org.staff.domain.OrgStaff;
 import org.okstar.platform.org.staff.domain.OrgStaffPost;
 import org.okstar.platform.org.staff.mapper.OrgStaffMapper;
 import org.okstar.platform.org.vo.OrgStaffFind;
-import org.okstar.platform.org.vo.OrgStaffReq;
 import org.okstar.platform.system.dto.SysProfileDTO;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -202,7 +195,7 @@ public class OrgStaffServiceImpl implements OrgStaffService {
             OrgStaff0 staff0 = new OrgStaff0();
 
             OkBeanUtils.copyPropertiesTo(staff, staff0);
-            OkBeanUtils.copyPropertiesTo(staff.getFragment(), staff0);
+//            OkBeanUtils.copyPropertiesTo(staff.getFragment(), staff0);
 
             List<OrgPost0> posts = orgStaffPostService.findByStaffId(staff.id).stream().map(e -> {
                 OrgPost0 p0 = new OrgPost0();
@@ -224,41 +217,6 @@ public class OrgStaffServiceImpl implements OrgStaffService {
                 .page(page.getPageIndex(), page.getPageSize());
         return OkPageResult.build(paged.list(), paged.count(), paged.pageCount());
 
-    }
-
-    @Override
-    public boolean add(OrgStaffReq req) {
-        OkAssert.notNull(req, "参数异常！");
-        Log.infof("req:%s", req);
-
-        OrgStaffFragment fragment = req.getFragment();
-        OkAssert.notNull(fragment, "参数异常！");
-
-
-        Long id = req.getId();
-
-        //检查编号是否存在
-        String no = fragment.getNo();
-        if (!OkStringUtil.isEmpty(no)) {
-            var exist = findByNo(no);
-            Assert.isTrue(exist.isEmpty() || Objects.equals(id, exist.get().id),
-                    "存在该编号的用户！");
-        }
-        OrgStaff entity;
-        if (id != null) {
-            entity = get(id);
-        } else {
-            entity = new OrgStaff();
-            entity.setDisabled(false);
-            entity.setJoinedDate(OkDateUtils.now());
-            entity.setPostStatus(JobDefines.PostStatus.pending);
-        }
-
-        entity.setFragment(req.getFragment());
-        entity.setAccountId(req.getAccountId());
-
-        create(entity, 1L);
-        return true;
     }
 
     @Override
@@ -294,23 +252,22 @@ public class OrgStaffServiceImpl implements OrgStaffService {
             return;
         }
 
-        OrgStaff orgStaff = staff.get();
-        OrgStaffFragment fragment = orgStaff.getFragment();
-        if (fragment == null) {
-            return;
-        }
-        fragment.setFirstName(dto.getFirstName());
-        fragment.setLastName(dto.getLastName());
-        fragment.setName(OkNameUtil.combinePeopleName(dto.getLanguage(), dto.getFirstName(), dto.getLastName()));
-        fragment.setEmail(dto.getEmail());
-        fragment.setPhone(dto.getPhone());
-        fragment.setGender(dto.getGender());
-        fragment.setBirthday(dto.getBirthday());
-        fragment.setIdentity(dto.getIdentify());
-        fragment.setLivingIn(dto.getAddress());
-        fragment.setCity(dto.getCity());
-        fragment.setCountry(dto.getCountry());
-        fragment.setLanguage(dto.getLanguage());
+//        OrgStaff orgStaff = staff.get();
+//        OrgStaffFragment fragment = orgStaff.getFragment();
+//        if (fragment == null) {
+//            return;
+//        }
+//        fragment.setFirstName(dto.getFirstName());
+//        fragment.setLastName(dto.getLastName());
+//        fragment.setEmail(dto.getEmail());
+//        fragment.setPhone(dto.getPhone());
+//        fragment.setGender(dto.getGender());
+//        fragment.setBirthday(dto.getBirthday());
+//        fragment.setIdentity(dto.getIdentify());
+//        fragment.setStreet(dto.getAddress());
+//        fragment.setCity(dto.getCity());
+//        fragment.setCountry(dto.getCountry());
+//        fragment.setLanguage(dto.getLanguage());
     }
 
 

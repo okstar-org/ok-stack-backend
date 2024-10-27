@@ -85,7 +85,7 @@ public class SysProfile extends BaseEntity {
     private String city;
 
     /**
-     * 地址
+     * 街道
      */
     private String address;
 

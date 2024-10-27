@@ -17,17 +17,13 @@ import jakarta.ws.rs.*;
 import org.eclipse.microprofile.rest.client.inject.RegisterRestClient;
 import org.okstar.platform.core.rpc.RpcResult;
 import org.okstar.platform.org.dto.OrgStaff0;
-import org.okstar.platform.org.dto.OrgStaffFragment;
+
 
 import java.util.List;
 
 @Path("rpc/OrgStaffRpc")
 @RegisterRestClient
 public interface OrgStaffRpc {
-
-    @POST
-    @Path("add/{accountId}")
-    RpcResult<Boolean> add(@PathParam("accountId") Long accountId, OrgStaffFragment staffFragment);
 
     @GET
     @Path("search")

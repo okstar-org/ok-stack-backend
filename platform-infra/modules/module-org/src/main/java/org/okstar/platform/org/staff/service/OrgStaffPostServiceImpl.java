@@ -22,21 +22,16 @@ import org.eclipse.microprofile.rest.client.inject.RestClient;
 import org.locationtech.jts.util.Assert;
 import org.okstar.platform.auth.rpc.PassportRpc;
 import org.okstar.platform.common.asserts.OkAssert;
+import org.okstar.platform.common.date.OkDateUtils;
 import org.okstar.platform.common.web.page.OkPageResult;
 import org.okstar.platform.common.web.page.OkPageable;
-import org.okstar.platform.common.date.OkDateUtils;
-import org.okstar.platform.common.string.OkStringUtil;
-import org.okstar.platform.core.account.AccountDefines;
 import org.okstar.platform.core.org.JobDefines;
 import org.okstar.platform.core.rpc.RpcAssert;
 import org.okstar.platform.org.mapper.OrgStaffPostMapper;
-import org.okstar.platform.org.service.OrgPostService;
 import org.okstar.platform.org.staff.domain.OrgStaff;
 import org.okstar.platform.org.staff.domain.OrgStaffPost;
 import org.okstar.platform.system.dto.SysAccountDTO;
 import org.okstar.platform.system.rpc.SysAccountRpc;
-import org.okstar.platform.system.sign.SignUpForm;
-import org.okstar.platform.system.sign.SignUpResult;
 
 import java.util.List;
 import java.util.Optional;
@@ -55,8 +50,6 @@ public class OrgStaffPostServiceImpl implements OrgStaffPostService {
     OrgStaffPostMapper orgStaffPostMapper;
     @Inject
     OrgStaffService staffService;
-    @Inject
-    OrgPostService postService;
 
     @Inject
     @RestClient
@@ -65,6 +58,7 @@ public class OrgStaffPostServiceImpl implements OrgStaffPostService {
     @Inject
     @RestClient
     PassportRpc passportRpc;
+
 
     @Override
     public void save(OrgStaffPost sysDept) {
@@ -140,11 +134,9 @@ public class OrgStaffPostServiceImpl implements OrgStaffPostService {
         /**
          * 注销其帐号
          */
-        AccountDefines.BindType emailType = AccountDefines.BindType.email;
-        Optional<SysAccountDTO> accountDTO = sysAccountRpc.findByBind(
-                emailType,
-                staff.getFragment().getEmail());
 
+        Long accountId = staff.getAccountId();
+        Optional<SysAccountDTO> accountDTO = sysAccountRpc.findById(accountId);
         if (accountDTO.isPresent()) {
             SysAccountDTO account0 = accountDTO.get();
             Log.debugf("注销帐号:%s", account0.getUsername());
@@ -183,7 +175,6 @@ public class OrgStaffPostServiceImpl implements OrgStaffPostService {
                 //已经绑定的岗位
                 continue;
             }
-
             //保存关联
             OrgStaffPost staffPost = new OrgStaffPost();
             staffPost.setPostId(postId);
@@ -191,32 +182,6 @@ public class OrgStaffPostServiceImpl implements OrgStaffPostService {
             create(staffPost, 1L);
         }
 
-        //如果员工没有对应帐号，则为其生成帐号信息
-        var account0 = sysAccountRpc.findById(staff.getAccountId());
-        if (account0 == null) {
-            SignUpForm form = new SignUpForm();
-            form.setPassword(AccountDefines.DefaultPWD);
-            form.setIso(AccountDefines.DefaultISO);
-
-            //设置邮箱为帐号
-            /**
-             * 注册其帐号(邮箱号)
-             */
-            String email = staff.getFragment().getEmail();
-            Assert.isTrue(OkStringUtil.isNoneBlank(email), "email is invalid!");
-
-            form.setAccount(email);
-            form.setAccountType(AccountDefines.BindType.email);
-            form.setFirstName(staff.getFragment().getFirstName());
-            form.setLastName(staff.getFragment().getLastName());
-
-            Log.infof("注册帐号:%s", form);
-            var result = passportRpc.signUp(form);
-            SignUpResult upResult = RpcAssert.isTrue(result);
-            Log.infof("signUp=>{accountId: %s, username: %s}", upResult.getAccountId(), upResult.getUsername());
-
-            staffService.setAccountId(staff.id, upResult.getAccountId());
-        }
         return true;
     }
 

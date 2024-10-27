@@ -19,26 +19,21 @@ import jakarta.inject.Inject;
 import jakarta.ws.rs.NotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.eclipse.microprofile.rest.client.inject.RestClient;
-import org.okstar.platform.auth.keycloak.AuthzClientManager;
 import org.okstar.platform.auth.domain.AuthSession;
+import org.okstar.platform.auth.keycloak.AuthzClientManager;
 import org.okstar.platform.auth.keycloak.BackUserManager;
 import org.okstar.platform.common.asserts.OkAssert;
 import org.okstar.platform.common.exception.OkRuntimeException;
+import org.okstar.platform.common.string.OkStringUtil;
 import org.okstar.platform.core.rpc.RpcAssert;
 import org.okstar.platform.core.rpc.RpcResult;
-import org.okstar.platform.common.string.OkStringUtil;
-import org.okstar.platform.org.dto.OrgStaffFragment;
 import org.okstar.platform.org.rpc.OrgStaffRpc;
 import org.okstar.platform.system.dto.BackUser;
 import org.okstar.platform.system.dto.SysAccountDTO;
 import org.okstar.platform.system.rpc.SysAccountRpc;
-
 import org.okstar.platform.system.sign.*;
 
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 
 import static org.okstar.platform.core.account.AccountDefines.BindType.email;
 import static org.okstar.platform.core.account.AccountDefines.BindType.phone;
@@ -70,32 +65,15 @@ public class PassportServiceImpl implements PassportService {
         SignUpResult signUpResult = RpcAssert.isTrue(sysAccountRpc.signUp(form));
         Log.infof("signUp=>%s", signUpResult);
 
-        OrgStaffFragment staff = new OrgStaffFragment();
-        staff.setName(form.getName());
-        staff.setFirstName(form.getFirstName());
-        staff.setLastName(form.getLastName());
-        staff.setIso(form.getIso());
-
-        switch (form.getAccountType()) {
-            case email -> staff.setEmail(form.getAccount());
-            case phone -> staff.setPhone(form.getAccount());
-        }
-
-        var added = RpcAssert.isTrue(orgStaffRpc.add(signUpResult.getAccountId(), staff));
-        Log.infof("Add account[%s] to staff=>%s", signUpResult.getUsername(), added);
-        if (added == null) {
-            throw new OkRuntimeException("Unable to save account!");
-        }
-
         BackUser user = BackUser.builder()
                 .username(signUpResult.getUsername())
-                .firstName(form.getFirstName())
-                .lastName(form.getLastName())
                 .password(form.getPassword())
                 .build();
 
         if (form.getAccountType() == email) {
             user.setEmail(form.getAccount());
+        }else {
+            user.setAttributes(Map.of("phone", Collections.singletonList(form.getAccount())));
         }
 
         BackUser backUser = backUserManager.addUser(user);
@@ -111,10 +89,13 @@ public class PassportServiceImpl implements PassportService {
     public void signDown(Long accountId) {
         log.info("signDown:{}", accountId);
 
-        SysAccountDTO account0 = sysAccountRpc.findById(accountId);
+        Optional<SysAccountDTO> account0 = sysAccountRpc.findById(accountId);
+        if (account0.isEmpty()) {
+            return;
+        }
 
         //删除认证信息
-        boolean backUser = backUserManager.deleteUser(account0.getUsername());
+        boolean backUser = backUserManager.deleteUser(account0.get().getUsername());
         Log.infof("Sign down auth account:%s=>%s", accountId, backUser);
         OkAssert.isTrue(backUser, "Sign down auth account failed");
 

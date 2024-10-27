@@ -47,7 +47,7 @@ import java.util.Optional;
 public class SysProfileServiceImpl implements SysProfileService {
 
     @Inject
-    SysProfileMapper mapper;
+    SysProfileMapper profileMapper;
     @Inject
     SysAccountService accountService;
     @Inject
@@ -97,44 +97,23 @@ public class SysProfileServiceImpl implements SysProfileService {
     public void save(SysProfile entity) {
         Log.infof("save: %s", entity);
 
+        Long id = entity.id;
+
         Long accountId = entity.getAccountId();
         OkAssert.notNull(accountId, "Account id not be null");
+        profileMapper.persist(entity);
+        Log.infof("saved profile id is: %s", entity.id);
 
-        SysProfile exist = null;
-        if (entity.id != null && entity.id > 0) {
-            exist = get(entity.id);
-        }
-        if (entity.getAccountId() != null && exist == null) {
-            exist = loadByAccount(entity.getAccountId());
-        }
-
-        if (exist != null) {
-            exist.setFirstName(entity.getFirstName());
-            exist.setLastName(entity.getLastName());
-            exist.setGender(entity.getGender());
-            exist.setIdentify(entity.getIdentify());
-            exist.setCountry(entity.getCountry());
-            exist.setCity(entity.getCity());
-            exist.setAddress(entity.getAddress());
-            exist.setEmail(entity.getEmail());
-            exist.setPhone(entity.getPhone());
-            exist.setTelephone(entity.getTelephone());
-            exist.setWebsite(entity.getWebsite());
-            exist.setBirthday(entity.getBirthday());
-            exist.setLanguage(entity.getLanguage());
-
-            mapper.persist(exist);
-            ensureProducer().send(ensureTopic(), Map.of("UPDATED", objectMapper.writeValueAsString(exist)));
+        if (id != null) {
+            ensureProducer().send(ensureTopic(), Map.of("UPDATED", objectMapper.writeValueAsString(entity)));
         } else {
-            mapper.persist(entity);
-            ensureProducer().send(ensureTopic(), Map.of("INSERTED", objectMapper.writeValueAsString(exist)));
+            ensureProducer().send(ensureTopic(), Map.of("INSERTED", objectMapper.writeValueAsString(entity)));
         }
-        Log.infof("saved: %s", entity);
     }
 
     @Override
     public List<SysProfile> findAll() {
-        return mapper.findAll().list();
+        return profileMapper.findAll().list();
     }
 
     @Override
@@ -144,22 +123,22 @@ public class SysProfileServiceImpl implements SysProfileService {
 
     @Override
     public SysProfile get(Long id) {
-        return mapper.findById(id);
+        return profileMapper.findById(id);
     }
 
     @Override
     public void deleteById(Long id) {
-        mapper.deleteById(id);
+        profileMapper.deleteById(id);
     }
 
     @Override
     public void delete(SysProfile sysProfile) {
-        mapper.delete(sysProfile);
+        profileMapper.delete(sysProfile);
     }
 
     @Override
     public SysProfile get(String uuid) {
-        return mapper.find("uuid", uuid).firstResult();
+        return profileMapper.find("uuid", uuid).firstResult();
     }
 
 
@@ -177,19 +156,19 @@ public class SysProfileServiceImpl implements SysProfileService {
 
     @Override
     public List<SysAccount> getByFirstName(String firstName) {
-        List<SysProfile> list = mapper.find(SysProfile_.FIRST_NAME, firstName).stream().toList();
+        List<SysProfile> list = profileMapper.find(SysProfile_.FIRST_NAME, firstName).stream().toList();
         return list.stream().map(e -> accountService.get(e.getAccountId())).toList();
     }
 
     @Override
     public List<SysAccount> getByLastName(String lastName) {
-        List<SysProfile> list = mapper.find(SysProfile_.LAST_NAME, lastName).stream().toList();
+        List<SysProfile> list = profileMapper.find(SysProfile_.LAST_NAME, lastName).stream().toList();
         return list.stream().map(e -> accountService.get(e.getAccountId())).toList();
     }
 
     @Override
     public List<SysAccount> getByPersonalName(String personalName) {
-        List<SysProfile> list = mapper.find(SysProfile_.FIRST_NAME + " || " + SysProfile_.LAST_NAME + " = ?1", personalName)
+        List<SysProfile> list = profileMapper.find(SysProfile_.FIRST_NAME + " || " + SysProfile_.LAST_NAME + " = ?1", personalName)
                 .stream().toList();
         return list.stream().map(e -> accountService.get(e.getAccountId())).toList();
     }
@@ -226,6 +205,6 @@ public class SysProfileServiceImpl implements SysProfileService {
 
     @Override
     public Optional<SysProfile> getProfile(Long accountId) {
-        return mapper.find("accountId", accountId).stream().findFirst();
+        return profileMapper.find("accountId", accountId).stream().findFirst();
     }
 }

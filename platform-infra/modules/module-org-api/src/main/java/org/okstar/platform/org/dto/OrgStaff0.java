@@ -42,7 +42,6 @@ public class OrgStaff0 {
     private String phone;
     private String email;
     private UserDefines.Gender gender;
-    private Date birthday;
     private Date joinedDate;
 
     private List<OrgPost0> posts;

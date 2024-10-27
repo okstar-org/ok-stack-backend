@@ -18,7 +18,6 @@ import io.quarkus.cache.Cache;
 import io.quarkus.cache.CacheName;
 import io.quarkus.cache.CaffeineCache;
 import io.quarkus.logging.Log;
-import io.vertx.ext.web.common.WebEnvironment;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;
@@ -44,15 +43,15 @@ public class MenuResource extends BaseResource {
     @Path("")
     public Map<String, List<Menu>> list() {
         List<Menu> menus;
-        if (WebEnvironment.development()) {
-            Log.infof("in development.");
-            menus = getMenus();
-        } else {
+//        if (WebEnvironment.development()) {
+//            Log.infof("in development.");
+//            menus = getMenus();
+//        } else {
             Log.infof("fetch from cache ...");
             CaffeineCache cc = (CaffeineCache) cache;
             cc.setExpireAfterAccess(Duration.ofHours(1));
             menus = cache.get("menus", (k) -> getMenus()).subscribe().asCompletionStage().toCompletableFuture().join();
-        }
+//        }
         return Map.of("menu", menus);
     }
 

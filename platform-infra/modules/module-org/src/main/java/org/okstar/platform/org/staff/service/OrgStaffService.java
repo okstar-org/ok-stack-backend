@@ -20,7 +20,6 @@ import org.okstar.platform.common.datasource.OkJpaService;
 import org.okstar.platform.org.staff.domain.OrgStaff;
 import org.okstar.platform.org.dto.OrgStaff0;
 import org.okstar.platform.org.vo.OrgStaffFind;
-import org.okstar.platform.org.vo.OrgStaffReq;
 import org.okstar.platform.system.dto.SysProfileDTO;
 
 import java.util.List;
@@ -53,15 +52,7 @@ public interface OrgStaffService extends OkJpaService<OrgStaff> {
      * @return
      */
     OkPageResult<OrgStaff> findLefts(OkPageable page);
-
-    /**
-     * 添加员工，进入[待入职]模块
-     *
-     * @param req
-     * @return
-     */
-    boolean add(OrgStaffReq req);
-
+    
     void setAccountId(Long id, Long accountId);
 
     Optional<OrgStaff> getByAccountId(Long id);

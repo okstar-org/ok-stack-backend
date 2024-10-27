@@ -15,14 +15,16 @@ package org.okstar.platform.org.staff.resource;
 
 import jakarta.inject.Inject;
 import jakarta.ws.rs.GET;
-import jakarta.ws.rs.POST;
+import jakarta.ws.rs.PUT;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.PathParam;
-import org.okstar.platform.core.web.resource.OkCommonResource;
+import org.eclipse.microprofile.rest.client.inject.RestClient;
 import org.okstar.platform.common.web.bean.Res;
+import org.okstar.platform.core.web.resource.OkCommonResource;
 import org.okstar.platform.org.staff.domain.OrgStaff;
 import org.okstar.platform.org.staff.service.OrgStaffService;
-import org.okstar.platform.org.vo.OrgStaffReq;
+import org.okstar.platform.system.dto.SysProfileDTO;
+import org.okstar.platform.system.rpc.SysProfileRpc;
 
 import java.util.List;
 
@@ -31,6 +33,8 @@ public class OrgStaffResource extends OkCommonResource {
 
     @Inject
     OrgStaffService orgStaffService;
+    @Inject @RestClient
+    SysProfileRpc sysProfileRpc;
 
     @GET
     @Path("findByDept/{deptId}")
@@ -39,10 +43,10 @@ public class OrgStaffResource extends OkCommonResource {
         return Res.ok(list);
     }
 
-    @POST
-    @Path("save")
-    public Res<Boolean> save(OrgStaffReq req) {
-        var added = orgStaffService.add(req);
+    @PUT
+    @Path("/{accountId}")
+    public Res<Long> save(@PathParam("accountId") Long accountId, SysProfileDTO req) {
+        var added = sysProfileRpc.save(accountId, req);
         return Res.ok(added);
     }
 

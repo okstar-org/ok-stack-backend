@@ -46,8 +46,6 @@ class PassportServiceImplTest {
         form.setAccount("%s@okstar.org".formatted(uuid));
 
         form.setPassword(STRING);
-        form.setFirstName("Ok");
-        form.setLastName("Star");
         form.setIso(AccountDefines.DefaultISO);
         SignUpResult resultDto = passportService.signUp(form);
         Log.infof("result=>%s", resultDto);

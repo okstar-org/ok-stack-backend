@@ -17,7 +17,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.okstar.platform.common.string.OkNameUtil;
 import org.okstar.platform.core.user.UserDefines;
 
 import java.util.Date;
@@ -55,6 +54,11 @@ public class SysProfileDTO {
     private String identify;
 
     /**
+     * 生日
+     */
+    private Date birthday;
+
+    /**
      * 邮箱
      */
     private String email;
@@ -75,6 +79,11 @@ public class SysProfileDTO {
     private String country;
 
     /**
+     * 州/省
+     */
+    private String province;
+
+    /**
      * 城市
      */
     private String city;
@@ -85,20 +94,17 @@ public class SysProfileDTO {
     private String address;
 
     /**
-     * 生日
-     */
-    private Date birthday;
-
-    /**
      * 主页地址
      */
     private String website;
+
     /**
      * 语言,格式:zh-CN, zh-TW, zh-HK, en-US
      * @link https://www.loc.gov/standards/iso639-2/php/code_list.php
      */
     private String language;
 
+    private String description;
 
     public String getFirstName() {
         return Optional.ofNullable(firstName).orElse("");
@@ -107,13 +113,5 @@ public class SysProfileDTO {
     public String getLastName() {
         return Optional.ofNullable(lastName).orElse("");
     }
-
-    /**
-     * 个人真实名称
-     */
-    public String getPersonalName() {
-        return OkNameUtil.combinePeopleName(language,   getFirstName(),  getLastName());
-    }
-
 
 }

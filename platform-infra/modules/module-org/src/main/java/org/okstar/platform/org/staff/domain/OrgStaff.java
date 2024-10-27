@@ -20,7 +20,6 @@ import lombok.Setter;
 import lombok.ToString;
 import org.okstar.platform.core.org.JobDefines;
 import org.okstar.platform.org.domain.BaseEntity;
-import org.okstar.platform.org.dto.OrgStaffFragment;
 
 import java.util.Date;
 
@@ -40,8 +39,10 @@ public class OrgStaff extends BaseEntity {
      */
     private Long accountId;
 
-    @Embedded
-    private OrgStaffFragment fragment;
+    /**
+     * 编号
+     */
+    private String no;
 
     /**
      * 入职日期
@@ -58,6 +59,4 @@ public class OrgStaff extends BaseEntity {
      */
     @Enumerated(EnumType.STRING)
     private JobDefines.PostStatus postStatus;
-
-
 }

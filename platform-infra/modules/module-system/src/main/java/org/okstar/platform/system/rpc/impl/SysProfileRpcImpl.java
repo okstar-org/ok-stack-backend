@@ -35,4 +35,12 @@ public class SysProfileRpcImpl implements SysProfileRpc {
         OkBeanUtils.copyPropertiesTo(profile, dto);
         return dto;
     }
+
+    @Override
+    public Long save(Long accountId, SysProfileDTO req) {
+        SysProfile profile = profileService.loadByAccount(accountId);
+        OkBeanUtils.copyPropertiesTo(req, profile);
+        profileService.update(profile, 1L);
+        return profile.id;
+    }
 }

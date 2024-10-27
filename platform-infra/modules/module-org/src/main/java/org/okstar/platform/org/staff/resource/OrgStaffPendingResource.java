@@ -16,13 +16,19 @@ package org.okstar.platform.org.staff.resource;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
+import org.eclipse.microprofile.rest.client.inject.RestClient;
+import org.okstar.platform.common.bean.OkBeanUtils;
 import org.okstar.platform.common.web.bean.Res;
 import org.okstar.platform.common.web.page.OkPageResult;
 import org.okstar.platform.common.web.page.OkPageable;
-import org.okstar.platform.org.staff.domain.OrgStaff;
+import org.okstar.platform.org.staff.dto.OrgStaffDTO;
 import org.okstar.platform.org.staff.service.OrgStaffPostService;
 import org.okstar.platform.org.staff.service.OrgStaffService;
 import org.okstar.platform.org.vo.OrgStaffJoinReq;
+import org.okstar.platform.system.dto.SysProfileDTO;
+import org.okstar.platform.system.rpc.SysProfileRpc;
+
+import java.util.List;
 
 /**
  * 组织架构-人员管理-待入职
@@ -34,13 +40,26 @@ public class OrgStaffPendingResource {
     OrgStaffService orgStaffService;
     @Inject
     OrgStaffPostService staffPostService;
-
+    @Inject
+    @RestClient
+    SysProfileRpc sysProfileRpc;
 
     @POST
     @Path("page")
-    public Res<OkPageResult<OrgStaff>> page(OkPageable pageable) {
-        var list = orgStaffService.findPendings(pageable);
-        return Res.ok(list);
+    public Res<OkPageResult<OrgStaffDTO>> page(OkPageable pageable) {
+        var pageResult = orgStaffService.findPendings(pageable);
+        List<OrgStaffDTO> list = pageResult.getList().stream().map(e -> {
+            OrgStaffDTO dto = new OrgStaffDTO();
+            OkBeanUtils.copyPropertiesTo(e, dto);
+
+            SysProfileDTO account = sysProfileRpc.getByAccount(e.getAccountId());
+            if (account != null) {
+                dto.setFragment(account);
+            }
+
+            return dto;
+        }).toList();
+        return Res.ok(OkPageResult.build(list, pageResult.getTotalCount(), pageResult.getPageCount()));
     }
 
 

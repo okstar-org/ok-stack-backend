@@ -34,7 +34,6 @@ import org.okstar.platform.org.connect.domain.OrgIntegrateConf;
 import org.okstar.platform.org.connect.exception.ConnectorException;
 import org.okstar.platform.org.domain.OrgDept;
 import org.okstar.platform.org.domain.OrgPost;
-import org.okstar.platform.org.dto.OrgStaffFragment;
 import org.okstar.platform.org.service.OrgDeptService;
 import org.okstar.platform.org.service.OrgPostService;
 import org.okstar.platform.org.service.OrgService;
@@ -43,7 +42,9 @@ import org.okstar.platform.org.staff.domain.OrgStaffPost;
 import org.okstar.platform.org.staff.service.OrgStaffPostService;
 import org.okstar.platform.org.staff.service.OrgStaffService;
 import org.okstar.platform.system.dto.SysAccountDTO;
+import org.okstar.platform.system.dto.SysProfileDTO;
 import org.okstar.platform.system.rpc.SysAccountRpc;
+import org.okstar.platform.system.rpc.SysProfileRpc;
 import org.okstar.platform.system.sign.SignUpForm;
 import org.okstar.platform.system.sign.SignUpResult;
 
@@ -55,19 +56,22 @@ import java.util.concurrent.atomic.AtomicInteger;
 @ApplicationScoped
 public class ConnectorSyncServiceImpl implements ConnectorSyncService {
     @Inject
-    private OrgDeptService deptService;
+    OrgDeptService deptService;
     @Inject
-    private OrgStaffService staffService;
+    OrgStaffService staffService;
+    @Inject
+    OrgPostService postService;
+    @Inject
+    OrgStaffPostService staffPostService;
+    @Inject
+    OrgService orgService;
+
     @Inject
     @RestClient
-    private SysAccountRpc sysAccountRpc;
+    SysProfileRpc sysProfileRpc;
     @Inject
-    private OrgPostService postService;
-    @Inject
-    private OrgStaffPostService staffPostService;
-    @Inject
-    private OrgService orgService;
-
+    @RestClient
+    SysAccountRpc sysAccountRpc;
 
     @Override
     public void sync(OrgConnector connect) throws ConnectorException {
@@ -85,7 +89,7 @@ public class ConnectorSyncServiceImpl implements ConnectorSyncService {
         Log.infof("Synchronized connector: %s.", connect.getType());
     }
 
-    private void syncDepartment(OrgConnector connect, Department department, int level) throws ConnectorException {
+    void syncDepartment(OrgConnector connect, Department department, int level) throws ConnectorException {
         String name = department.getName();
 
         Long orgId = orgService.loadCurrent().id;
@@ -134,7 +138,7 @@ public class ConnectorSyncServiceImpl implements ConnectorSyncService {
         }
     }
 
-    private void syncUser(OrgDept department, UserInfo info) {
+    void syncUser(OrgDept department, UserInfo info) {
         Log.infof("Synchronizing user: %s", info.getName());
         if (OkStringUtil.isEmpty(info.getEmail()) && OkStringUtil.isEmpty(info.getMobilePhone())) {
             Log.infof("User: [%s] Both the phone number and email address are empty!");
@@ -181,8 +185,6 @@ public class ConnectorSyncServiceImpl implements ConnectorSyncService {
             signUpForm.setPassword(AccountDefines.DefaultPWD);
             signUpForm.setLanguage(AccountDefines.DefaultLanguage);
             signUpForm.setIso(AccountDefines.DefaultISO);
-            signUpForm.setFirstName(userName.getFirstName());
-            signUpForm.setLastName(userName.getLastName());
             signUpForm.setNickname(info.getNickname());
 
             RpcResult<SignUpResult> signUp = sysAccountRpc.signUp(signUpForm);
@@ -198,21 +200,23 @@ public class ConnectorSyncServiceImpl implements ConnectorSyncService {
             //保存员工信息
             Log.infof("Saving staff: %s", info.getName());
 
-            staff = new OrgStaff();
-            OrgStaffFragment fragment = new OrgStaffFragment();
-            fragment.setName(info.getName());
-            fragment.setGender(info.getGender());
-            fragment.setFirstName(userName.getFirstName());
-            fragment.setLastName(userName.getLastName());
-            fragment.setEmail(info.getEmail());
-            fragment.setPhone(OkPhoneUtils.canonical(info.getMobilePhone(), AccountDefines.DefaultISO));
 
+
+            SysProfileDTO profile = new SysProfileDTO();
+            profile.setGender(info.getGender());
+            profile.setFirstName(userName.getFirstName());
+            profile.setLastName(userName.getLastName());
+            profile.setEmail(info.getEmail());
+            profile.setPhone(OkPhoneUtils.canonical(info.getMobilePhone(), AccountDefines.DefaultISO));
+            profile.setAccountId(accountDTO.getId());
+            sysProfileRpc.save(accountDTO.getId(), profile);
+
+            staff = new OrgStaff();
             staff.setPostStatus(JobDefines.PostStatus.employed);
-            staff.setFragment(fragment);
             staff.setJoinedDate(OkDateUtils.now());
             staff.setAccountId(accountDTO.getId());
-
             staffService.create(staff, 1L);
+
             Log.infof("Saved staff: %s", info.getName());
             orgStaff = Optional.of(staff);
         }

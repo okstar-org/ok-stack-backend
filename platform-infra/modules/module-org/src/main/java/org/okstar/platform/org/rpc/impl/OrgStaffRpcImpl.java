@@ -17,10 +17,8 @@ import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import org.okstar.platform.core.rpc.RpcResult;
 import org.okstar.platform.org.dto.OrgStaff0;
-import org.okstar.platform.org.dto.OrgStaffFragment;
 import org.okstar.platform.org.rpc.OrgStaffRpc;
 import org.okstar.platform.org.staff.service.OrgStaffService;
-import org.okstar.platform.org.vo.OrgStaffReq;
 
 import java.util.List;
 
@@ -30,19 +28,6 @@ public class OrgStaffRpcImpl implements OrgStaffRpc {
 
     @Inject
     OrgStaffService orgStaffService;
-
-    @Override
-    public RpcResult<Boolean> add(Long accountId, OrgStaffFragment staffFragment) {
-        try {
-            OrgStaffReq req = new OrgStaffReq();
-            req.setFragment(staffFragment);
-            req.setAccountId(accountId);
-            boolean added = orgStaffService.add(req);
-            return RpcResult.success(added);
-        } catch (Exception e) {
-            return RpcResult.failed(e);
-        }
-    }
 
     @Override
     public RpcResult<List<OrgStaff0>> search(String query) {

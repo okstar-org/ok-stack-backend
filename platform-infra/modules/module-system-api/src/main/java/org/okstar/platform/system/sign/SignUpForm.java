@@ -15,7 +15,6 @@ package org.okstar.platform.system.sign;
 
 import lombok.*;
 import org.okstar.platform.common.web.bean.Req;
-import org.okstar.platform.common.string.OkNameUtil;
 import org.okstar.platform.core.account.AccountDefines;
 
 /**
@@ -43,19 +42,10 @@ public class SignUpForm extends Req {
     //密码
     private String password;
 
-    //姓
-    private String firstName;
-
-    //名
-    private String lastName;
-
     //昵称
     private String nickname;
 
     //头像
     private String avatar;
 
-    public String getName() {
-        return OkNameUtil.combinePeopleName(language, firstName, lastName);
-    }
 }

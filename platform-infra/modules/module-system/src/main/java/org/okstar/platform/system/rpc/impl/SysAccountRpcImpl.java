@@ -93,9 +93,9 @@ public class SysAccountRpcImpl implements SysAccountRpc {
     }
 
     @Override
-    public SysAccountDTO findById(Long id) {
+    public Optional<SysAccountDTO> findById(Long id) {
         SysAccount account = accountService.get(id);
-        return accountService.toAccount0(account);
+        return Optional.ofNullable(account).map(e -> accountService.toAccount0(e));
     }
 
     @Override

@@ -11,30 +11,15 @@
  * /
  */
 
-package org.okstar.platform.org.vo;
+package org.okstar.platform.org.staff.dto;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import org.okstar.platform.common.web.bean.Req;
-import org.okstar.platform.org.dto.OrgStaffFragment;
+import org.okstar.platform.org.staff.domain.OrgStaff;
+import org.okstar.platform.system.dto.SysProfileDTO;
 
-
-/**
- * 人员管理添加
- */
-@EqualsAndHashCode(callSuper = true)
 @Data
-@ToString(callSuper = true)
-public class OrgStaffReq extends Req {
-
-    private Long id;
-
-
-    private Long accountId;
-
-    /**
-     * 员工信息
-     */
-    private OrgStaffFragment fragment;
+@EqualsAndHashCode(callSuper = true)
+public class OrgStaffDTO extends OrgStaff {
+    private SysProfileDTO fragment;
 }

@@ -59,17 +59,23 @@ public class SysConnectorWX extends OrgConnectorAbstract {
 
         log.info("getAccessToken...");
 
+        AccessToken accessToken = null;
+        String res = null;
         String url = "/gettoken";
+        try {
 
-        Map<String, String> params = new LinkedHashMap<>();
-        params.put("corpid", conf.getCertKey());
-        params.put("corpsecret", conf.getCertSecret());
-        log.info("getAccessToken:{}...", params);
+            Map<String, String> params = new LinkedHashMap<>();
+            params.put("corpid", conf.getCertKey());
+            params.put("corpsecret", conf.getCertSecret());
+            log.info("getAccessToken:{}...", params);
 
-        RestClient client = getClient();
+            RestClient client = getClient();
+            res = client.get(url, String.class, params);
+            log.info("res=>{}", res);
+        } catch (Exception e) {
+            throw new ConnectorException(getType(), url, "获取Token异常！");
+        }
 
-        String res = client.get(url, String.class, params);
-        log.info("res=>{}", res);
         /**
          * {
          *    "errcode": 0,
@@ -80,10 +86,10 @@ public class SysConnectorWX extends OrgConnectorAbstract {
          */
         ObjectNode node = OkJsonUtils.asObject(res, ObjectNode.class);
         if (0 != node.get("errcode").asInt()) {
-            throw new ConnectorException(getType(), url, "获取Token异常！");
+            throw new ConnectorException(getType(), url, "解析Token异常！");
         }
 
-        var accessToken = AccessToken.builder()
+        accessToken = AccessToken.builder()
                 .accessToken(node.get("access_token").asText())
                 .expiresIn(node.get("expires_in").asLong())
                 .createdAt(OkDateUtils.instant())
@@ -92,6 +98,7 @@ public class SysConnectorWX extends OrgConnectorAbstract {
         setAccessToken(accessToken);
 
         log.info("getAccessToken=>{}", accessToken);
+
         return accessToken;
     }
 
@@ -249,7 +256,6 @@ public class SysConnectorWX extends OrgConnectorAbstract {
                 .position(node.get("position").asText())
                 .build();
     }
-
 
 
     private static Department parseDepartment(JsonNode department) {

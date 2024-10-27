@@ -14,6 +14,7 @@
 package org.okstar.platform.system.rpc;
 
 
+import jakarta.ws.rs.PUT;
 import org.eclipse.microprofile.rest.client.inject.RegisterRestClient;
 import org.okstar.platform.system.dto.SysProfileDTO;
 
@@ -29,4 +30,8 @@ public interface SysProfileRpc {
     @GET
     @Path("getByAccount/{accountId}")
     SysProfileDTO getByAccount(@PathParam("accountId") Long accountId);
+
+    @PUT
+    @Path("{accountId}")
+    Long save(@PathParam("accountId") Long accountId, SysProfileDTO req);
 }

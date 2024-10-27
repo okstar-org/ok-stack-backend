@@ -22,6 +22,7 @@ import jakarta.enterprise.event.Observes;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
+import org.jboss.resteasy.client.exception.ResteasyBadRequestException;
 import org.jboss.resteasy.client.jaxrs.ResteasyClient;
 import org.jboss.resteasy.client.jaxrs.internal.ResteasyClientBuilderImpl;
 import org.keycloak.admin.client.Keycloak;
@@ -248,8 +249,9 @@ public class SysKeycloakServiceImpl implements SysKeycloakService {
             userRepresentation.setAttributes(attributes);
 
             userResource.update(userRepresentation);
-        } catch (RuntimeException e) {
-            Log.errorf(e, e.getMessage());
+        } catch (ResteasyBadRequestException e) {
+            String entity = e.getMessage();
+            Log.errorf(e, "response:%s", entity);
             throw new OkRuntimeException("更新异常！", e);
         }
     }
