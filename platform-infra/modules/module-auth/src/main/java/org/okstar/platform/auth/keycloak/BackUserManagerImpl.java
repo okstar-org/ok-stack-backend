@@ -14,7 +14,6 @@
 package org.okstar.platform.auth.keycloak;
 
 import io.quarkus.logging.Log;
-import io.smallrye.common.constraint.Assert;
 import io.vertx.core.json.JsonObject;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
@@ -26,10 +25,9 @@ import org.keycloak.admin.client.resource.RoleMappingResource;
 import org.keycloak.admin.client.resource.UserResource;
 import org.keycloak.admin.client.resource.UsersResource;
 import org.keycloak.representations.idm.*;
-import org.okstar.platform.common.exception.OkRuntimeException;
 import org.okstar.platform.common.asserts.OkAssert;
+import org.okstar.platform.common.exception.OkRuntimeException;
 import org.okstar.platform.system.dto.BackUser;
-
 
 import java.util.ArrayList;
 import java.util.List;
@@ -206,7 +204,8 @@ public class BackUserManagerImpl implements BackUserManager {
             //创建用户
             var response = usersResource.create(userRepresentation);
             Log.infof("statusCode=>%s", response.getStatus());
-            Assert.assertTrue(response.getStatus() == Response.Status.CREATED.getStatusCode());
+
+            OkAssert.isTrue(response.getStatus() == Response.Status.CREATED.getStatusCode(), "创建帐号异常！");
         }
     }
 
@@ -229,7 +228,6 @@ public class BackUserManagerImpl implements BackUserManager {
 
     private void setPassword(UsersResource usersResource, String username, String password) {
         List<UserRepresentation> list = usersResource.search(username);
-        OkAssert.isTrue(!list.isEmpty(), "帐号不正确！");
         list.forEach(userRepresentation -> {
             CredentialRepresentation cr = new CredentialRepresentation();
             cr.setUserLabel("My password");
