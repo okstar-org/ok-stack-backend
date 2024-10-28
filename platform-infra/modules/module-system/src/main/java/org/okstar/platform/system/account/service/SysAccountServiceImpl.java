@@ -24,16 +24,15 @@ import jakarta.transaction.Transactional;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.okstar.platform.common.asserts.OkAssert;
 import org.okstar.platform.common.bean.OkBeanUtils;
+import org.okstar.platform.common.datasource.domain.OkEntity;
 import org.okstar.platform.common.exception.OkRuntimeException;
 import org.okstar.platform.common.exception.user.OkUserException;
-import org.okstar.platform.common.web.page.OkPageResult;
-import org.okstar.platform.common.web.page.OkPageable;
-import org.okstar.platform.common.datasource.domain.OkEntity;
-import org.okstar.platform.common.date.OkDateUtils;
 import org.okstar.platform.common.id.OkIdUtils;
 import org.okstar.platform.common.mail.OkMailUtil;
 import org.okstar.platform.common.phone.OkPhoneUtils;
 import org.okstar.platform.common.string.OkStringUtil;
+import org.okstar.platform.common.web.page.OkPageResult;
+import org.okstar.platform.common.web.page.OkPageable;
 import org.okstar.platform.core.account.AccountDefines;
 import org.okstar.platform.core.service.OkAbsService;
 import org.okstar.platform.system.account.domain.SysAccount;
@@ -186,11 +185,10 @@ public class SysAccountServiceImpl extends OkAbsService implements SysAccountSer
         }
 
         SysAccount sysAccount = new SysAccount();
-        sysAccount.setCreateAt(OkDateUtils.now());
         sysAccount.setUsername(RandomStringUtils.randomAlphanumeric(12));
+        sysAccount.setNickname(signUpForm.getNickname());
         sysAccount.setIso(signUpForm.getIso());
         sysAccount.setLanguage(signUpForm.getLanguage());
-        sysAccount.setNickname(signUpForm.getNickname());
 
         if (OkStringUtil.isEmpty(signUpForm.getAvatar())) {
             sysAccount.setAvatar(AccountDefines.DefaultAvatar);

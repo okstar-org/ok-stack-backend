@@ -27,13 +27,15 @@ import org.okstar.platform.common.exception.OkRuntimeException;
 import org.okstar.platform.common.string.OkStringUtil;
 import org.okstar.platform.core.rpc.RpcAssert;
 import org.okstar.platform.core.rpc.RpcResult;
-import org.okstar.platform.org.rpc.OrgStaffRpc;
 import org.okstar.platform.system.dto.BackUser;
 import org.okstar.platform.system.dto.SysAccountDTO;
+import org.okstar.platform.system.dto.SysProfileDTO;
 import org.okstar.platform.system.rpc.SysAccountRpc;
+import org.okstar.platform.system.rpc.SysProfileRpc;
 import org.okstar.platform.system.sign.*;
 
-import java.util.*;
+import java.util.Objects;
+import java.util.Optional;
 
 import static org.okstar.platform.core.account.AccountDefines.BindType.email;
 import static org.okstar.platform.core.account.AccountDefines.BindType.phone;
@@ -44,43 +46,33 @@ import static org.okstar.platform.core.account.AccountDefines.BindType.phone;
 public class PassportServiceImpl implements PassportService {
 
     @Inject
-    @RestClient
-    SysAccountRpc sysAccountRpc;
-    @Inject
-    @RestClient
-    OrgStaffRpc orgStaffRpc;
-    @Inject
     BackUserManager backUserManager;
     @Inject
     AuthzClientManager authzClientManager;
     @Inject
     AuthSessionService authSessionService;
 
+    @Inject
+    @RestClient
+    SysProfileRpc sysProfileRpc;
+    @Inject
+    @RestClient
+    SysAccountRpc sysAccountRpc;
+
     @Override
     public synchronized SignUpResult signUp(SignUpForm form) {
         log.info("signUp:{}", form);
         // 验证参数
         validateParam(form);
+
+        Optional<SysAccountDTO> account0 = sysAccountRpc.findByEmail(form.getAccount());
+        if (account0.isPresent()) {
+            throw new OkRuntimeException("帐号已存在！");
+        }
+
         //初始化系统帐号
         SignUpResult signUpResult = RpcAssert.isTrue(sysAccountRpc.signUp(form));
         Log.infof("signUp=>%s", signUpResult);
-
-        BackUser user = BackUser.builder()
-                .username(signUpResult.getUsername())
-                .password(form.getPassword())
-                .build();
-
-        if (form.getAccountType() == email) {
-            user.setEmail(form.getAccount());
-        }else {
-            user.setAttributes(Map.of("phone", Collections.singletonList(form.getAccount())));
-        }
-
-        BackUser backUser = backUserManager.addUser(user);
-        log.info("Added user:{}", backUser);
-        if (backUser == null) {
-            throw new OkRuntimeException("Unable to save account to authentication backend server!");
-        }
 
         return signUpResult;
     }
@@ -118,27 +110,38 @@ public class PassportServiceImpl implements PassportService {
             throw new NotFoundException("帐号不存在！");
         }
 
-        //从后端系统获取用户
+        RpcResult<String> lastedPassword = sysAccountRpc.lastPassword(accountDTO.getId());
+        String pwd = RpcAssert.isTrue(lastedPassword);
+        OkAssert.isTrue(OkStringUtil.equals(pwd, signInForm.getPassword()), "密码不正确！");
+
         Optional<BackUser> backUser = backUserManager.getUser(accountDTO.getUsername());
         if (backUser.isEmpty()) {
-            //不存在则创建
-            RpcResult<String> lastedPassword = sysAccountRpc.lastPassword(accountDTO.getId());
-            String pwd = RpcAssert.isTrue(lastedPassword);
-            OkAssert.isTrue(OkStringUtil.equals(pwd, signInForm.getPassword()), "密码不正确！");
+            /**
+             * KC不存在用户，则创建新的用户
+             */
+            SysProfileDTO profileDTO = sysProfileRpc.getByAccount(accountDTO.getId());
+            OkAssert.notNull(profileDTO, "用户信息不完整！");
 
             BackUser addUser = new BackUser();
             addUser.setId(String.valueOf(accountDTO.getUid()));
             addUser.setUsername(accountDTO.getUsername());
-            if (signInForm.getType() == email) {
-                addUser.setEmail(signInForm.getAccount());
-            } else if (signInForm.getType() == phone) {
-                addUser.setAttributes(Map.of("phone", List.of(signInForm.getAccount())));
-            }
-            addUser.setPassword(pwd);
+            addUser.setFirstName(profileDTO.getFirstName());
+            addUser.setLastName(profileDTO.getLastName());
+            addUser.setEmail(profileDTO.getEmail());
+            addUser.setPhone(profileDTO.getPhone());
 
-            var added = backUserManager.addUser(addUser);
-            Log.infof("User is initialized to ldap successfully. {username:%s uid:%s} ", added.getUsername(), added.getId());
-            backUser = Optional.of(added);
+            addUser.setEnabled(true);
+
+            backUserManager.addUser(addUser);
+            backUser = Optional.of(addUser);
+
+            Log.infof("User is initialized to ldap successfully. {username:%s uid:%s} ", addUser.getUsername(), addUser.getId());
+        }
+
+        //密码不存在，则创建
+        boolean hasPassword = backUserManager.hasPassword(accountDTO.getUsername());
+        if (!hasPassword) {
+            backUserManager.resetPassword(accountDTO.getUsername(), signInForm.getPassword());
         }
 
         BackUser backUser1 = backUser.get();

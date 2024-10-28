@@ -44,10 +44,7 @@ import org.okstar.platform.system.conf.domain.SysConfIntegrationKeycloak;
 import org.okstar.platform.system.dto.SysKeycloakConfDTO;
 
 import java.net.URI;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 @Transactional
 @ApplicationScoped
@@ -191,7 +188,8 @@ public class SysKeycloakServiceImpl implements SysKeycloakService {
             userRepresentation.setFirstName(sysProfile.getFirstName());
             userRepresentation.setLastName(sysProfile.getLastName());
 
-            Map<String, List<String>> attributes = userRepresentation.getAttributes();
+            Map<String, List<String>> attributes = Optional.ofNullable(userRepresentation.getAttributes())
+                    .orElseGet(HashMap::new);
             //用户名信息
             attributes.put("firstName", Collections.singletonList(sysProfile.getFirstName()));
             attributes.put("lastName", Collections.singletonList(sysProfile.getLastName()));
@@ -245,7 +243,12 @@ public class SysKeycloakServiceImpl implements SysKeycloakService {
             }
 
             Map<String, List<String>> attributes = userRepresentation.getAttributes();
-            attributes.putAll(attr);
+            if (attributes == null) {
+                attributes = attr;
+            } else {
+                attributes.putAll(attr);
+            }
+
             userRepresentation.setAttributes(attributes);
 
             userResource.update(userRepresentation);

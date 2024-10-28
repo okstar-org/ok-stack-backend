@@ -46,12 +46,12 @@ public class BackUserManagerImpl implements BackUserManager {
     BackRoleManager backRoleManager;
 
     @Override
-    public void assignRole(String username, String roleId){
+    public void assignRole(String username, String roleId) {
         throw new UnsupportedOperationException();
     }
 
     @Override
-    public void unassignRole(String username, String roleId){
+    public void unassignRole(String username, String roleId) {
         throw new UnsupportedOperationException();
     }
 
@@ -102,6 +102,24 @@ public class BackUserManagerImpl implements BackUserManager {
         return list;
     }
 
+    @Override
+    public boolean hasPassword(String username) {
+        Log.infof("Has password for user:%s", username);
+        try (Keycloak keycloak = keycloakService.openKeycloak()) {
+            UsersResource usersResource = keycloakService.getUsersResource(keycloak);
+            Optional<UserRepresentation> first = usersResource.search(username).stream().findFirst().stream().findFirst();
+            if (first.isEmpty()) {
+                return false;
+            }
+            UserResource userResource = usersResource.get(first.get().getId());
+            for (CredentialRepresentation credential : userResource.credentials()) {
+                if (credential.getType().equals("password")) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
 
     /**
      * 重置密码:
@@ -172,38 +190,23 @@ public class BackUserManagerImpl implements BackUserManager {
 
 
     @Override
-    public BackUser addUser(BackUser user) {
+    public void addUser(BackUser user) {
         Log.infof("Add user:%s", user);
 
+        OkAssert.hasText(user.getId(), "id is required");
         OkAssert.hasText(user.getUsername(), "username is required");
-        OkAssert.hasText(user.getPassword(), "password is required");
+
 
         try (Keycloak keycloak = keycloakService.openKeycloak()) {
             UsersResource usersResource = keycloakService.getUsersResource(keycloak);
-            try {
-                var response = usersResource.create(toRepresent(user));
-                Log.infof("statusCode=>%s", response.getStatus());
 
-                Assert.assertTrue(response.getStatus() == Response.Status.CREATED.getStatusCode());
-            } catch (Exception e) {
-                throw new OkRuntimeException("Creating account exception occurred: %s".formatted(e.getMessage()), e);
-            }
+            UserRepresentation userRepresentation = toRepresent(user);
+            Log.infof("userRepresentation: %s", userRepresentation);
 
-            var u = usersResource.search(user.getUsername()).stream().peek(userRepresentation -> {
-
-                //设置密码
-                CredentialRepresentation cr = new CredentialRepresentation();
-                cr.setUserLabel("My password");
-                cr.setType("password");
-                cr.setValue(user.getPassword());
-
-                UserResource userResource = usersResource.get(userRepresentation.getId());
-                userResource.resetPassword(cr);
-
-            }).findFirst().map(BackUserManagerImpl::toBackend).orElse(null);
-
-            Log.infof("User is:%s", u);
-            return u;
+            //创建用户
+            var response = usersResource.create(userRepresentation);
+            Log.infof("statusCode=>%s", response.getStatus());
+            Assert.assertTrue(response.getStatus() == Response.Status.CREATED.getStatusCode());
         }
     }
 
@@ -245,7 +248,7 @@ public class BackUserManagerImpl implements BackUserManager {
         userRepresentation.setEmail(user.getEmail());
         userRepresentation.setId(user.getId());
         userRepresentation.setAttributes(user.getAttributes());
-        userRepresentation.setEnabled(true);
+        userRepresentation.setEnabled(user.getEnabled());
         return userRepresentation;
     }
 
@@ -255,7 +258,9 @@ public class BackUserManagerImpl implements BackUserManager {
         builder.firstName(userRepresentation.getFirstName());
         builder.lastName(userRepresentation.getLastName());
         builder.email(userRepresentation.getEmail());
+        builder.attributes(userRepresentation.getAttributes());
         builder.id(userRepresentation.getId());
+        builder.enabled(userRepresentation.isEnabled());
         return builder.build();
     }
 }

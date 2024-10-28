@@ -23,6 +23,8 @@ import java.util.Optional;
  * 后端认证用户管理接口
  */
 public interface BackUserManager {
+    boolean hasPassword(String username);
+
     void resetPassword(String username, String password);
 
     List<BackUser> users();
@@ -41,7 +43,7 @@ public interface BackUserManager {
      * @param user
      * @return
      */
-    BackUser addUser(BackUser user);
+    void addUser(BackUser user);
 
     /**
      * 删除用户
