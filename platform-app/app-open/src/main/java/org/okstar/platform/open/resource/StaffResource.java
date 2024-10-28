@@ -22,11 +22,9 @@ import org.okstar.platform.common.web.bean.Res;
 import org.okstar.platform.core.rpc.RpcAssert;
 import org.okstar.platform.org.dto.OrgEmployee;
 import org.okstar.platform.org.rpc.OrgStaffRpc;
-import org.okstar.platform.system.dto.SysAccountDTO;
 import org.okstar.platform.system.rpc.SysAccountRpc;
 
 import java.util.List;
-import java.util.Optional;
 
 
 @Path("staff")
@@ -44,14 +42,6 @@ public class StaffResource {
     @Path("search")
     public Res<List<OrgEmployee>> search(@QueryParam("q") String query) {
         var list = RpcAssert.isTrue(orgStaffRpc.search(query));
-        list.forEach(e -> {
-            if (e.getAccountId() != null) {
-                Optional<SysAccountDTO> account0 = sysAccountRpc.findById(e.getAccountId());
-                account0.ifPresent(accountDTO->{
-                    e.setUsername(accountDTO.getUsername());
-                });
-            }
-        });
         return Res.ok(list);
     }
 }
