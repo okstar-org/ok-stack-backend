@@ -72,6 +72,8 @@
         <quarkus.log.level>DEBUG</quarkus.log.level>
         <quarkus.profile>debug</quarkus.profile>
         <quarkus.log.console.enable>true</quarkus.log.console.enable>
+        <quarkus.devservices.enabled>false</quarkus.devservices.enabled>
+
     </properties>
 
     <profiles>
@@ -86,7 +88,7 @@
                 <quarkus.datasource.jdbc.url>jdbc:mariadb://localhost:13306</quarkus.datasource.jdbc.url>
                 <quarkus.datasource.jdbc.driver>org.mariadb.jdbc.Driver</quarkus.datasource.jdbc.driver>
                 <quarkus.hibernate-orm.dialect>org.hibernate.dialect.MariaDBDialect</quarkus.hibernate-orm.dialect>
-                <quarkus.oidc.auth-server-url>https://kc.localhost:18443/realms/ok-star</quarkus.oidc.auth-server-url>
+                <quarkus.oidc.auth-server-url>http://localhost:8080/realms/ok-star</quarkus.oidc.auth-server-url>
                 <quarkus.oidc.client-id>ok-stack</quarkus.oidc.client-id>
             </properties>
         </profile>

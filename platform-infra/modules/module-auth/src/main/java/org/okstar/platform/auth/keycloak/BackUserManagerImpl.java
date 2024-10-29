@@ -205,7 +205,7 @@ public class BackUserManagerImpl implements BackUserManager {
             var response = usersResource.create(userRepresentation);
             Log.infof("statusCode=>%s", response.getStatus());
 
-            OkAssert.isTrue(response.getStatus() == Response.Status.CREATED.getStatusCode(), "创建帐号异常！");
+            OkAssert.isTrue(response.getStatus() == Response.Status.CREATED.getStatusCode(), "初始化帐号异常，请联系技术支持！");
         }
     }
 

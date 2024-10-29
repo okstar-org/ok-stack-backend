@@ -58,9 +58,7 @@ public class KeycloakServiceImpl implements KeycloakService {
         RealmResource realmResource = keycloak.realms().realm(realm);
         ClientsResource clientsResource = realmResource.clients();
         List<ClientRepresentation> list = clientsResource.findByClientId(clientId);
-        if (list.isEmpty()) {
-            return null;
-        }
+        OkAssert.isTrue(!list.isEmpty(), "Can not find client: " + clientId);
 
         ClientResource clientResource = realmResource.clients().get(list.get(0).getId());
         return clientResource.authorization();
