@@ -35,7 +35,9 @@ import org.okstar.platform.org.staff.domain.OrgStaffPost;
 import org.okstar.platform.org.staff.dto.OrgStaffDTO;
 import org.okstar.platform.org.staff.mapper.OrgStaffMapper;
 import org.okstar.platform.org.vo.OrgStaffFind;
+import org.okstar.platform.system.dto.SysAccountDTO;
 import org.okstar.platform.system.dto.SysProfileDTO;
+import org.okstar.platform.system.rpc.SysAccountRpc;
 import org.okstar.platform.system.rpc.SysProfileRpc;
 
 import java.util.Collections;
@@ -61,6 +63,8 @@ public class OrgStaffServiceImpl implements OrgStaffService {
     @Inject
     @RestClient
     SysProfileRpc sysProfileRpc;
+    @Inject
+    SysAccountRpc sysAccountRpc;
 
 
     @Override
@@ -208,12 +212,16 @@ public class OrgStaffServiceImpl implements OrgStaffService {
         OrgStaffDTO staffDTO = toDTO(staff);
         OkBeanUtils.copyPropertiesTo(staffDTO, employee);
 
+        Optional<SysAccountDTO> accountDTO = sysAccountRpc.findById(staff.getAccountId());
+        accountDTO.ifPresent(acc-> employee.setUsername(acc.getUsername()));
+
         List<OrgPost0> posts = orgStaffPostService.findByStaffId(staff.id).stream().map(e -> {
             OrgPost0 p0 = new OrgPost0();
             OrgPost post = orgPostService.get(e.getPostId());
             OkBeanUtils.copyPropertiesTo(post, p0);
             return p0;
         }).toList();
+
         employee.setPosts(posts);
         return employee;
     }

@@ -22,7 +22,6 @@ import org.okstar.platform.common.web.bean.Res;
 import org.okstar.platform.core.rpc.RpcAssert;
 import org.okstar.platform.org.dto.OrgEmployee;
 import org.okstar.platform.org.rpc.OrgStaffRpc;
-import org.okstar.platform.system.rpc.SysAccountRpc;
 
 import java.util.List;
 
@@ -33,10 +32,6 @@ public class StaffResource {
     @Inject
     @RestClient
     OrgStaffRpc orgStaffRpc;
-
-    @Inject
-    @RestClient
-    SysAccountRpc sysAccountRpc;
 
     @GET
     @Path("search")

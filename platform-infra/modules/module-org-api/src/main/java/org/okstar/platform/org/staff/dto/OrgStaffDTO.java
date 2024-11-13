@@ -38,6 +38,11 @@ public class OrgStaffDTO {
     protected Long accountId;
 
     /**
+     * 帐号
+     */
+    protected String username;
+
+    /**
      * 编号
      */
     protected String no;
