@@ -64,6 +64,7 @@ public class OrgStaffServiceImpl implements OrgStaffService {
     @RestClient
     SysProfileRpc sysProfileRpc;
     @Inject
+    @RestClient
     SysAccountRpc sysAccountRpc;
 
 
