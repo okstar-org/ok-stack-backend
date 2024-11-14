@@ -42,16 +42,12 @@ public class MenuResource extends BaseResource {
     @GET
     @Path("")
     public Map<String, List<Menu>> list() {
-        List<Menu> menus;
-//        if (WebEnvironment.development()) {
-//            Log.infof("in development.");
-//            menus = getMenus();
-//        } else {
-            Log.infof("fetch from cache ...");
-            CaffeineCache cc = (CaffeineCache) cache;
-            cc.setExpireAfterAccess(Duration.ofHours(1));
-            menus = cache.get("menus", (k) -> getMenus()).subscribe().asCompletionStage().toCompletableFuture().join();
-//        }
+
+        Log.infof("fetch from cache ...");
+        CaffeineCache cc = (CaffeineCache) cache;
+        cc.setExpireAfterAccess(Duration.ofHours(1));
+
+        List<Menu> menus = cache.get("menus", (k) -> getMenus()).subscribe().asCompletionStage().toCompletableFuture().join();
         return Map.of("menu", menus);
     }
 
