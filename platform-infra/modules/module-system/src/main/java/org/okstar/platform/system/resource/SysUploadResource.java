@@ -16,7 +16,6 @@ package org.okstar.platform.system.resource;
 
 import jakarta.inject.Inject;
 import jakarta.ws.rs.Consumes;
-import jakarta.ws.rs.POST;
 import jakarta.ws.rs.PUT;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.core.MediaType;
@@ -35,7 +34,7 @@ public class SysUploadResource extends BaseResource {
     @Inject
     SysAccountService accountService;
 
-    @POST
+    @PUT
     @Path("favicon")
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     public Res<String> uploadFavicon(@MultipartForm UploadDTO uploadDTO) {
