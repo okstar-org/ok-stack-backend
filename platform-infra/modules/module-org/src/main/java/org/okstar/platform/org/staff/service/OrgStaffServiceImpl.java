@@ -214,7 +214,10 @@ public class OrgStaffServiceImpl implements OrgStaffService {
         OkBeanUtils.copyPropertiesTo(staffDTO, employee);
 
         Optional<SysAccountDTO> accountDTO = sysAccountRpc.findById(staff.getAccountId());
-        accountDTO.ifPresent(acc-> employee.setUsername(acc.getUsername()));
+        accountDTO.ifPresent(acc-> {
+            employee.setUsername(acc.getUsername());
+            employee.setNickname(acc.getNickname());
+        });
 
         List<OrgPost0> posts = orgStaffPostService.findByStaffId(staff.id).stream().map(e -> {
             OrgPost0 p0 = new OrgPost0();

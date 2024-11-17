@@ -43,6 +43,11 @@ public class OrgStaffDTO {
     protected String username;
 
     /**
+     * 昵称
+     */
+    protected String nickname;
+
+    /**
      * 编号
      */
     protected String no;
