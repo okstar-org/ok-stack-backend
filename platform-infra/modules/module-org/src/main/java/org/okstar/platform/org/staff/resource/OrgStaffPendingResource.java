@@ -48,7 +48,7 @@ public class OrgStaffPendingResource {
     @Path("page")
     public Res<OkPageResult<OrgStaffDTO>> page(OkPageable pageable) {
         var pageResult = orgStaffService.findPendings(pageable);
-        List<OrgStaffDTO> list = pageResult.getList().stream().map(e -> {
+        List<OrgStaffDTO> list = pageResult.getList().stream().filter(e -> e.getAccountId() != null).map(e -> {
             OrgStaffDTO dto = new OrgStaffDTO();
             OkBeanUtils.copyPropertiesTo(e, dto);
             SysProfileDTO account = sysProfileRpc.getByAccount(e.getAccountId());

@@ -64,6 +64,8 @@ public interface OrgStaffService extends OkJpaService<OrgStaff> {
 
     List<OrgEmployee> search(String query);
 
+    OrgStaff loadByAccountId(Long id);
+
     long getCount();
 
     /**

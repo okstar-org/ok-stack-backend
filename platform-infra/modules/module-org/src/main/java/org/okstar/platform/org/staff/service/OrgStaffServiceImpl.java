@@ -214,7 +214,7 @@ public class OrgStaffServiceImpl implements OrgStaffService {
         OkBeanUtils.copyPropertiesTo(staffDTO, employee);
 
         Optional<SysAccountDTO> accountDTO = sysAccountRpc.findById(staff.getAccountId());
-        accountDTO.ifPresent(acc-> {
+        accountDTO.ifPresent(acc -> {
             employee.setUsername(acc.getUsername());
             employee.setNickname(acc.getNickname());
         });
@@ -252,6 +252,19 @@ public class OrgStaffServiceImpl implements OrgStaffService {
     }
 
     @Override
+    public OrgStaff loadByAccountId(Long id) {
+        return getByAccountId(id).orElseGet(() -> {
+            OrgStaff staff = new OrgStaff();
+            staff.setAccountId(id);
+            staff.setDisabled(false);
+            staff.setPostStatus(JobDefines.PostStatus.pending);
+            staff.setNo(String.valueOf(id));
+            create(staff, 1L);
+            return staff;
+        });
+    }
+
+    @Override
     public long getCount() {
         return orgStaffMapper.count("disabled", false);
     }
@@ -263,31 +276,9 @@ public class OrgStaffServiceImpl implements OrgStaffService {
             Log.warnf("accountId is null");
             return;
         }
-
-        Optional<OrgStaff> staff = getByAccountId(accountId);
-        if (staff.isEmpty()) {
-            Log.warnf("Unable to find staff[accountId=%s]", accountId);
-            return;
-        }
-
-//        OrgStaff orgStaff = staff.get();
-//        OrgStaffFragment fragment = orgStaff.getFragment();
-//        if (fragment == null) {
-//            return;
-//        }
-//        fragment.setFirstName(dto.getFirstName());
-//        fragment.setLastName(dto.getLastName());
-//        fragment.setEmail(dto.getEmail());
-//        fragment.setPhone(dto.getPhone());
-//        fragment.setGender(dto.getGender());
-//        fragment.setBirthday(dto.getBirthday());
-//        fragment.setIdentity(dto.getIdentify());
-//        fragment.setStreet(dto.getAddress());
-//        fragment.setCity(dto.getCity());
-//        fragment.setCountry(dto.getCountry());
-//        fragment.setLanguage(dto.getLanguage());
+        OrgStaff staff = loadByAccountId(accountId);
+        Log.infof("staff is: %s", staff);
     }
-
 
     private Optional<OrgStaff> findByNo(String no) {
         return orgStaffMapper.find("no", no).stream().findFirst();
