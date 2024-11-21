@@ -1,4 +1,4 @@
-FROM eclipse-temurin:17-jdk
+FROM  ibm-semeru-runtimes:open-17-jre-jammy
 
 LABEL maintainer="cto@chuanshaninfo.com"
 
