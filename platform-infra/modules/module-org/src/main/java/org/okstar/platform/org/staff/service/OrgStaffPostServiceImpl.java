@@ -26,15 +26,12 @@ import org.okstar.platform.common.date.OkDateUtils;
 import org.okstar.platform.common.web.page.OkPageResult;
 import org.okstar.platform.common.web.page.OkPageable;
 import org.okstar.platform.core.org.JobDefines;
-import org.okstar.platform.core.rpc.RpcAssert;
 import org.okstar.platform.org.mapper.OrgStaffPostMapper;
 import org.okstar.platform.org.staff.domain.OrgStaff;
 import org.okstar.platform.org.staff.domain.OrgStaffPost;
-import org.okstar.platform.system.dto.SysAccountDTO;
 import org.okstar.platform.system.rpc.SysAccountRpc;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.Set;
 import java.util.SortedSet;
 
@@ -131,18 +128,15 @@ public class OrgStaffPostServiceImpl implements OrgStaffPostService {
         //删除关联
         staffPosts.forEach(this::delete);
 
-        /**
-         * 注销其帐号
-         */
-
-        Long accountId = staff.getAccountId();
-        Optional<SysAccountDTO> accountDTO = sysAccountRpc.findById(accountId);
-        if (accountDTO.isPresent()) {
-            SysAccountDTO account0 = accountDTO.get();
-            Log.debugf("注销帐号:%s", account0.getUsername());
-            Boolean result = RpcAssert.isTrue(passportRpc.signDown(account0.getId()));
-            Log.debugf("注销帐号:%s=>%s", account0.getUsername(), result);
-        }
+//        注销其帐号
+//        Long accountId = staff.getAccountId();
+//        Optional<SysAccountDTO> accountDTO = sysAccountRpc.findById(accountId);
+//        if (accountDTO.isPresent()) {
+//            SysAccountDTO account0 = accountDTO.get();
+//            Log.debugf("注销帐号:%s", account0.getUsername());
+//            Boolean result = RpcAssert.isTrue(passportRpc.signDown(account0.getId()));
+//            Log.debugf("注销帐号:%s=>%s", account0.getUsername(), result);
+//        }
 
         return true;
     }
