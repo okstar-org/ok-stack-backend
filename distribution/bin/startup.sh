@@ -35,9 +35,10 @@ for item in ${MODULES[@]}
 do
 #  start-stop-daemon --start --background --exec /path/to/daemon --pidfile /var/run/daemon.pid
   DoRunJava $BASE_DIR/infra/$item/quarkus-run.jar ${JAVA_OPT}
-  if [ $? -lt 1 ]; then
+  if [ $? != 0 ]; then
     echo "The $item is startup failed."
   else
+    sleep 10
     PID=$!
     PIDS+="$PID "
     echo "The $item is startup successfully=>[$PID]"
