@@ -11,9 +11,9 @@ ENV OK_STACK_LOG_DIR=${OK_STAR_DIR}/${OK_PROJECT}/logs
 WORKDIR ${OK_STACK_DIR}
 
 RUN apt-get update -qq && apt-get dist-upgrade -y
-RUN cat /etc/apt/sources.list
-
-RUN apt install -y nginx-full zip unzip
+RUN apt-get install -y nginx-full zip unzip vi
+RUN apt-get clean
+RUN apt-get -y autoremove
 RUN rm -rf /var/lib/apt/lists/*
 
 
