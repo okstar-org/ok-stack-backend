@@ -42,18 +42,26 @@ public class PingTask {
     @RestClient
     SysConfIntegrationRpc integrationRpc;
 
+    static OkCloudApiClient client;
 
     @Scheduled(every = "1m")
     public void pingTask() {
         try {
             Log.infof("Ping task...");
-            OkCloudApiClient client = new OkCloudApiClient(OkCloudDefines.OK_CLOUD_API_STACK,
-                    new AuthenticationToken(OkCloudDefines.OK_CLOUD_USERNAME,
-                            OkCloudDefines.OK_CLOUD_PASSWORD));
+            OkCloudApiClient client = loadOkCloudApiClient();
             doPing(client);
         } catch (Exception e) {
             Log.warnf("Task execute error: %s", e.getMessage());
+            client = null;
         }
+    }
+
+    private static synchronized OkCloudApiClient loadOkCloudApiClient() {
+        if (client == null) {
+            client = new OkCloudApiClient(OkCloudDefines.OK_CLOUD_API_STACK,
+                            new AuthenticationToken(OkCloudDefines.OK_CLOUD_USERNAME, OkCloudDefines.OK_CLOUD_PASSWORD));
+        }
+        return client;
     }
 
     public void doPing(OkCloudApiClient client) {
@@ -87,7 +95,7 @@ public class PingTask {
                 integrationRpc.uploadConf();
             }
         } catch (Exception e) {
-            Log.warnf(e.getMessage());
+            Log.warnf(e, e.getMessage());
         }
     }
 }
