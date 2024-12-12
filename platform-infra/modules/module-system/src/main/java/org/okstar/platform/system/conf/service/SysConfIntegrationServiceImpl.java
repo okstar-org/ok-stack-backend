@@ -187,10 +187,7 @@ public class SysConfIntegrationServiceImpl implements SysConfIntegrationService 
 
     @Override
     public boolean testStack(SysConfIntegrationStack conf) {
-        String fqdn = conf.getFqdn();
-        String content = OkWebUtil.get(fqdn);
-        Log.infof(content);
-        return OkStringUtil.isNotEmpty(content);
+        return OkWebUtil.hasOkContent(conf.getFqdn());
     }
 
     @Override
