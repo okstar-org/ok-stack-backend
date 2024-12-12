@@ -45,7 +45,7 @@ public class MenuResource extends BaseResource {
 
         Log.infof("fetch from cache ...");
         CaffeineCache cc = (CaffeineCache) cache;
-        cc.setExpireAfterAccess(Duration.ofHours(1));
+        cc.setExpireAfterAccess(Duration.ofMinutes(1));
 
         List<Menu> menus = cache.get("menus", (k) -> getMenus()).subscribe().asCompletionStage().toCompletableFuture().join();
         return Map.of("menu", menus);
