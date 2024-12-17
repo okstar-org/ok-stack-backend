@@ -16,7 +16,7 @@ package org.okstar.platform.core.org;
 import lombok.Getter;
 
 /**
- * 工作相关定义
+ * 组织架构-人员-工作 相关定义
  */
 public interface JobDefines {
 

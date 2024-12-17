@@ -21,6 +21,9 @@ import org.okstar.platform.common.exception.OkRuntimeException;
 import java.util.Map;
 import java.util.Set;
 
+/**
+ * 存储后端接口
+ */
 public interface StorageBackend {
     Set<String> removeByTags(@Nonnull String bucketName, @Nonnull Map<String, String> tags) throws OkRuntimeException;
 

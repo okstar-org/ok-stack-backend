@@ -14,9 +14,15 @@ import org.okstar.platform.common.security.utils.JwtUtils;
 
 import java.time.Duration;
 
+/**
+ * 用户登录缓存实现
+ */
 @ApplicationScoped
 public class OkTokenCacheImpl implements OkLogonUserCache {
 
+    /**
+     * 缓存载体
+     */
     @Inject
     @CacheName(OkLogonUserCache.NAME)
     Cache cache;

@@ -25,6 +25,9 @@ import java.util.Date;
 @MappedSuperclass
 public class OkEntity extends PanacheEntity {
 
+    /**
+     * 实体唯一UUID
+     */
     private String uuid;
 
     /**

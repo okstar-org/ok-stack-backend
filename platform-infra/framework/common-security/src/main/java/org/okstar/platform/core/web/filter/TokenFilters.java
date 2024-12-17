@@ -51,6 +51,9 @@ public class TokenFilters {
             return;
         }
 
+        /**
+         * 排除一些无需校验的地址
+         */
         if (uri.contains("/passport")
                 || uri.contains("/q/")
                 || uri.contains("/rpc")

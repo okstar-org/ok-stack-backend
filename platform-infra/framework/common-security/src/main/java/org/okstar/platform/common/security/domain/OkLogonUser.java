@@ -19,13 +19,14 @@ import java.io.Serializable;
 import java.time.Instant;
 
 /**
- * 用户信息
- *
- *
+ * 登录用户信息
  */
 @Data
 public class OkLogonUser implements Serializable
 {
+    /**
+     * jwt typ
+     */
     private String type;
 
     /**
@@ -77,10 +78,19 @@ public class OkLogonUser implements Serializable
      */
     private OkRealmAccess realmAccess;
 
+    /**
+     * 资源访问
+     */
     private OkResourceAccess resourceAccess;
 
+    /**
+     * subject
+     */
     private String subject;
 
+    /**
+     * token
+     */
     private String token;
 
 }

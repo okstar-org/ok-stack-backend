@@ -20,11 +20,18 @@ import lombok.Data;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+/**
+ * 权限域
+ */
 @Data
 public class OkRealmAccess {
+    /**
+     * 角色列表
+     */
     private Set<String> roles;
 
     /**
+     * 从Keycloak解析域信息
      * realm_access=>{"roles":
      * ["manager","offline_access","rest-all","admin","uma_authorization","kie-server","default-roles-ok-star"]}
      *
@@ -34,7 +41,9 @@ public class OkRealmAccess {
         OkRealmAccess realmAccess = new OkRealmAccess();
         var jsonNode = m.getJsonArray("roles");
         if (jsonNode != null) {
-            realmAccess.setRoles(jsonNode.stream().map(e -> ((JsonString) e).getString()).collect(Collectors.toSet()));
+            realmAccess.setRoles(jsonNode.stream()  //
+                    .map(e -> ((JsonString) e).getString()) //
+                    .collect(Collectors.toSet()));
         }
         return realmAccess;
     }

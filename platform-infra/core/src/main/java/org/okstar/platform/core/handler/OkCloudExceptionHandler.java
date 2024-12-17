@@ -20,7 +20,7 @@ import org.okstar.platform.common.exception.OkCloudException;
 import org.okstar.platform.common.web.bean.Res;
 
 /**
- * 异常处理器:OkHttpException
+ * OkCloud 异常处理器
  */
 @Provider
 public class OkCloudExceptionHandler implements ExceptionMapper<OkCloudException> {

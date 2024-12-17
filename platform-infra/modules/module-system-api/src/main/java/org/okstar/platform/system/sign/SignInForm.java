@@ -13,17 +13,15 @@
 
 package org.okstar.platform.system.sign;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.okstar.platform.common.web.bean.Req;
 import org.okstar.platform.core.account.AccountDefines;
 
 /**
- * 注册实体
+ * 登录授权实体
  */
-@Data
+@Setter
+@Getter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
@@ -38,8 +36,20 @@ public class SignInForm extends Req {
     private AccountDefines.BindType type = AccountDefines.BindType.email;
     private AccountDefines.DeviceType deviceType = AccountDefines.DeviceType.PC;
     private String iso = AccountDefines.DefaultISO;
+    /**
+     * 授权类型（password:密码）
+     */
     private String grantType;
+    /**
+     * 帐号
+     */
     private String account;
+    /**
+     * 密码
+     */
     private String password;
+    /**
+     * 是否记住
+     */
     private Boolean rememberMe;
 }

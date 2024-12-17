@@ -15,6 +15,9 @@ package org.okstar.common.storage;
 
 import org.okstar.common.storage.minio.StorageConfMinio;
 
+/**
+ * 存储管理接口
+ */
 public interface StorageManager {
     StorageBackend getDefaultStorageBackend(StorageConfMinio conf);
 }

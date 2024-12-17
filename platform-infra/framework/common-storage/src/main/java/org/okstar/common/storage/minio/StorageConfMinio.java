@@ -18,6 +18,9 @@ import lombok.Data;
 
 import java.util.Optional;
 
+/**
+ * Minio配置
+ */
 @Data
 @Builder
 public class StorageConfMinio   {

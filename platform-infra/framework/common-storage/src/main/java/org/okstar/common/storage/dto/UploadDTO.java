@@ -17,12 +17,21 @@ import jakarta.ws.rs.FormParam;
 import lombok.Data;
 import org.jboss.resteasy.plugins.providers.multipart.InputPart;
 
+/**
+ * 上传实体
+ */
 @Data
 public class UploadDTO {
 
+    /**
+     * file字段
+     */
     @FormParam("file")
     private InputPart file;
 
+    /**
+     * 字段名称
+     */
     @FormParam("name")
     private String name;
 

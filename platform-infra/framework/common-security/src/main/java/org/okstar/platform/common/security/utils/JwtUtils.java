@@ -23,8 +23,16 @@ import org.okstar.platform.common.security.domain.OkResourceAccess;
 
 import java.time.Instant;
 
+/**
+ * Jwt工具类
+ */
 public class JwtUtils {
 
+    /**
+     * 从Jwt token解析 用户信息
+     * @param jwt
+     * @return OkLogonUser 登录用户
+     */
     public static OkLogonUser parse(JsonWebToken jwt) {
         Log.infof("Parse jwt: %s", jwt);
         /**

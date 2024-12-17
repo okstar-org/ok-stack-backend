@@ -23,6 +23,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class OkPermission {
+    //资源ID
     private String rsid;
+    //资源名称
     private String rsname;
 }

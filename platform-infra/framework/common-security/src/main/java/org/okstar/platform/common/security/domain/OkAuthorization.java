@@ -28,8 +28,14 @@ import java.util.stream.Collectors;
 @NoArgsConstructor
 @AllArgsConstructor
 public class OkAuthorization {
+
     private Set<OkPermission> permissions;
 
+    /**
+     * 从Json解析授权信息
+     * @param m 来自keycloak授权数据
+     * @return
+     */
     public static OkAuthorization of(JsonObject m) {
         /**
          * authorization=>{ "permissions":[
@@ -43,7 +49,10 @@ public class OkAuthorization {
         JsonArray array = m.getJsonArray("permissions");
         Set<OkPermission> set = array.stream().map(e -> {
             JsonObject object = e.asJsonObject();
-            return OkPermission.builder().rsid(object.getString("rsid")).rsname(object.getString("rsname")).build();
+            return OkPermission.builder()
+                    .rsid(object.getString("rsid")) //资源ID
+                    .rsname(object.getString("rsname")) //资源名称
+                    .build();
         }).collect(Collectors.toSet());
         o.setPermissions(set);
         return o;

@@ -17,12 +17,17 @@ import jakarta.enterprise.context.ApplicationScoped;
 import org.okstar.common.storage.minio.StorageBackendMinio;
 import org.okstar.common.storage.minio.StorageConfMinio;
 
-
+/**
+ * 存储管理实现
+ */
 @ApplicationScoped
 public class StorageManagerImpl implements StorageManager {
 
-
-
+    /**
+     * 获取minio存储
+     * @param minio
+     * @return
+     */
     @Override
     public StorageBackend getDefaultStorageBackend(StorageConfMinio minio) {
         return new StorageBackendMinio(minio);

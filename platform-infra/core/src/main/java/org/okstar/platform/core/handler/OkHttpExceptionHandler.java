@@ -20,7 +20,7 @@ import org.okstar.platform.common.exception.OkHttpException;
 import org.okstar.platform.common.web.bean.Res;
 
 /**
- * 异常处理器:OkHttpException
+ * Http相关异常处理器
  */
 @Provider
 public class OkHttpExceptionHandler implements ExceptionMapper<OkHttpException> {

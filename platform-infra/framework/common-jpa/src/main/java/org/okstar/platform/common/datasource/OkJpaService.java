@@ -14,12 +14,11 @@
 package org.okstar.platform.common.datasource;
 
 import jakarta.transaction.Transactional;
-import org.okstar.platform.common.bean.OkBeanUtils;
-import org.okstar.platform.common.web.page.OkPageResult;
-import org.okstar.platform.common.web.page.OkPageable;
 import org.okstar.platform.common.datasource.domain.OkEntity;
 import org.okstar.platform.common.date.OkDateUtils;
 import org.okstar.platform.common.id.OkIdUtils;
+import org.okstar.platform.common.web.page.OkPageResult;
+import org.okstar.platform.common.web.page.OkPageable;
 import org.okstar.platform.core.service.OkService;
 
 import java.util.List;
@@ -31,6 +30,11 @@ import java.util.List;
 @Transactional
 public interface OkJpaService<T extends OkEntity> extends OkService {
 
+    /**
+     * 更新实体
+     * @param t
+     * @param updateBy
+     */
     default void update(T t, Long updateBy){
         T exist = get(t.id);
         OkBeanUtils.copyPropertiesTo(t, exist);
@@ -44,7 +48,7 @@ public interface OkJpaService<T extends OkEntity> extends OkService {
     }
 
     /**
-     *
+     * 创建实体
      * @param t
      * @param createBy
      */
@@ -61,22 +65,49 @@ public interface OkJpaService<T extends OkEntity> extends OkService {
         save(t);
     }
 
+    /**
+     * 保存实体接口，具体由各自子类实现
+     * @param t
+     */
     void save(T t);
 
+    /**
+     * 查询所有
+     * @return
+     */
     List<T> findAll();
 
+    /**
+     * 查询分页
+     * @param page
+     * @return
+     */
     OkPageResult<T> findPage(OkPageable page);
 
+    /**
+     * 通过ID查询单个
+     * @param id
+     * @return
+     */
     T get(Long id);
 
+    /**
+     * 通过ID删除实体
+     * @param id
+     */
     void deleteById(Long id);
 
+    /**
+     * 删除实体
+     * @param t
+     */
     void delete(T t);
 
     /**
-     * find by uuid
-     * @param uuid
+     * 通过 uuid 查询实体
+     * @param uuid 具有uuid的实体
      * @return T
+     * @see OkEntity#uuid
      */
     T get(String uuid);
 }

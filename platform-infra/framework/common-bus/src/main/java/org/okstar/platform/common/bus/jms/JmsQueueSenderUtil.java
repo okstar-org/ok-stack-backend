@@ -16,9 +16,17 @@ package org.okstar.platform.common.bus.jms;
 import jakarta.jms.*;
 import org.okstar.platform.common.asserts.OkAssert;
 
-
+/**
+ * 消息总线-队列：发送工具
+ */
 public class JmsQueueSenderUtil {
 
+    /**
+     * 发送消息
+     * @param connectionFactory
+     * @param queueName
+     * @param message
+     */
     public static void send(ConnectionFactory connectionFactory,String queueName, Message message) {
         OkAssert.notNull(connectionFactory, "connectionFactory must not be null");
         OkAssert.notNull(queueName, "queueName must not be null");
@@ -31,6 +39,12 @@ public class JmsQueueSenderUtil {
         }
     }
 
+    /**
+     * 发送消息
+     * @param connectionFactory
+     * @param queueName
+     * @param message
+     */
     public static void send(ConnectionFactory connectionFactory, String queueName, String message) {
         OkAssert.notNull(connectionFactory, "connectionFactory must not be null");
         OkAssert.notNull(queueName, "queueName must not be null");

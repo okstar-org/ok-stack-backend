@@ -11,21 +11,19 @@
  * /
  */
 
-package org.okstar.platform.common.security.config;
+package org.okstar.platform.core.account;
 
-/**
- * 系统配置
- *
- * 
- */
-public class ApplicationConfig
-{
-    /**
-     * 时区配置
-     */
-//    @Bean
-//    public Jackson2ObjectMapperBuilderCustomizer jacksonObjectMapperCustomization()
-//    {
-//        return jacksonObjectMapperBuilder -> jacksonObjectMapperBuilder.timeZone(TimeZone.getDefault());
-//    }
+import io.quarkus.test.junit.QuarkusTest;
+import io.smallrye.common.constraint.Assert;
+import org.junit.jupiter.api.Test;
+
+@QuarkusTest
+class AccountDefinesTest {
+
+    @Test
+    void testDefaultISO(){
+        String country = AccountDefines.DefaultISO;
+        Assert.assertTrue(country.equals("CN"));
+    }
+
 }

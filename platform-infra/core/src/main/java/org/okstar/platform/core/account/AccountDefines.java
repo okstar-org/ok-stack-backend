@@ -15,6 +15,8 @@ package org.okstar.platform.core.account;
 
 import lombok.Getter;
 
+import java.util.Locale;
+
 /**
  * 帐号相关定义
  */
@@ -48,12 +50,24 @@ public interface AccountDefines {
         DISABLED,
     }
 
-    String DefaultISO = "CN";
+    /**
+     * 默认国家
+     */
+    String DefaultISO = Locale.CHINA.getCountry();
 
-    String DefaultLanguage = "zh-CN";
+    /**
+     * 默认语言
+     */
+    String DefaultLanguage = Locale.CHINA.getLanguage();
 
+    /**
+     * 默认密码
+     */
     String DefaultPWD = "okstar.123456#";
 
+    /**
+     * 默认头像地址（对应前端存在的图片）
+     */
     String DefaultAvatar = "/assets/images/avatar.jpg";
 
     /**

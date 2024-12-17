@@ -18,6 +18,9 @@ import jakarta.ws.rs.ext.ExceptionMapper;
 import jakarta.ws.rs.ext.Provider;
 import org.okstar.platform.common.web.bean.Res;
 
+/**
+ * 非法参数异常处理
+ */
 @Provider
 public class OkIllegalArgumentExceptionHandler  implements ExceptionMapper<IllegalArgumentException> {
     @Override

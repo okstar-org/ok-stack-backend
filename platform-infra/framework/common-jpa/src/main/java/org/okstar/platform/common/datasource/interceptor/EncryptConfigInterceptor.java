@@ -19,6 +19,7 @@ import io.smallrye.config.ConfigValue;
 import org.okstar.platform.common.security.AesEncryptUtil;
 
 /**
+ * 字段加密拦截器
  * 参考：
  * http://www.kailing.pub/article/index/arcid/289.html
  */

@@ -16,6 +16,9 @@ package org.okstar.platform.common.security.cache;
 import org.eclipse.microprofile.jwt.JsonWebToken;
 import org.okstar.platform.common.security.domain.OkLogonUser;
 
+/**
+ * 登录用户缓存
+ */
 public interface OkLogonUserCache {
 
     String NAME ="ok-logon-user";

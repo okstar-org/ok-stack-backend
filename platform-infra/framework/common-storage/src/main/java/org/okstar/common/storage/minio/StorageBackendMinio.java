@@ -26,14 +26,26 @@ import org.okstar.platform.common.exception.OkRuntimeException;
 import java.io.InputStream;
 import java.util.*;
 
+/**
+ * Minio实现
+ */
 public class StorageBackendMinio implements StorageBackend {
-
+    /**
+     * Minio配置
+     */
     StorageConfMinio minio;
 
     public StorageBackendMinio(StorageConfMinio minio) {
         this.minio = minio;
     }
 
+    /**
+     * 通过Tag删除
+     * @param bucketName
+     * @param tags
+     * @return
+     * @throws OkRuntimeException
+     */
     @Override
     public Set<String> removeByTags(@Nonnull String bucketName, @Nonnull Map<String, String> tags) throws OkRuntimeException {
         Set<String> deleted = new HashSet<>();
@@ -69,7 +81,15 @@ public class StorageBackendMinio implements StorageBackend {
         return deleted;
     }
 
-
+    /**
+     * 存储对象
+     * @param bucketName
+     * @param inputPart
+     * @param name
+     * @param tags
+     * @return
+     * @throws OkRuntimeException
+     */
     @Override
     public String put(@Nonnull String bucketName,
                       @Nonnull InputPart inputPart,
@@ -111,6 +131,10 @@ public class StorageBackendMinio implements StorageBackend {
         }
     }
 
+    /**
+     * 创建Minio客户端
+     * @return
+     */
     private MinioClient createClient() {
         MinioClient.Builder minioClientBuilder = MinioClient.builder();
         minioClientBuilder.endpoint(minio.getEndpoint());

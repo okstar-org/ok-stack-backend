@@ -19,9 +19,15 @@ import lombok.Data;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * 资源
+ */
 @Data
 public class OkResourceAccess {
 
+    /**
+     * Client与域相关
+     */
     private Map<String, OkRealmAccess> accessMap;
 
     /**
