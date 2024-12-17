@@ -50,6 +50,11 @@ public interface AccountDefines {
         DISABLED,
     }
 
+    @Getter
+    enum GrantType {
+        password,
+    }
+
     /**
      * 默认国家
      */

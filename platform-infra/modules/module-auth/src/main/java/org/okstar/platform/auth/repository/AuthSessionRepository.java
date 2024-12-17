@@ -17,6 +17,9 @@ import io.quarkus.hibernate.orm.panache.PanacheRepository;
 import jakarta.enterprise.context.ApplicationScoped;
 import org.okstar.platform.auth.domain.AuthSession;
 
+/**
+ * Jpa: AuthSessionRepository
+ */
 @ApplicationScoped
 public class AuthSessionRepository implements PanacheRepository<AuthSession> {
 

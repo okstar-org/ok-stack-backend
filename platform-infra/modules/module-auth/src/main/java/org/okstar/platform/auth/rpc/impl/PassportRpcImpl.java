@@ -22,16 +22,20 @@ import org.okstar.platform.system.sign.SignUpForm;
 import org.okstar.platform.system.sign.SignUpResult;
 import org.okstar.platform.system.dto.SysAccountDTO;
 
-
-
-
+/**
+ * 接入RPC服务
+ */
 @ApplicationScoped
 public class PassportRpcImpl implements PassportRpc {
 
     @Inject
     PassportService passportService;
 
-
+    /**
+     * 注册
+     * @param form
+     * @return
+     */
     @Override
     public RpcResult<SignUpResult> signUp(SignUpForm form) {
         try {
@@ -42,6 +46,11 @@ public class PassportRpcImpl implements PassportRpc {
         }
     }
 
+    /**
+     * 注销
+     * @param accountId
+     * @return
+     */
     @Override
     public RpcResult<Boolean> signDown(Long accountId) {
         try {

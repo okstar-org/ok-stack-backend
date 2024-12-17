@@ -30,6 +30,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * 菜单初始化服务
+ */
 @ApplicationScoped
 public class MenuStartup {
 

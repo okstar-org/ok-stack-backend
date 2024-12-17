@@ -21,6 +21,9 @@ import org.okstar.platform.auth.dto.Me;
 import org.okstar.platform.common.web.bean.Res;
 import org.okstar.platform.system.dto.SysAccountDTO;
 
+/**
+ * 读取自己信息接口
+ */
 @Authenticated
 @Path("me")
 public class MeResource extends BaseResource {

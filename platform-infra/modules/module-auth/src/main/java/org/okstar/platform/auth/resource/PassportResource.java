@@ -23,7 +23,8 @@ import org.okstar.platform.common.web.bean.Res;
 import org.okstar.platform.system.sign.*;
 
 /**
- * 通行
+ * 接入接口
+ * 2、登录
  */
 @Path("passport")
 public class PassportResource extends BaseResource {
@@ -32,6 +33,11 @@ public class PassportResource extends BaseResource {
     @Inject
     PassportService passportService;
 
+    /**
+     * 注册
+     * @param signUpForm
+     * @return
+     */
     @POST
     @Path("signUp")
     public Res<SignUpResult> signUp(SignUpForm signUpForm) {
@@ -40,6 +46,11 @@ public class PassportResource extends BaseResource {
         return Res.ok(resultDto);
     }
 
+    /**
+     * 登录
+     * @param signInForm
+     * @return
+     */
     @POST
     @Path("signIn")
     public Res<AuthorizationResult> signIn(SignInForm signInForm) {
@@ -48,6 +59,11 @@ public class PassportResource extends BaseResource {
         return Res.ok(resultDto);
     }
 
+    /**
+     * 退出
+     * @param accessToken
+     * @return
+     */
     @POST
     @Path("signOut")
     public Res<Boolean> signOut(@HeaderParam("Authorization")String accessToken) {
@@ -56,6 +72,11 @@ public class PassportResource extends BaseResource {
         return Res.ok(true);
     }
 
+    /**
+     * 刷新
+     * @param refreshForm
+     * @return
+     */
     @POST
     @Path("refresh")
     public Res<AuthorizationResult> refresh(RefreshForm refreshForm) {

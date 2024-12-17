@@ -18,6 +18,10 @@ import org.okstar.platform.auth.dto.Menu;
 
 import java.util.List;
 
+/**
+ * 菜单文件实体
+ * 指向：src/main/resources/menu.json
+ */
 @Data
 public class MenuFile {
     private List<Menu> menu;

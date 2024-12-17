@@ -24,6 +24,9 @@ import org.okstar.platform.common.web.page.OkPageable;
 
 import java.util.List;
 
+/**
+ * AuthSession服务，提供存储服务。
+ */
 @Transactional
 @ApplicationScoped
 public class AuthSessionServiceImpl implements AuthSessionService {

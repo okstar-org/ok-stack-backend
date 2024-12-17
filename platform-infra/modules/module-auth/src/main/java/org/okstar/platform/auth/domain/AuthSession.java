@@ -19,6 +19,11 @@ import lombok.Setter;
 import org.okstar.platform.common.datasource.domain.OkEntity;
 import org.okstar.platform.core.account.AccountDefines;
 
+/**
+ * 认证Session实体
+ * <br>
+ * 一个用户成功登录产生一个 `AuthSession`
+ */
 @Getter
 @Setter
 @Entity
@@ -35,7 +40,8 @@ public class AuthSession extends OkEntity {
     @Enumerated(EnumType.STRING)
     private AccountDefines.BindType loginType;
 
-    private String grantType;
+    @Enumerated(EnumType.STRING)
+    private AccountDefines.GrantType grantType;
 
     @Lob
     @Column(length = Short.MAX_VALUE)

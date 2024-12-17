@@ -23,6 +23,9 @@ import org.okstar.platform.common.web.bean.Res;
 
 import java.util.List;
 
+/**
+ * 角色接口
+ */
 @Path("role")
 public class RoleResource extends BaseResource {
 

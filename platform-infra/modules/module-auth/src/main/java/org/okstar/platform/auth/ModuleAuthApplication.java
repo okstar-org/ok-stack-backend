@@ -17,8 +17,7 @@ import io.quarkus.runtime.Quarkus;
 import io.quarkus.runtime.annotations.QuarkusMain;
 
 /**
- * 认证中心
- *
+ * 认证授权服务
  *
  */
 @QuarkusMain

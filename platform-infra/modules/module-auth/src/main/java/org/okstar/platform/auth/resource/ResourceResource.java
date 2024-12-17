@@ -23,6 +23,9 @@ import org.okstar.platform.common.web.bean.Res;
 
 import java.util.List;
 
+/**
+ * 资源接口
+ */
 @Path("resource")
 public class ResourceResource extends BaseResource {
 

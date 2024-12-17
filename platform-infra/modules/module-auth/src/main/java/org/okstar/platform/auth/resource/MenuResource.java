@@ -29,21 +29,35 @@ import org.okstar.platform.auth.keycloak.BackResourceManager;
 import java.time.Duration;
 import java.util.*;
 
+/**
+ * 菜单资源，提供菜单接口
+ */
 @Path("menu")
 public class MenuResource extends BaseResource {
-
+    /**
+     * 资源后端
+     */
     @Inject
     BackResourceManager resourceManager;
 
+    /**
+     * 菜单Cache
+     */
     @Inject
     @CacheName("ok-menu")
     Cache cache;
 
+    /**
+     * 获取菜单
+     * 1、有限查询缓存
+     * 2、Cache为1分钟失效
+     * 3、没有则查询DB
+     * 使用cache降低后端压力
+     * @return
+     */
     @GET
     @Path("")
     public Map<String, List<Menu>> list() {
-
-        Log.infof("fetch from cache ...");
         CaffeineCache cc = (CaffeineCache) cache;
         cc.setExpireAfterAccess(Duration.ofMinutes(1));
 
@@ -51,6 +65,10 @@ public class MenuResource extends BaseResource {
         return Map.of("menu", menus);
     }
 
+    /**
+     * 从后端查询菜单
+     * @return
+     */
     private List<Menu> getMenus() {
         Log.debugf("fetch resources...");
         List<BackResourceDTO> list = resourceManager.list();
@@ -68,7 +86,11 @@ public class MenuResource extends BaseResource {
         return top;
     }
 
-
+    /**
+     * 遍历查询子级菜单
+     * @param parent
+     * @param list
+     */
     private void forChildren(Menu parent, List<BackResourceDTO> list) {
 
         if (parent == null) {
@@ -91,12 +113,22 @@ public class MenuResource extends BaseResource {
 
     }
 
+    /**
+     * 获取跟菜单
+     * @param resourceDTO
+     * @return
+     */
     private Menu toRootMenu(BackResourceDTO resourceDTO) {
         var root = toMenu(resourceDTO);
         if (root == null || root.getPath().size() != 1) return null;
         return root;
     }
 
+    /**
+     * 从后端资源解析成菜单
+     * @param resourceDTO
+     * @return
+     */
     private static Menu toMenu(BackResourceDTO resourceDTO) {
         Set<String> uris = resourceDTO.getUris();
         if (CollectionUtils.isEmpty(uris)) {

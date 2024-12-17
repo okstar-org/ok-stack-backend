@@ -18,6 +18,7 @@ import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.NotFoundException;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.EnumUtils;
 import org.eclipse.microprofile.rest.client.inject.RestClient;
 import org.okstar.platform.auth.domain.AuthSession;
 import org.okstar.platform.auth.keycloak.AuthzClientManager;
@@ -25,6 +26,7 @@ import org.okstar.platform.auth.keycloak.BackUserManager;
 import org.okstar.platform.common.asserts.OkAssert;
 import org.okstar.platform.common.exception.OkRuntimeException;
 import org.okstar.platform.common.string.OkStringUtil;
+import org.okstar.platform.core.account.AccountDefines;
 import org.okstar.platform.core.rpc.RpcAssert;
 import org.okstar.platform.core.rpc.RpcResult;
 import org.okstar.platform.system.dto.BackUser;
@@ -110,6 +112,7 @@ public class PassportServiceImpl implements PassportService {
             throw new NotFoundException("帐号不存在！");
         }
 
+        /**获取密码*/
         RpcResult<String> lastedPassword = sysAccountRpc.lastPassword(accountDTO.getId());
         String pwd = RpcAssert.isTrue(lastedPassword);
         OkAssert.isTrue(OkStringUtil.equals(pwd, signInForm.getPassword()), "密码不正确！");
@@ -152,23 +155,37 @@ public class PassportServiceImpl implements PassportService {
         AuthorizationResult result = authzClientManager.authorization(accountDTO.getUsername(), signInForm.getPassword());
         result.setUsername(accountDTO.getUsername());
 
+        /**
+         * 将Session存入DB
+         */
         AuthSession session = buildAuthSession(signInForm, accountDTO, result);
         authSessionService.create(session, accountDTO.getId());
 
         return result;
     }
 
+    /**
+     * 构建认证Session
+     * @param signInForm
+     * @param account0
+     * @param result
+     * @return
+     */
     private static AuthSession buildAuthSession(SignInForm signInForm, SysAccountDTO account0, AuthorizationResult result) {
         AuthSession sess = new AuthSession();
         sess.setUsername(account0.getUsername());
         sess.setDeviceType(signInForm.getDeviceType());
         sess.setLoginType(signInForm.getType());
-        sess.setGrantType(signInForm.getGrantType());
         sess.setAccessToken(result.getAccessToken());
         sess.setExpiresIn(result.getExpiresIn());
         sess.setRefreshToken(result.getRefreshToken());
         sess.setRefreshExpiresIn(result.getRefreshExpiresIn());
         sess.setSessionState(result.getSession_state());
+
+        AccountDefines.GrantType grantType = EnumUtils.getEnum(AccountDefines.GrantType.class, signInForm.getGrantType());
+        OkAssert.notNull(grantType,"grantType is invalid!");
+        sess.setGrantType(grantType);
+
         return sess;
     }
 

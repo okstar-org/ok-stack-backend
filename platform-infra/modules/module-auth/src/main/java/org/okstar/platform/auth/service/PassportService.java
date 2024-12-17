@@ -17,22 +17,59 @@ package org.okstar.platform.auth.service;
 import org.okstar.platform.system.sign.*;
 import org.okstar.platform.system.dto.SysAccountDTO;
 
-
+/**
+ * 接入服务接口
+ */
 public interface PassportService {
-
+    /**
+     * 注册
+     * @param signUpForm
+     * @return
+     */
     SignUpResult signUp(SignUpForm signUpForm);
 
+    /**
+     * 注销
+     * @param accountId
+     */
     void signDown(Long accountId);
 
+    /**
+     * 登录
+     * @param signInForm
+     * @return
+     */
     AuthorizationResult signIn(SignInForm signInForm);
 
+    /**
+     * 刷新
+     * @param refreshToken
+     * @return
+     */
     AuthorizationResult refresh(String refreshToken);
 
+    /**
+     * 退出
+     * @param accessToken
+     */
     void signOut(String accessToken);
 
+    /**
+     * 获取帐号
+     * @param account
+     * @return
+     */
     SysAccountDTO getAccount(String account);
 
+    /**
+     * 更新密码
+     * @param updateForm
+     */
     void updatePassword(PasswordUpdateForm updateForm);
 
+    /**
+     * 忘记密码
+     * @param form
+     */
     void forgot(ForgotForm form);
 }
