@@ -28,7 +28,7 @@ import java.util.Optional;
 
 
 /**
- * 账号信息
+ * 账号信息接口
  */
 @Authenticated
 @Path("/account")

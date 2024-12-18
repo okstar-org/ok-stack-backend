@@ -21,6 +21,9 @@ import org.okstar.platform.core.web.resource.OkCommonResource;
 import org.okstar.platform.system.conf.domain.SysConfWebsite;
 import org.okstar.platform.system.conf.service.SysConfSettingsService;
 
+/**
+ * 开放信息接口
+ */
 @Path("open")
 public class OpenResource extends OkCommonResource {
 

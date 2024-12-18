@@ -68,7 +68,7 @@ class AuthzClientManagerImpl implements AuthzClientManager {
      */
     public AuthzClient ensureAuthzClient() {
         Log.debugf("EnsureAuthzClient ...");
-        SysKeycloakConfDTO conf = sysKeycloakRpc.getStackConf();
+        SysKeycloakConfDTO conf = sysKeycloakRpc.getConf();
         Log.infof("Get keycloak conf: %s", conf);
 
         Configuration configuration = new Configuration(
@@ -87,7 +87,7 @@ class AuthzClientManagerImpl implements AuthzClientManager {
     public OidcClients ensureOidcClient() {
         Log.debugf("EnsureOidcClient ...");
 
-        SysKeycloakConfDTO conf = sysKeycloakRpc.getStackConf();
+        SysKeycloakConfDTO conf = sysKeycloakRpc.getConf();
         Log.infof("Get keycloak conf: %s", conf);
 
         OidcClientConfig cc = new OidcClientConfig();

@@ -18,7 +18,7 @@ import org.okstar.platform.core.service.OkService;
 import org.okstar.platform.system.conf.domain.*;
 
 /**
- *集成配置
+ * 集成配置服务接口
  */
 public interface SysConfIntegrationService extends OkService
 {

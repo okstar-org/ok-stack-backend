@@ -15,7 +15,6 @@ package org.okstar.platform.system.conf.domain;
 
 import lombok.Data;
 
-
 /**
  * 系统管理-集成设置-Stack设置
  */

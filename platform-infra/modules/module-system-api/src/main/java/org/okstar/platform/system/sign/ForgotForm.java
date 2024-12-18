@@ -13,17 +13,15 @@
 
 package org.okstar.platform.system.sign;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.okstar.platform.common.web.bean.Req;
 import org.okstar.platform.core.account.AccountDefines;
 
 /**
- * 注册实体
+ * 忘记密码表单
  */
-@Data
+@Getter
+@Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor

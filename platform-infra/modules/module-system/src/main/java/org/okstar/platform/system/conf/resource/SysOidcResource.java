@@ -20,6 +20,9 @@ import org.okstar.platform.common.web.bean.Res;
 import org.okstar.platform.system.resource.BaseResource;
 import org.okstar.platform.system.conf.service.SysKeycloakService;
 
+/**
+ * oidc配置接口
+ */
 @Path("oidc")
 public class SysOidcResource extends BaseResource {
 

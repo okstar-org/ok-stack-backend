@@ -127,7 +127,7 @@ public class KeycloakServiceImpl implements KeycloakService {
 
     @Override
     public SysKeycloakConfDTO getStackConfig() {
-        return sysKeycloakRpc.getStackConf();
+        return sysKeycloakRpc.getConf();
     }
 
     @Override

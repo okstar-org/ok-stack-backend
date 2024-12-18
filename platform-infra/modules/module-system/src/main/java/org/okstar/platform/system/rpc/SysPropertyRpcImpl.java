@@ -16,14 +16,14 @@ package org.okstar.platform.system.rpc;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
-import org.okstar.platform.common.bean.OkBeanUtils;
-import org.okstar.platform.system.dto.SysPropertyDTO;
-import org.okstar.platform.system.conf.domain.SysProperty;
 import org.okstar.platform.system.conf.service.SysPropertyService;
+import org.okstar.platform.system.dto.SysPropertyDTO;
 
 import java.util.List;
-import java.util.Optional;
 
+/**
+ * Properties RPC实现
+ */
 @Transactional
 @ApplicationScoped
 public class SysPropertyRpcImpl implements SysPropertyRpc {

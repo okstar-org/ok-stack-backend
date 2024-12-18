@@ -21,6 +21,9 @@ import jakarta.ws.rs.Path;
 import org.okstar.platform.system.conf.domain.SysConfIntegration;
 import org.okstar.platform.system.conf.service.SysConfIntegrationService;
 
+/**
+ * WellKnown开放接口
+ */
 @Path(".well-known")
 public class OkWellKnownResource extends BaseResource {
 

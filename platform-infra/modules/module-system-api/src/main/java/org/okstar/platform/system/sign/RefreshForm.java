@@ -13,16 +13,14 @@
 
 package org.okstar.platform.system.sign;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.okstar.platform.common.web.bean.Req;
 
 /**
- * 注册实体
+ * 刷新Token表单
  */
-@Data
+@Getter
+@Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor

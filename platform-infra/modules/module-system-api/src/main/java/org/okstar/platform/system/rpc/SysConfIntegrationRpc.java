@@ -16,12 +16,13 @@ package org.okstar.platform.system.rpc;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.PUT;
 import jakarta.ws.rs.Path;
-import jakarta.ws.rs.ProcessingException;
 import org.eclipse.microprofile.rest.client.inject.RegisterRestClient;
 import org.okstar.platform.system.dto.SysConfIntegrationDTO;
 
-
-@Path("rpc/SysSettingsRpc")
+/**
+ * 系统设置RPC
+ */
+@Path("rpc/SysConfIntegrationRpc")
 @RegisterRestClient
 public interface SysConfIntegrationRpc {
 
@@ -30,8 +31,11 @@ public interface SysConfIntegrationRpc {
      */
     @GET
     @Path("getIntegrationConf")
-    SysConfIntegrationDTO getIntegrationConf() throws ProcessingException;
+    SysConfIntegrationDTO getIntegrationConf();
 
+    /**
+     * 更新配置
+     */
     @PUT
     @Path("updateConf")
     void uploadConf();

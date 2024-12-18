@@ -21,6 +21,9 @@ import org.okstar.platform.system.conf.domain.SysProperty_;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * 持久层：系统配置
+ */
 @ApplicationScoped
 public class SysPropertyMapper implements OkRepository<SysProperty> {
 

@@ -26,6 +26,9 @@ import org.okstar.platform.system.account.domain.SysAccount;
 import org.okstar.platform.system.account.service.SysAccountService;
 import org.okstar.platform.system.service.SysUploadService;
 
+/**
+ * 上传接口
+ */
 @Path("upload")
 public class SysUploadResource extends BaseResource {
 

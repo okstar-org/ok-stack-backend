@@ -42,6 +42,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+/**
+ * 个人信息业务
+ */
 @Transactional
 @ApplicationScoped
 public class SysProfileServiceImpl implements SysProfileService {

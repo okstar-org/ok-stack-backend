@@ -26,7 +26,7 @@ public class SysKeycloakRpcImpl implements SysKeycloakRpc {
     SysKeycloakService keycloakService;
 
     @Override
-    public SysKeycloakConfDTO getStackConf() {
+    public SysKeycloakConfDTO getConf() {
         return keycloakService.getStackConfig();
     }
 

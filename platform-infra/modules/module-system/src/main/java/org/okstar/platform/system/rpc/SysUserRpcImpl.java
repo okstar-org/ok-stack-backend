@@ -20,6 +20,9 @@ import org.okstar.platform.system.dto.SysAccountDTO;
 
 import java.util.List;
 
+/**
+ * 用户RPC实现
+ */
 @ApplicationScoped
 public class SysUserRpcImpl implements SysUserRpc {
 

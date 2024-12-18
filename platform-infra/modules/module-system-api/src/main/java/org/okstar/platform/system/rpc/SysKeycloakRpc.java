@@ -18,14 +18,24 @@ import jakarta.ws.rs.Path;
 import org.eclipse.microprofile.rest.client.inject.RegisterRestClient;
 import org.okstar.platform.system.dto.SysKeycloakConfDTO;
 
+/**
+ * KC RPC
+ */
 @RegisterRestClient
 @Path("rpc/SysKeycloakRpc")
 public interface SysKeycloakRpc {
-
+    /**
+     * 获取`KC`配置
+     * @return SysKeycloakConfDTO
+     */
     @GET
-    @Path("/keycloakConf")
-    SysKeycloakConfDTO getStackConf();
+    @Path("/getConf")
+    SysKeycloakConfDTO getConf();
 
+    /**
+     * 获取`KC Admin`配置
+     * @return SysKeycloakConfDTO
+     */
     @GET
     @Path("/adminConf")
     SysKeycloakConfDTO getAdminConf();

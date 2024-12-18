@@ -21,6 +21,9 @@ import org.okstar.platform.system.domain.BaseEntity;
 
 import java.util.Date;
 
+/**
+ * 个人信息
+ */
 @Setter
 @Getter
 @Entity

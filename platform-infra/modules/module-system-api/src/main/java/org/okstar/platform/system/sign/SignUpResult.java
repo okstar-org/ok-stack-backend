@@ -16,11 +16,14 @@ package org.okstar.platform.system.sign;
 import lombok.*;
 import org.okstar.platform.common.web.bean.DTO;
 
-@EqualsAndHashCode(callSuper = true)
+/**
+ * 注册结果
+ */
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@EqualsAndHashCode(callSuper = true)
 public class SignUpResult extends DTO {
     private Long accountId;
     private String username;

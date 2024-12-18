@@ -43,6 +43,9 @@ import java.net.URL;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * 集成配置服务接口
+ */
 @Transactional
 @ApplicationScoped
 public class SysConfIntegrationServiceImpl implements SysConfIntegrationService {

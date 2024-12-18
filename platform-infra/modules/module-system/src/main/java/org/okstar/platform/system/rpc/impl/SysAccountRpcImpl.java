@@ -33,6 +33,9 @@ import org.okstar.platform.system.sign.SignUpResult;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * 帐号RPC实现
+ */
 @Transactional
 @ApplicationScoped
 public class SysAccountRpcImpl implements SysAccountRpc {
@@ -73,6 +76,12 @@ public class SysAccountRpcImpl implements SysAccountRpc {
         return accountService.findByAccount(account).map(e -> accountService.toAccount0(e));
     }
 
+    /**
+     *
+     * @param type
+     * @param bindValue
+     * @return
+     */
     @Override
     public Optional<SysAccountDTO> findByBind(AccountDefines.BindType type, String bindValue) {
         return accountService.findByBind(type, bindValue).map(e -> accountService.toAccount0(e));

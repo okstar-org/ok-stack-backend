@@ -21,6 +21,9 @@ import org.okstar.platform.system.conf.domain.SysProperty;
 
 import java.util.List;
 
+/**
+ * 系统配置
+ */
 @Transactional
 @ApplicationScoped
 public class SysConfSettingsServiceImpl implements SysConfSettingsService {

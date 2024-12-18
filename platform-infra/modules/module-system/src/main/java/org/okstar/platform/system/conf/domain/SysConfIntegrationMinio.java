@@ -21,6 +21,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * 系统管理-集成设置-minio存储配置
+ */
 @Data
 public class SysConfIntegrationMinio implements SysConfItem {
 

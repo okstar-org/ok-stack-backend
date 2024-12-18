@@ -30,6 +30,9 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Optional;
 
+/**
+ * 个人语言接口
+ */
 @Authenticated
 @Path("/profile/language")
 public class SysLanguageResource extends BaseResource {

@@ -17,13 +17,8 @@ import jakarta.enterprise.context.ApplicationScoped;
 import org.okstar.platform.common.datasource.OkRepository;
 import org.okstar.platform.system.account.domain.SysAccountPassword;
 
-
-
-
 /**
- * 帐号密码
- * 
- * 
+ * 持久层：帐号密码
  */
 @ApplicationScoped
 public class SysAccountPasswordMapper implements OkRepository<SysAccountPassword>

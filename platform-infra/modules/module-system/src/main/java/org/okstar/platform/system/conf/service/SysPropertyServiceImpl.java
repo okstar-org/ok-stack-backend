@@ -28,6 +28,9 @@ import org.okstar.platform.system.conf.mapper.SysPropertyMapper;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Properties配置服务层
+ */
 @Transactional
 @ApplicationScoped
 public class SysPropertyServiceImpl implements SysPropertyService {

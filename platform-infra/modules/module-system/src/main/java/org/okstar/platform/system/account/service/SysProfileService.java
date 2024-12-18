@@ -21,6 +21,9 @@ import org.okstar.platform.system.account.domain.SysProfile;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * 个人信息业务
+ */
 public interface SysProfileService extends OkJpaService<SysProfile> {
 
     void update(SysAccount sysAccount, SysProfile sysProfile);

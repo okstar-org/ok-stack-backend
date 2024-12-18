@@ -22,13 +22,21 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * 用户搜索
+ */
 @ApplicationScoped
 public class SysUserSearchServiceImpl implements SysUserSearchService {
     @Inject
-    private SysAccountService accountService;
+    SysAccountService accountService;
     @Inject
-    private SysProfileService profileService;
+    SysProfileService profileService;
 
+    /**
+     * 查询用户
+     * @param query
+     * @return
+     */
     @Override
     public List<SysAccountDTO> search(String query) {
         List<SysAccountDTO> list = new ArrayList<>();

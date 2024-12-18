@@ -46,6 +46,9 @@ import org.okstar.platform.system.dto.SysKeycloakConfDTO;
 import java.net.URI;
 import java.util.*;
 
+/**
+ * Keycloak配置
+ */
 @Transactional
 @ApplicationScoped
 public class SysKeycloakServiceImpl implements SysKeycloakService {

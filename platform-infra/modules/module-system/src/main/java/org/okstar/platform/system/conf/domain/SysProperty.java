@@ -20,6 +20,10 @@ import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 import org.okstar.platform.system.domain.BaseEntity;
 
+/**
+ * 配置信息
+ * <p>相当于properties配置文件存于数据库中方便维护</p>
+ */
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor

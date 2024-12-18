@@ -21,7 +21,7 @@ import org.okstar.platform.system.conf.domain.SysProperty;
 import java.util.List;
 
 /**
- * 个人配置
+ * 系统配置
  */
 public interface SysConfSettingsService extends OkService
 {

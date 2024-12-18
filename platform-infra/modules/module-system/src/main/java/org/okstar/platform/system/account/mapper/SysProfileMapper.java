@@ -21,7 +21,7 @@ import org.okstar.platform.system.account.domain.SysProfile;
 
 
 /**
- * 用户Profile
+ * 持久层：用户个人信息
  */
 @ApplicationScoped
 public class SysProfileMapper implements PanacheRepository<SysProfile>

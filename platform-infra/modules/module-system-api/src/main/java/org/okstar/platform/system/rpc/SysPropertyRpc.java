@@ -19,6 +19,9 @@ import org.okstar.platform.system.dto.SysPropertyDTO;
 
 import java.util.List;
 
+/**
+ * Properties RPC
+ */
 @RegisterRestClient
 @Path("rpc/SysPropertyRpc")
 public interface SysPropertyRpc {

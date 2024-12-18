@@ -20,9 +20,18 @@ import org.okstar.platform.system.dto.SysAccountDTO;
 
 import java.util.List;
 
+/**
+ * 用户RPC
+ */
 @RegisterRestClient
 @Path("rpc/SysUserRpc")
 public interface SysUserRpc {
+
+    /**
+     * 查询用户
+     * @param query 搜索词
+     * @return List<SysAccountDTO>
+     */
     @POST
     @Path("search")
     List<SysAccountDTO> search(String query);

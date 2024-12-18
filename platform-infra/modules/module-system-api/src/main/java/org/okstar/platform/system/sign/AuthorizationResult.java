@@ -17,23 +17,21 @@ import lombok.Builder;
 import lombok.Data;
 
 /**
- * 登录返回信息
- * <p>
- * export interface Token {
- * access_token: string;
- * refresh_token: string;
- * token?: string;
- * token_type?: string;
- * expires_in?: number;
- * }
+ * 成功认证的返回信息
  */
 @Data
 @Builder
 public class AuthorizationResult {
     private String username;
 
-    //tokenType："Bearer"
+    /**
+     * tokenType："Bearer"
+     */
     protected String tokenType;
+
+    /**
+     * access token
+     */
     protected String accessToken;
 
     /**
@@ -43,10 +41,34 @@ public class AuthorizationResult {
      */
     private Long expiresIn;
 
-    //refresh
+    /**
+     * 刷新token
+     */
     private String refreshToken;
+
+    /**
+     * 刷新token过期时间
+     */
     private Long refreshExpiresIn;
 
-    //session
+    /**
+     * <pre>
+     * session_state 是OpenID Connect（OIDC）协议中的一个参数，是一个重要的安全机制，
+     * 用于在认证流程中帮助检测和防止会话固定攻击（session fixation attacks）。
+     * 是一个可选的、不透明的值，由认证服务器生成并返回给客户端（通常是依赖方Relying Party, RP）,
+     * 它通过提供一个会话期间唯一的标识符来帮助增强认证流程的安全性。<b>这个值在用户的认证会话期间是唯一的，并且每次用户登录时都会改变。</b>
+     * </pre>
+     *
+     * <p>
+     * 它的主要作用是：
+     * </p>
+     * <ol>
+     *     <li>会话状态验证：客户端可以使用session_state来检测用户的会话状态是否发生了变化。 如果客户端检测到session_state的值与上一次认证响应中的不同，这可能意味着用户的会话已经被重新认证或存在其他需要注意的状态变化。</li>
+     *     <li>防止会话固定攻击：通过确保每次认证返回的session_state都是唯一的， 如果攻击者无法预测或控制session_state的值，那么他们就很难利用预先设置的会话</li>
+     *     <li>会话管理：session_state还可以用于客户端内部的会话管理，帮助客户端跟踪和管理用户的认证状态。</li>
+     * </ol>
+     *
+     * @link <a href="https://openid.net/specs/openid-connect-session-1_0.html#CreatingUpdatingSessions">CreatingUpdatingSessions</a>
+     */
     private String session_state;
 }

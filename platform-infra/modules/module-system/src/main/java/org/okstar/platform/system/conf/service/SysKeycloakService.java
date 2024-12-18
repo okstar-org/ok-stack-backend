@@ -22,6 +22,9 @@ import org.okstar.platform.system.dto.SysKeycloakConfDTO;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Keycloak配置
+ */
 public interface SysKeycloakService {
 
     String getAuthServerUrl();

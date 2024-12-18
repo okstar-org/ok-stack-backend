@@ -25,6 +25,9 @@ import org.okstar.platform.system.conf.domain.SysProperty;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * 个人配置
+ */
 @Transactional
 @ApplicationScoped
 public class SysConfPersonalServiceImpl implements SysConfPersonalService {

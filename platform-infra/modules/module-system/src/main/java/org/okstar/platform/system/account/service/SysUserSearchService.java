@@ -17,6 +17,9 @@ import org.okstar.platform.system.dto.SysAccountDTO;
 
 import java.util.List;
 
+/**
+ * 用户搜索
+ */
 public interface SysUserSearchService {
     List<SysAccountDTO> search(String query);
 }

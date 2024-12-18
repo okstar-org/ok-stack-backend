@@ -19,6 +19,9 @@ import lombok.Setter;
 import org.okstar.platform.common.web.bean.DTO;
 import org.okstar.platform.core.sys.SystemDefines;
 
+/**
+ * 用户登录关联信息
+ */
 @Setter
 @Getter
 @Embeddable

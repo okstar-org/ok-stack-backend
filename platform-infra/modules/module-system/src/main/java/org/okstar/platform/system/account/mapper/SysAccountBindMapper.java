@@ -17,13 +17,8 @@ import jakarta.enterprise.context.ApplicationScoped;
 import org.okstar.platform.common.datasource.OkRepository;
 import org.okstar.platform.system.account.domain.SysAccountBind;
 
-
-
-
 /**
- * 用户绑定
- * 
- * 
+ * 持久层：用户绑定
  */
 @ApplicationScoped
 public class SysAccountBindMapper implements OkRepository<SysAccountBind>

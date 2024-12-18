@@ -20,6 +20,9 @@ import org.okstar.platform.system.conf.domain.SysProperty;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Properties配置服务层
+ */
 public interface SysPropertyService extends OkJpaService<SysProperty> {
     void deleteByGroup(String group);
 

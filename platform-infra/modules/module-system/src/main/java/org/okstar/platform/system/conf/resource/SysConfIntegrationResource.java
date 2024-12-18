@@ -21,6 +21,9 @@ import org.okstar.platform.system.conf.domain.*;
 import org.okstar.platform.system.conf.service.SysConfIntegrationService;
 import org.okstar.platform.system.resource.BaseResource;
 
+/**
+ * 集成配置
+ */
 @Path("conf/integration")
 public class SysConfIntegrationResource extends BaseResource {
 

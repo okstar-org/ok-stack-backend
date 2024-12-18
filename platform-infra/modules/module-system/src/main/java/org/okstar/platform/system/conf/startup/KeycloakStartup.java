@@ -24,6 +24,9 @@ import org.okstar.platform.system.conf.domain.SysConfIntegrationKeycloak;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.TimeUnit;
 
+/**
+ * Keycloak启动服务
+ */
 @ApplicationScoped
 public class KeycloakStartup {
 

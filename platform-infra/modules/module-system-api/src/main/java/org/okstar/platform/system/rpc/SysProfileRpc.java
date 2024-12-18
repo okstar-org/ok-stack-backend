@@ -22,15 +22,28 @@ import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.PathParam;
 
+/**
+ * 个人信息RPC
+ */
 @RegisterRestClient
 @Path("rpc/SysProfileRpc")
 public interface SysProfileRpc {
 
-
+    /**
+     * 获取个人信息通过帐号ID
+     * @param accountId 帐号ID
+     * @return SysProfileDTO
+     */
     @GET
     @Path("getByAccount/{accountId}")
     SysProfileDTO getByAccount(@PathParam("accountId") Long accountId);
 
+    /**
+     * 保存个人信息
+     * @param accountId 帐号ID
+     * @param req SysProfileDTO
+     * @return Long
+     */
     @PUT
     @Path("{accountId}")
     Long save(@PathParam("accountId") Long accountId, SysProfileDTO req);

@@ -13,10 +13,15 @@
 
 package org.okstar.platform.system.sign;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 import org.okstar.platform.common.web.bean.Req;
 
-@Data
+/**
+ * 更新密码表单
+ */
+@Setter
+@Getter
 public class PasswordUpdateForm extends Req {
     private String username;
     private String newPassword;

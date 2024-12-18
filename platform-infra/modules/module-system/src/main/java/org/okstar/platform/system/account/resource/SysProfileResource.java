@@ -24,6 +24,9 @@ import org.okstar.platform.system.account.domain.SysProfile;
 import org.okstar.platform.system.account.service.SysProfileService;
 import org.okstar.platform.system.resource.BaseResource;
 
+/**
+ * 个人信息接口
+ */
 @Authenticated
 @Path("/profile")
 public class SysProfileResource extends BaseResource {
