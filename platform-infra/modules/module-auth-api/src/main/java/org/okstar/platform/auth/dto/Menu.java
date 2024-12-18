@@ -31,8 +31,14 @@ import java.util.Map;
 @NoArgsConstructor
 public class Menu {
 
+    /**
+     * 索引
+     */
     private int idx;
 
+    /**
+     * ID
+     */
     private String id;
 
     /**
@@ -60,11 +66,21 @@ public class Menu {
      */
     private String icon;
 
+    /**
+     * 地址
+     */
     private String uri;
 
+    /**
+     * 路径列表
+     */
     private List<String> path = new LinkedList<>();
 
+    /**
+     * 子菜单
+     */
     private List<Menu> children = new LinkedList<>();
+
 
     public void addChild(Menu menu) {
       children.add(menu);

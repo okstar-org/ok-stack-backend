@@ -21,19 +21,37 @@ import org.okstar.platform.system.dto.SysAccountDTO;
 
 import jakarta.ws.rs.*;
 
+/**
+ * 接入层API规范
+ */
 @Path("rpc/PassportRpc")
 @RegisterRestClient
 public interface PassportRpc {
 
+    /**
+     * 注册
+     * @param signUpDto
+     * @return
+     */
     @POST
     @Path("signUp")
     RpcResult<SignUpResult> signUp(SignUpForm signUpDto);
 
 
+    /**
+     * 注销
+     * @param accountId
+     * @return
+     */
     @DELETE
     @Path("signDown/{accountId}")
     RpcResult<Boolean> signDown(@PathParam("accountId") Long accountId);
 
+    /**
+     * 获取帐号
+     * @param account
+     * @return
+     */
     @GET
     @Path("getAccount/{account}")
     RpcResult<SysAccountDTO> getAccount(@PathParam("account") String account);

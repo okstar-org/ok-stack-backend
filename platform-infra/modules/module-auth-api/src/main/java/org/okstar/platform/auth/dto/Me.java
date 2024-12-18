@@ -18,13 +18,14 @@ import lombok.Data;
 import org.okstar.platform.common.string.OkStringUtil;
 import org.okstar.platform.system.dto.SysAccountDTO;
 
+/**
+ * 自己
+ */
 @Data
 @Builder
 public class Me {
     //帐号信息
     SysAccountDTO account;
-    //个人信息
-//    SysProfileDTO profile;
 
     /**
      * 用户显示名称
@@ -36,11 +37,6 @@ public class Me {
             //昵称
             return nickname;
         }
-        //真实名称
-//        var personalName = profile.getPersonalName();
-//        if (OkStringUtil.isNoneBlank(personalName)) {
-//            return personalName;
-//        }
         return account.getUsername();
     }
 }
