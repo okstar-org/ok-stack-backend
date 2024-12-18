@@ -20,12 +20,15 @@ import jakarta.enterprise.event.Observes;
 import jakarta.inject.Singleton;
 import org.apache.activemq.artemis.core.server.embedded.EmbeddedActiveMQ;
 
+/**
+ * 总线服务，负责整个分布式消息交互通讯
+ */
 @Startup
 @Singleton
 public class BusServer {
 
     public void init(@Observes StartupEvent event) throws Exception {
-        Log.info("init busServer...");
+        Log.info("Init busServer...");
         EmbeddedActiveMQ embedded = new EmbeddedActiveMQ();
         embedded.start();
         Log.info("Initialize busServer successfully.");
