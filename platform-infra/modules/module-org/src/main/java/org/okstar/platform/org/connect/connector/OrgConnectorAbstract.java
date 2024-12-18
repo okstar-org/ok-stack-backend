@@ -23,7 +23,9 @@ import org.okstar.platform.org.connect.api.Department;
 import org.okstar.platform.org.connect.domain.OrgIntegrateConf;
 import org.okstar.platform.org.connect.exception.ConnectorException;
 
-
+/**
+ *  `组织模块`第三方连接器接口：基础抽象类
+ */
 @Slf4j
 public abstract class OrgConnectorAbstract implements OrgConnector {
 

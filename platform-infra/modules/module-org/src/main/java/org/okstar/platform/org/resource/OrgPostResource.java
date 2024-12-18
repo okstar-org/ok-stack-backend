@@ -21,8 +21,12 @@ import org.okstar.platform.org.service.OrgPostService;
 
 import java.util.List;
 
+/**
+ * 获取岗位信息接口
+ */
 @Path("post")
 public class OrgPostResource {
+
     @Inject
     OrgPostService postService;
 

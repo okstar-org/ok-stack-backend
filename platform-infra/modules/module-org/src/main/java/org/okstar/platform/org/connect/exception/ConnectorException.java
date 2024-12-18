@@ -13,11 +13,13 @@
 
 package org.okstar.platform.org.connect.exception;
 
+import lombok.Getter;
 import org.okstar.platform.org.connect.ConnectorDefines;
 
 /**
  * 连接异常
  */
+@Getter
 public class ConnectorException extends Exception {
 
     private final ConnectorDefines.Type type;
@@ -42,11 +44,4 @@ public class ConnectorException extends Exception {
     }
 
 
-    public String getUrl() {
-        return url;
-    }
-
-    public ConnectorDefines.Type getType() {
-        return type;
-    }
 }

@@ -16,14 +16,14 @@ package org.okstar.platform.org.connect;
 import lombok.Getter;
 
 /**
- * 连接枚举类
+ * 连接器：相关枚举类
  */
-public class ConnectorDefines {
+public interface ConnectorDefines {
     /**
      * 连接类型
      */
     @Getter
-    public enum Type {
+    enum Type {
         WX("企微"),
         DD("钉钉"),
         FS("飞书");

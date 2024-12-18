@@ -24,6 +24,9 @@ import org.okstar.platform.org.service.OrgPostService;
 
 import java.util.List;
 
+/**
+ * 人员岗位接口
+ */
 @Path("staff/post")
 public class OrgStaffPostResource {
 

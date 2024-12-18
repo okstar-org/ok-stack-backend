@@ -41,6 +41,9 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+/**
+ * 获取自己相关信息的接口
+ */
 @Path("me")
 public class MeResource extends BaseResource {
     @Inject

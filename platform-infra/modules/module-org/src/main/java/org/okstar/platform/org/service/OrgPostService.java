@@ -23,8 +23,6 @@ import java.util.Optional;
 
 /**
  * 岗位信息 服务层
- * 
- * 
  */
 public interface OrgPostService extends OkJpaService<OrgPost>
 {

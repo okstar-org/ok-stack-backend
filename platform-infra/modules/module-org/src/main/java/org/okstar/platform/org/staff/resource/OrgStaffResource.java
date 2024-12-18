@@ -28,6 +28,9 @@ import org.okstar.platform.system.rpc.SysProfileRpc;
 
 import java.util.List;
 
+/**
+ * 人员接口
+ */
 @Path("staff")
 public class OrgStaffResource extends OkCommonResource {
 

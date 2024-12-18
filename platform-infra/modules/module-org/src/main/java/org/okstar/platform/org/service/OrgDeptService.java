@@ -22,8 +22,6 @@ import java.util.Optional;
 
 /**
  * 部门管理 服务层
- * 
- *
  */
 public interface OrgDeptService extends OkJpaService<OrgDept>
 {

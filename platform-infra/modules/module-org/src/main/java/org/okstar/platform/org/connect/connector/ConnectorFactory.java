@@ -25,6 +25,9 @@ import org.okstar.platform.org.connect.domain.OrgIntegrateConf;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ *  `组织模块`第三方连接器工厂
+ */
 @Slf4j
 @ApplicationScoped
 public class ConnectorFactory {

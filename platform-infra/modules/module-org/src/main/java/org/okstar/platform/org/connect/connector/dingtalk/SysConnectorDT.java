@@ -45,6 +45,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ *  `组织模块`第三方连接器接口：钉钉实现
+ */
 @Slf4j
 public class SysConnectorDT extends OrgConnectorAbstract {
 

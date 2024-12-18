@@ -29,16 +29,18 @@ import org.okstar.platform.org.resource.BaseResource;
 
 import java.util.List;
 
+/**
+ * 组织-集成接口
+ */
 @Path("integration")
 public class OrgIntegrationResource extends BaseResource {
 
     @Inject
-    private ConnectorConfigService connectorConfigService;
+    ConnectorConfigService connectorConfigService;
     @Inject
-    private ConnectorSyncService connectorSyncService;
-
+    ConnectorSyncService connectorSyncService;
     @Inject
-    private ConnectorFactory connectorFactory;
+    ConnectorFactory connectorFactory;
 
 
 

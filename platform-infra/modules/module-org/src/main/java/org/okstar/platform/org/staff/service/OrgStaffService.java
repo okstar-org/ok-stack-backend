@@ -27,7 +27,7 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * 部门管理 服务层
+ * 人员服务层
  */
 public interface OrgStaffService extends OkJpaService<OrgStaff> {
 

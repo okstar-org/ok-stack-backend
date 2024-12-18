@@ -18,9 +18,6 @@ import io.quarkus.hibernate.orm.panache.PanacheRepository;
 import jakarta.enterprise.context.ApplicationScoped;
 import org.okstar.platform.org.domain.Org;
 
-
-
-
 /**
  * 部门管理 数据层
  */

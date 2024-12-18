@@ -24,6 +24,9 @@ import org.okstar.platform.org.connect.exception.ConnectorException;
 
 import java.util.List;
 
+/**
+ * `组织模块`第三方连接器接口
+ */
 public interface OrgConnector {
 
     OrgIntegrateConf getConf();

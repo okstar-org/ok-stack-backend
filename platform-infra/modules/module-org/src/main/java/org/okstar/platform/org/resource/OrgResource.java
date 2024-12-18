@@ -26,7 +26,7 @@ import org.okstar.platform.org.service.OrgService;
 import org.okstar.platform.org.service.OrgUploadService;
 
 /**
- * 组织
+ * 组织接口
  */
 @Path("")
 public class OrgResource extends BaseResource {

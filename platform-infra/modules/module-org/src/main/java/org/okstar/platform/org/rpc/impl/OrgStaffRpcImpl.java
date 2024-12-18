@@ -23,6 +23,9 @@ import org.okstar.platform.org.staff.service.OrgStaffService;
 import java.util.List;
 
 
+/**
+ * 组织人员RPC实现
+ */
 @ApplicationScoped
 public class OrgStaffRpcImpl implements OrgStaffRpc {
 

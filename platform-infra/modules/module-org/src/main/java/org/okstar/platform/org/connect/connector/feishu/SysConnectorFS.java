@@ -37,6 +37,9 @@ import org.okstar.platform.org.connect.domain.OrgIntegrateConf;
 
 import java.util.*;
 
+/**
+ *  `组织模块`第三方连接器接口：飞书实现
+ */
 @Slf4j
 public class SysConnectorFS extends OrgConnectorAbstract {
 

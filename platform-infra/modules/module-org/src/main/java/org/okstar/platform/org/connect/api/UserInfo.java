@@ -19,6 +19,9 @@ import org.okstar.platform.core.user.UserDefines;
 import java.util.Date;
 import java.util.Locale;
 
+/**
+ * API 用户信息
+ */
 @Data
 @Builder
 @ToString

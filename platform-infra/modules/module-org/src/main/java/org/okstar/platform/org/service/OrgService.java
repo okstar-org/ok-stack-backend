@@ -18,6 +18,9 @@ import org.okstar.platform.common.datasource.OkJpaService;
 import org.okstar.platform.org.domain.Org;
 import org.okstar.platform.org.dto.Org0;
 
+/**
+ * 组织服务接口
+ */
 public interface OrgService extends OkJpaService<Org>
 {
     Org loadCurrent();

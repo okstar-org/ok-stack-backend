@@ -20,6 +20,7 @@ import jakarta.transaction.Transactional;
 import org.apache.commons.io.FilenameUtils;
 import org.eclipse.microprofile.rest.client.inject.RestClient;
 import org.okstar.common.storage.StorageBackend;
+import org.okstar.common.storage.StorageDefines;
 import org.okstar.common.storage.StorageManager;
 import org.okstar.common.storage.dto.UploadDTO;
 import org.okstar.common.storage.minio.StorageConfMinio;
@@ -30,10 +31,13 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
+/**
+ * 上传实现
+ */
 @Transactional
 @ApplicationScoped
 public class OrgUploadServiceImpl implements OrgUploadService {
-    public static final String BUCKET_NAME = "ok-stack";
+
     @Inject
     StorageManager storageManager;
     @Inject
@@ -57,9 +61,9 @@ public class OrgUploadServiceImpl implements OrgUploadService {
         StorageBackend backend = storageManager.getDefaultStorageBackend(getConfig());
         Map<String, String> tags = new HashMap<>(Map.of("type", "avatar"));
         tags.put("org", self.getUuid());
-        Set<String> removed = backend.removeByTags(BUCKET_NAME, tags);
+        Set<String> removed = backend.removeByTags(StorageDefines.DEFAULT_BUCKET_NAME, tags);
         Log.debugf("Removed:%s", removed);
-        return backend.put(BUCKET_NAME, uploadDTO.getFile(), name, tags);
+        return backend.put(StorageDefines.DEFAULT_BUCKET_NAME, uploadDTO.getFile(), name, tags);
 
     }
 

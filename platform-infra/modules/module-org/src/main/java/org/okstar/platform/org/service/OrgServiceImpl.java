@@ -29,6 +29,9 @@ import org.okstar.platform.org.mapper.OrgMapper;
 import java.util.List;
 import java.util.UUID;
 
+/**
+ * 组织服务实现
+ */
 @Transactional
 @ApplicationScoped
 public class OrgServiceImpl implements OrgService {

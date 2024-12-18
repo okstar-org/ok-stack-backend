@@ -17,7 +17,9 @@ import org.okstar.common.storage.dto.UploadDTO;
 import org.okstar.common.storage.minio.StorageConfMinio;
 import org.okstar.platform.org.domain.Org;
 
-
+/**
+ * 上传接口
+ */
 public interface OrgUploadService {
 
     StorageConfMinio getConfig();

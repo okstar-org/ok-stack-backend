@@ -19,7 +19,9 @@ import org.okstar.platform.core.web.resource.OkCommonResource;
 import org.okstar.platform.system.dto.SysAccountDTO;
 import org.okstar.platform.system.rpc.SysAccountRpc;
 
-
+/**
+ * 资源基础类
+ */
 public class BaseResource extends OkCommonResource {
 
     @Inject
@@ -29,7 +31,7 @@ public class BaseResource extends OkCommonResource {
     /**
      * 获取自己
      *
-     * @return
+     * @return SysAccountDTO
      */
     protected SysAccountDTO self() {
         return sysAccountRpc.findByUsername(getUsername()).orElse(null);

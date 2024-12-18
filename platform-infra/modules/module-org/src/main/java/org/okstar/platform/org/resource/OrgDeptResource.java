@@ -25,6 +25,9 @@ import org.okstar.platform.org.service.OrgService;
 
 import java.util.List;
 
+/**
+ * 获取部门信息接口
+ */
 @Path("dept")
 public class OrgDeptResource extends BaseResource {
     @Inject

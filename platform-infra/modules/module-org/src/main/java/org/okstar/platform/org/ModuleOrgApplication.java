@@ -16,6 +16,9 @@ package org.okstar.platform.org;
 import io.quarkus.runtime.Quarkus;
 import io.quarkus.runtime.annotations.QuarkusMain;
 
+/**
+ * `组织模块`启动类
+ */
 @QuarkusMain
 public class ModuleOrgApplication {
     public static void main(String... args) {

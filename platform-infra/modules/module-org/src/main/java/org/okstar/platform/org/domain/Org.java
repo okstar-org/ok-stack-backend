@@ -16,15 +16,13 @@ package org.okstar.platform.org.domain;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
-import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
 
 /**
  * 组织
- * 
- * 
+ *
  */
 @Setter
 @Getter

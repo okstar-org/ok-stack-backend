@@ -21,6 +21,9 @@ import org.okstar.platform.org.dto.Org0;
 import org.okstar.platform.org.rpc.OrgRpc;
 import org.okstar.platform.org.service.OrgService;
 
+/**
+ * 组织RPC实现
+ */
 @Transactional
 @ApplicationScoped
 public class OrgRpcImpl implements OrgRpc {

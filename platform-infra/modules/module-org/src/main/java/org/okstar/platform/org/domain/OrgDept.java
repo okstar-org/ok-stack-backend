@@ -22,7 +22,6 @@ import lombok.Setter;
 /**
  * 组织-部门
  * 
- * 
  */
 @Setter
 @Getter

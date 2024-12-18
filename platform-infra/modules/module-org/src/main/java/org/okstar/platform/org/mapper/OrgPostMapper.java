@@ -18,13 +18,8 @@ import io.quarkus.hibernate.orm.panache.PanacheRepository;
 import jakarta.enterprise.context.ApplicationScoped;
 import org.okstar.platform.org.domain.OrgPost;
 
-
-
-
 /**
  * 岗位信息 数据层
- * 
- *
  */
 @ApplicationScoped
 public class OrgPostMapper implements PanacheRepository<OrgPost>

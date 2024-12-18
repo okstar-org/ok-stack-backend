@@ -11,17 +11,11 @@
  * /
  */
 
-package org.okstar.platform.org.mapper;
+package org.okstar.common.storage;
 
-
-import io.quarkus.hibernate.orm.panache.PanacheRepository;
-import jakarta.enterprise.context.ApplicationScoped;
-import org.okstar.platform.org.domain.OrgDept;
-
-/**
- * 部门管理 数据层
- */
-@ApplicationScoped
-public class OrgDeptMapper implements PanacheRepository<OrgDept> {
-
+public interface StorageDefines {
+    /**
+     * 默认桶
+     */
+    String DEFAULT_BUCKET_NAME = "ok-stack";
 }

@@ -36,6 +36,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
+/**
+ *  `组织模块`第三方连接器接口：企业微信实现
+ */
 @Slf4j
 public class SysConnectorWX extends OrgConnectorAbstract {
 

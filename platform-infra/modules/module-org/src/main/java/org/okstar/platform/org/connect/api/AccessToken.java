@@ -20,6 +20,9 @@ import org.okstar.platform.common.date.OkDateUtils;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 
+/**
+ * 访问Token（连接第三方平台）
+ */
 @Data
 @Builder
 @NoArgsConstructor
@@ -27,7 +30,7 @@ import java.time.temporal.ChronoUnit;
 @ToString
 public class AccessToken {
     /**
-     * 消息创建时间
+     * 创建时间
      */
     private Instant createdAt = Instant.now();
 

@@ -23,6 +23,12 @@ import org.okstar.platform.core.service.OkAbsService;
 
 import java.util.function.Consumer;
 
+/**
+ * 消息消费者
+ * <p>
+ *     从`消息总线`模块获取消息
+ * </p>
+ */
 @Startup
 @Singleton
 public class ConsumerJms extends OkAbsService {
