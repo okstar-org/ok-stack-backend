@@ -19,7 +19,9 @@ import org.okstar.platform.core.web.resource.OkCommonResource;
 import org.okstar.platform.system.dto.SysAccountDTO;
 import org.okstar.platform.system.rpc.SysAccountRpc;
 
-
+/**
+ * 基础Rest类
+ */
 public class BaseResource extends OkCommonResource {
 
     @Inject

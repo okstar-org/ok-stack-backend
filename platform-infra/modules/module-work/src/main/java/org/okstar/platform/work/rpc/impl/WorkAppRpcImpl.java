@@ -27,6 +27,9 @@ import org.okstar.platform.work.service.WorkAppService;
 
 import java.util.List;
 
+/**
+ * App应用RPC实现
+ */
 @ApplicationScoped
 public class WorkAppRpcImpl implements WorkAppRpc {
 

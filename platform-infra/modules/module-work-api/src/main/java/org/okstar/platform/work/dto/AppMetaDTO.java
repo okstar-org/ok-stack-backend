@@ -16,15 +16,30 @@ package org.okstar.platform.work.dto;
 import lombok.Builder;
 import lombok.Data;
 
+/**
+ * 应用元数据
+ */
 @Data
 @Builder
 public class AppMetaDTO {
 
+    /**
+     * uuid
+     */
     private String uuid;
 
+    /**
+     * 运行形态
+     */
     private RunModality runModality;
 
+    /**
+     * 运行环境
+     */
     private String runOn;
 
+    /**
+     * 应用uuid
+     */
     private String appUuid;
 }

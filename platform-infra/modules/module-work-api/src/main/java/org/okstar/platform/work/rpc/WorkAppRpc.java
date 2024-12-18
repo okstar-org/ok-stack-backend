@@ -23,14 +23,26 @@ import org.okstar.platform.work.dto.AppMetaDTO;
 
 import java.util.List;
 
+/**
+ * App应用RPC接口
+ */
 @RegisterRestClient
 @Path("rpc/WorkAppRpc")
 public interface WorkAppRpc {
 
+    /**
+     * 应用列表
+     * @return List<AppDTO>
+     */
     @GET
     @Path("list")
     RpcResult<List<AppDTO>> list();
 
+    /**
+     * 获取应用元数据
+     * @param uuid 应用uuid
+     * @return AppMetaDTO
+     */
     @GET
     @Path("{uuid}/meta")
     RpcResult<AppMetaDTO> meta(@PathParam("uuid") String uuid);

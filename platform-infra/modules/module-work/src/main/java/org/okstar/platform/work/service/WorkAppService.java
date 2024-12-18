@@ -15,13 +15,35 @@ package org.okstar.platform.work.service;
 
 import org.okstar.cloud.entity.*;
 
-
+/**
+ * 应用服务接口
+ */
 public interface WorkAppService {
+    /**
+     * 查询应用分页
+     * @param pageable 分页
+     * @return AppEntities
+     */
     AppEntities page(OkPageable pageable);
 
+    /**
+     * 获取指定APP
+     * @param uuid 应用uuid
+     * @return AppEntity
+     */
     AppEntity get(String uuid);
 
+    /**
+     * 应用详情
+     * @param uuid 应用uuid
+     * @return AppDetailEntity
+     */
     AppDetailEntity detail(String uuid);
 
+    /**
+     * 获取应用元数据
+     * @param uuid 应用uuid
+     * @return AppMetaEntity
+     */
     AppMetaEntity getMeta(String uuid);
 }

@@ -16,6 +16,9 @@ package org.okstar.platform.work.dto;
 import lombok.Builder;
 import lombok.Data;
 
+/**
+ * 应用DTO
+ */
 @Data
 @Builder
 public class AppDTO {

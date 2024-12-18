@@ -18,10 +18,15 @@ import org.okstar.cloud.OkCloudApiClient;
 import org.okstar.cloud.entity.*;
 import org.okstar.platform.core.OkCloudDefines;
 
-
+/**
+ * 应用服务接口
+ */
 @ApplicationScoped
 public class WorkAppServiceImpl implements WorkAppService {
 
+    /**
+     * OkCloud社区接口
+     */
     OkCloudApiClient client;
 
     public WorkAppServiceImpl() {
