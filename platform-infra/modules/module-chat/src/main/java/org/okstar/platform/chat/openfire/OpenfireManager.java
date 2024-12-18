@@ -36,16 +36,40 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+/**
+ * Openfire 管理器
+ * <p>实现对Openfire相关管理</p>
+ * <ol>
+ *     <li>获取Openfire配置</li>
+ *     <li>初始化RestApi客户端</li>
+ *     <li>获取用户</li>
+ * </ol>
+ */
 @ApplicationScoped
 public class OpenfireManager implements XmppClient {
 
+    /**
+     * Openfire Rest API 客户端
+     */
     private RestApiClient restApiClient;
+
+    /**
+     * IM配置信息
+     */
     private SysConfImDTO imConfDTO;
 
+    /**
+     * 集成配置RPC
+     * <p>从系统模块获取IM配置</p>
+     */
     @Inject
     @RestClient
     SysConfIntegrationRpc settingsRpc;
 
+    /**
+     * 确保Rest接口可用
+     * @return RestApiClient
+     */
     private RestApiClient ensure() {
         SysConfIntegrationDTO global = settingsRpc.getIntegrationConf();
         if (global == null) {
@@ -81,6 +105,13 @@ public class OpenfireManager implements XmppClient {
         return restApiClient;
     }
 
+    /**
+     * 生成Rest API
+     * @param host
+     * @param xmppAdminPort
+     * @param secretKey
+     * @return
+     */
     @Override
     public RestApiClient makeXmppClient(String host, int xmppAdminPort, String secretKey) {
         AuthenticationToken token = new AuthenticationToken(secretKey);
@@ -89,6 +120,10 @@ public class OpenfireManager implements XmppClient {
                 token, SupportedMediaType.JSON);
     }
 
+    /**
+     * 获取聊天系统用户列表
+     * @return UserEntities
+     */
     @Override
     public UserEntities users() {
         UserEntities users = ensure().getUsers();
@@ -96,6 +131,10 @@ public class OpenfireManager implements XmppClient {
         return users;
     }
 
+    /**
+     * 获取指定的聊天系统用户
+     * @return UserEntity
+     */
     @Override
     public UserEntity findUserByUsername(String username) {
         Log.infof("findUserByUsername:%s", username);
@@ -104,6 +143,10 @@ public class OpenfireManager implements XmppClient {
         return user;
     }
 
+    /**
+     * 获取指定的聊天系统用户的花名册（好友列表）
+     * @return UserEntity
+     */
     @Override
     public RosterEntities findRosterByUsername(String username) {
         Log.infof("findRosterByUsername:%s", username);
@@ -112,6 +155,11 @@ public class OpenfireManager implements XmppClient {
         return rosterEntities;
     }
 
+    /**
+     * 获取用户概括信息
+     * @param username 用户名
+     * @return ChatGeneral
+     */
     @Override
     public ChatGeneral findChatGeneralByUsername(String username) {
         RestApiClient ensure = ensure();
@@ -126,6 +174,10 @@ public class OpenfireManager implements XmppClient {
                 .build();
     }
 
+    /**
+     * 列出所有群组
+     * @return List<ChatRoom>
+     */
     @Override
     public List<ChatRoom> listRooms() {
         Map<String, String> q = new HashMap<>();
@@ -136,12 +188,22 @@ public class OpenfireManager implements XmppClient {
                 .collect(Collectors.toList());
     }
 
+    /**
+     * 查询指定的群组
+     * @param username 群组帐号
+     * @return ChatRoom
+     */
     @Override
     public ChatRoom findRoomByName(String username) {
         MUCRoomEntity room = ensure().getChatRoom(username);
         return ChatUtils.convertRoom(room);
     }
 
+    /**
+     * 查询指定的群组成员
+     * @param username 群组帐号
+     * @return List<ChatParticipant>
+     */
     @Override
     public List<ChatParticipant> findParticipantsByName(String username) {
         ParticipantEntities participants = ensure().getChatRoomParticipants(username);
@@ -152,6 +214,11 @@ public class OpenfireManager implements XmppClient {
         ).toList();
     }
 
+    /**
+     * 更新群聊信息
+     * @param room 群
+     * @return boolean
+     */
     @Override
     public boolean updateRoom(ChatRoom room) {
         MUCRoomEntity entity = ChatUtils.convertRoom(room);
@@ -159,6 +226,10 @@ public class OpenfireManager implements XmppClient {
         return response.getStatus() == 200;
     }
 
+    /**
+     * 查询群组
+     * @return List<ChatGroup>
+     */
     @Override
     public List<ChatGroup> listGroups() {
         var groups = ensure().getGroups();

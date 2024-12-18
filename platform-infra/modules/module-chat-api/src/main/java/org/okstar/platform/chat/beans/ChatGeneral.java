@@ -11,16 +11,14 @@
  * /
  */
 package org.okstar.platform.chat.beans;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.okstar.platform.common.web.bean.DTO;
 
 /**
  * 概括信息
  */
-@Data
+@Getter
+@Setter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
@@ -32,6 +30,9 @@ public class ChatGeneral extends DTO {
     /** 消息数量 */
     private int msgs;
 
+    /**
+     * 群组数量
+     */
     private int groups;
 
 }

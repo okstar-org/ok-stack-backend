@@ -14,6 +14,9 @@ package org.okstar.platform.chat.beans;
 import lombok.*;
 import org.okstar.platform.common.web.bean.DTO;
 
+/**
+ * 用户
+ */
 @Data
 @Builder
 @AllArgsConstructor

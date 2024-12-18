@@ -17,6 +17,7 @@ import io.quarkus.runtime.annotations.QuarkusMain;
 
 /**
  * 聊天管理服务
+ * 连接 Openfire API 接口
  */
 @QuarkusMain
 public class ModuleChatApplication {

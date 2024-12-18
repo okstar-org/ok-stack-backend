@@ -13,25 +13,26 @@
 
 package org.okstar.platform.chat.beans;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.okstar.platform.common.web.bean.DTO;
 
 import java.util.List;
 
-@Data
+/**
+ * 用户通讯录项
+ */
+@Getter
+@Setter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
 public class ChatRosterItem extends DTO {
-
+    //标识
     private String jid;
-
+    //昵称
     private String nickname;
 
-    /**
+    /**订阅类型
      * SubType
      * * Indicates the roster item should be removed.
      * REMOVE(-1),
@@ -46,5 +47,6 @@ public class ChatRosterItem extends DTO {
      */
     private int subscriptionType;
 
+    //群聊列表
     private List<String> groups;
 }

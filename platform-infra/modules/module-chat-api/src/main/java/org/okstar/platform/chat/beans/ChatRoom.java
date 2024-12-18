@@ -22,6 +22,14 @@ import lombok.NoArgsConstructor;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * <b>XMPP Room 多人聊天室</b>
+ * <p>
+ * 是基于XMPP协议实现的多用户聊天环境,
+ * 主要用于即时消息传递和在线状态管理，
+ * 适用于需要实时交流和协作的场景；
+ * </p>
+ */
 @Data
 @Builder
 @AllArgsConstructor
@@ -43,12 +51,19 @@ public class ChatRoom {
 
     //持久化房间（保存到数据库）
     private boolean persistent;
+    //密码
     private String password;
-    private boolean canChangeNickname;
-    private boolean canOccupantsChangeSubject;
-    private boolean canOccupantsInvite;
+    //创建时间
+    private Date creationDate;
+    //修改时间
+    private Date modificationDate;
+    //日志开启
     private boolean logEnabled;
 
-    private Date creationDate;
-    private Date modificationDate;
+    //是否可修名称
+    private boolean canChangeNickname;
+    //是否可修改主题
+    private boolean canOccupantsChangeSubject;
+    //成员是否可邀请他人
+    private boolean canOccupantsInvite;
 }

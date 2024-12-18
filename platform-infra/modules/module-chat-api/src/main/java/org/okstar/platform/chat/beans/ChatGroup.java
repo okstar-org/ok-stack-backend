@@ -18,6 +18,12 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ *<b> Group </b>
+ * <p>
+ *  组织和社群，可以是工作、兴趣、社交等方面的群组
+ * </p>
+ */
 @Data
 @Builder
 @AllArgsConstructor
@@ -29,9 +35,18 @@ public class ChatGroup {
      *       </description>
      *       <shared>false</shared>
      */
-
+    /**
+     * 群组名称
+     */
     private String name;
+    /**
+     * 描述
+     */
     private String description;
+
+    /**
+     * 成员数量
+     */
     private int members;
 
 }

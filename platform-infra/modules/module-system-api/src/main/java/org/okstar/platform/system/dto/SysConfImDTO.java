@@ -16,6 +16,9 @@ package org.okstar.platform.system.dto;
 import lombok.Data;
 import lombok.ToString;
 
+/**
+ * IM配置信息
+ */
 @Data
 @ToString
 public class SysConfImDTO {
